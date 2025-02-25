@@ -1,0 +1,5 @@
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\bin\Release\net8.0\linux-x64\publish\Order.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\bin\Release\net8.0\linux-x64\publish\Order.Domain.deps.json
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\bin\Release\net8.0\linux-x64\publish\Order.Domain.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\bin\Release\net8.0\linux-x64\publish\Infrastructure.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\bin\Release\net8.0\linux-x64\publish\Infrastructure.Domain.pdb

@@ -1,0 +1,17 @@
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\bin\Release\net8.0\linux-x64\Infrastructure.Application.deps.json
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\bin\Release\net8.0\linux-x64\Infrastructure.Application.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\bin\Release\net8.0\linux-x64\Infrastructure.Application.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\bin\Release\net8.0\linux-x64\Infrastructure.Data.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\bin\Release\net8.0\linux-x64\Infrastructure.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\bin\Release\net8.0\linux-x64\Infrastructure.Data.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\bin\Release\net8.0\linux-x64\Infrastructure.Domain.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\Infrastructure.Application.csproj.AssemblyReference.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\Infrastructure.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\Infrastructure.Application.AssemblyInfoInputs.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\Infrastructure.Application.AssemblyInfo.cs
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\Infrastructure.Application.csproj.CoreCompileInputs.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\Infrastr.81AE772A.Up2Date
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\Infrastructure.Application.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\refint\Infrastructure.Application.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\Infrastructure.Application.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Application\obj\Release\net8.0\linux-x64\ref\Infrastructure.Application.dll

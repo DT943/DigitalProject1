@@ -1,0 +1,210 @@
+[
+  {
+    "ContainingType": "Infrastructure.Service.Controllers.BaseController\u00606[[Offer.Application.FlightOfferAppService.IFlightOfferAppService, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Domain.Models.FlightOffer, Offer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferGetDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferCreateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferUpdateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Sieve.Models.SieveModel, Sieve, Version=2.5.5.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Create",
+    "RelativePath": "FlightOffer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Offer.Application.FlightOfferAppService.Dtos.FlightOfferCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Offer.Application.FlightOfferAppService.Dtos.FlightOfferGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Infrastructure.Service.Controllers.BaseController\u00606[[Offer.Application.FlightOfferAppService.IFlightOfferAppService, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Domain.Models.FlightOffer, Offer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferGetDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferCreateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferUpdateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Sieve.Models.SieveModel, Sieve, Version=2.5.5.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Update",
+    "RelativePath": "FlightOffer",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Offer.Application.FlightOfferAppService.Dtos.FlightOfferUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Offer.Application.FlightOfferAppService.Dtos.FlightOfferGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Infrastructure.Service.Controllers.BaseController\u00606[[Offer.Application.FlightOfferAppService.IFlightOfferAppService, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Domain.Models.FlightOffer, Offer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferGetDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferCreateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferUpdateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Sieve.Models.SieveModel, Sieve, Version=2.5.5.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Get",
+    "RelativePath": "FlightOffer/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Offer.Application.FlightOfferAppService.Dtos.FlightOfferGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Infrastructure.Service.Controllers.BaseController\u00606[[Offer.Application.FlightOfferAppService.IFlightOfferAppService, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Domain.Models.FlightOffer, Offer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferGetDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferCreateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.FlightOfferAppService.Dtos.FlightOfferUpdateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Sieve.Models.SieveModel, Sieve, Version=2.5.5.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "FlightOffer/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Offer.Application.FlightOfferAppService.Dtos.FlightOfferGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Infrastructure.Service.Controllers.BaseController\u00606[[Offer.Application.OfferAppService.IOfferAppService, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Domain.Models.Offer, Offer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferGetDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferCreateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferUpdateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Sieve.Models.SieveModel, Sieve, Version=2.5.5.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Create",
+    "RelativePath": "Offer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Offer.Application.OfferAppService.Dtos.OfferCreateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Offer.Application.OfferAppService.Dtos.OfferGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Infrastructure.Service.Controllers.BaseController\u00606[[Offer.Application.OfferAppService.IOfferAppService, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Domain.Models.Offer, Offer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferGetDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferCreateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferUpdateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Sieve.Models.SieveModel, Sieve, Version=2.5.5.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Update",
+    "RelativePath": "Offer",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "Offer.Application.OfferAppService.Dtos.OfferUpdateDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Offer.Application.OfferAppService.Dtos.OfferGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Infrastructure.Service.Controllers.BaseController\u00606[[Offer.Application.OfferAppService.IOfferAppService, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Domain.Models.Offer, Offer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferGetDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferCreateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferUpdateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Sieve.Models.SieveModel, Sieve, Version=2.5.5.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Get",
+    "RelativePath": "Offer/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Offer.Application.OfferAppService.Dtos.OfferGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Infrastructure.Service.Controllers.BaseController\u00606[[Offer.Application.OfferAppService.IOfferAppService, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Domain.Models.Offer, Offer.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferGetDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferCreateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Offer.Application.OfferAppService.Dtos.OfferUpdateDto, Offer.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Sieve.Models.SieveModel, Sieve, Version=2.5.5.0, Culture=neutral, PublicKeyToken=null]]",
+    "Method": "Delete",
+    "RelativePath": "Offer/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Offer.Application.OfferAppService.Dtos.OfferGetDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  }
+]

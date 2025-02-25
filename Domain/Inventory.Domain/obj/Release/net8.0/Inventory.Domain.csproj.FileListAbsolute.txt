@@ -1,0 +1,15 @@
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\Inventory.Domain.deps.json
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\Inventory.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\Inventory.Domain.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\Infrastructure.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\Infrastructure.Domain.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\Inventory.Domain.csproj.AssemblyReference.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\Inventory.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\Inventory.Domain.AssemblyInfoInputs.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\Inventory.Domain.AssemblyInfo.cs
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\Inventory.Domain.csproj.CoreCompileInputs.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\Inventor.69E31387.Up2Date
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\Inventory.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\refint\Inventory.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\Inventory.Domain.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Release\net8.0\ref\Inventory.Domain.dll

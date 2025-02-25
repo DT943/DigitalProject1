@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "a0hcYNuZauyDw49TedX5E/srCJhO0RNWhjy6oilMdKs=",
+  "Source": "Order.Host",
+  "BasePath": "_content/Order.Host",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
