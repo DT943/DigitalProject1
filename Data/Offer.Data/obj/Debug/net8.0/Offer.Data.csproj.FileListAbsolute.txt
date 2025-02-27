@@ -17,3 +17,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Offer.Data\obj\Debug\net8.0\refint\Offer.Data.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Offer.Data\obj\Debug\net8.0\Offer.Data.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Offer.Data\obj\Debug\net8.0\ref\Offer.Data.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Offer.Data\obj\Debug\net8.0\Offer.Data.sourcelink.json

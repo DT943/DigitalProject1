@@ -37,3 +37,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Order.Data\obj\Debug\net8.0\refint\Order.Data.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Order.Data\obj\Debug\net8.0\Order.Data.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Order.Data\obj\Debug\net8.0\ref\Order.Data.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Order.Data\obj\Debug\net8.0\Order.Data.sourcelink.json

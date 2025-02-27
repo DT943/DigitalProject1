@@ -67,7 +67,6 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\Offer.Host.AssemblyInfoInputs.cache
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\Offer.Host.AssemblyInfo.cs
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\Offer.Host.csproj.CoreCompileInputs.cache
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\Offer.Host.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\Offer.Host.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\scopedcss\bundle\Offer.Host.styles.css
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\staticwebassets.build.json
@@ -90,3 +89,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\Offer.Host.sourcelink.json

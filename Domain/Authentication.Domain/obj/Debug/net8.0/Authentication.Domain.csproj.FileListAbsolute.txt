@@ -52,3 +52,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Authentication.Domain\obj\Debug\net8.0\Authentication.Domain.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Authentication.Domain\obj\Debug\net8.0\Authentication.Domain.genruntimeconfig.cache
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Authentication.Domain\obj\Debug\net8.0\ref\Authentication.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Authentication.Domain\obj\Debug\net8.0\Authentication.Domain.sourcelink.json

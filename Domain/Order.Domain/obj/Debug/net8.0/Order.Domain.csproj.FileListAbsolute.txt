@@ -29,3 +29,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\obj\Debug\net8.0\refint\Order.Domain.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\obj\Debug\net8.0\Order.Domain.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\obj\Debug\net8.0\ref\Order.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Order.Domain\obj\Debug\net8.0\Order.Domain.sourcelink.json

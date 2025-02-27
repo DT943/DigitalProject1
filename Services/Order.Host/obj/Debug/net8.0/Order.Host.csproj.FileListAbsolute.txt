@@ -179,3 +179,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Order.Host\obj\Debug\net8.0\Order.Host.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Order.Host\obj\Debug\net8.0\Order.Host.genruntimeconfig.cache
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Order.Host\obj\Debug\net8.0\ref\Order.Host.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Order.Host\obj\Debug\net8.0\Order.Host.sourcelink.json

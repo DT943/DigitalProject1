@@ -43,6 +43,14 @@ namespace Infrastructure.Service.Controllers
             return Ok(entity);
         }
 
+        [HttpGet]
+        public virtual async Task<ActionResult<TGetDto>> GetAll()
+        {
+
+            var entity = await _appService.GetAll(Activator.CreateInstance<TFilterDto>());
+            return Ok(entity);
+        }
+
         [HttpDelete("{id}")]
         public virtual async Task<ActionResult<TGetDto>> Delete(int id)
         {

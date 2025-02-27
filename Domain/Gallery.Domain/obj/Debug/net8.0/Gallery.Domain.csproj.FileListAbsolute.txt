@@ -1,0 +1,16 @@
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\bin\Debug\net8.0\Gallery.Domain.deps.json
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\bin\Debug\net8.0\Gallery.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\bin\Debug\net8.0\Gallery.Domain.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\bin\Debug\net8.0\Infrastructure.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\bin\Debug\net8.0\Infrastructure.Domain.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery.Domain.csproj.AssemblyReference.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery.Domain.AssemblyInfoInputs.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery.Domain.AssemblyInfo.cs
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery.Domain.csproj.CoreCompileInputs.cache
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery.Domain.sourcelink.json
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery..CCF1C364.Up2Date
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\refint\Gallery.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\Gallery.Domain.pdb
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Gallery.Domain\obj\Debug\net8.0\ref\Gallery.Domain.dll

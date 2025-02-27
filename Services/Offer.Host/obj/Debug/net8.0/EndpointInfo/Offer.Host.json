@@ -97,6 +97,33 @@
             }
           }
         }
+      },
+      "get": {
+        "tags": [
+          "FlightOffer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightOfferGetDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightOfferGetDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FlightOfferGetDto"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/FlightOffer/{id}": {
@@ -247,6 +274,33 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferGetDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferGetDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfferGetDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Offer"
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -506,6 +560,10 @@
       "OfferGetDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "name": {
             "type": "string",
             "nullable": true

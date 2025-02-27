@@ -37,3 +37,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Inventory.Data\obj\Debug\net8.0\refint\Inventory.Data.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Inventory.Data\obj\Debug\net8.0\Inventory.Data.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Inventory.Data\obj\Debug\net8.0\ref\Inventory.Data.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Data\Inventory.Data\obj\Debug\net8.0\Inventory.Data.sourcelink.json

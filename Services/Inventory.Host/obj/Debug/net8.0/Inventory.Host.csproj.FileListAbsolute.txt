@@ -179,3 +179,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Inventory.Host\obj\Debug\net8.0\Inventory.Host.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Inventory.Host\obj\Debug\net8.0\Inventory.Host.genruntimeconfig.cache
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Inventory.Host\obj\Debug\net8.0\ref\Inventory.Host.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Inventory.Host\obj\Debug\net8.0\Inventory.Host.sourcelink.json

@@ -44,3 +44,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Data\obj\Debug\net8.0\refint\Infrastructure.Data.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Data\obj\Debug\net8.0\Infrastructure.Data.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Data\obj\Debug\net8.0\ref\Infrastructure.Data.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Core\Infrastructure.Data\obj\Debug\net8.0\Infrastructure.Data.sourcelink.json

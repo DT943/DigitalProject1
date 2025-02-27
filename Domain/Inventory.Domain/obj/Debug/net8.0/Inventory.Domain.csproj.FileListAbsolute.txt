@@ -29,3 +29,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Debug\net8.0\refint\Inventory.Domain.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Debug\net8.0\Inventory.Domain.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Debug\net8.0\ref\Inventory.Domain.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\obj\Debug\net8.0\Inventory.Domain.sourcelink.json

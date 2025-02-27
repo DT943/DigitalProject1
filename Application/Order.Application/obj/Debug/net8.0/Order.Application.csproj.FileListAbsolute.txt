@@ -45,3 +45,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Application\Order.Application\obj\Debug\net8.0\refint\Order.Application.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Application\Order.Application\obj\Debug\net8.0\Order.Application.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Application\Order.Application\obj\Debug\net8.0\ref\Order.Application.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Application\Order.Application\obj\Debug\net8.0\Order.Application.sourcelink.json

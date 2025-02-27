@@ -57,3 +57,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Application\Notification.Application\obj\Debug\net8.0\refint\Notification.Application.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Application\Notification.Application\obj\Debug\net8.0\Notification.Application.pdb
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Application\Notification.Application\obj\Debug\net8.0\ref\Notification.Application.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Application\Notification.Application\obj\Debug\net8.0\Notification.Application.sourcelink.json

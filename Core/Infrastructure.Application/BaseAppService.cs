@@ -75,9 +75,14 @@ namespace Infrastructure.Application
             }
             var entity = BeforCreate(create);
             var result = await _serviceDbContext.Set<TEntity>().AddAsync(entity);
+            try
+            {
+                await _serviceDbContext.SaveChangesAsync();
 
-            await _serviceDbContext.SaveChangesAsync();
-
+            }
+            catch (Exception ex)
+            {
+            }
             return await Get(result.Entity.Id);
         }
         public virtual async Task<TEntity> FindById(int id)
@@ -103,7 +108,7 @@ namespace Infrastructure.Application
             var result = await QueryExcuter(input).AsNoTracking().ToListAsync();
             var filterdResultForCount = _processor.Apply(input, result.AsQueryable(), applyPagination: false);
             var filterdResult = _processor.Apply(input, filterdResultForCount);
-            return await Task.FromResult(new List<TGetDto>());
+            return await Task.FromResult(_mapper.Map<List<TGetDto>>(filterdResult));
         }
     }
 }
