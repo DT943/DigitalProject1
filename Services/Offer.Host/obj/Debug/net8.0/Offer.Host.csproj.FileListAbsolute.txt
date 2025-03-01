@@ -90,3 +90,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\bin\Debug\net8.0\System.CodeDom.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\Offer.Host.sourcelink.json
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Offer.Host\obj\Debug\net8.0\Offer.Host.MvcApplicationPartsAssemblyInfo.cs

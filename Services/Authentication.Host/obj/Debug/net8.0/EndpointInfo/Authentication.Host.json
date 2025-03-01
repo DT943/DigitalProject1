@@ -66,6 +66,18 @@
           }
         }
       }
+    },
+    "/api/Authentication/get-all-users": {
+      "get": {
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
     }
   },
   "components": {

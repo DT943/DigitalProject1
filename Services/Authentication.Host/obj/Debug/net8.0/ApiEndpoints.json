@@ -1,6 +1,16 @@
 [
   {
     "ContainingType": "Authentication.Host.Controllers.AuthenticationController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/Authentication/get-all-users",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Authentication.Host.Controllers.AuthenticationController",
     "Method": "LogIn",
     "RelativePath": "api/Authentication/login",
     "HttpMethod": "POST",

@@ -451,6 +451,10 @@
       "FlightOfferGetDto": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
           "offerID": {
             "type": "integer",
             "format": "int32"

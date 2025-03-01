@@ -1,5 +1,8 @@
-﻿using Authentication.Domain.Models;
+﻿using Authentication.Application.Dtos;
+using Authentication.Domain.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,12 +17,14 @@ namespace Authentication.Application
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JWT _jwt;
+        private readonly IMapper _mapper;
 
-        public AuthenticationAppService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt)
+        public AuthenticationAppService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, IMapper mapper)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
+            _mapper = mapper;
         }
 
 
@@ -135,6 +140,13 @@ namespace Authentication.Application
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             return authModel;
         }
+
+        public async Task<IEnumerable<AuthenticationGetDto>> GetAllUsersAsync()
+        {
+            var users = await _userManager.Users.ToListAsync(); // Await here
+            return _mapper.Map<List<AuthenticationGetDto>>(users);
+        }
+
 
     }
 }

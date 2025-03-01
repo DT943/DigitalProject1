@@ -1,6 +1,4 @@
-﻿using Gallery.Application.GalleryAppService.Dtos;
-using Gallery.Application.GalleryAppService;
-using Infrastructure.Service.Controllers;
+﻿using Infrastructure.Service.Controllers;
 using Sieve.Models;
 using Gallery.Application.FileAppservice.Dtos;
 using Gallery.Application.FileAppservice;

@@ -8,6 +8,7 @@ namespace Offer.Application.FlightOfferAppService.Dtos
 {
     public class FlightOfferGetDto
     {
+        public int Id { get; set; }
         public int OfferID { get; set; }
         public string Type { get; set; }
         public string IPAddress { get; set; }

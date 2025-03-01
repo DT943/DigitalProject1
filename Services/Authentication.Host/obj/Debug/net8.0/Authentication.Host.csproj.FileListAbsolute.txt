@@ -161,3 +161,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Authentication.Host\obj\Debug\net8.0\Authentication.Host.genruntimeconfig.cache
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Authentication.Host\obj\Debug\net8.0\ref\Authentication.Host.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Authentication.Host\obj\Debug\net8.0\Authentication.Host.sourcelink.json
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Authentication.Host\bin\Debug\net8.0\AutoMapper.dll

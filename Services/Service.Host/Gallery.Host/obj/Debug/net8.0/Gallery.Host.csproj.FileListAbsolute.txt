@@ -3,7 +3,6 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\obj\Debug\net8.0\Gallery.Host.AssemblyInfoInputs.cache
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\obj\Debug\net8.0\Gallery.Host.AssemblyInfo.cs
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\obj\Debug\net8.0\Gallery.Host.csproj.CoreCompileInputs.cache
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\obj\Debug\net8.0\Gallery.Host.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\obj\Debug\net8.0\Gallery.Host.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\obj\Debug\net8.0\Gallery.Host.sourcelink.json
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\bin\Debug\net8.0\appsettings.Development.json
@@ -91,3 +90,4 @@ C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNet
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\bin\Debug\net8.0\System.CodeDom.dll
+C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Services\Service.Host\Gallery.Host\obj\Debug\net8.0\Gallery.Host.MvcApplicationPartsAssemblyInfo.cs

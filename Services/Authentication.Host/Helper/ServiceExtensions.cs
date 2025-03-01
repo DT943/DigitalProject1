@@ -1,6 +1,8 @@
 ﻿using Authentication.Application;
+using Authentication.Application.Dtos;
 using Authentication.Data.DbContext;
 using Authentication.Domain.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,6 +15,15 @@ namespace Authentication.Host.Helper
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AuthenticationMapperProfile());
+
+
+            });
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
     }
 }

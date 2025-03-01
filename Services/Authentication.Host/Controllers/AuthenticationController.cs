@@ -46,5 +46,13 @@ namespace Authentication.Host.Controllers
             return Ok(result);
         }
 
+
+        [HttpGet("get-all-users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var result = await _authenticationAppService.GetAllUsersAsync();
+            return Ok(result);
+        }
+
     }
 }

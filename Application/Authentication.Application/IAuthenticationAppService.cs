@@ -1,4 +1,5 @@
-﻿using Authentication.Domain.Models;
+﻿using Authentication.Application.Dtos;
+using Authentication.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Authentication.Application
         public Task<AuthenticationModel> RegisterAsync(RegisterModel model);
 
         public Task<AuthenticationModel> GetTokenAsync(LogInModel model);
+
+        public Task<IEnumerable<AuthenticationGetDto>> GetAllUsersAsync();
 
     }
 }

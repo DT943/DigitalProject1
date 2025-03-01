@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "dcBiSf5pdpg/x/uevlD8wOktuD5tmpl/Zv6HRuP9nbI=",
+  "Source": "Notification.Host",
+  "BasePath": "_content/Notification.Host",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
