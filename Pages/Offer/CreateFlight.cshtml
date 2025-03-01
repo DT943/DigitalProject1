@@ -1,0 +1,61 @@
+﻿@page
+@model Offer.Host.Pages.Offer.CreateModel
+
+<h2>Create Flight Offer</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="FlightOffer.OfferID" class="control-label"></label>
+        <input asp-for="FlightOffer.OfferID" class="form-control" />
+        <span asp-validation-for="FlightOffer.OfferID" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FlightOffer.Type" class="control-label"></label>
+        <input asp-for="FlightOffer.Type" class="form-control" />
+        <span asp-validation-for="FlightOffer.Type" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FlightOffer.IPAddress" class="control-label"></label>
+        <input asp-for="FlightOffer.IPAddress" class="form-control" />
+        <span asp-validation-for="FlightOffer.IPAddress" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FlightOffer.POS" class="control-label"></label>
+        <input asp-for="FlightOffer.POS" class="form-control" />
+        <span asp-validation-for="FlightOffer.POS" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FlightOffer.TripType" class="control-label"></label>
+        <input asp-for="FlightOffer.TripType" class="form-control" />
+        <span asp-validation-for="FlightOffer.TripType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FlightOffer.TicketType" class="control-label"></label>
+        <input asp-for="FlightOffer.TicketType" class="form-control" />
+        <span asp-validation-for="FlightOffer.TicketType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FlightOffer.ClassType" class="control-label"></label>
+        <input asp-for="FlightOffer.ClassType" class="form-control" />
+        <span asp-validation-for="FlightOffer.ClassType" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FlightOffer.StartDate" class="control-label"></label>
+        <input asp-for="FlightOffer.StartDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="FlightOffer.StartDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FlightOffer.EndDate" class="control-label"></label>
+        <input asp-for="FlightOffer.EndDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="FlightOffer.EndDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+

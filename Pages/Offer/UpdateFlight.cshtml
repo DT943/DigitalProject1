@@ -1,0 +1,71 @@
+﻿@page
+@model Offer.Host.Pages.Offer.UpdateModel
+
+<h2>Update Flight Offer</h2>
+
+<form method="post" asp-page="./Update">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="FlightOffer.OfferID" />
+
+    <div class="form-group">
+
+        <label asp-for="FlightOffer.Type" class="control-label"></label>
+        <input asp-for="FlightOffer.Type" class="form-control" value="@Model.FlightOffer.Type" />
+        <span asp-validation-for="FlightOffer.Type" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FlightOffer.IPAddress" class="control-label"></label>
+        <input asp-for="FlightOffer.IPAddress" class="form-control" value="@Model.FlightOffer.IPAddress" />
+        <span asp-validation-for="FlightOffer.IPAddress" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FlightOffer.POS" class="control-label"></label>
+        <input asp-for="FlightOffer.POS" class="form-control" value="@Model.FlightOffer.POS" />
+        <span asp-validation-for="FlightOffer.POS" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FlightOffer.TripType" class="control-label"></label>
+        <input asp-for="FlightOffer.TripType" class="form-control" value="@Model.FlightOffer.TripType" />
+        <span asp-validation-for="FlightOffer.TripType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FlightOffer.TicketType" class="control-label"></label>
+        <input asp-for="FlightOffer.TicketType" class="form-control" value="@Model.FlightOffer.TicketType" />
+        <span asp-validation-for="FlightOffer.TicketType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FlightOffer.ClassType" class="control-label"></label>
+        <input asp-for="FlightOffer.ClassType" class="form-control" value="@Model.FlightOffer.ClassType" />
+        <span asp-validation-for="FlightOffer.ClassType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FlightOffer.StartDate" class="control-label"></label>
+        <input asp-for="FlightOffer.StartDate" class="form-control" type="datetime-local" value="@Model.FlightOffer.StartDate.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="FlightOffer.StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FlightOffer.EndDate" class="control-label"></label>
+        <input asp-for="FlightOffer.EndDate" class="form-control" type="datetime-local" value="@Model.FlightOffer.EndDate.ToString("yyyy-MM-ddTHH:mm")" />
+        <span asp-validation-for="FlightOffer.EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Update" class="btn btn-success" />
+    </div>
+
+</form>
+
+<div class="card-footer clearfix">
+    <a href="/Offer/Index" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Offers</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

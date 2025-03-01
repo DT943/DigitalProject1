@@ -1,0 +1,113 @@
+﻿@page
+@model Offer.Host.Pages.Offer.OfferModel
+
+@{
+    ViewData["Title"] = "Offer page";
+}
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Offers</h3>
+                        <form class="search-offer">
+                            <div class="input-group input-group-sm">
+                                <input id="searchById" name="Id" class="form-control form-control-navbar" type="search" placeholder="Search by Id" aria-label="Search" data-listener-added_94091133="true">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="form-group">
+                            <label>Select Type</label>
+                            <select class="custom-select">
+                                <option>Flight</option>
+                                <option>Holiday</option>
+                                <option>ChamMiles</option>
+                            </select>
+                        </div>    
+
+                        <div class="form-group">
+                            <label>Select User</label>
+                            <select class="custom-select">
+                                @foreach (var user in Model.Users)
+                                {
+                                    <option>user.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <form class="search-offer">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search" data-listener-added_94091133="true">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- /.card-header -->
+                    @if (Model.FlightOffers != null && Model.FlightOffers.Any())
+                    {
+                        @foreach (var offer in Model.FlightOffers)
+                        {
+                            <a href="/FlightOffers/UpdateFlight?id=@offer.Id" class="offer-link">
+
+                            <div class="card-body" id="@offer.Id" >
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="position-relative p-3 bg-gray" style="height: 245px">
+                                            <div class="ribbon-wrapper">
+                                                <div class="ribbon bg-primary">
+                                                    Flight Offer 
+                                                </div>
+                                            </div>
+                                            Name: <span>Model.Offer.Name</span><br>
+                                            
+                                            Type: <span>@offer.Type</span><br>
+                                            IPAddress: <span>@offer.IPAddress</span><br>
+                                            POS: <span>@offer.POS</span><br>
+
+                                            TripType: <span>@offer.TripType</span><br>
+                                            TicketType: <span>@offer.TicketType</span><br>
+
+                                            ClassType: <span>@offer.ClassType</span><br>
+                                            StartDate: <span>@offer.StartDate</span><br>
+                                            EndDate: <span>@offer.EndDate</span><br>
+
+                                            Membership: <span>Model.Offer.Membership</span><br>
+                                        </div>
+                                    </div>                        
+                                </div>
+                            </div>
+                        </a>
+                        }
+                    }
+                    else
+                    {
+                        <p>No flight offers available.</p>
+                    }
+                    <!-- /.card-body -->
+                </div>
+                <div class="card-footer clearfix">
+                    <a href="/Offer/CreateFlight" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add flight offer</a>
+                </div>
+                <div class="card-footer clearfix">
+                    <a href="/Offer/CreateHoliday" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add holiday offer</a>
+                </div>
+                <div class="card-footer clearfix">
+                    <a href="/Offer/CreateChamMiles" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add chamMiles offer</a>
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+</section>
