@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Service\\Infrastructure.Service.csproj": {}
+    "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Service\\Infrastructure.Service.csproj": {}
   },
   "projects": {
-    "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj": {
+    "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj",
         "projectName": "Infrastructure.Application",
-        "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj",
-        "packagesPath": "C:\\Users\\iallaham\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Application\\obj\\",
+        "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Application\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\iallaham\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,15 +22,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj": {
-                "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj"
+              "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj": {
+                "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj"
               }
             }
           }
@@ -43,13 +38,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -96,25 +85,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj": {
+    "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj",
         "projectName": "Infrastructure.Data",
-        "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj",
-        "packagesPath": "C:\\Users\\iallaham\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Data\\obj\\",
+        "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Data\\Infrastructure.Data.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Data\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\iallaham\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -122,15 +107,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj": {
-                "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj"
+              "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj": {
+                "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj"
               }
             }
           }
@@ -139,13 +123,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -172,25 +150,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj": {
+    "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj",
         "projectName": "Infrastructure.Domain",
-        "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj",
-        "packagesPath": "C:\\Users\\iallaham\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Domain\\obj\\",
+        "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Domain\\Infrastructure.Domain.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\iallaham\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -198,8 +172,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "net8.0": {
@@ -211,13 +184,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -238,25 +205,21 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Service\\Infrastructure.Service.csproj": {
+    "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Service\\Infrastructure.Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Service\\Infrastructure.Service.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Service\\Infrastructure.Service.csproj",
         "projectName": "Infrastructure.Service",
-        "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Service\\Infrastructure.Service.csproj",
-        "packagesPath": "C:\\Users\\iallaham\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Service\\obj\\",
+        "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Service\\Infrastructure.Service.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Service\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\iallaham\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -264,15 +227,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://www.nuget.org/api/v2/": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj": {
-                "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj"
+              "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj": {
+                "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj"
               }
             }
           }
@@ -281,13 +243,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -318,7 +274,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

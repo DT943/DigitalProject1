@@ -2065,24 +2065,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\iallaham\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\ASUS\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Application\\Offer.Application\\Offer.Application.csproj",
+      "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Application\\Offer.Application\\Offer.Application.csproj",
       "projectName": "Offer.Application",
-      "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Application\\Offer.Application\\Offer.Application.csproj",
-      "packagesPath": "C:\\Users\\iallaham\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Application\\Offer.Application\\obj\\",
+      "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Application\\Offer.Application\\Offer.Application.csproj",
+      "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Application\\Offer.Application\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\iallaham\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2090,18 +2085,17 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj": {
-              "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj"
+            "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj": {
+              "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Core\\Infrastructure.Application\\Infrastructure.Application.csproj"
             },
-            "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Data\\Offer.Data\\Offer.Data.csproj": {
-              "projectPath": "C:\\Users\\iallaham\\Desktop\\ChamWings Asp Core\\ChamWingsAspNetCore\\ChamWingsAspNetCore\\Data\\Offer.Data\\Offer.Data.csproj"
+            "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Data\\Offer.Data\\Offer.Data.csproj": {
+              "projectPath": "C:\\Users\\ASUS\\Desktop\\Frontend\\DigitalProject1\\Data\\Offer.Data\\Offer.Data.csproj"
             }
           }
         }
@@ -2110,13 +2104,7 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
-      },
-      "SdkAnalysisLevel": "9.0.100"
+      }
     },
     "frameworks": {
       "net8.0": {
@@ -2137,7 +2125,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
