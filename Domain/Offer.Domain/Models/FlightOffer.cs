@@ -20,8 +20,6 @@ namespace Offer.Domain.Models
 
         public string TripType { get; set; }
 
-        public string TicketType { get; set; }
-
         public string ClassType { get; set; }
 
         public DateTime StartDate { get; set; }

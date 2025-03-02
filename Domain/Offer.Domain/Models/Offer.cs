@@ -10,7 +10,7 @@ namespace Offer.Domain.Models
         [MaxLength(50)]
         public string Name { get; set; }
         public string Type { get; set; }
-        public string UserCode { get; set; }
+        public string Segment { get; set; }
         public bool Membership { get; set; }
 
     }

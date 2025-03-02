@@ -12,7 +12,7 @@ namespace Offer.Application.OfferAppService.Dtos
     {
         public string Name { get; set; }
         public string Type { get; set; }
-        public string UserCode { get; set; }
+        public string Segment { get; set; }
         public bool Membership { get; set; }
     }
 
@@ -20,7 +20,7 @@ namespace Offer.Application.OfferAppService.Dtos
     {
         public string Name { get; set; }
         public string Type { get; set; }
-        public string UserCode { get; set; }
+        public string Segment { get; set; }
         public bool Membership { get; set; }
 
     }
