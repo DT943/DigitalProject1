@@ -1,5 +1,7 @@
-﻿using Infrastructure.Service.Controllers;
+﻿using System.Linq.Dynamic.Core;
+using Infrastructure.Service.Controllers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Offer.Application.OfferAppService;
 using Offer.Application.OfferAppService.Dtos;
 using Sieve.Models;
@@ -15,9 +17,12 @@ namespace Offer.Host.Controllers
             {
                 _appService = appService;
             }
+            public override Task<ActionResult<OfferGetDto>> GetAll([FromQuery] SieveModel sieve)
+            {
+                return base.GetAll(sieve);
+            }
 
-
-        }
+    }
 
     
 }

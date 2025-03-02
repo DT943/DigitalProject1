@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Offer.Application;
 using Offer.Application.FlightOfferAppService;
 using Offer.Application.FlightOfferAppService.Dtos;
 using Offer.Application.FlightOfferAppService.Validations;
 using Offer.Application.OfferAppService;
 using Offer.Application.OfferAppService.Dtos;
+using Offer.Application.OfferAppService.Proccesors;
 using Offer.Application.OfferAppService.Validations;
 using Sieve.Services;
 
@@ -22,7 +24,9 @@ namespace Offer.Host.Helper
             services.AddTransient<FlightOfferValidator>();
 
 
-            services.AddScoped<ISieveProcessor, SieveProcessor>();
+            services.AddScoped<ISieveProcessor, OfferProcessor>();
+            services.AddSingleton<ISieveConfiguration, OfferProcessorConfiguration>();
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new OfferMapperProfile());

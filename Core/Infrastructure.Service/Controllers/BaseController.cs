@@ -44,10 +44,10 @@ namespace Infrastructure.Service.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<ActionResult<TGetDto>> GetAll()
+        public virtual async Task<ActionResult<TGetDto>> GetAll([FromQuery] TFilterDto sieve)
         {
 
-            var entity = await _appService.GetAll(Activator.CreateInstance<TFilterDto>());
+            var entity = await _appService.GetAll(sieve);
             return Ok(entity);
         }
 
