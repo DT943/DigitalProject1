@@ -2,3 +2,15 @@
 # Ignore all bin and obj folders recursively
 **/bin/
 **/obj/
+
+.vs/
+# Ignore all bin and obj folders recursively
+**/bin/**
+**/obj/**
+
+*.suo
+*.user
+_ReSharper.*
+bin
+obj
+packages
