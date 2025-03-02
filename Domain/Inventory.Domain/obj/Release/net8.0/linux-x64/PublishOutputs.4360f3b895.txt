@@ -1,5 +1,0 @@
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\linux-x64\publish\Inventory.Domain.dll
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\linux-x64\publish\Inventory.Domain.deps.json
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\linux-x64\publish\Inventory.Domain.pdb
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\linux-x64\publish\Infrastructure.Domain.dll
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\Domain\Inventory.Domain\bin\Release\net8.0\linux-x64\publish\Infrastructure.Domain.pdb

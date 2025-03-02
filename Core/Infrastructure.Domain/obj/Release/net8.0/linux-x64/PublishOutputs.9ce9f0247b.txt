@@ -1,3 +1,0 @@
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\publish\Infrastructure.Domain.dll
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\publish\Infrastructure.Domain.deps.json
-C:\Users\iallaham\Desktop\ChamWings Asp Core\ChamWingsAspNetCore\ChamWingsAspNetCore\publish\Infrastructure.Domain.pdb
