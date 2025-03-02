@@ -18,8 +18,6 @@ namespace Offer.Application.FlightOfferAppService.Dtos
 
         public string TripType { get; set; }
 
-        public string TicketType { get; set; }
-
         public string ClassType { get; set; }
 
         public DateTime StartDate { get; set; }
@@ -35,8 +33,6 @@ namespace Offer.Application.FlightOfferAppService.Dtos
         public string POS { get; set; }
 
         public string TripType { get; set; }
-
-        public string TicketType { get; set; }
 
         public string ClassType { get; set; }
 
