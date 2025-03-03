@@ -5,10 +5,21 @@ using Offer.Data.DbContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
+using System.Net;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
+Console.WriteLine("Offer is starting V.1.3");
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+
+    options.Listen(IPAddress.Any, 7099, listenOptions =>
+    {
+        listenOptions.UseHttps();  // HTTPS port
+    });
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

@@ -5,9 +5,20 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
+using System.Net;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
+Console.WriteLine("Application is starting V.1.3");
+
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.WebHost.ConfigureKestrel(options =>
+{
+    
+    options.Listen(IPAddress.Any, 7182, listenOptions =>
+    {
+        listenOptions.UseHttps();  // HTTPS port
+    });
+});
 // Add services to the container.
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddAuthentication(options =>
@@ -47,6 +58,9 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 
 });
 builder.Services.AddSwaggerGen();
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.SetMinimumLevel(LogLevel.Debug); // Make sure the level is low enough to show "Information" logs
 
 var app = builder.Build();
 
