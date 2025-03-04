@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Infrastructure.Data.BaseDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-namespace Gallery.Data.DbContext
+
+namespace CMS.Data.DbContext
 {
-    public class GalleryDbContext : BaseDbContext<GalleryDbContext>
+    public class CMSDbContext : BaseDbContext<CMSDbContext>
     {
         private readonly IConfiguration _configuration;
 
-        public GalleryDbContext(DbContextOptions<GalleryDbContext> options, IConfiguration configuration) : base(options)
+        public CMSDbContext(DbContextOptions<CMSDbContext> options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
         }
@@ -26,9 +25,14 @@ namespace Gallery.Data.DbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema(GetSchemaName());
+
         }
 
-        public DbSet<Domain.Models.File> Files { get; set; }
-        public DbSet<Domain.Models.Gallery> Galleries { get; set; }
+        public DbSet<Domain.Models.Component> Components { get; set; }
+
+        public DbSet<Domain.Models.Page> Pages { get; set; }
+
+        public DbSet<Domain.Models.Segment> Segments { get; set; }
+
     }
 }

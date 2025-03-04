@@ -6,10 +6,22 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
 using Offer.Host.Pages.Offer;
+using System.Net;
 
+Console.WriteLine("Application is starting V.1.3");
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(options =>
+{
+
+    options.Listen(IPAddress.Any, 7099, listenOptions =>
+    {
+        listenOptions.UseHttps();  // HTTPS port
+    });
+});
+
+ 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

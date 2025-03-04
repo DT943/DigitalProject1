@@ -18,8 +18,6 @@ namespace Gallery.Domain.Models
         public int? ImageHeight { get; set; }
         public TimeSpan? Duration { get; set; }
         public string Metadata { get; set; }
-
-        // Foreign Key to Gallery
         public int GalleryId { get; set; }
         public Gallery Gallery { get; set; } // Navigation property
     }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Validations;
+using Microsoft.AspNetCore.Http;
 
 namespace Gallery.Application.FileAppservice.Dtos
 {
@@ -20,6 +22,7 @@ namespace Gallery.Application.FileAppservice.Dtos
         public TimeSpan? Duration { get; set; }
         public string Metadata { get; set; }
         public int GalleryId { get; set; }
+
     }
 
     public class FileUpdateDto : IEntityUpdateDto
@@ -34,5 +37,17 @@ namespace Gallery.Application.FileAppservice.Dtos
         public TimeSpan? Duration { get; set; }
         public string Metadata { get; set; }
         public int GalleryId { get; set; }
+
     }
+
+    public class FileUploadModel
+    {
+        public IFormFile File { get; set; }
+    }
+
+    public class FileGetModel
+    {
+        public string FilePath { get; set; }
+    }
+
 }

@@ -19,6 +19,7 @@ builder.WebHost.ConfigureKestrel(options =>
         listenOptions.UseHttps();  // HTTPS port
     });
 });
+ 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
