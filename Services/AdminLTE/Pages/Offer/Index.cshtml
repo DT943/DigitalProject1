@@ -1,0 +1,194 @@
+﻿@page
+@model AdminLTE.Pages.Offer.OfferModel
+
+@{
+    ViewData["Title"] = "Offer page";
+}
+
+<form class="search-offer">
+    <div class="input-group input-group-sm">
+        <input id="searchById" name="Id" class="form-control form-control-navbar" type="search" placeholder="Search by Id" aria-label="Search" data-listener-added_94091133="true">
+        <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+<form class="search-offer">
+    <div class="input-group input-group-sm">
+        <input id="searchByOfferName" name="name" class="form-control form-control-navbar" type="search" placeholder="Search by OfferName" aria-label="Search" data-listener-added_94091133="true">
+        <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
+<form class="search-offer">
+    <div class="input-group input-group-sm">
+        <input id="searchByEndDate" name="EndDate" class="form-control form-control-navbar" type="datetime-local" placeholder="Search by Expiry Date" aria-label="Search" data-listener-added_94091133="true">
+        <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</form>
+
+<br />
+
+<form class="form-group" style="width: max-content;" method="get" id ="typeForm">
+    <label>Select Type</label>
+    <select class="custom-select" asp-for="SelectedType" onchange="document.getElementById('typeForm').submit()">
+        <option>All</option>
+        <option >Flight</option>
+        <option>Holiday</option>
+        <option>ChamMiles</option>
+    </select>
+</form>
+
+<form class="form-group" style="width: max-content;" method="get" id="userForm">
+    <label>Select User</label>
+    <select class="custom-select" asp-for="SelectedUser" onchange="document.getElementById('userForm').submit()">
+        <option>AllUsers</option>
+        @foreach (var user in Model.Users)
+        {
+            <option>@user.FirstName @user.LastName</option>
+        }
+    </select>
+</form>
+
+<!--FlightOffer-->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card card-primary">
+                    <div class="card-header" style="background-color:#BC9342">
+                        <h3 class="card-title">Offers</h3>
+                    </div>
+                    <!-- /.card-flight-header -->
+                    @if (Model.FlightOffers != null && Model.FlightOffers.Any())
+                    {
+                            <div class="card-body">
+                                <div class="row">
+                                @foreach (var offer in Model.FlightOffers)
+                                {
+                                    var relatedOffer = Model.GetOfferById(@offer.OfferID); // Find the related offer
+                                 
+                                        <div class="col-sm-4" id="@offer.Id" style="display:inline">
+                                            <div class="position-relative p-3 bg-gray" style="height: 320px; margin:5px" >
+
+                                            <div class="ribbon-wrapper">
+                                                <div class="ribbon bg-primary">
+                                                    Flight 
+                                                </div>
+                                            </div>
+                                            Name: <span>@relatedOffer.Name </span><br>
+                                            OfferType: <span>@relatedOffer.Type</span><br>
+                                            Membership: <span>@relatedOffer.Membership</span><br>
+                                            Segment: <span>@relatedOffer.Segment</span><br>
+                                            Type: <span>@offer.Type</span><br>
+                                            IPAddress: <span>@offer.IPAddress</span><br>
+                                            POS: <span>@offer.POS</span><br>
+                                            TripType: <span>@offer.TripType</span><br>
+                                            ClassType: <span>@offer.ClassType</span><br>
+                                            StartDate: <span>@offer.StartDate</span><br>
+                                            EndDate: <span>@offer.EndDate</span><br>
+                                            </div>
+                                        <a href="/Offer/UpdateFlight?id=@offer.Id" class="btn btn-block btn-info" style="background-color: #1F9AE5">Edit</a>
+                                            <a href="/Offer/DeleteFlight?id=@offer.Id" class="btn btn-block btn-danger">Delete</a>
+
+                                        </div>
+                                }
+                                </div>
+                            </div>
+                     }
+                    else
+                    {
+                        <p>No flight offers available.</p>
+                    }
+                    <!-- /.card-flight-body -->
+                    <!-- /.card-holiday-header -->
+
+                    @if (Model.FlightOffers != null && Model.FlightOffers.Any())
+                    {
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach (var holidayOffer in Model.HolidayOffers)
+                                {
+                                    var relatedOffer = Model.GetOfferById(@holidayOffer.OfferID);
+
+                                    <div class="col-sm-4" id="@holidayOffer.Id" style="display:inline">
+                                        <div class="position-relative p-3 bg-gray" style="height: 320px; margin:5px">
+                                            <div class="ribbon-wrapper">
+                                                <div class="ribbon bg-primary">
+                                                    Holiday
+                                                </div>
+                                            </div>
+                                            Name: <span>@relatedOffer.Name </span><br>
+                                            OfferType: <span>@relatedOffer.Type</span><br>
+                                            Membership: <span>@relatedOffer.Membership</span><br>
+                                            Segment: <span>@relatedOffer.Segment</span><br>
+                                            HolidayDate: <span>@holidayOffer.HolidayDate</span><br>
+                                        </div>
+                                        <a href="/Offer/UpdateHoliday?id=@holidayOffer.Id" class="btn btn-block btn-info" style="background-color: #1F9AE5">Edit</a>
+                                        <a href="/Offer/DeleteHoliday?id=@holidayOffer.Id" class="btn btn-block btn-danger">Delete</a>
+
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No flight offers available.</p>
+                    }
+                    <!-- /.card-holiday-body -->
+
+
+
+                </div>
+                <div class="card collapsed-card" style="width: 175px;float: right;">
+                    <div class="card-header">
+                        <h3 class="card-title">Create Offer</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0" style="display: none;">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a href="/Offer/CreateFlight" class="nav-link">
+                                    <i class="far fa-circle text-danger"></i>
+                                    FlightOffer
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Offer/CreateHoliday" class="nav-link">
+                                    <i class="far fa-circle text-warning"></i> 
+                                    HolidayOffer
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/Offer/CreateChamMiles" class="nav-link">
+                                    <i class="far fa-circle text-primary"></i>
+                                    ChamMilesOffer
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+</section>
