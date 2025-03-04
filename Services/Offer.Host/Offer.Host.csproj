@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\Authentication.Application\Authentication.Application.csproj" />
     <ProjectReference Include="..\..\Application\Offer.Application\Offer.Application.csproj" />
     <ProjectReference Include="..\..\Core\Infrastructure.Service\Infrastructure.Service.csproj" />
   </ItemGroup>

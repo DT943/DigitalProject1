@@ -5,21 +5,11 @@ using Offer.Data.DbContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
-using System.Net;
+using Offer.Host.Pages.Offer;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine("Offer is starting V.1.3");
-
-builder.WebHost.ConfigureKestrel(options =>
-{
-
-    options.Listen(IPAddress.Any, 7099, listenOptions =>
-    {
-        listenOptions.UseHttps();  // HTTPS port
-    });
-});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -54,6 +44,14 @@ builder.Services.AddDbContext<OfferDbContext>((sp, options) =>
 });
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddRazorPages();
+
+builder.Services.AddHttpClient<OfferModel>();
+builder.Services.AddHttpClient<CreateFlightModel>();
+builder.Services.AddHttpClient<UpdateFlightModel>();
+builder.Services.AddHttpClient<DeleteFlightModel>();
+
+
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();
@@ -62,7 +60,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MapRazorPages();
+
+
 app.Run();
