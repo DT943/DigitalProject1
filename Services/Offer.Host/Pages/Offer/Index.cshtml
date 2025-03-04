@@ -69,7 +69,7 @@
                     <div class="card-header" style="background-color:#BC9342">
                         <h3 class="card-title">Offers</h3>
                     </div>
-                    <!-- /.card-header -->
+                    <!-- /.card-flight-header -->
                     @if (Model.FlightOffers != null && Model.FlightOffers.Any())
                     {
                             <div class="card-body">
@@ -83,7 +83,7 @@
 
                                             <div class="ribbon-wrapper">
                                                 <div class="ribbon bg-primary">
-                                                    Offer 
+                                                    Flight 
                                                 </div>
                                             </div>
                                             Name: <span>@relatedOffer.Name </span><br>
@@ -110,7 +110,46 @@
                     {
                         <p>No flight offers available.</p>
                     }
-                    <!-- /.card-body -->
+                    <!-- /.card-flight-body -->
+                    <!-- /.card-holiday-header -->
+
+                    @if (Model.FlightOffers != null && Model.FlightOffers.Any())
+                    {
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach (var holidayOffer in Model.HolidayOffers)
+                                {
+                                    var relatedOffer = Model.GetOfferById(@holidayOffer.OfferID);
+
+                                    <div class="col-sm-4" id="@holidayOffer.Id" style="display:inline">
+                                        <div class="position-relative p-3 bg-gray" style="height: 320px; margin:5px">
+                                            <div class="ribbon-wrapper">
+                                                <div class="ribbon bg-primary">
+                                                    Holiday
+                                                </div>
+                                            </div>
+                                            Name: <span>@relatedOffer.Name </span><br>
+                                            OfferType: <span>@relatedOffer.Type</span><br>
+                                            Membership: <span>@relatedOffer.Membership</span><br>
+                                            Segment: <span>@relatedOffer.Segment</span><br>
+                                            HolidayDate: <span>@holidayOffer.HolidayDate</span><br>
+                                        </div>
+                                        <a href="/Offer/UpdateHoliday?id=@holidayOffer.Id" class="btn btn-block btn-info" style="background-color: #1F9AE5">Edit</a>
+                                        <a href="/Offer/DeleteHoliday?id=@holidayOffer.Id" class="btn btn-block btn-danger">Delete</a>
+
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>No flight offers available.</p>
+                    }
+                    <!-- /.card-holiday-body -->
+
+
+
                 </div>
                 <div class="card collapsed-card" style="width: 175px;float: right;">
                     <div class="card-header">
