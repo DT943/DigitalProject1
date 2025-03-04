@@ -5,10 +5,20 @@ using Gallery.Data.DbContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
+using System.Net;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+
+    options.Listen(IPAddress.Any, 7181, listenOptions =>
+    {
+        listenOptions.UseHttps();  // HTTPS port
+    });
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

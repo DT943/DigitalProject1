@@ -13,4 +13,5 @@
 _ReSharper.*
 bin
 obj
+publish
 packages
