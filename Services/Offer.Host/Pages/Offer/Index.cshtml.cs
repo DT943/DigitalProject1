@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Offer.Application.FlightOfferAppService.Dtos;
+using Offer.Application.HolidayAppService.Dtos;
 using Offer.Application.OfferAppService.Dtos;
 using Offer.Data.DbContext;
 using Offer.Domain.Models;
@@ -50,6 +51,9 @@ namespace Offer.Host.Pages.Offer
         public List<OfferGetDto> Offers { get; set; } = new List<OfferGetDto>();
         [BindProperty]
         public List<FlightOfferGetDto> FlightOffers { get; set; } = new List<FlightOfferGetDto>();
+        [BindProperty]
+        public List<HolidayGetDto> HolidayOffers { get; set; } = new List<HolidayGetDto>();
+
 
         [BindProperty]
         public List<AuthenticationGetDto> Users { get; set; } = new List<AuthenticationGetDto>();
@@ -63,13 +67,13 @@ namespace Offer.Host.Pages.Offer
 
                 string offerapiUrl = "/Offer";
 
-                //string apiUrl1 = "/HolidayOffer"
+                string apiUrlholiday = "/HolidayOffer";
                 //string apiUrl2 = "/ChamMilesOffer"
 
                 if (Id.HasValue)
                 {
                     apiUrl += $"/{Id.Value}";
-                    //apiUrl1 += $"/{Id.Value}"; 
+                    apiUrlholiday += $"/{Id.Value}"; 
                     //apiUrl2 += $"/{Id.Value}"; 
 
                 }
@@ -90,16 +94,15 @@ namespace Offer.Host.Pages.Offer
                 // Fetch data from the API
                 var response = await _httpClient.GetAsync(apiUrl);
 
-                //var response1 = await _httpClient.GetAsync(apiUrl1); 
+                var responseholiday = await _httpClient.GetAsync(apiUrlholiday); 
                 //var response2 = await _httpClient.GetAsync(apiUrl2); 
 
 
-                if (response.IsSuccessStatusCode  && offers.IsSuccessStatusCode && users.IsSuccessStatusCode )//&&response1.IsSuccessStatusCode&&response2.IsSuccessStatusCode )
+                if (response.IsSuccessStatusCode  && offers.IsSuccessStatusCode && users.IsSuccessStatusCode && responseholiday.IsSuccessStatusCode)//&&response2.IsSuccessStatusCode )
                 {
-                    // Deserialize the response content into a list of FlightOfferGetDto
                     var content = await response.Content.ReadAsStringAsync();
 
-                    //var content1 = await response1.Content.ReadAsStringAsync();
+                    var holiday_content = await responseholiday.Content.ReadAsStringAsync();
                     //var content2 = await response2.Content.ReadAsStringAsync();
 
                     var offers_content = await offers.Content.ReadAsStringAsync();
@@ -109,6 +112,7 @@ namespace Offer.Host.Pages.Offer
                     Offers = JsonSerializer.Deserialize<List<OfferGetDto>>(offers_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                     Users = JsonSerializer.Deserialize<List<AuthenticationGetDto>>(user_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
 
                     if (!string.IsNullOrEmpty(SelectedType) && SelectedType != "All")
                     {
@@ -137,11 +141,11 @@ namespace Offer.Host.Pages.Offer
                     {
 
                         // If searching by ID, deserialize a single object and add it to the list
-                        var singleOffer = JsonSerializer.Deserialize<FlightOfferGetDto>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                        FlightOffers = new List<FlightOfferGetDto> { singleOffer };
+                        var singleFlightOffer = JsonSerializer.Deserialize<FlightOfferGetDto>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        FlightOffers = new List<FlightOfferGetDto> { singleFlightOffer };
 
-                        //var singleOffer = JsonSerializer.Deserialize<>(content1, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                        //Offers = new List<> { singleOffer };
+                        var singleHolidayOffer = JsonSerializer.Deserialize<HolidayGetDto>(holiday_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        HolidayOffers = new List<HolidayGetDto> { singleHolidayOffer };
 
                         //var singleOffer = JsonSerializer.Deserialize<>(content2, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                         //Offers = new List<> { singleOffer };
@@ -153,7 +157,11 @@ namespace Offer.Host.Pages.Offer
                         FlightOffers = JsonSerializer.Deserialize<List<FlightOfferGetDto>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                         FlightOffers = GetFlightOffersByOfferIds(Offers, FlightOffers);
-                        //HolidayOffers = JsonSerializer.Deserialize<List<FlightOfferGetDto>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        
+                        HolidayOffers = JsonSerializer.Deserialize<List<HolidayGetDto>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                        HolidayOffers = GetHolidayOffersByOfferIds(Offers, HolidayOffers);
+
 
                         //ChamMilesOffers = JsonSerializer.Deserialize<List<FlightOfferGetDto>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
                     }
@@ -186,6 +194,17 @@ namespace Offer.Host.Pages.Offer
 
             return filteredFlightOffers;
         }
+        public List<HolidayGetDto> GetHolidayOffersByOfferIds(List<OfferGetDto> offers, List<HolidayGetDto> holidayOffers)
+        {
+            // Get a list of all OfferIds from the Offers list
+            var offerIds = offers.Select(o => o.Id).ToList();
+
+            // Filter the FlightOffers list by matching OfferId
+            var filteredHolidayOffers = holidayOffers.Where(f => offerIds.Contains(f.OfferID)).ToList();
+
+            return filteredHolidayOffers;
+        }
+
 
     }
 }
