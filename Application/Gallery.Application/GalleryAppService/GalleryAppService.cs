@@ -9,6 +9,7 @@ using Gallery.Application.GalleryAppService.Validations;
 using Gallery.Data.DbContext;
 using Infrastructure.Application;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -26,7 +27,7 @@ namespace Gallery.Application.GalleryAppService
 
         protected override IQueryable<Domain.Models.Gallery> QueryExcuter(SieveModel input)
         {
-            return base.QueryExcuter(input);
+            return base.QueryExcuter(input).Include(intput => intput.Files);
         }
     }
 }

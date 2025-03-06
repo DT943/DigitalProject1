@@ -5,7 +5,6 @@ using Offer.Data.DbContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
-using Offer.Host.Pages.Offer;
 using System.Net;
 
 Console.WriteLine("Application is starting V.1.3");

@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Sieve.Models;
 using Sieve.Services;
+using Microsoft.EntityFrameworkCore;
 namespace Gallery.Application.FileAppservice
 {
     public class FileAppService : BaseAppService<GalleryDbContext, Domain.Models.File, FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>, IFileAppService

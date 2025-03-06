@@ -11,7 +11,8 @@ namespace Gallery.Domain.Models
     {
         public string Name { get; set; }
 
-        // Navigation property to represent multiple files in a gallery
+        public string Description { get; set; }
+
         public ICollection<File> Files { get; set; } // Collection of files belonging to the gallery
     }
 }
