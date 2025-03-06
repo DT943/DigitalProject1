@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Gallery.Application.FileAppservice.Dtos
 {
@@ -18,6 +20,18 @@ namespace Gallery.Application.FileAppservice.Dtos
         public int? ImageHeight { get; set; }
         public TimeSpan? Duration { get; set; }
         public string Metadata { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime? ModifiedDate { get; set; }
+        public string? ModifiedBy { get; set; }
         public int GalleryId { get; set; }
+    }
+
+    public class FileGetModel
+    {
+        public PhysicalFileResult FilePhysicalPath { get; set; }
+
+        public string FileUrlPath { get; set; }
+
     }
 }

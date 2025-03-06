@@ -48,12 +48,11 @@ namespace Gallery.Host.Controllers
             return BadRequest("No file uploaded.");
         }
 
-
+        /*
         [HttpPost("GetFile")]
-        public async Task<IActionResult> GetImageAsync(FileGetModel file)
+        public async Task<ActionResult<FileGetModel>> GetFileAsync(FilePostModel file)
         {
             var filePath = file.FilePath;
-            //int fileId = file.FileId;
 
             if (!System.IO.File.Exists(filePath))
             {
@@ -67,8 +66,49 @@ namespace Gallery.Host.Controllers
                 contentType = "application/octet-stream"; // Default MIME type if unknown
             }
 
+            var fileGetModel = new FileGetModel
+            {
+                FilePhysicalPath = PhysicalFile(filePath, contentType),
+                FileUrlPath = contentType,
+                 
+            };
             // Return the file
-            return PhysicalFile(filePath, contentType);
+            return fileGetModel;
+        }*/
+
+
+        [HttpPost("GetFile")]
+        public IActionResult GetFileAsync([FromBody] FilePostModel file)
+        {
+            var filePath = file.FilePath;
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound();
+            }
+
+            // Extract the file name
+            var fileName = Path.GetFileName(filePath);
+
+            // Base URL where static files are served
+            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var fileUrl = $"{baseUrl}/{fileName}";
+
+            // Determine MIME type
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+
+            // Return URL instead of file
+            var fileGetModel = new FileGetModel
+            {
+                FilePhysicalPath = PhysicalFile(filePath, contentType),
+                FileUrlPath = fileUrl,
+            };
+
+            return Ok(fileGetModel);
         }
     }
 }

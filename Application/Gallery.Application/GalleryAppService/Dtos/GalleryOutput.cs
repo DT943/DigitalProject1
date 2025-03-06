@@ -9,6 +9,7 @@ namespace Gallery.Application.GalleryAppService.Dtos
 
     public class GalleryGetDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 }

@@ -45,7 +45,7 @@ namespace Gallery.Application.FileAppservice.Dtos
         public IFormFile File { get; set; }
     }
 
-    public class FileGetModel
+    public class FilePostModel
     {
         public string FilePath { get; set; }
     }
