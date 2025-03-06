@@ -21,7 +21,7 @@ namespace Gallery.Application.FileAppservice.Validations
             {
                 RuleFor(dto => (dto as FileCreateDto).Name)
                     .NotEmpty()
-                    .WithMessage("The Name of the gallery cannot be empty.").Must((dto as FileCreateDto) => galleryRepository.Galleries.Find(dto.GalleryId);
+                    .WithMessage("The Name of the gallery cannot be empty.");
 
                 RuleFor(dto => (dto as FileCreateDto).Path)
                    .NotEmpty()
