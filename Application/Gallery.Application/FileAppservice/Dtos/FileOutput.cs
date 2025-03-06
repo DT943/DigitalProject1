@@ -24,6 +24,12 @@ namespace Gallery.Application.FileAppservice.Dtos
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
         public string? ModifiedBy { get; set; }
+        public string? Caption { get; set; }
+        public string? AlternativeText { get; set; }
+        public PhysicalFileResult FilePhysicalPath { get; set; }
+        public string FileUrlPath { get; set; }
+        public string? Description { get; set; }
+
         public int GalleryId { get; set; }
     }
 

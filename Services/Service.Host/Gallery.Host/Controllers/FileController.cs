@@ -19,6 +19,40 @@ namespace Gallery.Host.Controllers
             _appService = appService;
             _environment = environment;
         }
+        
+        public override  Task<ActionResult<FileGetDto>> Get(int id)
+        {
+
+            FileGetDto fileGetDto = _appService.Get(id).Result;
+
+            var filePath = fileGetDto.Path;
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return Task.FromResult<ActionResult<FileGetDto>>(NotFound());
+            }
+
+            // Extract the file name
+            var fileName = Path.GetFileName(filePath);
+
+            // Base URL where static files are served
+            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var fileUrl = $"{baseUrl}/{fileName}";
+
+            // Determine MIME type
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out var contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            fileGetDto.FilePhysicalPath = PhysicalFile(filePath, contentType);
+            fileGetDto.FileUrlPath = fileUrl;
+
+  
+
+            return Task.FromResult<ActionResult<FileGetDto>>(Ok(fileGetDto));
+        }
+        
 
 
         [HttpPost("UploadFile")]

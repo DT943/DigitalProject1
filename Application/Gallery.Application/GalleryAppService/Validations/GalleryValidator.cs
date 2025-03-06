@@ -40,10 +40,9 @@ namespace Gallery.Application.GalleryAppService.Validations
         // Method to check uniqueness (you will implement this logic based on your database)
         private bool IsUniqueGalleryName(string name, int? excludeId = null)
         {
-            // Example: Use your repository or database context to check if the name exists.
-            // If 'excludeId' is provided, exclude that specific gallery from the check
+            // Convert the name to lowercase and compare
             var galleryExists = _galleryRepository.Galleries
-                .Where(g => g.Name.Equals(name, StringComparison.OrdinalIgnoreCase) &&
+                .Where(g => g.Name.ToLower() == name.ToLower() &&
                             (excludeId == null || g.Id != excludeId))
                 .Any();
             return !galleryExists;

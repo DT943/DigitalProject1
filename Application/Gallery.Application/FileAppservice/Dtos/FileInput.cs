@@ -12,6 +12,7 @@ namespace Gallery.Application.FileAppservice.Dtos
 {
     public class FileCreateDto : IValidatableDto
     {
+
         public string Name { get; set; }
         public string FileType { get; set; }
         public long Size { get; set; }
@@ -21,6 +22,9 @@ namespace Gallery.Application.FileAppservice.Dtos
         public int? ImageHeight { get; set; }
         public TimeSpan? Duration { get; set; }
         public string Metadata { get; set; }
+        public string? Caption { get; set; }
+        public string? Description { get; set; }
+        public string? AlternativeText { get; set; }
         public int GalleryId { get; set; }
 
     }
@@ -36,6 +40,10 @@ namespace Gallery.Application.FileAppservice.Dtos
         public int? ImageHeight { get; set; }
         public TimeSpan? Duration { get; set; }
         public string Metadata { get; set; }
+        public string? Caption { get; set; }
+        public string? Description { get; set; }
+
+        public string? AlternativeText { get; set; }
         public int GalleryId { get; set; }
 
     }

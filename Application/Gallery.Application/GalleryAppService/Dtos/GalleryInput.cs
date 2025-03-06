@@ -11,12 +11,16 @@ namespace Gallery.Application.GalleryAppService.Dtos
     public class GalleryCreateDto : IValidatableDto
     {
         public string Name { get; set; }
+        public string Description { get; set; }
+
 
     }
 
     public class GalleryUpdateDto : IEntityUpdateDto
     {
         public string Name { get; set; }
+        public string Description { get; set; }
+
     }
 }
 

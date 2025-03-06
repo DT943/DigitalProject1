@@ -17,6 +17,12 @@ namespace Gallery.Domain.Models
         public int? ImageWidth { get; set; }
         public int? ImageHeight { get; set; }
         public TimeSpan? Duration { get; set; }
+
+        public string? Description { get; set; }
+
+        public string? Caption { get; set; }    
+
+        public string? AlternativeText { get; set; }
         public string Metadata { get; set; }
         public int GalleryId { get; set; }
         public Gallery Gallery { get; set; } // Navigation property

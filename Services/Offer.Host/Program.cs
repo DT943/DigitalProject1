@@ -57,10 +57,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddRazorPages();
 
-builder.Services.AddHttpClient<OfferModel>();
-builder.Services.AddHttpClient<CreateFlightModel>();
-builder.Services.AddHttpClient<UpdateFlightModel>();
-builder.Services.AddHttpClient<DeleteFlightModel>();
+//builder.Services.AddHttpClient<OfferModel>();
+//builder.Services.AddHttpClient<CreateFlightModel>();
+//builder.Services.AddHttpClient<UpdateFlightModel>();
+//builder.Services.AddHttpClient<DeleteFlightModel>();
 
 
 var app = builder.Build();
