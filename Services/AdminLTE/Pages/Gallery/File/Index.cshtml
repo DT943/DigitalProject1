@@ -1,0 +1,416 @@
+﻿@page
+@model AdminLTE.Pages.Gallery.File.FileModel
+@{
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+                        <input id="searchById" name="Id" class="form-control form-control-navbar" type="search" placeholder="Search by Id" aria-label="Search" data-listener-added_94091133="true">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card-body">
+                    <div>
+                        <div class="btn-group w-100 mb-2">
+                            <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> All Files </a>
+                            <a class="btn btn-info" href="javascript:void(0)" data-filter="1"> Images </a>
+                            <a class="btn btn-info" href="javascript:void(0)" data-filter="2"> Videos</a>
+                            <a class="btn btn-info" href="javascript:void(0)" data-filter="3"> Audios </a>
+                            <a class="btn btn-info" href="javascript:void(0)" data-filter="4"> Other Files </a>
+                        </div>
+                        <div class="mb-2">
+                            <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle=""> Shuffle items </a>
+                            <div class="float-right">
+                                <select class="custom-select" style="width: auto;" data-sortorder="">
+                                    <option value="index"> Sort by Position </option>
+                                    <option value="sortData"> Sort by Custom Data </option>
+                                </select>
+                                <div class="btn-group">
+                                    <a class="btn btn-default" href="javascript:void(0)" data-sortasc=""> Ascending </a>
+                                    <a class="btn btn-default" href="javascript:void(0)" data-sortdesc=""> Descending </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="filter-container p-0 row" style="padding: 3px; position: relative; width: 100%; display: flex; flex-wrap: wrap; height: 143px;">
+                            <!-- Images -->
+                                    <div class="filtr-item col-sm-2 filteredOut" data-category="1" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#imageModal"
+                                            data-uploadedon="UploadedOn"
+                                            data-uploadedby="UploadedBy"
+                                            data-name="Name"
+                                            data-filetype="FileType"
+                                            data-size="Size"
+                                            data-imagewidth="ImageWidth"
+                                            data-imageheight="ImageHeight"
+                                            data-alternativetext="AlternativeText"
+                                            data-filetitle="FileTilte"
+                                            data-caption="Caption"
+                                            data-description="Description"
+                                            data-path="/TestFile/ROG3.jpg"                                   
+                                            >
+                                        <img src="/TestFile/ROG3.jpg" class="img-fluid mb-2" alt="white sample">
+                                        </a>
+                                        <p style="text-align: center;">
+                                            <strong>FileName</strong>
+                                        </p>
+                                    </div>
+                                    <div class="filtr-item col-sm-2 filteredOut" data-category="1" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#imageModal"
+                                           data-uploadedon="UploadedOn"
+                                           data-uploadedby="UploadedBy"
+                                           data-name="Name"
+                                           data-filetype="FileType"
+                                           data-size="Size"
+                                           data-imagewidth="ImageWidth"
+                                           data-imageheight="ImageHeight"
+                                           data-alternativetext="AlternativeText"
+                                           data-filetitle="FileTilte"
+                                           data-caption="Caption"
+                                           data-description="Description"
+                                           data-path="/TestFile/ROG3.jpg">
+                                           <img src="/TestFile/ROG3.jpg" class="img-fluid mb-2" alt="white sample">
+                                        </a>
+                                        <p style="text-align: center;">
+                                            <strong>FileName</strong>
+                                        </p>
+
+                                    </div>
+
+                            <!-- Videos -->
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="2" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#videoModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-length="Length"
+
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/ROG3.jpg">
+                                    <video class="img-fluid mb-2" controls>
+                                        <source src="/TestFile/Media1.mp4" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+                            </div>
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="2" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#videoModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-length="Length"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/ROG3.jpg">
+                                    <video class="img-fluid mb-2" controls>
+                                        <source src="/TestFile/Media1.mp4" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+
+                            </div>
+
+
+                            <!-- Audios -->
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="3" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#audioModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-length="Length"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/audio.jpg">
+                                    <img src="/TestFile/audio.jpg" class="img-fluid mb-2" alt="Audio" style="max-width: 35%;">
+
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+                            </div>
+
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="3" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#audioModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-length="Length"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/audio.jpg">
+                                    <img src="/TestFile/audio.jpg" class="img-fluid mb-2" alt="Audio" style="max-width: 35%;">
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+                            </div>
+
+
+                            <!-- Other Files -->
+
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="4" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#otherModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/pdf.jpg">
+                                    <img src="/TestFile/pdf.jpg" class="img-fluid mb-2" alt="Pdf" style="max-width: 35%;">
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+                            </div>
+
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="4" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#otherModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/excel.jpg">
+                                    <img src="/TestFile/excel.jpg" class="img-fluid mb-2" alt="Pdf" style="max-width: 35%;">
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+                            </div>
+
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="4" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#otherModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/word.jpg">
+                                    <img src="/TestFile/word.jpg" class="img-fluid mb-2" alt="Word" style="max-width: 35%;">
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+                            </div>
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="4" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#otherModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/file.jpg">
+                                    <img src="/TestFile/file.jpg" class="img-fluid mb-2" alt="File" style="max-width: 35%;">
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal for Images -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Uploaded On:</strong> <span id="imageUploadedOn"></span></p>
+                        <p><strong>Uploaded By:</strong> <span id="imageUploadedBy"></span></p>
+                        <p><strong>Name:</strong> <span id="imageName"></span></p>
+                        <p><strong>File Type:</strong> <span id="imageFileType"></span></p>
+                        <p><strong>Size:</strong> <span id="imageSize"></span></p>
+                        <p><strong>Image Width:</strong> <span id="imageWidth"></span></p>
+                        <p><strong>Image Height:</strong> <span id="imageHeight"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <img id="imagePreview" src="/TestFile/ROG3.jpg" class="img-fluid" alt="Image Preview" >
+                        <p><strong>Alternative Text:</strong> <span id="imageAlternativeText"></span></p>
+                        <p><strong>Title:</strong> <span id="imageTitle"></span></p>
+                        <p><strong>Caption:</strong> <span id="imageCaption"></span></p>
+                        <p><strong>Description:</strong> <span id="imageDescription"></span></p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Videos -->
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">Video Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Uploaded On:</strong> <span id="videoUploadedOn"></span></p>
+                        <p><strong>Uploaded By:</strong> <span id="videoUploadedBy"></span></p>
+                        <p><strong>Name:</strong> <span id="videoName"></span></p>
+                        <p><strong>File Type:</strong> <span id="videoFileType"></span></p>
+                        <p><strong>Size:</strong> <span id="videoSize"></span></p>
+                        <p><strong>Length:</strong> <span id="videoLength"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <video id="videoPreview" src="/TestFile/Media1.mp4" controls class="img-fluid"></video>
+                        <p><strong>Title:</strong> <span id="videoTitle"></span></p>
+                        <p><strong>Caption:</strong> <span id="videoCaption"></span></p>
+                        <p><strong>Description:</strong> <span id="videoDescription"></span></p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Audios -->
+<div class="modal fade" id="audioModal" tabindex="-1" role="dialog" aria-labelledby="audioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="audioModalLabel">Audio Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Uploaded On:</strong> <span id="audioUploadedOn"></span></p>
+                        <p><strong>Uploaded By:</strong> <span id="audioUploadedBy"></span></p>
+                        <p><strong>Name:</strong> <span id="audioName"></span></p>
+                        <p><strong>File Type:</strong> <span id="audioFileType"></span></p>
+                        <p><strong>Size:</strong> <span id="audioSize"></span></p>
+                        <p><strong>Length:</strong> <span id="audioLength"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <audio id="audioPreview" src="/TestFile/Nhar.mp3" controls class="img-fluid"></audio>
+                        <p><strong>Title:</strong> <span id="audioTitle"></span></p>
+                        <p><strong>Caption:</strong> <span id="audioCaption"></span></p>
+                        <p><strong>Description:</strong> <span id="audioDescription"></span></p>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for Other Files -->
+<div class="modal fade" id="otherModal" tabindex="-1" role="dialog" aria-labelledby="otherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="otherModalLabel">Other File Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Uploaded On:</strong> <span id="otherUploadedOn"></span></p>
+                        <p><strong>Uploaded By:</strong> <span id="otherUploadedBy"></span></p>
+                        <p><strong>Name:</strong> <span id="otherName"></span></p>
+                        <p><strong>File Type:</strong> <span id="otherFileType"></span></p>
+                        <p><strong>Size:</strong> <span id="otherSize"></span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <div id="filePreviewContainer">
+                            <iframe id="filePreviewIframe" src="/TestFile/RL.pdf" width="100%" height="400px"></iframe>
+                        </div>
+                        <p><strong>Title:</strong> <span id="otherTitle"></span></p>
+                        <p><strong>Caption:</strong> <span id="otherCaption"></span></p>
+                        <p><strong>Description:</strong> <span id="otherDescription"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Lubna-->
+
+<div class="card-footer clearfix">
+    <a href="/Gallery/Index" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Galleries</a>
+</div>
+
