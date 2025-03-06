@@ -4,6 +4,7 @@ using Gallery.Application.FileAppservice.Dtos;
 using Gallery.Application.FileAppservice;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace Gallery.Host.Controllers
 {
@@ -49,17 +50,25 @@ namespace Gallery.Host.Controllers
 
 
         [HttpPost("GetFile")]
-        public IActionResult GetImage( FileGetModel file)
+        public async Task<IActionResult> GetImageAsync(FileGetModel file)
         {
             var filePath = file.FilePath;
+            //int fileId = file.FileId;
 
-            if (System.IO.File.Exists(filePath))
+            if (!System.IO.File.Exists(filePath))
             {
-                // Return the file (e.g., image) to the client
-                return PhysicalFile(filePath, "image/jpeg");  // You can change the MIME type based on your file type
+                return NotFound();
             }
 
-            return NotFound(); // Return 404 if file doesn't exist
+            // Determine the MIME type
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(filePath, out var contentType))
+            {
+                contentType = "application/octet-stream"; // Default MIME type if unknown
+            }
+
+            // Return the file
+            return PhysicalFile(filePath, contentType);
         }
     }
 }
