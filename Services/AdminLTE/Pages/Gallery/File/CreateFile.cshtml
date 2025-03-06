@@ -1,0 +1,91 @@
+﻿@page
+@model AdminLTE.Pages.Gallery.File.CreateFileModel
+@{
+}
+
+<h2>Create File Offer</h2>
+
+<form class="row" asp-page="./CreateFile">
+    @Html.AntiForgeryToken()
+
+    <div class="col-md-12">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">Create File</h3>
+            </div>
+            <div class="card-body">
+
+                <div class="form-group" style="">
+                    <label asp-for="File.GalleryId" class="control-label">GalleryID</label>
+                    <input asp-for="File.GalleryId" class="form-control" placeholder="GalleryID" />
+                    <span asp-validation-for="File.GalleryId" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" id="fileName" asp-for="File.Name" class="form-control" placeholder="FileName" />
+                <input type="hidden" id="fileImageWidth" asp-for="File.ImageWidth" class="form-control" placeholder="FileImageWidth" />
+                <input type="hidden" id="fileImageHeight" asp-for="File.ImageHeight" class="form-control" placeholder="FileImageHeight" />
+               
+                <div class="form-group">
+                    <label asp-for="File.Metadata" class="control-label">FileMetadata</label>
+                    <input id="fileMetaData" asp-for="File.Metadata" class="form-control" placeholder="FileMetadata" />
+                    <span asp-validation-for="File.Metadata" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" id="fileType" asp-for="File.FileType" class="form-control" placeholder="FileType" />
+                <input type="hidden" id="fileMimeType" asp-for="File.MimeType" class="form-control" placeholder="FileMimeType" />
+                <input type="hidden" id="fileSize" asp-for="File.Size" class="form-control" placeholder="FileSize" />
+                <input type="hidden" id="fileLastUpdatedAt" asp-for="File.Duration" class="form-control" type="datetime-local" />
+                <div class="form-group">
+                    <label for="fileInput">Choose File</label>
+                    <input type="file" class="form-control" id="fileInput" name="file" />
+                </div>
+            </div>
+            <!-- /.card-body -->
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+
+
+        </div>
+        <!-- /.card -->
+    </div>
+</form>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            // Populate the file name field
+            document.getElementById('fileName').value = file.name;
+
+            // Populate the MIME type field
+            document.getElementById('fileMimeType').value = file.type;
+
+            // Populate the file type field (extension)
+            const fileType = file.name.split('.').pop();
+            document.getElementById('fileType').value = fileType;
+
+            // Populate the file size field
+            document.getElementById('fileSize').value = file.size;
+
+            // Populate the last updated field with the current date and time
+            const now = new Date();
+            document.getElementById('fileLastUpdatedAt').value = now.toISOString().slice(0, 16);
+            
+            if (file.type.startsWith('image/')) {
+                const img = new Image();
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+
+                    img.onload = function () {
+                        // Populate the image width and height fields
+                        document.getElementById('fileImageWidth').value = img.width;
+                        document.getElementById('fileImageHeight').value = img.height;
+                    };
+                }
+            }
+            
+        }
+    });
+</script>

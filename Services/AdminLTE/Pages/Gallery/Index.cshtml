@@ -1,0 +1,77 @@
+﻿@page
+@model AdminLTE.Pages.Gallery.GalleryModel
+@{
+}
+
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+                        <input id="searchById" name="Id" class="form-control form-control-navbar" type="search" placeholder="Search by Id" aria-label="Search" data-listener-added_94091133="true">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+                        <input id="searchByGalleryName" name="name" class="form-control form-control-navbar" type="search" placeholder="Search by GalleryName" aria-label="Search" data-listener-added_94091133="true">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+</div>
+
+
+<!--File-->
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+
+            @if (Model.Galleries != null && Model.Galleries.Any())
+            {
+                @foreach (var gallery in Model.Galleries)
+                {
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h4>@gallery.Name</h4>
+                                <p>@gallery.Description</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion-android-folder-open" style="font-size: 70px;margin-top: -15px;"></i>
+                            </div>
+                            <a href="/Gallery/File/Index?galleryId=@gallery.Id" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                }
+            }
+            else
+            {
+                <p>No gallery available.</p>
+            }
+
+        </div>    
+    </div>
+</section>
+
+<footer class="footer">
+    <a href="/Gallery/CreateGallery" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add Gallery</a>
+</footer>
+

@@ -55,6 +55,8 @@ builder.Services.AddDbContext<GalleryDbContext>((sp, options) =>
 });
 builder.Services.AddSwaggerGen();
 
+
+
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();

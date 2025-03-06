@@ -1,0 +1,7 @@
+﻿
+.nav-link.active {
+    box-shadow: 0 3px 5px 0 rgb(11 11 11) !important;
+    background-color: #0268b46b !important;
+    color: #fff !important;
+}
+
