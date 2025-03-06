@@ -19,14 +19,14 @@ namespace AdminLTE
             builder.Services.AddHttpClient<CreateFlightModel>();
             builder.Services.AddHttpClient<UpdateFlightModel>();
             builder.Services.AddHttpClient<DeleteFlightModel>();
-            
+
             builder.Services.AddHttpClient<GalleryModel>();
 			builder.Services.AddHttpClient<UpdateFileModel>();
 		    builder.Services.AddHttpClient<CreateFileModel>();
 			builder.Services.AddHttpClient<DeleteFileModel>();
 
 
-			var app = builder.Build();
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
