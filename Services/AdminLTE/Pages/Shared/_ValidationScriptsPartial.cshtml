@@ -1,7 +1,6 @@
 ﻿<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 <!--FileIndex-->
-<!--MainScript-->
 <script src="~/plugins/jquery/jquery.min.js"></script>
 
 <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -28,63 +27,4 @@
         });
     })
 </script>
-<!--MainScript-->
-<!--clipboardScript-->
-<script>
-    // Function to handle copy to clipboard
-    function copyToClipboard(inputId) {
-        const copyText = document.getElementById(inputId);
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); // For mobile devices
-        navigator.clipboard.writeText(copyText.value)
-            .then(() => {
-                console.error('done copy: ', err);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-    }
-
-    // Add event listeners for each copy button
-    document.getElementById('imageCopyButton').addEventListener('click', function () {
-        copyToClipboard('imageFileUrl');
-    });
-
-    document.getElementById('videoCopyButton').addEventListener('click', function () {
-        copyToClipboard('videoFileUrl');
-    });
-
-    document.getElementById('audioCopyButton').addEventListener('click', function () {
-        copyToClipboard('audioFileUrl');
-    });
-
-    document.getElementById('otherCopyButton').addEventListener('click', function () {
-        copyToClipboard('otherFileUrl');
-    });
-</script>
-<!--clipboardScript-->
-<!--FileIndex-->
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get all category filter buttons
-        const categoryFilters = document.querySelectorAll('.btn-group.w-100.mb-2 a[data-filter]');
-
-        // Add click event listeners to category filter buttons
-        categoryFilters.forEach(filter => {
-            filter.addEventListener('click', function () {
-                const category = this.getAttribute('data-filter'); // Get the category value (1, 2, 3, 4, or 'all')
-                const checkboxes = document.querySelectorAll('.filtr-item input[type="checkbox"]');
-
-                checkboxes.forEach(checkbox => {
-                    const itemCategory = checkbox.closest('.filtr-item').getAttribute('data-category');
-
-                    // If the category matches or it's 'all', toggle the checkbox
-                    if (category === 'all' || itemCategory === category) {
-                        checkbox.checked = this.querySelector('input[type="checkbox"]').checked;
-                    }
-                });
-            });
-        });
-    });
-</script>
+<!--FileModel-->
