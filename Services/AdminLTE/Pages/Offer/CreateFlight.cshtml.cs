@@ -15,10 +15,10 @@ namespace AdminLTE.Pages.Offer
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7099");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6ImFhM2M4OWExLTE4NmQtNDI3Zi1hODI0LTY3NThlMjAzMGRiNCIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMzQ2NTI3LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.yb2LYTORv6ThGpRNbjvs4biK5JYm4P8NWOwVnlaOpUc");
-        }
+			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6IjIyNjIxZDJjLTM4MTEtNDQ2Yi1iZGI2LTMzMDFiMjU0YTIwYyIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMjE3Mjc1LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.nlMchLfRMwj7vtcgIE3JZCnAzNR-jEuWdLU7LHqgwaU");
+		}
 
-        [BindProperty]
+		[BindProperty]
         public FlightOfferCreateDto FlightOffer { get; set; } = new FlightOfferCreateDto();
 
         public IActionResult OnGet()
