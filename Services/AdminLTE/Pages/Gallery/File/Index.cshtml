@@ -32,7 +32,7 @@
                                 <div class="form-check" style="display: flex;padding-left: 1.75rem;">
                                     <input class="form-check-input" type="checkbox">
                                     <label class="form-check-label"></label>
-                                </div>
+                        </div>
                                 All Files 
                             </a>
                             <a class="btn btn-info" href="javascript:void(0)" data-filter="1">
@@ -113,7 +113,7 @@
                                     <label class="form-check-label"></label>
                                 </div>
 
-                                <a href="javascript:void(0)" data-toggle="modal" data-target="#imageModal"
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#imageModal"
                                            data-uploadedon="UploadedOn"
                                            data-uploadedby="UploadedBy"
                                            data-name="Name"
@@ -129,7 +129,7 @@
                                            <img src="/TestFile/ROG3.jpg" class="img-fluid mb-2" alt="white sample">
                                         </a>
                                 <p style="text-align: center;margin-top: -10px;">
-                                    <strong>FileName</strong>
+                                            <strong>FileName</strong>
                                         </p>
 
                                     </div>
@@ -161,6 +161,28 @@
                                 <p style="text-align: center;margin-top: -10px;">
                                     <strong>FileName</strong>
                                 </p>
+                            </div>
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="2" data-sort="Image File" style="opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#videoModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-length="Length"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/ROG3.jpg">
+                                    <video class="img-fluid mb-2" controls>
+                                        <source src="/TestFile/Media1.mp4" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </a>
+                                <p style="text-align: center;">
+                                    <strong>FileName</strong>
+                                </p>
+
                             </div>
 
 
@@ -308,6 +330,8 @@
                                     <strong>FileName</strong>
                                 </p>
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -327,7 +351,7 @@
             </div>
             <div class="modal-body">
                 <form id="imageForm">
-                    <div class="row">
+                <div class="row">
                         <div class="col-md-4">
                             <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="imageUploadedOn"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="imageUploadedBy"></span></p>
@@ -363,10 +387,16 @@
                                         <button class="btn btn-outline-secondary" type="button" id="imageCopyButton">Copy to Clipboard</button>
                                     </div>
                                 </div>
-                            </div>
-
-                        </div>
                     </div>
+                    <div class="col-md-6">
+                        <img id="imagePreview" src="/TestFile/ROG3.jpg" class="img-fluid" alt="Image Preview" >
+                        <p><strong>Alternative Text:</strong> <span id="imageAlternativeText"></span></p>
+                        <p><strong>Title:</strong> <span id="imageTitle"></span></p>
+                        <p><strong>Caption:</strong> <span id="imageCaption"></span></p>
+                        <p><strong>Description:</strong> <span id="imageDescription"></span></p>
+
+                    </div>
+                </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -389,7 +419,7 @@
             </div>
             <div class="modal-body">
                 <form id="videoForm">
-                    <div class="row">
+                <div class="row">
                         <div class="col-md-4">
                             <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="videoUploadedOn"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="videoUploadedBy"></span></p>
@@ -397,9 +427,9 @@
                             <p style="margin-bottom: 0rem"><strong>File Type:</strong> <span id="videoFileType"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Size:</strong> <span id="videoSize"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Length:</strong> <span id="videoLength"></span></p>
-                        </div>
+                    </div>
                         <div class="col-md-8">
-                            <video id="videoPreview" src="/TestFile/Media1.mp4" controls class="img-fluid"></video>
+                        <video id="videoPreview" src="/TestFile/Media1.mp4" controls class="img-fluid"></video>
                             <div class="form-group">
                                 <label for="videoTitle">Title:</label>
                                 <input type="text" class="form-control" id="videoTitle">
@@ -423,8 +453,8 @@
                                 </div>
                             </div>
 
-                        </div>
                     </div>
+                </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -434,6 +464,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal for Audios -->
 <div class="modal fade" id="audioModal" tabindex="-1" role="dialog" aria-labelledby="audioModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -446,7 +477,7 @@
             </div>
             <div class="modal-body">
                 <form id="audioForm">
-                    <div class="row">
+                <div class="row">
                         <div class="col-md-4">
                             <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="audioUploadedOn"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="audioUploadedBy"></span></p>
@@ -477,9 +508,15 @@
                                         <button class="btn btn-outline-secondary" type="button" id="audioCopyButton">Copy to Clipboard</button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
                     </div>
+                    <div class="col-md-6">
+                        <audio id="audioPreview" src="/TestFile/Nhar.mp3" controls class="img-fluid"></audio>
+                        <p><strong>Title:</strong> <span id="audioTitle"></span></p>
+                        <p><strong>Caption:</strong> <span id="audioCaption"></span></p>
+                        <p><strong>Description:</strong> <span id="audioDescription"></span></p>
+
+                    </div>
+                </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -489,6 +526,7 @@
         </div>
     </div>
 </div>
+
 <!-- Modal for Other Files -->
 <div class="modal fade" id="otherModal" tabindex="-1" role="dialog" aria-labelledby="otherModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -501,17 +539,17 @@
             </div>
             <div class="modal-body">
                 <form id="otherForm">
-                    <div class="row">
+                <div class="row">
                         <div class="col-md-4">
                             <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="otherUploadedOn"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="otherUploadedBy"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Name:</strong> <span id="otherName"></span></p>
                             <p style="margin-bottom: 0rem"><strong>File Type:</strong> <span id="otherFileType"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Size:</strong> <span id="otherSize"></span></p>
-                        </div>
+                    </div>
                         <div class="col-md-8">
-                            <div id="filePreviewContainer">
-                                <iframe id="filePreviewIframe" src="/TestFile/RL.pdf" width="100%" height="400px"></iframe>
+                        <div id="filePreviewContainer">
+                            <iframe id="filePreviewIframe" src="/TestFile/RL.pdf" width="100%" height="400px"></iframe>
 
                             </div>
                             <div class="form-group">
@@ -535,9 +573,12 @@
                                         <button class="btn btn-outline-secondary" type="button" id="otherCopyButton">Copy to Clipboard</button>
                                     </div>
                                 </div>
-                            </div>
                         </div>
+                        <p><strong>Title:</strong> <span id="otherTitle"></span></p>
+                        <p><strong>Caption:</strong> <span id="otherCaption"></span></p>
+                        <p><strong>Description:</strong> <span id="otherDescription"></span></p>
                     </div>
+                </div>
                 </form>
             </div>
             <div class="modal-footer">
