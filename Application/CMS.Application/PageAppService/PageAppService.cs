@@ -9,6 +9,7 @@ using CMS.Application.PageAppService.Validations;
 using CMS.Data.DbContext;
 using Infrastructure.Application;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -26,7 +27,7 @@ namespace CMS.Application.PageAppService
 
         protected override IQueryable<Domain.Models.Page> QueryExcuter(SieveModel input)
         {
-            return base.QueryExcuter(input);
+            return base.QueryExcuter(input).Include(x => x.Segments).ThenInclude(x => x.Components);
         }
     }
 }

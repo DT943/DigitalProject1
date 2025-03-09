@@ -16,5 +16,7 @@ namespace Authentication.Application
 
         public Task<IEnumerable<AuthenticationGetDto>> GetAllUsersAsync();
 
+        public Task<AuthenticationGetDto> GetUserByCodeAsync(string code);
+
     }
 }
