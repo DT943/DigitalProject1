@@ -3,6 +3,7 @@ using CMS.Application.PageAppService.Dtos;
 using Infrastructure.Application;
 using Infrastructure.Service.Controllers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 
 namespace CMS.Host.Controllers
@@ -16,6 +17,18 @@ namespace CMS.Host.Controllers
             _appService = appService;
         }
 
+ 
+        [HttpGet("/{pos}/{language}/{pageUrlName}")]
+        public async Task<ActionResult<PageGetDto>> GetPage(string pos, string language, string pageUrlName)
+        {
+            return await _appService.GetPageBySubUrl(pos, language, pageUrlName);
+        }
+        [HttpGet("/get-sub-path/{pos}/{language}/")]
+        [HttpGet("/get-sub-path/{pos}/{language}/{*pageUrlName}")]
+        public async Task<IEnumerable<string>> GetSubPathsAsync(string pos, string language, string pageUrlName="")
+        {
+            return await _appService.GetSubPathsAsync(pos, language, pageUrlName);
+        }
 
     }
 }
