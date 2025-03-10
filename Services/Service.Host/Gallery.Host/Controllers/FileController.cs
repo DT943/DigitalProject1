@@ -119,7 +119,7 @@ namespace Gallery.Host.Controllers
             fileGetDto.FileType = fileType;
             fileGetDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(filePath).Length;
-
+            fileGetDto.FileUrlPath = fileUrl;
             fileGetDto.Size = fileSizeBytes;
 
             return Ok(fileGetDto);
