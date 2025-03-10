@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text;
 using System.Net.Http.Headers;
 using Offer.Application.FlightOfferAppService.Dtos;
+using AdminLTE.Services;
 
 namespace AdminLTE.Pages.Offer
 {
@@ -11,14 +12,14 @@ namespace AdminLTE.Pages.Offer
     {
         private readonly HttpClient _httpClient;
 
-        public CreateFlightModel(HttpClient httpClient)
+        public CreateFlightModel(HttpClientService httpClientService)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7099");
 			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6IjIyNjIxZDJjLTM4MTEtNDQ2Yi1iZGI2LTMzMDFiMjU0YTIwYyIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMjE3Mjc1LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.nlMchLfRMwj7vtcgIE3JZCnAzNR-jEuWdLU7LHqgwaU");
 		}
 
-		[BindProperty]
+        [BindProperty]
         public FlightOfferCreateDto FlightOffer { get; set; } = new FlightOfferCreateDto();
 
         public IActionResult OnGet()
@@ -44,9 +45,9 @@ namespace AdminLTE.Pages.Offer
             if (response.IsSuccessStatusCode)
             {
                 // Redirect to a success page or another action
-                return Page();
-            }
-            else
+				return RedirectToPage("/Offer/Index");
+			}
+			else
             {
                 // Handle API errors
                 ModelState.AddModelError(string.Empty, "An error occurred while creating the flight offer.");

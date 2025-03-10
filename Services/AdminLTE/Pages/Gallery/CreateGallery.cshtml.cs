@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 using Gallery.Application.GalleryAppService.Dtos;
+using AdminLTE.Services;
 
 namespace AdminLTE.Pages.Gallery
 {
@@ -13,7 +14,7 @@ namespace AdminLTE.Pages.Gallery
 
         private readonly HttpClient _httpClient;
 
-        public CreateGalleryModel(HttpClient httpClient)
+        public CreateGalleryModel(HttpClientService httpClientService)
         {
             _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://localhost:7181");
@@ -46,7 +47,7 @@ namespace AdminLTE.Pages.Gallery
             if (response.IsSuccessStatusCode)
             {
                 // Redirect to a success page or another action
-                return Page();
+                return RedirectToPage("/Gallery/Index");
             }
             else
             {

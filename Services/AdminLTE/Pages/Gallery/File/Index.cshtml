@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/Gallery/File/Index"
 @model AdminLTE.Pages.Gallery.File.FileModel
 @{
 }
@@ -263,12 +263,12 @@
         </div>
     </div>
 </section>
-<!-- Modal for Images -->
-<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+<!-- Modal -->
+<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="imageModalLabel">Image Details</h5>
+                <h5 class="modal-title" id="fileModalLabel">File Details</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -284,13 +284,9 @@
                         <p><strong>Image Width:</strong> <span id="imageWidth"></span></p>
                         <p><strong>Image Height:</strong> <span id="imageHeight"></span></p>
                     </div>
-                    <div class="col-md-6">
-                        <img id="imagePreview" src="/TestFile/ROG3.jpg" class="img-fluid" alt="Image Preview" >
-                        <p><strong>Alternative Text:</strong> <span id="imageAlternativeText"></span></p>
-                        <p><strong>Title:</strong> <span id="imageTitle"></span></p>
-                        <p><strong>Caption:</strong> <span id="imageCaption"></span></p>
-                        <p><strong>Description:</strong> <span id="imageDescription"></span></p>
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </div>

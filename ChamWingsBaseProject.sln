@@ -68,13 +68,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.Application", "Appl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.Host", "Services\Service.Host\Gallery.Host\Gallery.Host.csproj", "{271DCE37-1B15-45D8-A039-8B8852E3951B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Domain", "Domain\New folder\CMS.Domain\CMS.Domain.csproj", "{912589F2-5DF7-4ABB-A6C1-90A9BD4EE9F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Domain", "Domain\New folder\CMS.Domain\CMS.Domain.csproj", "{912589F2-5DF7-4ABB-A6C1-90A9BD4EE9F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Data", "Data\CMS.Data\CMS.Data.csproj", "{A32CF473-579A-4D3B-8C05-0096FC750B90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Data", "Data\CMS.Data\CMS.Data.csproj", "{A32CF473-579A-4D3B-8C05-0096FC750B90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Application", "Application\CMS.Application\CMS.Application.csproj", "{464AFD07-EF35-472B-ABA1-27B62D4DBE41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Application", "Application\CMS.Application\CMS.Application.csproj", "{464AFD07-EF35-472B-ABA1-27B62D4DBE41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Host", "Services\CMS.Host\CMS.Host.csproj", "{F5D1D9B1-755A-414E-ACF7-8070457EA459}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Host", "Services\CMS.Host\CMS.Host.csproj", "{F5D1D9B1-755A-414E-ACF7-8070457EA459}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminLTE", "Services\AdminLTE\AdminLTE.csproj", "{7CE66351-4BA3-43A4-B781-8C38315E481C}"
 EndProject

@@ -11,6 +11,7 @@
 
 <script src="~/plugins/filterizr/jquery.filterizr.min.js"></script>
 <script src="~/dist/js/demo.js"></script>
+<!--ModalInformation-->
 <script>
     $(function () {
         $(document).on('click', '[data-toggle="lightbox"]', function (event) {
@@ -24,6 +25,65 @@
         $('.btn[data-filter]').on('click', function () {
             $('.btn[data-filter]').removeClass('active');
             $(this).addClass('active');
+        });
+        // Handle file click to populate modal
+        $('.filtr-item a').on('click', function () {
+            var fileData = $(this).data();
+            $('#fileUploadedOn').text(fileData.uploadedon);
+            $('#fileUploadedBy').text(fileData.uploadedby);
+            $('#fileId').val(fileData.fileid);
+            $('#galleryId').val(fileData.galleryid);
+            $('#fileName').text(fileData.name);
+            $('#fileNameHidden').val(fileData.name);
+            $('#fileFileType').text(fileData.filetype);
+            $('#fileFileTypeHidden').val(fileData.filetype);
+            $('#fileSize').text(fileData.size);
+            $('#fileSizeHidden').val(fileData.size);
+            $('#fileLength').text(fileData.filelength);
+            $('#fileLengthHidden').val(fileData.filelength);
+            $('#fileImagewidth').text(fileData.fileimagewidth);
+            $('#fileImageWidthHidden').val(fileData.fileimagewidth);
+            $('#fileImageHeight').text(fileData.fileimageheight);
+            $('#fileImageHeightHidden').val(fileData.fileimageheight);
+            $('#fileImageAlternativeText').val(fileData.fileimagealternativetext);
+            $('#fileTitle').val(fileData.filetitle);
+            $('#fileCaption').val(fileData.caption);
+            $('#fileDescription').val(fileData.description);
+            $('#fileFileUrl').val(fileData.path);
+            $('#fileMimeType').val(fileData.mimetype);
+            $('#fileMetaDeta').val(fileData.metadeta);
+            var previewContainer = $('#filePreviewContainer');
+            previewContainer.empty();
+            // Hide all file-specific sections initially
+            $('#imageDimensions').hide();
+            $('#fileLengthSection').hide();
+            $('#imageFields').hide();
+            if (fileData.filetype === 'image') {
+                previewContainer.html('<img src="' + fileData.path + '" class="img-fluid" alt="Image Preview">');
+                $('#imageDimensions').show();
+                $('#imageFields').show();
+                $('#fileImageWidth').text(fileData.fileImagewidth + 'px');
+                $('#fileImageHeight').text(fileData.fileImageHeight + 'px');
+                $('#fileImageAlternativeText').val(fileData.fileImageAlternativeText || 'N/A');
+            } 
+            else if (fileData.filetype === 'video') {
+
+                $('#fileLengthSection').show();
+                $('#fileLength').text(fileData.fileLength || 'N/A');
+
+                previewContainer.html('<video class="img-fluid" controls><source src="' + fileData.path + '" type="video/mp4">Your browser does not support the video tag.</video>');
+            } 
+            else if (fileData.filetype === 'audio') {
+                $('#fileLengthSection').show();
+                $('#fileLength').text(fileData.fileLength || 'N/A');
+
+                previewContainer.html('<audio class="img-fluid" style="width: 1000px; height: 50px; " controls><source src="' + fileData.path + '" type="audio/mp3">Your browser does not support the audio tag.</audio>');
+            } 
+            else {
+                previewContainer.html('<iframe src="' + fileData.path + '" width="100%" height="400px"></iframe>');
+            }
+
+            $('#fileModal').modal('show');
         });
     })
 </script>

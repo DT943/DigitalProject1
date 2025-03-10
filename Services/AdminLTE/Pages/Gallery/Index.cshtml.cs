@@ -1,3 +1,4 @@
+using AdminLTE.Services;
 using Authentication.Application.Dtos;
 using Gallery.Application.FileAppservice.Dtos;
 using Gallery.Application.GalleryAppService.Dtos;
@@ -15,7 +16,7 @@ namespace AdminLTE.Pages.Gallery
     {
         private readonly HttpClient _httpClient;
 
-        public GalleryModel(HttpClient httpClient)
+        public GalleryModel(HttpClientService httpClientService)
         {
 
             _httpClient = httpClient;
@@ -25,7 +26,6 @@ namespace AdminLTE.Pages.Gallery
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6IjlhMDU3YmJlLWIyOTQtNGJmMS1hNDFmLTZlMWI4ZmU2YmNmYSIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMzMxMTc1LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.0aY7hMho93ZKH0pCof5AiL81sY_zWvXorP16ggPUFEU");
 
         }
-
         [BindProperty]
         public List<GalleryGetDto> Galleries { get; set; } = new List<GalleryGetDto>();
 
@@ -53,7 +53,7 @@ namespace AdminLTE.Pages.Gallery
                     var gallery_content = await galleries.Content.ReadAsStringAsync();
 
 
-                    Galleries = JsonSerializer.Deserialize<List<GalleryGetDto>>(gallery_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    //Galleries = JsonSerializer.Deserialize<List<GalleryGetDto>>(gallery_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                        
                     if (Id.HasValue)

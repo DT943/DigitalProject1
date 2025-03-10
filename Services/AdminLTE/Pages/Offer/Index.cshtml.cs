@@ -1,3 +1,4 @@
+using AdminLTE.Services;
 using Authentication.Application.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +20,8 @@ namespace AdminLTE.Pages.Offer
         private readonly HttpClient _httpClient;
         private readonly HttpClient _userHttpClient;
 
-        public OfferModel(HttpClient httpClient , HttpClient userHttpClient)
+        public OfferModel(HttpClientService httpClientService, HttpClientService httpClientServiceUser)
         {
-            //var httpClientHandler = new HttpClientHandler
-            //{
-              //  ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-            //};
 
             _httpClient = httpClient;
             //_httpClient = new HttpClient(httpClientHandler);
@@ -60,6 +57,7 @@ namespace AdminLTE.Pages.Offer
 
 
         public async Task<IActionResult> OnGetAsync(int? Id, string? name, DateTime? EndDate, string? SelectedType, string? SelectedUser)
+        
         {
             try
             {

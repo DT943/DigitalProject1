@@ -68,7 +68,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreServices/publish/images"),
+    FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreFrontServices/publish/images"),
     RequestPath = "/images" // This maps the '/images' URL path to the directory
 });
 
