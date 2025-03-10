@@ -1,9 +1,11 @@
+using AdminLTE.Services;
 using Gallery.Application.FileAppservice.Dtos;
 using Gallery.Application.GalleryAppService.Dtos;
 using Gallery.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 
 namespace AdminLTE.Pages.Gallery.File
@@ -12,32 +14,27 @@ namespace AdminLTE.Pages.Gallery.File
     {
         private readonly HttpClient _httpClient;
 
-        public FileModel(HttpClient httpClient)
-        {
 
-            _httpClient = httpClient;
-            //_httpClient = new HttpClient(httpClientHandler);
-            //_httpClient.BaseAddress = new Uri("https://92.112.184.210:7099");
-            _httpClient.BaseAddress = new Uri("https://localhost:7181");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6IjIyNjIxZDJjLTM4MTEtNDQ2Yi1iZGI2LTMzMDFiMjU0YTIwYyIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMjE3Mjc1LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.nlMchLfRMwj7vtcgIE3JZCnAzNR-jEuWdLU7LHqgwaU");
+        public FileModel(HttpClientService httpClientService)
+        {
+            // Retrieve the configured HttpClient from the HttpClientService
+            _httpClient = httpClientService.GetHttpClient("7181");
 
         }
+        [BindProperty(SupportsGet = true)]
+        public int GalleryId { get; set; }
 
         [BindProperty]
         public List<FileGetDto> Files { get; set; } = new List<FileGetDto>();
 
-        public async Task<IActionResult> OnGetAsync()
-        {
-            return Page();
-        }
-        
+        [BindProperty]
+        public FileUpdateDto FileUpdate { get; set; } = new FileUpdateDto();
 
-
-        /*
-            public async Task<IActionResult> OnGetAsync(int? Id, int GalleryId)
+        public async Task<IActionResult> OnGetAsync(int? Id, int galleryId)
         {
             try
             {
+                GalleryId = galleryId;
 
                 string fileApiUrl = "/File";
 
@@ -68,7 +65,7 @@ namespace AdminLTE.Pages.Gallery.File
 
                         Files = JsonSerializer.Deserialize<List<FileGetDto>>(file_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-                        Files = Files.Where(f => f.GalleryId == GalleryId).ToList();
+                        Files = Files.Where(f => f.GalleryId == galleryId).ToList();
 
                     }
                 }
@@ -86,7 +83,31 @@ namespace AdminLTE.Pages.Gallery.File
 
             return Page();
         }
-       */
+        public async Task<IActionResult> OnPostSendFileDataAsync()
+        {
+            try
+            {
+                var jsonContent = JsonSerializer.Serialize(FileUpdate);
+                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-    }
+                var response = await _httpClient.PutAsync("/File", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToPage("/Gallery/File/Index", new { galleryId = FileUpdate.GalleryId });
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Failed to send file data.");
+                }
+            }
+            catch (HttpRequestException)
+            {
+                ModelState.AddModelError(string.Empty, "Failed to connect to the server.");
+            }
+
+            return RedirectToPage("/Gallery/File/Index", new { galleryId = GalleryId });
+        }
+    } 
 }
+

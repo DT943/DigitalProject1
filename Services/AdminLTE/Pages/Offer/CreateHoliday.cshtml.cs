@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace AdminLTE.Pages.Offer
 {
-    public class CreateHolidayModel : PageModel
+    public class UpdateHolidayModel : PageModel
     {
         public void OnGet()
         {

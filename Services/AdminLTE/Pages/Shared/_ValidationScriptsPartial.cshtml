@@ -12,6 +12,7 @@
 
 <script src="~/plugins/filterizr/jquery.filterizr.min.js"></script>
 <script src="~/dist/js/demo.js"></script>
+<!--ModalInformation-->
 <script>
     $(function () {
         $(document).on('click', '[data-toggle="lightbox"]', function (event) {
@@ -26,45 +27,69 @@
             $('.btn[data-filter]').removeClass('active');
             $(this).addClass('active');
         });
+        // Handle file click to populate modal
+        $('.filtr-item a').on('click', function () {
+            var fileData = $(this).data();
+            $('#fileUploadedOn').text(fileData.uploadedon);
+            $('#fileUploadedBy').text(fileData.uploadedby);
+            $('#fileId').val(fileData.fileid);
+            $('#galleryId').val(fileData.galleryid);
+            $('#fileName').text(fileData.name);
+            $('#fileNameHidden').val(fileData.name);
+            $('#fileFileType').text(fileData.filetype);
+            $('#fileFileTypeHidden').val(fileData.filetype);
+            $('#fileSize').text(fileData.size);
+            $('#fileSizeHidden').val(fileData.size);
+            $('#fileLength').text(fileData.filelength);
+            $('#fileLengthHidden').val(fileData.filelength);
+            $('#fileImagewidth').text(fileData.fileimagewidth);
+            $('#fileImageWidthHidden').val(fileData.fileimagewidth);
+            $('#fileImageHeight').text(fileData.fileimageheight);
+            $('#fileImageHeightHidden').val(fileData.fileimageheight);
+            $('#fileImageAlternativeText').val(fileData.fileimagealternativetext);
+            $('#fileTitle').val(fileData.filetitle);
+            $('#fileCaption').val(fileData.caption);
+            $('#fileDescription').val(fileData.description);
+            $('#fileFileUrl').val(fileData.path);
+            $('#fileMimeType').val(fileData.mimetype);
+            $('#fileMetaDeta').val(fileData.metadeta);
+            var previewContainer = $('#filePreviewContainer');
+            previewContainer.empty();
+            // Hide all file-specific sections initially
+            $('#imageDimensions').hide();
+            $('#fileLengthSection').hide();
+            $('#imageFields').hide();
+            if (fileData.filetype === 'image') {
+                previewContainer.html('<img src="' + fileData.path + '" class="img-fluid" alt="Image Preview">');
+                $('#imageDimensions').show();
+                $('#imageFields').show();
+                $('#fileImageWidth').text(fileData.fileImagewidth + 'px');
+                $('#fileImageHeight').text(fileData.fileImageHeight + 'px');
+                $('#fileImageAlternativeText').val(fileData.fileImageAlternativeText || 'N/A');
+            } 
+            else if (fileData.filetype === 'video') {
+
+                $('#fileLengthSection').show();
+                $('#fileLength').text(fileData.fileLength || 'N/A');
+
+                previewContainer.html('<video class="img-fluid" controls><source src="' + fileData.path + '" type="video/mp4">Your browser does not support the video tag.</video>');
+            } 
+            else if (fileData.filetype === 'audio') {
+                $('#fileLengthSection').show();
+                $('#fileLength').text(fileData.fileLength || 'N/A');
+
+                previewContainer.html('<audio class="img-fluid" style="width: 1000px; height: 50px; " controls><source src="' + fileData.path + '" type="audio/mp3">Your browser does not support the audio tag.</audio>');
+            } 
+            else {
+                previewContainer.html('<iframe src="' + fileData.path + '" width="100%" height="400px"></iframe>');
+            }
+
+            $('#fileModal').modal('show');
+        });
     })
 </script>
-<!--MainScript-->
-<!--clipboardScript-->
-<script>
-    // Function to handle copy to clipboard
-    function copyToClipboard(inputId) {
-        const copyText = document.getElementById(inputId);
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); // For mobile devices
-        navigator.clipboard.writeText(copyText.value)
-            .then(() => {
-                console.error('done copy: ', err);
-            })
-            .catch(err => {
-                console.error('Failed to copy: ', err);
-            });
-    }
-
-    // Add event listeners for each copy button
-    document.getElementById('imageCopyButton').addEventListener('click', function () {
-        copyToClipboard('imageFileUrl');
-    });
-
-    document.getElementById('videoCopyButton').addEventListener('click', function () {
-        copyToClipboard('videoFileUrl');
-    });
-
-    document.getElementById('audioCopyButton').addEventListener('click', function () {
-        copyToClipboard('audioFileUrl');
-    });
-
-    document.getElementById('otherCopyButton').addEventListener('click', function () {
-        copyToClipboard('otherFileUrl');
-    });
-</script>
-<!--clipboardScript-->
-<!--FileIndex-->
-
+<!--ModalInformation-->
+<!--Select Item-->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Get all category filter buttons
@@ -88,3 +113,55 @@
         });
     });
 </script>
+<!--Select Item-->
+<!--Get Ids of selected items-->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+<script>
+    document.getElementById('deleteFilesBtn').addEventListener('click', function (event) {
+
+        event.preventDefault();
+
+        const selectedFiles = [];
+        //document.querySelectorAll('.filtr-item input[type="checkbox"]:checked').forEach(checkbox => {
+          //  const fileId = checkbox.closest('.filtr-item').getAttribute('data-fileId');
+        document.querySelectorAll('.btn.btn-info.active').forEach(activeElement => {
+            const fileId = activeElement.getAttribute('data-filter'); // Assuming 'data-filter' holds the file ID
+
+          if (fileId) {
+                selectedFiles.push(fileId);
+            }
+        });
+
+        if (selectedFiles.length === 0) {
+            alert('No files selected!');
+            return;
+        }
+        console.log(selectedFiles)
+        document.getElementById('selectedFileIds').value = selectedFiles.join(',');
+
+        // Submit the form
+        document.getElementById('deleteFilesForm').submit();
+    });
+</script>
+<!--Get Ids of selected items-->
+<!--MainScript-->
+<!--clipboardScript-->
+<script>
+    // Function to handle copy to clipboard
+    function copyToClipboard(inputId) {
+        const copyText = document.getElementById(inputId);
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+        navigator.clipboard.writeText(copyText.value)
+            .then(() => {
+                console.error('done copy: ', err);
+            })
+            .catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+    }
+    // Add event listeners for each copy button
+    document.getElementById('fileCopyButton').addEventListener('click', function () {
+        copyToClipboard('fileFileUrl');
+    });
+</script>
+<!--clipboardScript-->

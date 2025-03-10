@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "/Offer/CreateFlight"
 @model AdminLTE.Pages.Offer.CreateFlightModel
 
 <h2>Create Flight Offer</h2>
@@ -89,9 +89,6 @@
     </div>
 </div>
 
-
-
-
 <div class="col-md-9">
     <div class="card card-primary card-outline">
         <div class="card-header">
@@ -170,6 +167,6 @@
 </div>
 
 <div class="card-footer clearfix">
-    <a href="/Offer/Index" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Offers</a>
+    <a asp-page="/Offer/Index" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Offers</a>
 </div>
 
