@@ -1,3 +1,4 @@
+using AdminLTE.Services;
 using Authentication.Application.Dtos;
 using Gallery.Application.FileAppservice.Dtos;
 using Gallery.Application.GalleryAppService.Dtos;
@@ -15,17 +16,11 @@ namespace AdminLTE.Pages.Gallery
     {
         private readonly HttpClient _httpClient;
 
-        public GalleryModel(HttpClient httpClient)
+        public GalleryModel(HttpClientService httpClientService)
         {
 
-            _httpClient = httpClient;
-            //_httpClient = new HttpClient(httpClientHandler);
-            //_httpClient.BaseAddress = new Uri("https://92.112.184.210:7099");
-            _httpClient.BaseAddress = new Uri("https://localhost:7181");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6ImFhM2M4OWExLTE4NmQtNDI3Zi1hODI0LTY3NThlMjAzMGRiNCIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMzQ2NTI3LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.yb2LYTORv6ThGpRNbjvs4biK5JYm4P8NWOwVnlaOpUc");
-
+            _httpClient = httpClientService.GetHttpClient("7181");
         }
-
         [BindProperty]
         public List<GalleryGetDto> Galleries { get; set; } = new List<GalleryGetDto>();
 
@@ -53,7 +48,7 @@ namespace AdminLTE.Pages.Gallery
                     var gallery_content = await galleries.Content.ReadAsStringAsync();
 
 
-                    Galleries = JsonSerializer.Deserialize<List<GalleryGetDto>>(gallery_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    //Galleries = JsonSerializer.Deserialize<List<GalleryGetDto>>(gallery_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                        
                     if (Id.HasValue)

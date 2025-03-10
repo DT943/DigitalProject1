@@ -1,3 +1,4 @@
+using AdminLTE.Services;
 using Authentication.Application.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,24 +20,11 @@ namespace AdminLTE.Pages.Offer
         private readonly HttpClient _httpClient;
         private readonly HttpClient _userHttpClient;
 
-        public OfferModel(HttpClient httpClient , HttpClient userHttpClient)
+        public OfferModel(HttpClientService httpClientService, HttpClientService httpClientServiceUser)
         {
-            //var httpClientHandler = new HttpClientHandler
-            //{
-              //  ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
-            //};
 
-            _httpClient = httpClient;
-            //_httpClient = new HttpClient(httpClientHandler);
-            //_httpClient.BaseAddress = new Uri("https://92.112.184.210:7099");
-            _httpClient.BaseAddress = new Uri("https://localhost:7099");
-
-			_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6ImFhM2M4OWExLTE4NmQtNDI3Zi1hODI0LTY3NThlMjAzMGRiNCIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMzQ2NTI3LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.yb2LYTORv6ThGpRNbjvs4biK5JYm4P8NWOwVnlaOpUc");
-
-			//_httpClient.Timeout = TimeSpan.FromSeconds(60); // Increase timeout
-
-			_userHttpClient = userHttpClient;
-            _userHttpClient.BaseAddress = new Uri("https://localhost:7182");
+            _httpClient = httpClientService.GetHttpClient("7099");
+            _userHttpClient = httpClientServiceUser.GetHttpClient("7182");
 
         }
 
@@ -60,6 +48,7 @@ namespace AdminLTE.Pages.Offer
 
 
         public async Task<IActionResult> OnGetAsync(int? Id, string? name, DateTime? EndDate, string? SelectedType, string? SelectedUser)
+        
         {
             try
             {

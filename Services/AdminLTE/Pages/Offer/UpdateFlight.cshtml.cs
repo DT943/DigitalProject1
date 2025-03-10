@@ -1,3 +1,4 @@
+using AdminLTE.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Offer.Application.FlightOfferAppService.Dtos;
@@ -15,11 +16,9 @@ namespace AdminLTE.Pages.Offer
     {
         private readonly HttpClient _httpClient;
 
-        public UpdateFlightModel(HttpClient httpClient)
+        public UpdateFlightModel(HttpClientService httpClientService)
         {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://localhost:7099");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6ImFhM2M4OWExLTE4NmQtNDI3Zi1hODI0LTY3NThlMjAzMGRiNCIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMzQ2NTI3LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.yb2LYTORv6ThGpRNbjvs4biK5JYm4P8NWOwVnlaOpUc");
+            _httpClient = httpClientService.GetHttpClient("7099");
 
         }
 
@@ -56,9 +55,9 @@ namespace AdminLTE.Pages.Offer
 
             if (response.IsSuccessStatusCode)
             {
-                return Page();
-            }
-            else
+				return RedirectToPage("/Offer/Index");
+			}
+			else
             {
                 ModelState.AddModelError(string.Empty, "An error occurred while updating the flight offer.");
                 return Page();

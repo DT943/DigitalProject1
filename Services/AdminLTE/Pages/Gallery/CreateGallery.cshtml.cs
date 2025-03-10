@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
 using Gallery.Application.GalleryAppService.Dtos;
+using AdminLTE.Services;
 
 namespace AdminLTE.Pages.Gallery
 {
@@ -13,11 +14,9 @@ namespace AdminLTE.Pages.Gallery
 
         private readonly HttpClient _httpClient;
 
-        public CreateGalleryModel(HttpClient httpClient)
+        public CreateGalleryModel(HttpClientService httpClientService)
         {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://localhost:7181");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0YXJlazNzaGVpa2hhbGFyZCIsImp0aSI6ImFhM2M4OWExLTE4NmQtNDI3Zi1hODI0LTY3NThlMjAzMGRiNCIsImVtYWlsIjoidGFyZWszLmRvZUBleGFtcGxlLmNvbSIsInVzZXJDb2RlIjoiQ3VzdG9tZXItNWI5MTA1ODc3ZGRmNDY1YjljMjJiZjZjNmZmOGJjOWMiLCJyb2xlcyI6IkN1c3RvbWVyIiwiZXhwIjoxNzQxMzQ2NTI3LCJpc3MiOiJTZWN1cmVBcGkiLCJhdWQiOiJTZWN1cmVBcGlVc2VyIn0.yb2LYTORv6ThGpRNbjvs4biK5JYm4P8NWOwVnlaOpUc");
+            _httpClient = httpClientService.GetHttpClient("7181");
         }
 
         [BindProperty]
@@ -46,7 +45,7 @@ namespace AdminLTE.Pages.Gallery
             if (response.IsSuccessStatusCode)
             {
                 // Redirect to a success page or another action
-                return Page();
+                return RedirectToPage("/Gallery/Index");
             }
             else
             {

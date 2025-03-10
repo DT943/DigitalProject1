@@ -65,13 +65,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-/*
+
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreServices/publish/images"),
+    FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreFrontServices/publish/images"),
     RequestPath = "/images" // This maps the '/images' URL path to the directory
 });
-*/
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
