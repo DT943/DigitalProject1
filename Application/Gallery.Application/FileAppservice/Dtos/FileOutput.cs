@@ -31,6 +31,7 @@ namespace Gallery.Application.FileAppservice.Dtos
         public string? ModifiedBy { get; set; }
         public string? AlternativeText { get; set; }
         public string FileUrlPath { get; set; }
+        public string? Description { get; set; }
         public int GalleryId { get; set; }
 
 
