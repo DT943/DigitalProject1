@@ -11,17 +11,16 @@ namespace Gallery.Application.FileAppservice.Dtos
     public class FileGetDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
+        public string FileName { get; set; }
         public string FileType { get; set; }
         public float Size { get; set; }
         public string Path { get; set; }
         public string MimeType { get; set; }
         public int? ImageWidth { get; set; }
         public int? ImageHeight { get; set; }
-        public string FileTilte { get; set; }
         public string? Caption { get; set; }
         public string? Description { get; set; }
-        public string Length { get; set; }
         public DateTime CreatedDate { get; set; }
         public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }

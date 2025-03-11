@@ -74,8 +74,9 @@ namespace Gallery.Host.Controllers
             createDto.FileType = fileType;
             createDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(createDto.Path).Length;
-            createDto.Size = fileSizeBytes;
+            createDto.Size = (float)(fileSizeBytes/(1024.0*10240.0));
             createDto.FileUrlPath = fileUrl;
+            createDto.FileName = fileName;
             return await base.Create(createDto);
 
         }
@@ -152,6 +153,7 @@ namespace Gallery.Host.Controllers
             long fileSizeBytes = new FileInfo(filePath).Length;
 
             fileGetDto.Size = fileSizeBytes/(1024*1024);
+            fileGetDto.FileName = fileName;
 
             return Ok(fileGetDto);
         }

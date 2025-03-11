@@ -9,9 +9,10 @@ namespace Gallery.Domain.Models
 {
     public class File : BasicEntityWithAuditInfo
     {
-        public string Name { get; set; }
+        public string Title { get; set; }
+        public string FileName { get; set; }
         public string FileType { get; set; }
-        public long Size { get; set; }
+        public float Size { get; set; }
         public string Path { get; set; }
         public string MimeType { get; set; }
         public int? ImageWidth { get; set; }

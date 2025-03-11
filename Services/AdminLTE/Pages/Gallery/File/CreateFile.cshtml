@@ -33,7 +33,7 @@
         <div class="col-md-12 alert alert-info">
             <h4>File Uploaded Successfully!</h4>
             <p><strong>File Path:</strong> @Model.File.Path</p>
-            <a asp-page="./CreateDetailsFile" asp-route-fileName="@Model.File.Name" asp-route-filePath="@Model.File.Path" asp-route-fileSize="@Model.File.Size"
+            <a asp-page="./CreateDetailsFile" asp-route-fileName="@Model.File.Title" asp-route-filePath="@Model.File.Path" asp-route-fileSize="@Model.File.Size"
                class="btn btn-primary">Add Details</a>
         </div>
     }

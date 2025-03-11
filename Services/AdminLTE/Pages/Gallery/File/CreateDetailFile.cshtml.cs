@@ -42,7 +42,7 @@ namespace AdminLTE.Pages.Gallery.File
 
             public void OnGet(int galleryId)
             {
-                File.Name = FileName;
+                File.Title = FileName;
                 File.Path = FilePath;
                 File.Size = FileSize;
                 File.MimeType = MimeType.ToString();
