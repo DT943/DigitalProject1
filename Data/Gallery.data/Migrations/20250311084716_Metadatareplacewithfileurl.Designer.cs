@@ -3,6 +3,7 @@ using System;
 using Gallery.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace Gallery.data.Migrations
 {
     [DbContext(typeof(GalleryDbContext))]
-    partial class GalleryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311084716_Metadatareplacewithfileurl")]
+    partial class Metadatareplacewithfileurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,10 +59,6 @@ namespace Gallery.data.Migrations
                     b.Property<TimeSpan?>("Duration")
                         .HasColumnType("INTERVAL DAY(8) TO SECOND(7)");
 
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
-
                     b.Property<string>("FileType")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
@@ -87,16 +86,16 @@ namespace Gallery.data.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("TIMESTAMP(7)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<float>("Size")
-                        .HasColumnType("BINARY_FLOAT");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
+                    b.Property<long>("Size")
+                        .HasColumnType("NUMBER(19)");
 
                     b.HasKey("Id");
 

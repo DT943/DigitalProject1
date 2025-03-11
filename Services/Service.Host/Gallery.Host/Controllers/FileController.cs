@@ -21,6 +21,31 @@ namespace Gallery.Host.Controllers
 
         public override async Task<ActionResult<FileGetDto>> Create(FileCreateDto createDto)
         {
+            createDto.Path = null;
+            if (createDto.File != null && createDto.File.Length > 0)
+            {
+                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "images");
+
+                // Create the folder if it doesn't exist
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                }
+
+                var filePath = Path.Combine(folderPath, createDto.File.FileName);
+
+                // Save the file to the folder
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await createDto.File.CopyToAsync(fileStream);
+                }
+                createDto.Path = filePath;
+                //return Ok(new { filePath });
+            }
+            else
+                return BadRequest("No file uploaded.");
+
+
             if (createDto == null || string.IsNullOrWhiteSpace(createDto.Path))
             {
                 return BadRequest("Invalid file path.");
@@ -40,13 +65,20 @@ namespace Gallery.Host.Controllers
             // Extract file type safely
             var fileType = contentType.Contains("/") ? contentType.Split("/")[0] : "unknown";
 
+            var fileName = Path.GetFileName(createDto.Path);
+
+            // Base URL where static files are served
+            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var fileUrl = $"{baseUrl}/{fileName}";
             // Update DTO directly
             createDto.FileType = fileType;
             createDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(createDto.Path).Length;
-            createDto.Size = fileSizeBytes;
+            createDto.Size = (float)(fileSizeBytes/(1024.0*10240.0));
+            createDto.FileUrlPath = fileUrl;
+            createDto.FileName = fileName;
             return await base.Create(createDto);
-           
+
         }
 
         public override async Task<ActionResult<FileGetDto>> Update(FileUpdateDto updateDto)
@@ -120,7 +152,8 @@ namespace Gallery.Host.Controllers
             fileGetDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(filePath).Length;
 
-            fileGetDto.Size = fileSizeBytes;
+            fileGetDto.Size = fileSizeBytes/(1024*1024);
+            fileGetDto.FileName = fileName;
 
             return Ok(fileGetDto);
         }

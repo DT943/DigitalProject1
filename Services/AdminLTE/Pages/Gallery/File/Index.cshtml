@@ -80,20 +80,26 @@
                     </div>
                     <div>
                         <div class="filter-container p-0 row" style="padding: 3px; position: relative; width: 100%; display: flex; flex-wrap: wrap; height: 143px;">
+                            <!-- Images -->
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="1" data-sort="Image File" style="text-align: center;height:125px; opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <div class="form-check" style="display: flex;padding-left: 1.75rem;">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label"></label>
+                                </div>
 
                             @if (Model.Files != null && Model.Files.Any())
                             {
                                 @foreach (var file in Model.Files)
                                 {
                                     <div class="filtr-item col-sm-2 filteredOut" data-category="@(file.FileType == "image" ? 1 : file.FileType == "video" ? 2 : file.FileType == "audio" ? 3 : 4)" data-sort="@file.FileType" style="text-align: center;height:125px; opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
-                                        <div class="form-check" style="display: flex;padding-left: 1.75rem;">
-                                            <input class="form-check-input" type="checkbox">
-                                            <label class="form-check-label"></label>
-                                        </div>
+                                <div class="form-check" style="display: flex;padding-left: 1.75rem;">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label"></label>
+                                </div>
 
                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#fileModal"
-                                        data-uploadedon="UploadedOn"
-                                        data-uploadedby="UploadedBy"
+                                           data-uploadedon="UploadedOn"
+                                           data-uploadedby="UploadedBy"
                                         data-fileId="@file.Id"
                                         data-galleryId="@file.GalleryId"
                                         data-name="@file.Name"
@@ -103,7 +109,7 @@
                                         data-fileImagewidth="@file.ImageWidth"
                                         data-fileImageHeight="@file.ImageHeight"
                                         data-fileImageAlternativeText="@file.AlternativeText"
-                                        data-filetitle="FileTilte"
+                                           data-filetitle="FileTilte"
                                         data-caption="@file.Caption"
                                         data-description="@file.Description"
                                         data-path="@file.Path"
@@ -116,22 +122,22 @@
                                         }
                                         else if (file.FileType == "video")
                                         {
-                                            <video class="img-fluid mb-2" controls>
+                                    <video class="img-fluid mb-2" controls>
                                                 <source src="@file.Path" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
+                                        Your browser does not support the video tag.
+                                    </video>
                                         }
                                         else if (file.FileType == "audio")
                                         {
-                                            <img src="/TestFile/audio.jpg" class="img-fluid mb-2" alt="Audio" style="max-width: 35%;">
+                                    <img src="/TestFile/audio.jpg" class="img-fluid mb-2" alt="Audio" style="max-width: 35%;">
                                         }
                                         else if (file.FileType == "pdf")
                                         {
-                                            <img src="/TestFile/pdf.jpg" class="img-fluid mb-2" alt="Pdf" style="max-width: 35%;">
+                                    <img src="/TestFile/pdf.jpg" class="img-fluid mb-2" alt="Pdf" style="max-width: 35%;">
                                         }
                                         else if (file.FileType == "word")
                                         {
-                                            <img src="/TestFile/word.jpg" class="img-fluid mb-2" alt="Word" style="max-width: 35%;">
+                                    <img src="/TestFile/word.jpg" class="img-fluid mb-2" alt="Word" style="max-width: 35%;">
                                         }
                                         else if (file.FileType == "excel")
                                         {
@@ -141,11 +147,34 @@
                                         {
                                             <img src="/TestFile/file.jpg" class="img-fluid mb-2" alt="Word" style="max-width: 35%;">
                                         }
-                                        </a>
-                                        <p style="text-align: center;margin-top: -10px;">
+                                </a>
+                                <p style="text-align: center; margin-top:-10px">
+                                    <strong>FileName</strong>
+                                </p>
+                                
+                            </div>
+                            <div class="filtr-item col-sm-2 filteredOut" data-category="4" data-sort="Image File" style="text-align: center;height:125px;opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                <div class="form-check" style="display: flex;padding-left: 1.75rem;">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label"></label>
+                                </div>
+
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#otherModal"
+                                   data-uploadedon="UploadedOn"
+                                   data-uploadedby="UploadedBy"
+                                   data-name="Name"
+                                   data-filetype="FileType"
+                                   data-size="Size"
+                                   data-filetitle="FileTilte"
+                                   data-caption="Caption"
+                                   data-description="Description"
+                                   data-path="/TestFile/file.jpg">
+                                    <img src="/TestFile/file.jpg" class="img-fluid mb-2" alt="File" style="max-width: 35%;">
+                                </a>
+                                <p style="text-align: center;margin-top: -10px;">
                                             <strong>@file.Name</strong>
-                                        </p>
-                                    </div>
+                                </p>
+                            </div>
                                 }
                             }
                             else
@@ -183,7 +212,7 @@
                             <input type="hidden" class="form-control" id="fileNameHidden" asp-for="FileUpdate.Name" />
                             <input type="hidden" class="form-control" id="fileFileTypeHidden" asp-for="FileUpdate.FileType" />
                             <input type="hidden" class="form-control" id="fileSizeHidden" asp-for="FileUpdate.Size" />
-                            
+
                             <input type="hidden" class="form-control" id="fileMimeType" asp-for="FileUpdate.MimeType" />
                             <input type="hidden" class="form-control" id="fileMetaDeta" asp-for="FileUpdate.Metadata" />
 
@@ -192,13 +221,32 @@
                                 <p style="margin-bottom: 0rem"><strong>Dimensions:</strong> <span id="fileImageWidth" ></span> X <span id="fileImageHeight"></span></p>
                                 <input type="hidden" class="form-control" id="fileImageWidthHidden" asp-for="FileUpdate.ImageWidth" />
                                 <input type="hidden" class="form-control" id="fileImageHeightHidden" asp-for="FileUpdate.ImageHeight" />
-                            </div>
+                        </div>
                             <!-- Video/Audio-specific fields -->
                             <div id="fileLengthSection" style="display: none;" class="form-group">
                                 <p style="margin-bottom: 0rem"><strong>Length:</strong> <span id="fileLength" ></span></p>
                                 <input type="hidden" class="form-control" id="fileLengthHidden" asp-for="FileUpdate.Duration" />
 
-                            </div>
+<!-- Modal for Videos -->
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">Video Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="videoForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="videoUploadedOn"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="videoUploadedBy"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Name:</strong> <span id="videoName"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>File Type:</strong> <span id="videoFileType"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Size:</strong> <span id="videoSize"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Length:</strong> <span id="videoLength"></span></p>
                         </div>
                         <div class="col-md-8">
                             <div id="filePreviewContainer">
@@ -206,10 +254,13 @@
                             </div>
                             <!-- Image-specific fields -->
                             <div id="imageFields" style="display: none;">
-                                <div class="form-group">
+                            <div class="form-group">
                                     <label for="fileImageAlternativeText">Alternative Text:</label>
                                     <input type="text" class="form-control" id="fileImageAlternativeText" asp-for="FileUpdate.AlternativeText">
-                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="videoDescription">Description:</label>
+                                <textarea class="form-control" id="videoDescription"></textarea>
                             </div>
 
                             <div class="form-group">
@@ -217,6 +268,44 @@
                                 <input type="text" class="form-control" id="fileTitle">
                             </div>
 
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="updateVideo()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for Audios -->
+<div class="modal fade" id="audioModal" tabindex="-1" role="dialog" aria-labelledby="audioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="audioModalLabel">Audio Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="audioForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="audioUploadedOn"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="audioUploadedBy"></span></p>
+                            <p style ="margin-bottom: 0rem"><strong>Name:</strong> <span id="audioName"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>File Type:</strong> <span id="audioFileType"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Size:</strong> <span id="audioSize"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Length:</strong> <span id="audioLength"></span></p>
+                        </div>
+                        <div class="col-md-8">
+                            <audio id="audioPreview" src="/TestFile/Nhar.mp3" controls></audio>
+                            <div class="form-group">
+                                <label for="audioTitle">Title:</label>
+                                <input type="text" class="form-control" id="audioTitle">
+                            </div>
                             <div class="form-group">
                                 <label for="fileCaption">Caption:</label>
                                 <input type="text" class="form-control" id="fileCaption" asp-for="FileUpdate.Caption">
@@ -231,20 +320,39 @@
                                     <input class="form-control" id="fileFileUrl" asp-for="FileUpdate.Path" />
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button" id="fileCopyButton">Copy to Clipboard</button>
-                                    </div>
                                 </div>
                             </div>
-                        </div>    
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
                     </div>
                 </form>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
         </div>
+                </form>
     </div>
 </div>
+<!-- Modal for Other Files -->
+<div class="modal fade" id="otherModal" tabindex="-1" role="dialog" aria-labelledby="otherModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="otherModalLabel">Other File Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="otherForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="otherUploadedOn"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="otherUploadedBy"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Name:</strong> <span id="otherName"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>File Type:</strong> <span id="otherFileType"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Size:</strong> <span id="otherSize"></span></p>
+                        </div>
 
 
 <div class="card-footer clearfix">
@@ -252,7 +360,16 @@
     <form id="deleteFilesForm" method="post" asp-page="/Gallery/File/DeleteFile">
         <input type="hidden" id="selectedFileIds" name="FileIds" />
         <button id="deleteFilesBtn" type="submit" style="margin: 10px;" class="btn btn-danger float-right">Delete Selected Files</button>
-    </form>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="updateOther()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Lubna-->
 
     <a href="/Gallery/File/CreateFile?galleryId=@Model.GalleryId" style="margin: 10px;" class="btn btn-success float-right">Create File</a>
     <a asp-page="/Gallery/Index" style="margin: 10px;" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Galleries</a>

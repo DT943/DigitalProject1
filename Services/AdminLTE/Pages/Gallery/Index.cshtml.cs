@@ -63,7 +63,7 @@ namespace AdminLTE.Pages.Gallery
                     var user_content = await users.Content.ReadAsStringAsync();
 
                     Users = JsonSerializer.Deserialize<List<AuthenticationGetDto>>(user_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
+                       
                     if (Id.HasValue)
                     {
 

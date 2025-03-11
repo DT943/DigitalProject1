@@ -55,6 +55,8 @@ builder.Services.AddDbContext<GalleryDbContext>((sp, options) =>
 });
 builder.Services.AddSwaggerGen();
 
+
+
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();
@@ -66,7 +68,7 @@ if (app.Environment.IsDevelopment())
 /*
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreServices/publish/images"),
+    FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreFrontServices/publish/images"),
     RequestPath = "/images" // This maps the '/images' URL path to the directory
 });
 */
