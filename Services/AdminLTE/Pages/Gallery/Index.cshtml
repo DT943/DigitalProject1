@@ -5,11 +5,26 @@
 
 <div class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
+        <div class="row mb-2">         
+            <div class="col-sm-4">
+
+
+                <form class="form-group" method="get" id="userForm">
+                    <label>Select User</label>
+                    <select class="custom-select" asp-for="SelectedUser" onchange="document.getElementById('userForm').submit()">
+                        <option>AllUsers</option>
+                        @foreach (var user in Model.Users)
+                        {
+                            <option>@user.FirstName @user.LastName</option>
+                        }
+                    </select>
+                </form>
+
+            </div><!-- /.col -->
+            <div class="col-sm-4">
                 <form class="search-file">
                     <div class="input-group input-group-sm">
-                        <input id="searchById" name="Id" class="form-control form-control-navbar" type="search" placeholder="Search by Id" aria-label="Search" data-listener-added_94091133="true">
+                        <input id="searchByUpdatedBy" name="updatedBy" class="form-control form-control-navbar" type="search" placeholder="Updated by a user" aria-label="Search By User Update" data-listener-added_94091133="true">
                         <div class="input-group-append">
                             <button class="btn btn-navbar" type="submit">
                                 <i class="fas fa-search"></i>
@@ -18,10 +33,10 @@
                     </div>
                 </form>
             </div><!-- /.col -->
-            <div class="col-sm-6">
+            <div class="col-sm-4">
                 <form class="search-file">
                     <div class="input-group input-group-sm">
-                        <input id="searchByGalleryName" name="name" class="form-control form-control-navbar" type="search" placeholder="Search by GalleryName" aria-label="Search" data-listener-added_94091133="true">
+                        <input id="searchByName" name="id" class="form-control form-control-navbar" type="search" placeholder="Search by Name" aria-label="Search by name" data-listener-added_94091133="true">
                         <div class="input-group-append">
                             <button class="btn btn-navbar" type="submit">
                                 <i class="fas fa-search"></i>
@@ -31,13 +46,25 @@
                 </form>
             </div><!-- /.col -->
         </div><!-- /.row -->
+
         <div class="row mb-2">
             <div class="col-sm-6">
                 <form class="search-file">
                     <div class="input-group input-group-sm">
-                        <input id="searchByCreatedAtStart" name="createdAtStart" class="form-control form-control-navbar" type="date" placeholder="Created At Start" aria-label="Search">
-                        <input id="searchByCreatedAtEnd" name="createdAtEnd" class="form-control form-control-navbar" type="date" placeholder="Created At End" aria-label="Search">
-                        <div class="input-group-append">
+
+                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
+                            <span>Created At</span>
+                        </div>
+
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <span class="input-group-text">Start Date</span>
+                        </div>
+                        <input id="searchByCreatedAtStart" name="createdAtStart" class="form-control form-control-navbar" type="date" aria-label="Created At Start">
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <span class="input-group-text">End Date</span>
+                        </div>
+                        <input id="searchByCreatedAtEnd" name="createdAtEnd" class="form-control form-control-navbar" type="date" aria-label="Created At End">
+                        <div class="input-group-append" style="margin-left: 5px;">
                             <button class="btn btn-navbar" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -48,9 +75,18 @@
             <div class="col-sm-6">
                 <form class="search-file">
                     <div class="input-group input-group-sm">
-                        <input id="searchByUpdatedAtStart" name="updatedAtStart" class="form-control form-control-navbar" type="date" placeholder="Updated At Start" aria-label="Search">
-                        <input id="searchByUpdatedAtEnd" name="updatedAtEnd" class="form-control form-control-navbar" type="date" placeholder="Updated At End" aria-label="Search">
-                        <div class="input-group-append">
+                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
+                            <span>Updated At</span>
+                        </div>
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <span class="input-group-text">Start Date</span>
+                        </div>
+                        <input id="searchByUpdatedAtStart" name="updatedAtStart" class="form-control form-control-navbar" type="date" aria-label="Updated At Start">
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <span class="input-group-text">End Date</span>
+                        </div>
+                        <input id="searchByUpdatedAtEnd" name="updatedAtEnd" class="form-control form-control-navbar" type="date" aria-label="Updated At End">
+                        <div class="input-group-append" style="margin-left: 5px;">
                             <button class="btn btn-navbar" type="submit">
                                 <i class="fas fa-search"></i>
                             </button>
@@ -66,6 +102,22 @@
 <section class="content">
     <div class="container-fluid">
         <div class="row">
+
+            <!--Lubna-->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h4>Name</h4>
+                        <p>Description</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion-android-folder-open" style="font-size: 70px;margin-top: -15px;"></i>
+                    </div>
+                    <a href="/Gallery/File/Index?galleryId=Id" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!--Lubna-->
             @if (Model.Galleries != null && Model.Galleries.Any())
             {
                 @foreach (var gallery in Model.Galleries)

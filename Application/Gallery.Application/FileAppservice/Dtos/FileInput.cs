@@ -14,6 +14,9 @@ namespace Gallery.Application.FileAppservice.Dtos
     {
 
         public string Name { get; set; }
+
+        public string Title { get; set; }
+
         public string FileType { get; set; }
         public long Size { get; set; }
         public string Path { get; set; }
