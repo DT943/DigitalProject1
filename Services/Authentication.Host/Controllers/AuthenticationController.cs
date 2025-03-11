@@ -1,5 +1,6 @@
 ﻿using Authentication.Application;
 using Authentication.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication.Host.Controllers
@@ -53,6 +54,26 @@ namespace Authentication.Host.Controllers
             var result = await _authenticationAppService.GetAllUsersAsync();
             return Ok(result);
         }
+
+
+        [HttpGet("get-user/{code}")]
+        public async Task<IActionResult> GetUserByCode(string code)
+        {
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return BadRequest("Code is required.");
+            }
+
+            var result = await _authenticationAppService.GetUserByCodeAsync(code);
+
+            if (result == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            return Ok(result);
+        }
+
 
     }
 }

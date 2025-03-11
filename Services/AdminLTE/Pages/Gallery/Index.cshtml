@@ -16,7 +16,6 @@
                             </button>
                         </div>
                     </div>
-
                 </form>
             </div><!-- /.col -->
             <div class="col-sm-6">
@@ -32,16 +31,41 @@
                 </form>
             </div><!-- /.col -->
         </div><!-- /.row -->
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+                        <input id="searchByCreatedAtStart" name="createdAtStart" class="form-control form-control-navbar" type="date" placeholder="Created At Start" aria-label="Search">
+                        <input id="searchByCreatedAtEnd" name="createdAtEnd" class="form-control form-control-navbar" type="date" placeholder="Created At End" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+                        <input id="searchByUpdatedAtStart" name="updatedAtStart" class="form-control form-control-navbar" type="date" placeholder="Updated At Start" aria-label="Search">
+                        <input id="searchByUpdatedAtEnd" name="updatedAtEnd" class="form-control form-control-navbar" type="date" placeholder="Updated At End" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
-
 
 <!--File-->
 <section class="content">
     <div class="container-fluid">
-
         <div class="row">
-
             @if (Model.Galleries != null && Model.Galleries.Any())
             {
                 @foreach (var gallery in Model.Galleries)
@@ -66,12 +90,10 @@
             {
                 <p>No gallery available.</p>
             }
-
-        </div>    
+        </div>
     </div>
 </section>
 
 <footer class="footer">
     <a asp-page="/Gallery/CreateGallery" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add Gallery</a>
 </footer>
-

@@ -41,7 +41,7 @@ namespace Authentication.Application
 
             var user = new ApplicationUser
             {
-                Code = "Customer-" + Guid.NewGuid().ToString("N"),
+                Code = "User-" + Guid.NewGuid().ToString("N"),
                 IdentityNumber = model.IdentityNumber,
                 PhoneNumber = model.PhoneNumber,
                 UserName = userName,
@@ -147,6 +147,12 @@ namespace Authentication.Application
             return _mapper.Map<List<AuthenticationGetDto>>(users);
         }
 
+
+        public async Task<AuthenticationGetDto> GetUserByCodeAsync(string code)
+        {
+            var users = await _userManager.Users.Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
+            return _mapper.Map<AuthenticationGetDto>(users);
+        }
 
     }
 }

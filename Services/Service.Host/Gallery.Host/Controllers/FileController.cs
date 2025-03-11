@@ -5,6 +5,7 @@ using Gallery.Application.FileAppservice;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Gallery.Host.Controllers
 {
@@ -12,15 +13,78 @@ namespace Gallery.Host.Controllers
     public class FileController : BaseController<IFileAppService, Domain.Models.File, FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>
     {
         IFileAppService _appService;
-        private readonly IWebHostEnvironment _environment;
 
-        public FileController(IFileAppService appService, IWebHostEnvironment environment) : base(appService)
+        public FileController(IFileAppService appService) : base(appService)
         {
             _appService = appService;
-            _environment = environment;
         }
-        
-        public override  Task<ActionResult<FileGetDto>> Get(int id)
+
+        public override async Task<ActionResult<FileGetDto>> Create(FileCreateDto createDto)
+        {
+            if (createDto == null || string.IsNullOrWhiteSpace(createDto.Path))
+            {
+                return BadRequest("Invalid file path.");
+            }
+
+            if (!System.IO.File.Exists(createDto.Path))
+            {
+                return NotFound("File Path Not Found");
+            }
+
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(createDto.Path, out var contentType))
+            {
+                contentType = "application/octet-stream"; // Default MIME type
+            }
+
+            // Extract file type safely
+            var fileType = contentType.Contains("/") ? contentType.Split("/")[0] : "unknown";
+
+            // Update DTO directly
+            createDto.FileType = fileType;
+            createDto.MimeType = contentType;
+            long fileSizeBytes = new FileInfo(createDto.Path).Length;
+            createDto.Size = fileSizeBytes;
+            return await base.Create(createDto);
+           
+        }
+
+        public override async Task<ActionResult<FileGetDto>> Update(FileUpdateDto updateDto)
+        {
+            if (updateDto == null || string.IsNullOrWhiteSpace(updateDto.Path))
+            {
+                return BadRequest("Invalid file path.");
+            }
+
+            if (!System.IO.File.Exists(updateDto.Path))
+            {
+                return NotFound("File Path Not Found");
+            }
+
+            var provider = new FileExtensionContentTypeProvider();
+            if (!provider.TryGetContentType(updateDto.Path, out var contentType))
+            {
+                contentType = "application/octet-stream"; // Default MIME type
+            }
+
+            // Extract file type safely
+            var fileType = contentType.Contains("/") ? contentType.Split("/")[0] : "unknown";
+
+            // Update DTO directly
+            updateDto.FileType = fileType;
+            updateDto.MimeType = contentType;
+            long fileSizeBytes = new FileInfo(updateDto.Path).Length;
+
+            updateDto.Size = fileSizeBytes;
+
+
+            return await base.Update(updateDto);
+
+        }
+
+
+
+        public async override Task<ActionResult<FileGetDto>> Get(int id)
         {
 
             FileGetDto fileGetDto = _appService.Get(id).Result;
@@ -29,8 +93,9 @@ namespace Gallery.Host.Controllers
 
             if (!System.IO.File.Exists(filePath))
             {
-                return Task.FromResult<ActionResult<FileGetDto>>(NotFound());
+                return BadRequest("Invalid file path.");
             }
+
 
             // Extract the file name
             var fileName = Path.GetFileName(filePath);
@@ -45,12 +110,19 @@ namespace Gallery.Host.Controllers
             {
                 contentType = "application/octet-stream";
             }
-            fileGetDto.FilePhysicalPath = PhysicalFile(filePath, contentType);
-            fileGetDto.FileUrlPath = fileUrl;
 
-  
 
-            return Task.FromResult<ActionResult<FileGetDto>>(Ok(fileGetDto));
+            // Extract file type safely
+            var fileType = contentType.Contains("/") ? contentType.Split("/")[0] : "unknown";
+
+            // Update DTO directly
+            fileGetDto.FileType = fileType;
+            fileGetDto.MimeType = contentType;
+            long fileSizeBytes = new FileInfo(filePath).Length;
+
+            fileGetDto.Size = fileSizeBytes;
+
+            return Ok(fileGetDto);
         }
         
 
@@ -81,35 +153,6 @@ namespace Gallery.Host.Controllers
 
             return BadRequest("No file uploaded.");
         }
-
-        /*
-        [HttpPost("GetFile")]
-        public async Task<ActionResult<FileGetModel>> GetFileAsync(FilePostModel file)
-        {
-            var filePath = file.FilePath;
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            // Determine the MIME type
-            var provider = new FileExtensionContentTypeProvider();
-            if (!provider.TryGetContentType(filePath, out var contentType))
-            {
-                contentType = "application/octet-stream"; // Default MIME type if unknown
-            }
-
-            var fileGetModel = new FileGetModel
-            {
-                FilePhysicalPath = PhysicalFile(filePath, contentType),
-                FileUrlPath = contentType,
-                 
-            };
-            // Return the file
-            return fileGetModel;
-        }*/
-
 
         [HttpPost("GetFile")]
         public IActionResult GetFileAsync([FromBody] FilePostModel file)

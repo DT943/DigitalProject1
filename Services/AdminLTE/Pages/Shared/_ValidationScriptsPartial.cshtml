@@ -165,3 +165,56 @@
     });
 </script>
 <!--clipboardScript-->
+<!--CreateFileValidatio-->
+<script>
+    function validateFile() {
+        let fileType = document.getElementById("fileType").value.toLowerCase();
+        let fileInput = document.getElementById("fileInput");
+        let fileTypeError = document.getElementById("fileTypeError");
+        let fileError = document.getElementById("fileError");
+
+        // Reset errors
+        fileTypeError.style.display = "none";
+        fileError.style.display = "none";
+
+        // Validate file type selection
+        if (!fileType) {
+            fileTypeError.style.display = "block";
+            return false;
+        }
+
+        // Validate uploaded file
+        if (fileInput.files.length > 0) {
+            let allowedExtensions = {
+                "image": ["jpg", "jpeg", "png", "gif"],
+                "pdf": ["pdf"],
+                "word": ["doc", "docx"],
+                "excel": ["xls", "xlsx"]
+            };
+
+            let fileName = fileInput.files[0].name;
+            let fileExtension = fileName.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions[fileType].includes(fileExtension)) {
+                fileError.style.display = "block";
+                return false;
+            }
+        } else {
+            fileError.style.display = "block";
+            return false;
+        }
+
+        return true;
+    }
+    function toggleAltTextField() {
+        let fileType = document.getElementById("fileType").value.toLowerCase();
+        let altTextContainer = document.getElementById("altTextContainer");
+
+        if (fileType === "image") {
+            altTextContainer.style.display = "block";
+        } else {
+            altTextContainer.style.display = "none";
+        }
+    }
+</script>
+<!--CreateFileValidatio-->

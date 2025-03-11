@@ -11,5 +11,8 @@ namespace CMS.Application.PageAppService
 {
     public interface IPageAppService : IBaseAppService<PageGetDto, PageCreateDto, PageUpdateDto, SieveModel>
     {
+        public Task<PageGetDto> GetPageBySubUrl(string pos, string lang, string pageUrlName);
+
+        public Task<IEnumerable<string>> GetSubPathsAsync(string pos, string language, string pageUrlName);
     }
 }

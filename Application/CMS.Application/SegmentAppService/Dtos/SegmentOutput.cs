@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CMS.Application.ComponentAppService.Dto;
 
 namespace CMS.Application.SegmentAppService.Dtos
 {
@@ -14,5 +15,8 @@ namespace CMS.Application.SegmentAppService.Dtos
         public string Name { get; set; }
         public string Description { get; set; }
         public int Position { get; set; }
+
+        public ICollection<ComponentGetDto> Components { get; set; }
+
     }
 }
