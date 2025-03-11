@@ -83,6 +83,11 @@ namespace Gallery.Host.Controllers
 
         public override async Task<ActionResult<FileGetDto>> Update(FileUpdateDto updateDto)
         {
+
+            FileGetDto fileGetDto = await _appService.Get(updateDto.Id);
+            updateDto.Path = fileGetDto.Path;
+
+
             if (updateDto == null || string.IsNullOrWhiteSpace(updateDto.Path))
             {
                 return BadRequest("Invalid file path.");
@@ -102,14 +107,18 @@ namespace Gallery.Host.Controllers
             // Extract file type safely
             var fileType = contentType.Contains("/") ? contentType.Split("/")[0] : "unknown";
 
+            var fileName = Path.GetFileName(updateDto.Path);
+
+            // Base URL where static files are served
+            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var fileUrl = $"{baseUrl}/{fileName}";
             // Update DTO directly
             updateDto.FileType = fileType;
             updateDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(updateDto.Path).Length;
-
-            updateDto.Size = fileSizeBytes;
-
-
+            updateDto.Size = (float)(fileSizeBytes / (1024.0 * 10240.0));
+            updateDto.FileUrlPath = fileUrl;
+            updateDto.FileName = fileName;
             return await base.Update(updateDto);
 
         }
@@ -185,6 +194,32 @@ namespace Gallery.Host.Controllers
             }
 
             return BadRequest("No file uploaded.");
+        }
+
+
+        public async override Task<ActionResult<FileGetDto>> Delete(int id)
+        {
+            FileGetDto fileGetDto = _appService.Get(id).Result;
+
+            var filePath = fileGetDto.Path;
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                return BadRequest("Invalid file path.");
+            }
+
+            var deletedEntity = await _appService.Delete(id);
+
+            if(!_appService.CheckPath(filePath))
+            try
+            {
+                System.IO.File.Delete(filePath);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error deleting file: {ex.Message}");
+            }
+            return Ok(deletedEntity);
         }
 
         [HttpPost("GetFile")]

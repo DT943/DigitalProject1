@@ -20,9 +20,17 @@ namespace Gallery.Application.FileAppservice
             _serviceDbContext = serviceDbContext;
         }
 
+
+        public bool CheckPath(string path)
+        {
+            return _serviceDbContext.Files.Any(f => f.Path.Equals(path));
+        }
+
         protected override IQueryable<Domain.Models.File> QueryExcuter(SieveModel input)
         {
             return base.QueryExcuter(input);
         }
+
+ 
     }
 }

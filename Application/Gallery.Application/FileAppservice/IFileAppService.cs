@@ -12,5 +12,6 @@ namespace Gallery.Application.FileAppservice
 {
     public interface IFileAppService : IBaseAppService<FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>
     {
+        public bool CheckPath(string path);
     }
 }
