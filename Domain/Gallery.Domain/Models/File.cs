@@ -23,7 +23,7 @@ namespace Gallery.Domain.Models
         public string? Caption { get; set; }    
 
         public string? AlternativeText { get; set; }
-        public string Metadata { get; set; }
+        public string? FileUrlPath { get; set; }
         public int GalleryId { get; set; }
         public Gallery Gallery { get; set; } // Navigation property
     }

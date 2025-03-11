@@ -21,13 +21,7 @@
             <input type="hidden" asp-for="@Model.File.ImageWidth" /> 
             <input type="hidden" asp-for="@Model.File.ImageHeight" />
             <input type="hidden" asp-for="@Model.File.Duration" /> 
-            <!-- Metadata -->
-            <div class="form-group">
 
-                <label asp-for="@Model.File.Metadata" class="control-label">Metadata</label>
-                <input id="fileMetaData" asp-for="@Model.File.Metadata" class="form-control" placeholder="Metadata" />
-                <span asp-validation-for="@Model.File.Metadata" class="text-danger"></span>
-            </div>
 
             <!-- Caption -->
             <div class="form-group">

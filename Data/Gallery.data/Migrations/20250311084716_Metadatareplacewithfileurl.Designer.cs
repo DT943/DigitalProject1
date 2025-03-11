@@ -3,6 +3,7 @@ using System;
 using Gallery.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace Gallery.data.Migrations
 {
     [DbContext(typeof(GalleryDbContext))]
-    partial class GalleryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311084716_Metadatareplacewithfileurl")]
+    partial class Metadatareplacewithfileurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
