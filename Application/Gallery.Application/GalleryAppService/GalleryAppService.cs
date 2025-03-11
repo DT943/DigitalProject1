@@ -27,7 +27,7 @@ namespace Gallery.Application.GalleryAppService
 
         protected override IQueryable<Domain.Models.Gallery> QueryExcuter(SieveModel input)
         {
-            return base.QueryExcuter(input).Include(intput => intput.Files);
+            return base.QueryExcuter(input);
         }
     }
 }

@@ -122,81 +122,7 @@ namespace Gallery.Host.Controllers
             return await base.Update(updateDto);
 
         }
-
-
-
-        public async override Task<ActionResult<FileGetDto>> Get(int id)
-        {
-
-            FileGetDto fileGetDto = _appService.Get(id).Result;
-
-            var filePath = fileGetDto.Path;
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return BadRequest("Invalid file path.");
-            }
-
-
-            // Extract the file name
-            var fileName = Path.GetFileName(filePath);
-
-            // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var fileUrl = $"{baseUrl}/{fileName}";
-
-            // Determine MIME type
-            var provider = new FileExtensionContentTypeProvider();
-            if (!provider.TryGetContentType(filePath, out var contentType))
-            {
-                contentType = "application/octet-stream";
-            }
-
-
-            // Extract file type safely
-            var fileType = contentType.Contains("/") ? contentType.Split("/")[0] : "unknown";
-
-            // Update DTO directly
-            fileGetDto.FileType = fileType;
-            fileGetDto.MimeType = contentType;
-            long fileSizeBytes = new FileInfo(filePath).Length;
-
-            fileGetDto.Size = fileSizeBytes/(1024*1024);
-            fileGetDto.FileName = fileName;
-
-            return Ok(fileGetDto);
-        }
-        
-
-
-        [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFile(FileUploadModel model)
-        {
-            if (model.File != null && model.File.Length > 0)
-            {
-                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "images");
-
-                // Create the folder if it doesn't exist
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-
-                var filePath = Path.Combine(folderPath, model.File.FileName);
-
-                // Save the file to the folder
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await model.File.CopyToAsync(fileStream);
-                }
-
-                return Ok(new { filePath });
-            }
-
-            return BadRequest("No file uploaded.");
-        }
-
-
+ 
         public async override Task<ActionResult<FileGetDto>> Delete(int id)
         {
             FileGetDto fileGetDto = _appService.Get(id).Result;
@@ -222,38 +148,16 @@ namespace Gallery.Host.Controllers
             return Ok(deletedEntity);
         }
 
-        [HttpPost("GetFile")]
-        public IActionResult GetFileAsync([FromBody] FilePostModel file)
+
+
+        [HttpGet("getby-galleryid/{galleryId}")]
+        public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryId(int galleryId)
         {
-            var filePath = file.FilePath;
+            var files = await _appService.GetRelatedFileGallery(galleryId);
+ 
 
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            // Extract the file name
-            var fileName = Path.GetFileName(filePath);
-
-            // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var fileUrl = $"{baseUrl}/{fileName}";
-
-            // Determine MIME type
-            var provider = new FileExtensionContentTypeProvider();
-            if (!provider.TryGetContentType(filePath, out var contentType))
-            {
-                contentType = "application/octet-stream";
-            }
-
-            // Return URL instead of file
-            var fileGetModel = new FileGetModel
-            {
-                FilePhysicalPath = PhysicalFile(filePath, contentType),
-                FileUrlPath = fileUrl,
-            };
-
-            return Ok(fileGetModel);
+            return Ok(files);
         }
+
     }
 }

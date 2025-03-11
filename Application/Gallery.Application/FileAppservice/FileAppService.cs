@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Sieve.Models;
 using Sieve.Services;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Application.Exceptions;
+using System.Collections.Generic;
 namespace Gallery.Application.FileAppservice
 {
     public class FileAppService : BaseAppService<GalleryDbContext, Domain.Models.File, FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>, IFileAppService
@@ -24,6 +26,12 @@ namespace Gallery.Application.FileAppservice
         public bool CheckPath(string path)
         {
             return _serviceDbContext.Files.Any(f => f.Path.Equals(path));
+        }
+
+
+        public async Task<IEnumerable<FileGetDto>> GetRelatedFileGallery(int GalleryId)
+        {
+            return _mapper.Map<List<FileGetDto>>( _serviceDbContext.Files.Where(f => f.GalleryId == GalleryId).ToList());
         }
 
         protected override IQueryable<Domain.Models.File> QueryExcuter(SieveModel input)
