@@ -52,7 +52,7 @@
             $('#fileDescription').val(fileData.description);
             $('#fileFileUrl').val(fileData.path);
             $('#fileMimeType').val(fileData.mimetype);
-            $('#fileMetaDeta').val(fileData.metadeta);
+            $('#fileMetaDeta').val(fileData.filetitle);
             var previewContainer = $('#filePreviewContainer');
             previewContainer.empty();
             // Hide all file-specific sections initially
@@ -166,6 +166,8 @@
 </script>
 <!--clipboardScript-->
 <!--CreateFileValidatio-->
+
+
 <script>
     function validateFile() {
         let fileType = document.getElementById("fileType").value.toLowerCase();
@@ -210,11 +212,17 @@
         let fileType = document.getElementById("fileType").value.toLowerCase();
         let altTextContainer = document.getElementById("altTextContainer");
 
+        // Show the alt text input only if the file type is "image"
         if (fileType === "image") {
             altTextContainer.style.display = "block";
         } else {
             altTextContainer.style.display = "none";
         }
     }
-</script>
+
+    // Call the function on page load to set the initial state
+    document.addEventListener("DOMContentLoaded", function () {
+        toggleAltTextField();
+    });</script>
+
 <!--CreateFileValidatio-->

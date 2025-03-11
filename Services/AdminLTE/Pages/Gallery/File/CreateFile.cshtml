@@ -3,16 +3,18 @@
 @{
 }
 
-<h2>Create File</h2>
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
 
 <form class="row" asp-page="./CreateFile" method="post" enctype="multipart/form-data" onsubmit="return validateFile()">
     @Html.AntiForgeryToken()
 
     <div class="col-md-12">
         <div class="card card-default">
-
             <div class="card-header">
-                <h3 class="card-title">Upload File</h3>
+                <h3>Create File</h3>
+
                 <div class="float-right">
                     <select class="custom-select" style="width: auto;" id="fileType" data-sortorder="" onchange="toggleAltTextField()">
                         <option value=""> Select File Type </option>
@@ -22,22 +24,23 @@
                         <option value="excel"> Excel </option>
                     </select>
                     <span id="fileTypeError" class="text-danger" style="display: none;">Please select a valid file type.</span>
-            </div>
+                </div>
             </div>
 
             <div class="card-body">
                 <!-- File Input -->
-                <input type="hidden" asp-for="@Model.GalleryId" value="@Model.GalleryId" />
+                <input type="hidden" asp-for="@Model.File.GalleryId" value="@Model.GalleryId" />
 
                 <div class="form-group">
-                    <label for="fileInput">Choose File</label>
-                    <input type="file" class="form-control" id="fileInput" name="UploadedFile" />
+                    <label asp-for="@Model.File.File">Choose File</label>
+                    <input asp-for="@Model.File.File" class="form-control" id="fileInput" />
+                    <span asp-validation-for="@Model.File.File" class="text-danger"></span>
                     <span id="fileError" class="text-danger" style="display: none;">The uploaded file must match the selected file type.</span>
                 </div>
 
                 <div class="form-group">
                     <label asp-for="@Model.File.Title" class="control-label">Title</label>
-                    <input id="fileMetaData" asp-for="@Model.File.Title" class="form-control" placeholder="Title" />
+                    <input asp-for="@Model.File.Title" class="form-control" placeholder="Title" />
                     <span asp-validation-for="@Model.File.Title" class="text-danger"></span>
                 </div>
 
@@ -53,21 +56,20 @@
                     <label asp-for="@Model.File.Description" class="control-label">Description</label>
                     <textarea asp-for="@Model.File.Description" class="form-control" placeholder="Description"></textarea>
                     <span asp-validation-for="@Model.File.Description" class="text-danger"></span>
-            </div>
+                </div>
 
                 <!-- Alternative Text (Hidden unless 'Image' is selected) -->
                 <div class="form-group" id="altTextContainer" style="display: none;">
                     <label asp-for="@Model.File.AlternativeText" class="control-label">Alternative Text</label>
                     <input asp-for="@Model.File.AlternativeText" class="form-control" placeholder="Alternative Text" />
                     <span asp-validation-for="@Model.File.AlternativeText" class="text-danger"></span>
-        </div>
+                </div>
 
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-success" />
-    </div>
+                </div>
 
             </div>
         </div>
-        </div>
-    }
+    </div>
 </form>

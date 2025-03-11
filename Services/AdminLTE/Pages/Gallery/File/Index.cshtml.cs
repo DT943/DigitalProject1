@@ -1,4 +1,5 @@
 using AdminLTE.Services;
+using Authentication.Application.Dtos;
 using Gallery.Application.FileAppservice.Dtos;
 using Gallery.Application.GalleryAppService.Dtos;
 using Gallery.Domain.Models;
@@ -22,13 +23,16 @@ namespace AdminLTE.Pages.Gallery.File
 
         }
         [BindProperty(SupportsGet = true)]
+        public string SelectedUser { get; set; }
+
+        [BindProperty]
+        public List<AuthenticationGetDto> Users { get; set; } = new List<AuthenticationGetDto>();
+
+        [BindProperty(SupportsGet = true)]
         public int GalleryId { get; set; }
 
         [BindProperty]
         public List<FileGetDto> Files { get; set; } = new List<FileGetDto>();
-
-        [BindProperty]
-        public FileUpdateDto FileUpdate { get; set; } = new FileUpdateDto();
 
         public async Task<IActionResult> OnGetAsync(int? Id, int galleryId)
         {
@@ -82,31 +86,6 @@ namespace AdminLTE.Pages.Gallery.File
             }
 
             return Page();
-        }
-        public async Task<IActionResult> OnPostSendFileDataAsync()
-        {
-            try
-            {
-                var jsonContent = JsonSerializer.Serialize(FileUpdate);
-                var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
-
-                var response = await _httpClient.PutAsync("/File", content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToPage("/Gallery/File/Index", new { galleryId = FileUpdate.GalleryId });
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Failed to send file data.");
-                }
-            }
-            catch (HttpRequestException)
-            {
-                ModelState.AddModelError(string.Empty, "Failed to connect to the server.");
-            }
-
-            return RedirectToPage("/Gallery/File/Index", new { galleryId = GalleryId });
         }
     } 
 }

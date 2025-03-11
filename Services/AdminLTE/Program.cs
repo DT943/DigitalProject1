@@ -62,7 +62,6 @@ builder.Services.AddScoped<HttpClientService>(); // Register your service
 builder.Services.AddHttpClient<GalleryModel>();
 builder.Services.AddHttpClient<CreateFileModel>();
 builder.Services.AddHttpClient<DeleteFileModel>();
-builder.Services.AddHttpClient<CreateDetailFileModel>();
 
 
 
