@@ -11,7 +11,7 @@ namespace Gallery.Domain.Models
     {
         public string Name { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public ICollection<File> Files { get; set; } // Collection of files belonging to the gallery
     }

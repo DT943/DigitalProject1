@@ -9,7 +9,9 @@ using Gallery.Application.GalleryAppService.Validations;
 using Gallery.Application.FileAppservice;
 using Gallery.Application.FileAppservice.Validations;
 using Gallery.Application.FileAppservice.Dtos;
+using Gallery.Application;
 
+using Gallery.Application.GalleryAppService.Processors;
 
 
 namespace Gallery.Host.Helper
@@ -25,7 +27,10 @@ namespace Gallery.Host.Helper
             services.AddTransient<FileValidator>();
 
 
-            services.AddScoped<ISieveProcessor, SieveProcessor>();
+            services.AddScoped<ISieveProcessor, GalleryProcessor>();
+            //services.AddSingleton<ISieveConfiguration, FileProcessorConfiguration>();
+            services.AddSingleton<ISieveConfiguration, GalleryProcessorConfiguration>();
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new GalleryMapperProfile());

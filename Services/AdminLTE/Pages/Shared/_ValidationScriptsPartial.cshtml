@@ -35,115 +35,61 @@
             $('#fileId').val(fileData.fileid);
             $('#galleryId').val(fileData.galleryid);
             $('#fileName').text(fileData.name);
-            $('#fileNameHidden').val(fileData.name);
             $('#fileFileType').text(fileData.filetype);
-            $('#fileFileTypeHidden').val(fileData.filetype);
             $('#fileSize').text(fileData.size);
-            $('#fileSizeHidden').val(fileData.size);
             $('#fileLength').text(fileData.filelength);
-            $('#fileLengthHidden').val(fileData.filelength);
             $('#fileImagewidth').text(fileData.fileimagewidth);
-            $('#fileImageWidthHidden').val(fileData.fileimagewidth);
             $('#fileImageHeight').text(fileData.fileimageheight);
-            $('#fileImageHeightHidden').val(fileData.fileimageheight);
             $('#fileImageAlternativeText').val(fileData.fileimagealternativetext);
             $('#fileTitle').val(fileData.filetitle);
             $('#fileCaption').val(fileData.caption);
             $('#fileDescription').val(fileData.description);
-            $('#fileFileUrl').val(fileData.path);
-            $('#fileMimeType').val(fileData.mimetype);
-            $('#fileMetaDeta').val(fileData.filetitle);
+            $('#fileFileUrl').val(fileData.fileurlpath);
+
             var previewContainer = $('#filePreviewContainer');
             previewContainer.empty();
             // Hide all file-specific sections initially
             $('#imageDimensions').hide();
             $('#fileLengthSection').hide();
             $('#imageFields').hide();
-            if (fileData.filetype === 'image') {
-                previewContainer.html('<img src="' + fileData.path + '" class="img-fluid" alt="Image Preview">');
+            if (fileData.filetype === 'Image') {
+                previewContainer.html('<img src="' + fileData.fileurlpath + '" class="img-fluid" alt="Image Preview">');
                 $('#imageDimensions').show();
                 $('#imageFields').show();
                 $('#fileImageWidth').text(fileData.fileImagewidth + 'px');
                 $('#fileImageHeight').text(fileData.fileImageHeight + 'px');
                 $('#fileImageAlternativeText').val(fileData.fileImageAlternativeText || 'N/A');
             } 
-            else if (fileData.filetype === 'video') {
+            else if (fileData.filetype === 'Video') {
 
                 $('#fileLengthSection').show();
                 $('#fileLength').text(fileData.fileLength || 'N/A');
 
-                previewContainer.html('<video class="img-fluid" controls><source src="' + fileData.path + '" type="video/mp4">Your browser does not support the video tag.</video>');
+                previewContainer.html('<video class="img-fluid" controls><source src="' + fileData.fileurlpath + '" type="video/mp4">Your browser does not support the video tag.</video>');
             } 
-            else if (fileData.filetype === 'audio') {
+            else if (fileData.filetype === 'Audio') {
                 $('#fileLengthSection').show();
                 $('#fileLength').text(fileData.fileLength || 'N/A');
 
                 previewContainer.html('<audio class="img-fluid" style="width: 1000px; height: 50px; " controls><source src="' + fileData.path + '" type="audio/mp3">Your browser does not support the audio tag.</audio>');
             } 
             else {
-                previewContainer.html('<iframe src="' + fileData.path + '" width="100%" height="400px"></iframe>');
+                previewContainer.html('<iframe src="' + fileData.fileurlpath + '" width="100%" height="400px"></iframe>');
             }
+            var deleteUrl = `/Gallery/File/DeleteFile?id=${fileData.fileid}&galleryId=${fileData.galleryid}`;
+            $('#deleteButton').attr('href', deleteUrl);
+ 
+            $('#downloadButton').attr('href', fileData.fileurlpath);
+
 
             $('#fileModal').modal('show');
         });
     })
 </script>
 <!--ModalInformation-->
-<!--Select Item-->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Get all category filter buttons
-        const categoryFilters = document.querySelectorAll('.btn-group.w-100.mb-2 a[data-filter]');
 
-        // Add click event listeners to category filter buttons
-        categoryFilters.forEach(filter => {
-            filter.addEventListener('click', function () {
-                const category = this.getAttribute('data-filter'); // Get the category value (1, 2, 3, 4, or 'all')
-                const checkboxes = document.querySelectorAll('.filtr-item input[type="checkbox"]');
-
-                checkboxes.forEach(checkbox => {
-                    const itemCategory = checkbox.closest('.filtr-item').getAttribute('data-category');
-
-                    // If the category matches or it's 'all', toggle the checkbox
-                    if (category === 'all' || itemCategory === category) {
-                        checkbox.checked = this.querySelector('input[type="checkbox"]').checked;
-                    }
-                });
-            });
-        });
-    });
-</script>
-<!--Select Item-->
-<!--Get Ids of selected items-->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
-<script>
-    document.getElementById('deleteFilesBtn').addEventListener('click', function (event) {
-
-        event.preventDefault();
-
-        const selectedFiles = [];
-        //document.querySelectorAll('.filtr-item input[type="checkbox"]:checked').forEach(checkbox => {
-          //  const fileId = checkbox.closest('.filtr-item').getAttribute('data-fileId');
-        document.querySelectorAll('.btn.btn-info.active').forEach(activeElement => {
-            const fileId = activeElement.getAttribute('data-filter'); // Assuming 'data-filter' holds the file ID
-
-          if (fileId) {
-                selectedFiles.push(fileId);
-            }
-        });
-
-        if (selectedFiles.length === 0) {
-            alert('No files selected!');
-            return;
-        }
-        console.log(selectedFiles)
-        document.getElementById('selectedFileIds').value = selectedFiles.join(',');
-
-        // Submit the form
-        document.getElementById('deleteFilesForm').submit();
-    });
-</script>
-<!--Get Ids of selected items-->
 <!--MainScript-->
+
 <!--clipboardScript-->
 <script>
     // Function to handle copy to clipboard
@@ -166,8 +112,6 @@
 </script>
 <!--clipboardScript-->
 <!--CreateFileValidatio-->
-
-
 <script>
     function validateFile() {
         let fileType = document.getElementById("fileType").value.toLowerCase();
@@ -224,5 +168,4 @@
     document.addEventListener("DOMContentLoaded", function () {
         toggleAltTextField();
     });</script>
-
 <!--CreateFileValidatio-->

@@ -11,4 +11,8 @@
     <ProjectReference Include="..\..\Data\Gallery.data\Gallery.data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="FileAppservice\Processors\" />
+  </ItemGroup>
+
 </Project>

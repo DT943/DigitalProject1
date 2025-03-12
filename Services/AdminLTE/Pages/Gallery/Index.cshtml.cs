@@ -60,46 +60,69 @@ namespace AdminLTE.Pages.Gallery
                 { 
                     var gallery_content = await galleries.Content.ReadAsStringAsync();
 
-                    var user_content = await users.Content.ReadAsStringAsync();
-
-                    Users = JsonSerializer.Deserialize<List<AuthenticationGetDto>>(user_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                       
-                    if (Id.HasValue)
+                    if (users.IsSuccessStatusCode)
                     {
 
-                        var singleGallery = JsonSerializer.Deserialize<GalleryGetDto>(gallery_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                        Galleries = new List<GalleryGetDto> { singleGallery };
+                        var user_content = await users.Content.ReadAsStringAsync();
+
+                        Users = JsonSerializer.Deserialize<List<AuthenticationGetDto>>(user_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                        if (Id.HasValue)
+                        {
+
+                            var singleGallery = JsonSerializer.Deserialize<GalleryGetDto>(gallery_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                            Galleries = new List<GalleryGetDto> { singleGallery };
+
+                        }
+                        else
+                        {
+                            Galleries = JsonSerializer.Deserialize<List<GalleryGetDto>>(gallery_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        }
+
+                        foreach (var gallery in Galleries)
+                        {
+                            StringUtility.ConvertStringsToTitleCase(gallery);
+                        }
+                        foreach (var user in Users)
+                        {
+                            StringUtility.ConvertStringsToTitleCase(user);
+                        }
+
+
+
+                        // Filter by selected user
+                        if (!string.IsNullOrEmpty(SelectedUser) && SelectedUser != "AllUsers")
+                        {
+                            var selectedUserName = SelectedUser.Split(' ');
+                            var firstName = selectedUserName[0];
+                            var lastName = selectedUserName.Length > 1 ? string.Join(" ", selectedUserName.Skip(1)) : "";
+
+
+                            // Assuming Users is a list of AuthenticationGetDto with FirstName and LastName properties
+                            var selectedUser = Users.FirstOrDefault(u => u.FirstName == firstName && u.LastName == lastName);
+
+                            if (selectedUser != null)
+                            {
+                                // Assuming Offers have a UserId or similar property to filter by
+                                Galleries = Galleries.Where(g => g.CreatedBy == selectedUser.Code).ToList();
+                            }
+                        }
 
                     }
                     else
                     {
-                        Galleries = JsonSerializer.Deserialize<List<GalleryGetDto>>(gallery_content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        // Log the error (optional)
+                        var errorMessage = await users.Content.ReadAsStringAsync();
+                        // Redirect to the error page with a custom message
+                        return RedirectToPage("/Error", new { message = $"API Error: {galleries.StatusCode} - {errorMessage}" });
                     }
-
-                    // Filter by selected user
-                    if (!string.IsNullOrEmpty(SelectedUser) && SelectedUser != "AllUsers")
-                    {
-                        var selectedUserName = SelectedUser.Split(' ');
-                        var firstName = selectedUserName[0];
-                        var lastName = selectedUserName.Length > 1 ? string.Join(" ", selectedUserName.Skip(1)) : "";
-
-
-                        // Assuming Users is a list of AuthenticationGetDto with FirstName and LastName properties
-                        var selectedUser = Users.FirstOrDefault(u => u.FirstName == firstName && u.LastName == lastName);
-
-                        if (selectedUser != null)
-                        {
-                            // Assuming Offers have a UserId or similar property to filter by
-                            Galleries = Galleries.Where(g => g.CreatedBy == selectedUser.Code).ToList();
-                        }
-                    }
-
-
                 }
                 else
                 {
-                    // Handle API errors
-                    ModelState.AddModelError(string.Empty, "An error occurred while fetching offers.");
+                    // Log the error (optional)
+                    var errorMessage = await galleries.Content.ReadAsStringAsync();
+                    // Redirect to the error page with a custom message
+                    return RedirectToPage("/Error", new { message = $"API Error: {galleries.StatusCode} - {errorMessage}" });
                 }
             }
             catch (HttpRequestException ex)

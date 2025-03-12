@@ -111,7 +111,15 @@ namespace Infrastructure.Application
             var oldEntity = await FindById(update.Id);
             var newEntity = BeforUpdate(update, oldEntity);
             var result = _serviceDbContext.Set<TEntity>().Update(newEntity);
-            await _serviceDbContext.SaveChangesAsync();
+            try
+            {
+                await _serviceDbContext.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+            }
+            
             return await Get(result.Entity.Id);
         }
 

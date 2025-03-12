@@ -83,6 +83,11 @@ namespace Gallery.Host.Controllers
 
         public override async Task<ActionResult<FileGetDto>> Update(FileUpdateDto updateDto)
         {
+
+            FileGetDto fileGetDto = await _appService.Get(updateDto.Id);
+            updateDto.Path = fileGetDto.Path;
+
+
             if (updateDto == null || string.IsNullOrWhiteSpace(updateDto.Path))
             {
                 return BadRequest("Invalid file path.");
@@ -102,23 +107,24 @@ namespace Gallery.Host.Controllers
             // Extract file type safely
             var fileType = contentType.Contains("/") ? contentType.Split("/")[0] : "unknown";
 
+            var fileName = Path.GetFileName(updateDto.Path);
+
+            // Base URL where static files are served
+            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var fileUrl = $"{baseUrl}/{fileName}";
             // Update DTO directly
             updateDto.FileType = fileType;
             updateDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(updateDto.Path).Length;
-
-            updateDto.Size = fileSizeBytes;
-
-
+            updateDto.Size = (float)(fileSizeBytes / (1024.0 * 10240.0));
+            updateDto.FileUrlPath = fileUrl;
+            updateDto.FileName = fileName;
             return await base.Update(updateDto);
 
         }
-
-
-
-        public async override Task<ActionResult<FileGetDto>> Get(int id)
+ 
+        public async override Task<ActionResult<FileGetDto>> Delete(int id)
         {
-
             FileGetDto fileGetDto = _appService.Get(id).Result;
 
             var filePath = fileGetDto.Path;
@@ -128,97 +134,30 @@ namespace Gallery.Host.Controllers
                 return BadRequest("Invalid file path.");
             }
 
+            var deletedEntity = await _appService.Delete(id);
 
-            // Extract the file name
-            var fileName = Path.GetFileName(filePath);
-
-            // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var fileUrl = $"{baseUrl}/{fileName}";
-
-            // Determine MIME type
-            var provider = new FileExtensionContentTypeProvider();
-            if (!provider.TryGetContentType(filePath, out var contentType))
+            if(!_appService.CheckPath(filePath))
+            try
             {
-                contentType = "application/octet-stream";
+                System.IO.File.Delete(filePath);
             }
-
-
-            // Extract file type safely
-            var fileType = contentType.Contains("/") ? contentType.Split("/")[0] : "unknown";
-
-            // Update DTO directly
-            fileGetDto.FileType = fileType;
-            fileGetDto.MimeType = contentType;
-            long fileSizeBytes = new FileInfo(filePath).Length;
-
-            fileGetDto.Size = fileSizeBytes/(1024*1024);
-            fileGetDto.FileName = fileName;
-
-            return Ok(fileGetDto);
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error deleting file: {ex.Message}");
+            }
+            return Ok(deletedEntity);
         }
-        
 
 
-        [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFile(FileUploadModel model)
+
+        [HttpGet("getby-galleryid/{galleryId}")]
+        public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryId(int galleryId)
         {
-            if (model.File != null && model.File.Length > 0)
-            {
-                var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "images");
+            var files = await _appService.GetRelatedFileGallery(galleryId);
+ 
 
-                // Create the folder if it doesn't exist
-                if (!Directory.Exists(folderPath))
-                {
-                    Directory.CreateDirectory(folderPath);
-                }
-
-                var filePath = Path.Combine(folderPath, model.File.FileName);
-
-                // Save the file to the folder
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await model.File.CopyToAsync(fileStream);
-                }
-
-                return Ok(new { filePath });
-            }
-
-            return BadRequest("No file uploaded.");
+            return Ok(files);
         }
 
-        [HttpPost("GetFile")]
-        public IActionResult GetFileAsync([FromBody] FilePostModel file)
-        {
-            var filePath = file.FilePath;
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                return NotFound();
-            }
-
-            // Extract the file name
-            var fileName = Path.GetFileName(filePath);
-
-            // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
-            var fileUrl = $"{baseUrl}/{fileName}";
-
-            // Determine MIME type
-            var provider = new FileExtensionContentTypeProvider();
-            if (!provider.TryGetContentType(filePath, out var contentType))
-            {
-                contentType = "application/octet-stream";
-            }
-
-            // Return URL instead of file
-            var fileGetModel = new FileGetModel
-            {
-                FilePhysicalPath = PhysicalFile(filePath, contentType),
-                FileUrlPath = fileUrl,
-            };
-
-            return Ok(fileGetModel);
-        }
     }
 }

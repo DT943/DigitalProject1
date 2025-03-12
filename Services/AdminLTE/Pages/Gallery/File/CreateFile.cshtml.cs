@@ -64,6 +64,9 @@ namespace AdminLTE.Pages.Gallery.File
 
             if (response.IsSuccessStatusCode)
             {
+                //TempData["GalleryId"] = File.GalleryId;
+                //return RedirectToPage("/Gallery/File/Index");
+
                 // Redirect to a success page or another action
                 return RedirectToPage("/Gallery/File/Index", new { galleryId = File.GalleryId });
             }

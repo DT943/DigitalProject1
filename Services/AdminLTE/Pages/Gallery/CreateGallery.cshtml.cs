@@ -35,12 +35,16 @@ namespace AdminLTE.Pages.Gallery
                 return Page();
             }
 
+            StringUtility.ConvertStringsToLowercase(Gallery);
+
             // Serialize the FlightOffer object to JSON
             var json = JsonSerializer.Serialize(Gallery);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             // Send a POST request to the FlightOfferController API
             var response = await _httpClient.PostAsync("/Gallery", content);
+
+            var errorResponse = await response.Content.ReadAsStringAsync(); // Read response as string
 
             if (response.IsSuccessStatusCode)
             {
@@ -49,8 +53,33 @@ namespace AdminLTE.Pages.Gallery
             }
             else
             {
-                // Handle API errors
-                ModelState.AddModelError(string.Empty, "An error occurred while creating the gallery.");
+                try
+                {
+                    var errorDetails = JsonSerializer.Deserialize<ApiErrorResponse>(errorResponse,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+                    if (errorDetails?.Error?.Data != null)
+                    {
+                        foreach (var error in errorDetails.Error.Data)
+                        {
+                            var fieldKey = $"Gallery.{char.ToUpper(error.Key[0]) + error.Key.Substring(1)}"; // Ensure proper casing
+
+                            foreach (var errorMessage in error.Value)
+                            {
+                                ModelState.AddModelError(fieldKey, errorMessage);
+                            }
+                        }
+                    }
+
+                    ModelState.AddModelError(string.Empty, errorDetails?.Error?.Message ?? "An error occurred.");
+                }
+                catch (JsonException ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Error parsing API response.");
+                    Console.WriteLine($"JSON Parsing Error: {ex.Message}");
+                    Console.WriteLine($"Raw API Response: {errorResponse}");
+                }
+
                 return Page();
             }
         }

@@ -1,25 +1,32 @@
 ﻿@page "/Gallery/File/Index"
 @model AdminLTE.Pages.Gallery.File.FileModel
 @{
+    var userLookup = Model.Users.ToDictionary(u => u.Code, u => $"{u.FirstName} {u.LastName}");
 }
-
-<div asp-validation-summary="All"></div>
-
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-4">
                 <form class="form-group" method="get" id="userForm">
-                    <label>Select User</label>
-                    <select class="custom-select" asp-for="SelectedUser" onchange="document.getElementById('userForm').submit()">
-                        <option>AllUsers</option>
-                        @foreach (var user in Model.Users)
-                        {
-                            <option>@user.FirstName @user.LastName</option>
-                        }
-                    </select>
+
+                    <div class="input-group input-group-sm">
+
+                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
+                            <span>Created By</span>
+                        </div>
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <select class="custom-select" asp-for="SelectedUser" onchange="document.getElementById('userForm').submit()" style="height: 30px;padding: 0rem 0rem 0rem 1rem">
+                                <option>AllUsers</option>
+                                @foreach (var user in Model.Users)
+                                {
+                                    <option>@user.FirstName @user.LastName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div><!-- /.col -->
+
             <div class="col-sm-4">
                 <form class="search-file">
                     <div class="input-group input-group-sm">
@@ -140,36 +147,24 @@
                                 Other Files
                             </a>
                         </div>
-                        <div class="mb-2">
-                            <a class="btn btn-secondary" href="javascript:void(0)" data-shuffle=""> Shuffle items </a>
-                            <div class="float-right">
-                                <select class="custom-select" style="width: auto;" data-sortorder="">
-                                    <option value="index"> Sort by Position </option>
-                                    <option value="sortData"> Sort by Custom Data </option>
-                                </select>
-                                <div class="btn-group">
-                                    <a class="btn btn-default" href="javascript:void(0)" data-sortasc=""> Ascending </a>
-                                    <a class="btn btn-default" href="javascript:void(0)" data-sortdesc=""> Descending </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div>
                         <div class="filter-container p-0 row" style="padding: 3px; position: relative; width: 100%; display: flex; flex-wrap: wrap; height: 143px;">
 
                             @if (Model.Files != null && Model.Files.Any())
                             {
+
                                 @foreach (var file in Model.Files)
                                 {
-                                    <div class="filtr-item col-sm-2 filteredOut" data-category="@(file.FileType == "image" ? 1 : file.FileType == "video" ? 2 : file.FileType == "audio" ? 3 : 4)" data-sort="@file.FileType" style="text-align: center;height:125px; opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
-                                        <div class="form-check" style="display: flex;padding-left: 1.75rem;">
-                                            <input class="form-check-input" type="checkbox">
-                                            <label class="form-check-label"></label>
-                                        </div>
+                                    var uploadedByName = userLookup.ContainsKey(file.CreatedBy) ? userLookup[file.CreatedBy] : "Unknown User";
+
+                                    <div class="filtr-item col-sm-2 filteredOut" data-category="@(file.FileType == "Image" ? 1 : file.FileType == "Video" ? 2 : file.FileType == "Audio" ? 3 : 4)" data-sort="@file.FileType" style="text-align: center;height:125px; opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                        
 
                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#fileModal"
-                                        data-uploadedon="UploadedOn"
-                                        data-uploadedby="UploadedBy"
+                                        data-id="@file.Id"
+                                        data-uploadedon="@file.CreatedDate"
+                                        data-uploadedby="@uploadedByName"
                                         data-fileId="@file.Id"
                                         data-galleryId="@file.GalleryId"
                                         data-name="@file.FileName"
@@ -182,39 +177,37 @@
                                         data-filetitle="@file.Title"
                                         data-caption="@file.Caption"
                                         data-description="@file.Description"
-                                        data-path="@file.Path"
-                                        data-mimetype="@file.MimeType"
+                                        data-fileurlpath="@file.FileUrlPath"
                                         >
-                                        @if (file.FileType == "image")
+                                        @if (file.FileType == "Image")
                                         {
-                                            <img src="@file.Path" class="img-fluid mb-2" alt="Image File">
+                                            <img src="@file.FileUrlPath" class="img-fluid mb-2" alt="Image File">
                                         }
-                                        else if (file.FileType == "video")
+                                        else if (file.FileType == "Video")
                                         {
-                                            <video class="img-fluid mb-2" controls>
-                                                <source src="@file.Path" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
+                                            <div class="video-preview" data-video-src="@file.FileUrlPath">
+                                                <img src="" class="img-fluid mb-2" alt="Loading..." style="max-width: 35%;">
+                                            </div>
                                         }
-                                        else if (file.FileType == "audio")
+                                        else if (file.FileType == "Audio")
                                         {
                                             <img src="/TestFile/audio.jpg" class="img-fluid mb-2" alt="Audio" style="max-width: 35%;">
                                         }
-                                        else if (file.FileType == "pdf")
+                                        else if (file.FileType == "Pdf")
                                         {
                                             <img src="/TestFile/pdf.jpg" class="img-fluid mb-2" alt="Pdf" style="max-width: 35%;">
                                         }
-                                        else if (file.FileType == "word")
+                                        else if (file.FileType == "Word")
                                         {
                                             <img src="/TestFile/word.jpg" class="img-fluid mb-2" alt="Word" style="max-width: 35%;">
                                         }
-                                        else if (file.FileType == "excel")
+                                        else if (file.FileType == "Excel")
                                         {
-                                            <img src="/TestFile/excel.jpg" class="img-fluid mb-2" alt="Word" style="max-width: 35%;">
+                                            <img src="/TestFile/excel.jpg" class="img-fluid mb-2" alt="Excel" style="max-width: 35%;">
                                         }
                                         else
                                         {
-                                            <img src="/TestFile/file.jpg" class="img-fluid mb-2" alt="Word" style="max-width: 35%;">
+                                            <img src="/TestFile/file.jpg" class="img-fluid mb-2" alt="File" style="max-width: 35%;">
                                         }
                                         </a>
                                         <p style="text-align: center;margin-top: -10px;">
@@ -228,6 +221,8 @@
                                 <p>No file available.</p>
                             }
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -248,23 +243,26 @@
                 <form method="post" asp-page-handler="SendFileData" id="updateFileForm">
                     <div class="row">
                         <div class="col-md-4">
+
+                            <input asp-for="@Model.GalleryId" type="hidden" value="@Model.GalleryId" />
+                            <input type="hidden" class="form-control" id="fileId" asp-for="@Model.FileUpdate.Id" />
+                            <input type="hidden" class="form-control" id="galleryId" asp-for="@Model.FileUpdate.GalleryId" />
+
                             <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="fileUploadedOn"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="fileUploadedBy"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Name:</strong> <span id="fileName"></span></p>
                             <p style="margin-bottom: 0rem"><strong>File Type:</strong> <span id="fileFileType"></span></p>
-                            <p style="margin-bottom: 0rem"><strong>Size:</strong> <span id="fileSize" ></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Size:</strong> <span id="fileSize" ></span>MB</p>
+
+
 
                             <!-- Image-specific fields -->
                             <div id="imageDimensions" style="display: none;" class="form-group">
                                 <p style="margin-bottom: 0rem"><strong>Dimensions:</strong> <span id="fileImageWidth" ></span> X <span id="fileImageHeight"></span></p>
-                                <input type="hidden" class="form-control" id="fileImageWidthHidden"/>
-                                <input type="hidden" class="form-control" id="fileImageHeightHidden" />
                             </div>
                             <!-- Video/Audio-specific fields -->
                             <div id="fileLengthSection" style="display: none;" class="form-group">
                                 <p style="margin-bottom: 0rem"><strong>Length:</strong> <span id="fileLength" ></span></p>
-                                <input type="hidden" class="form-control" id="fileLengthHidden"/>
-
                             </div>
                         </div>
                         <div class="col-md-8">
@@ -275,27 +273,27 @@
                             <div id="imageFields" style="display: none;">
                                 <div class="form-group">
                                     <label for="fileImageAlternativeText">Alternative Text:</label>
-                                    <input type="text" class="form-control" id="fileImageAlternativeText">
+                                    <input asp-for="@Model.FileUpdate.AlternativeText"  type="text" class="form-control" id="fileImageAlternativeText">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="fileTitle">Title:</label>
-                                <input type="text" class="form-control" id="fileTitle">
+                                <label>Title:</label>
+                                <input asp-for="@Model.FileUpdate.Title" type="text" class="form-control" id="fileTitle">
                             </div>
 
                             <div class="form-group">
                                 <label for="fileCaption">Caption:</label>
-                                <input type="text" class="form-control" id="fileCaption" >
+                                <input asp-for="@Model.FileUpdate.Caption" class="form-control" id="fileCaption">
                             </div>
                             <div class="form-group">
                                 <label for="fileDescription">Description:</label>
-                                <textarea class="form-control" id="fileDescription" ></textarea>
+                                <textarea asp-for="@Model.FileUpdate.Description" class="form-control" id="fileDescription"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="fileUrl">FileURL:</label>
                                 <div class="input-group">
-                                    <input class="form-control" id="fileFileUrl" />
+                                    <input class="form-control" id="fileFileUrl" readonly />
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button" id="fileCopyButton">Copy to Clipboard</button>
                                     </div>
@@ -305,7 +303,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a id="downloadButton" href="#" class="btn btn-primary">Download</a>
                         <button type="submit" class="btn btn-primary">Update</button>
+                        <a id="deleteButton" href="#" style="margin: 10px;" class="btn btn-danger float-right">Delete</a>
                     </div>
                 </form>
             </div>
@@ -316,10 +316,11 @@
 
 <div class="card-footer clearfix">
 
-    <form id="deleteFilesForm" method="post" asp-page="/Gallery/File/DeleteFile">
-        <input type="hidden" id="selectedFileIds" name="FileIds" />
-        <button id="deleteFilesBtn" type="submit" style="margin: 10px;" class="btn btn-danger float-right">Delete Selected Files</button>
+    <form id="deleteFilesForm" method="post" action="/Gallery/File/DeleteFile?galleryId=@Model.GalleryId">
+        <input type="hidden" id="selectedFileIds" name="selectedFileIds" />
     </form>
+
+    <button id="deleteFilesBtn" class="btn btn-danger">Delete Selected Files</button>
 
     <a href="/Gallery/File/CreateFile?galleryId=@Model.GalleryId" style="margin: 10px;" class="btn btn-success float-right">Create File</a>
     <a asp-page="/Gallery/Index" style="margin: 10px;" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Galleries</a>
