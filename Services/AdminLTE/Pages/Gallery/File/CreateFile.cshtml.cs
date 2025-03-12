@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Gallery.Application.FileAppservice.Dtos;
-using AdminLTE.Services;
+using Offer.Application.FlightOfferAppService.Dtos;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Text;
@@ -15,7 +14,7 @@ namespace AdminLTE.Pages.Gallery.File
 {
     public class CreateFileModel : PageModel
     {
-        private readonly HttpClient _httpClient;
+            private readonly HttpClient _httpClient;
 
         public CreateFileModel(HttpClientService httpClientService)
         {

@@ -19,6 +19,8 @@ namespace Gallery.Application.GalleryAppService.Processors
             mapper.Property<Domain.Models.Gallery>(p => p.ModifiedDate).CanFilter().CanSort().HasName("modifieddate");
 
             mapper.Property<Domain.Models.File>(p => p.Title).CanFilter().CanSort().HasName("title");
+            mapper.Property<Domain.Models.File>(p => p.FileType).CanFilter().CanSort().HasName("filetype");
+
             mapper.Property<Domain.Models.File>(p => p.Id).CanFilter().CanSort().HasName("id");
             mapper.Property<Domain.Models.File>(p => p.GalleryId).CanFilter().CanSort().HasName("galleryid");
             mapper.Property<Domain.Models.File>(p => p.CreatedBy).CanFilter().CanSort().HasName("createdby");
