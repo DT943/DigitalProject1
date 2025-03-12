@@ -25,9 +25,11 @@ namespace Gallery.Application.GalleryAppService.Validations
                     .Must((dto, name) => IsUniqueGalleryName(name)) // Custom validation for uniqueness
                     .WithMessage("The Name of the gallery must be unique.")
                     .Must(name => name == null || name == name.ToLower())
-                    .WithMessage("Description must be in lowercase if provided.");
+                    .WithMessage("Name must be in lowercase if provided.");
 
                 RuleFor(dto => (dto as GalleryCreateDto).Description)
+                    .NotEmpty()
+                    .WithMessage("The Description of the Gallery cannot be empty.")
                     .Must(Description => Description == null || Description == Description.ToLower())
                     .WithMessage("Description must be in lowercase if provided.");
             });
@@ -41,9 +43,11 @@ namespace Gallery.Application.GalleryAppService.Validations
                 .Must((dto, name) => IsUniqueGalleryName(name)) // Custom validation for uniqueness
                 .WithMessage("The Name of the gallery must be unique.")
                 .Must(name => name == null || name == name.ToLower())
-                .WithMessage("Description must be in lowercase if provided.");
+                .WithMessage("Name must be in lowercase if provided.");
 
                 RuleFor(dto => (dto as GalleryUpdateDto).Description)
+                    .NotEmpty()
+                    .WithMessage("The Description of the Gallery cannot be empty.")
                     .Must(Description => Description == null || Description == Description.ToLower())
                     .WithMessage("Description must be in lowercase if provided.");
 

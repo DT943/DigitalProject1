@@ -26,14 +26,20 @@ namespace Gallery.Application.FileAppservice.Validations
                     .WithMessage("The Title must be in lowercase.");
 
                 RuleFor(dto => (dto as FileCreateDto).AlternativeText)
+                    .NotEmpty()
+                    .WithMessage("The Alternative Text cannot be empty.")
                     .Must(text => text == null || text == text.ToLower())
                     .WithMessage("AlternativeText must be in lowercase if provided.");
 
                 RuleFor(dto => (dto as FileCreateDto).Caption)
+                    .NotEmpty()
+                    .WithMessage("The Caption cannot be empty.")
                     .Must(text => text == null || text == text.ToLower())
                     .WithMessage("Caption must be in lowercase if provided.");
 
                 RuleFor(dto => (dto as FileCreateDto).Description)
+                    .NotEmpty()
+                    .WithMessage("The Description cannot be empty.")
                     .Must(text => text == null || text == text.ToLower())
                     .WithMessage("Description must be in lowercase if provided.");
 
@@ -54,14 +60,20 @@ namespace Gallery.Application.FileAppservice.Validations
                     .WithMessage("The Title must be in lowercase.");
 
                 RuleFor(dto => (dto as FileUpdateDto).AlternativeText)
+                    .NotEmpty()
+                    .WithMessage("The Alternative Text of the File cannot be empty.")
                     .Must(text => text == null || text == text.ToLower())
                     .WithMessage("AlternativeText must be in lowercase if provided.");
 
                 RuleFor(dto => (dto as FileUpdateDto).Caption)
+                    .NotEmpty()
+                    .WithMessage("The Caption of the File cannot be empty.")
                     .Must(text => text == null || text == text.ToLower())
                     .WithMessage("Caption must be in lowercase if provided.");
 
                 RuleFor(dto => (dto as FileUpdateDto).Description)
+                    .NotEmpty()
+                    .WithMessage("The Description of the File cannot be empty.")
                     .Must(text => text == null || text == text.ToLower())
                     .WithMessage("Description must be in lowercase if provided.");
 
