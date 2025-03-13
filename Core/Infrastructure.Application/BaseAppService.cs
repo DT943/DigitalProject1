@@ -14,7 +14,7 @@ using Infrastructure.Application.BasicDto;
 
 namespace Infrastructure.Application
 {
-    public abstract class BaseAppService<TServiceDbContext, TEntity, TGetDto, TCreateDto, TUpdateDto, TFilterDto> : IBaseAppService<TGetDto, TCreateDto, TUpdateDto, TFilterDto>
+    public abstract class BaseAppService<TServiceDbContext, TEntity, TGetAllDto, TGetDto, TCreateDto, TUpdateDto, TFilterDto> : IBaseAppService<TGetAllDto,TGetDto, TCreateDto, TUpdateDto, TFilterDto>
         where TServiceDbContext : BaseDbContext<TServiceDbContext>
         where TEntity : BasicEntity
         where TCreateDto : IValidatableDto
@@ -123,12 +123,12 @@ namespace Infrastructure.Application
             return await Get(result.Entity.Id);
         }
 
-        public virtual async Task<IEnumerable<TGetDto>> GetAll(TFilterDto input)
+        public virtual async Task<IEnumerable<TGetAllDto>> GetAll(TFilterDto input)
         {
             var result = await QueryExcuter(input).AsNoTracking().ToListAsync();
             var filterdResultForCount = _processor.Apply(input, result.AsQueryable(), applyPagination: false);
             var filterdResult = _processor.Apply(input, filterdResultForCount);
-            return await Task.FromResult(_mapper.Map<List<TGetDto>>(filterdResult));
+            return await Task.FromResult(_mapper.Map<List<TGetAllDto>>(filterdResult));
         }
     }
 }

@@ -10,7 +10,7 @@ using Sieve.Models;
 
 namespace Offer.Application.HolidayAppService
 {
-    public interface IHolidayAppService : IBaseAppService<HolidayGetDto, HolidayCreateDto, HolidayUpdateDto, SieveModel>
+    public interface IHolidayAppService : IBaseAppService<HolidayGetDto, HolidayGetDto, HolidayCreateDto, HolidayUpdateDto, SieveModel>
     {
     }
 }

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Inventory.Application.InventoryAppService
 {
-    public class InventoryAppService : BaseAppService<InventoryDbContext, Domain.Models.Inventory, InventoryGetDto, InventoryCreateDto, InventoryUpdateDto, SieveModel>, IInventoryAppService
+    public class InventoryAppService : BaseAppService<InventoryDbContext, Domain.Models.Inventory, InventoryGetDto, InventoryGetDto, InventoryCreateDto, InventoryUpdateDto, SieveModel>, IInventoryAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         InventoryDbContext _serviceDbContext;

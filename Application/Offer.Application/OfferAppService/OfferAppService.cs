@@ -15,7 +15,7 @@ using Offer.Application.OfferAppService.Validations;
 
 namespace Offer.Application.OfferAppService
 {
-    public class OfferAppService : BaseAppService<OfferDbContext, Domain.Models.Offer, OfferGetDto, OfferCreateDto, OfferUpdateDto, SieveModel>, IOfferAppService
+    public class OfferAppService : BaseAppService<OfferDbContext, Domain.Models.Offer, OfferGetDto, OfferGetDto, OfferCreateDto, OfferUpdateDto, SieveModel>, IOfferAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         OfferDbContext _serviceDbContext;

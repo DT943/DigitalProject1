@@ -12,7 +12,7 @@ using Infrastructure.Application.Exceptions;
 using System.Collections.Generic;
 namespace Gallery.Application.FileAppservice
 {
-    public class FileAppService : BaseAppService<GalleryDbContext, Domain.Models.File, FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>, IFileAppService
+    public class FileAppService : BaseAppService<GalleryDbContext, Domain.Models.File, FileGetDto, FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>, IFileAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         GalleryDbContext _serviceDbContext;

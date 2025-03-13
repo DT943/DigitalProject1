@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Order.Host.Controllers
 {
     [Authorize]
-    public class OrderController : BaseController<IOrderAppService, Domain.Models.Order, OrderGetDto, OrderCreateDto, OrderUpdateDto, SieveModel>
+    public class OrderController : BaseController<IOrderAppService, Domain.Models.Order, OrderGetDto, OrderGetDto, OrderCreateDto, OrderUpdateDto, SieveModel>
     {
         IOrderAppService _appService;
         public OrderController(IOrderAppService appService) : base(appService)

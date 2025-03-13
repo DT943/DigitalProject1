@@ -7,7 +7,7 @@ using CMS.Application.ComponentAppService.Dto;
 
 namespace CMS.Host.Controllers
 {
-    public class ComponentController : BaseController<IComponentAppService, Domain.Models.Component, ComponentGetDto, ComponentCreateDto, ComponentUpdateDto, SieveModel>
+    public class ComponentController : BaseController<IComponentAppService, Domain.Models.Component, ComponentGetDto, ComponentGetDto, ComponentCreateDto, ComponentUpdateDto, SieveModel>
     {
         IComponentAppService _appService;
         public ComponentController(IComponentAppService appService) : base(appService)

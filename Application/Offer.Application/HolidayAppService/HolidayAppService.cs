@@ -17,7 +17,7 @@ using Sieve.Services;
 
 namespace Offer.Application.HolidayAppService
 {
-    public class HolidayAppService : BaseAppService<OfferDbContext, Domain.Models.HolidayOffer, HolidayGetDto, HolidayCreateDto, HolidayUpdateDto, SieveModel>, IHolidayAppService
+    public class HolidayAppService : BaseAppService<OfferDbContext, Domain.Models.HolidayOffer, HolidayGetDto, HolidayGetDto, HolidayCreateDto, HolidayUpdateDto, SieveModel>, IHolidayAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         OfferDbContext _serviceDbContext;
