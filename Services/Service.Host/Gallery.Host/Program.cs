@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
 using System.Net;
+using Microsoft.Extensions.FileProviders;
 
 
 
@@ -19,6 +20,7 @@ builder.WebHost.ConfigureKestrel(options =>
         listenOptions.UseHttps();  // HTTPS port
     });
 });
+ 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -53,6 +55,8 @@ builder.Services.AddDbContext<GalleryDbContext>((sp, options) =>
 });
 builder.Services.AddSwaggerGen();
 
+
+
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();
@@ -61,6 +65,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreFrontServices/publish/images"),
+    RequestPath = "/images" // This maps the '/images' URL path to the directory
+});
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();

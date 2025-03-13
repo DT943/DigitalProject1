@@ -7,11 +7,9 @@ using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
 using System.Net;
 
-
+Console.WriteLine("Application is starting V.1.3");
 
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine("Offer is starting V.1.3");
-
 builder.WebHost.ConfigureKestrel(options =>
 {
 
@@ -20,6 +18,8 @@ builder.WebHost.ConfigureKestrel(options =>
         listenOptions.UseHttps();  // HTTPS port
     });
 });
+
+ 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

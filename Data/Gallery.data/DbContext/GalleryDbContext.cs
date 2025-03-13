@@ -26,7 +26,6 @@ namespace Gallery.Data.DbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasDefaultSchema(GetSchemaName());
-
         }
 
         public DbSet<Domain.Models.File> Files { get; set; }

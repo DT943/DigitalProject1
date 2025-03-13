@@ -63,7 +63,19 @@ namespace Infrastructure.Application
             return createdEntity;
         }
 
-        protected virtual TEntity BeforUpdate(TUpdateDto update, TEntity entity) => _mapper.Map(update, entity);
+
+        protected virtual TEntity BeforUpdate(TUpdateDto update, TEntity entity)
+        {
+ 
+            if (entity is BasicEntityWithAuditInfo)
+            {
+                (entity as BasicEntityWithAuditInfo).ModifiedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+                (entity as BasicEntityWithAuditInfo).ModifiedDate = DateTime.Now;
+            }
+            return _mapper.Map(update, entity);
+        }
+
+       // protected virtual TEntity BeforUpdate2(TUpdateDto update, TEntity entity) => _mapper.Map(update, entity);
 
 
         public virtual async Task<TGetDto> Create(TCreateDto create)
@@ -99,7 +111,15 @@ namespace Infrastructure.Application
             var oldEntity = await FindById(update.Id);
             var newEntity = BeforUpdate(update, oldEntity);
             var result = _serviceDbContext.Set<TEntity>().Update(newEntity);
-            await _serviceDbContext.SaveChangesAsync();
+            try
+            {
+                await _serviceDbContext.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+            }
+            
             return await Get(result.Entity.Id);
         }
 
