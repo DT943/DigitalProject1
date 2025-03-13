@@ -9,6 +9,8 @@ using System.IO;
 using Gallery.Domain.Models;
 using Offer.Domain.Models;
 using System.Reflection;
+using Gallery.Application.FileAppservice.Dtos;
+using AdminLTE.Services;
 
 namespace AdminLTE.Pages.Gallery.File
 {
@@ -26,10 +28,17 @@ namespace AdminLTE.Pages.Gallery.File
         [BindProperty(SupportsGet = true)]
         public int GalleryId { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int galleryId)
+        public async Task<IActionResult> OnGetAsync()
         {
-            GalleryId = galleryId;
-            return Page();
+            if (TempData.TryGetValue("GalleryId", out var galleryIdObj) && galleryIdObj is int galleryId)
+            {
+                TempData.Keep("GalleryId");
+
+                GalleryId = galleryId;
+                return Page();
+            }
+
+            return RedirectToPage("/Error", new { message = "GalleryId not found." });
         }
 
         [ValidateAntiForgeryToken]
@@ -63,11 +72,14 @@ namespace AdminLTE.Pages.Gallery.File
 
             if (response.IsSuccessStatusCode)
             {
-                //TempData["GalleryId"] = File.GalleryId;
-                //return RedirectToPage("/Gallery/File/Index");
+                TempData["GalleryId"] = File.GalleryId;
+                TempData.Keep("GalleryId");
+
+
+                return RedirectToPage("/Gallery/File/Index");
 
                 // Redirect to a success page or another action
-                return RedirectToPage("/Gallery/File/Index", new { galleryId = File.GalleryId });
+                //return RedirectToPage("/Gallery/File/Index", new { galleryId = File.GalleryId });
             }
             else
             {

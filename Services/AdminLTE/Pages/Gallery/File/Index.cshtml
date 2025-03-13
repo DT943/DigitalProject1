@@ -213,6 +213,12 @@
                                         <p style="text-align: center;margin-top: -10px;">
                                             <strong>@file.FileName</strong>
                                         </p>
+                                        <!-- Add a checkbox for selection -->
+                                        <div class="custom-control custom-checkbox" style="position: absolute; top: 10px; right: 10px;">
+                                            <input type="checkbox" class="custom-control-input file-checkbox" id="file-@file.Id" value="@file.Id">
+                                            <label class="custom-control-label" for="file-@file.Id"></label>
+                                        </div>
+
                                     </div>
                                 }
                             }
@@ -301,13 +307,18 @@
                             </div>
                         </div>    
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <a id="downloadButton" href="#" class="btn btn-primary">Download</a>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                        <a id="deleteButton" href="#" style="margin: 10px;" class="btn btn-danger float-right">Delete</a>
-                    </div>
+                    <button id="updateFile" type="submit" class="btn btn-primary">Update</button>
                 </form>
+                    <div class="modal-footer">
+                        <a id="downloadButton" href="#" class="btn btn-primary">Download</a>
+
+                        <form id="delete" method="post" asp-page-handler="DeleteFile" style="display: inline;">
+                            <input id="deletefile" type="hidden" name="fileId" />
+                            <input id="galleryIdforfiledeleted" type="hidden" name="galleryId" />
+                            <button id="deleteonefile" type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
             </div>
         </div>
     </div>
@@ -316,13 +327,16 @@
 
 <div class="card-footer clearfix">
 
-    <form id="deleteFilesForm" method="post" action="/Gallery/File/DeleteFile?galleryId=@Model.GalleryId">
+    <form id="deleteFileForm" asp-page="/Gallery/File/DeleteFile" method="post">
         <input type="hidden" id="selectedFileIds" name="selectedFileIds" />
+        <button style="margin: 10px;" type="button" id="deleteFileSelectedButton" class="btn btn-danger float-right">Delete Files</button>
     </form>
 
-    <button id="deleteFilesBtn" class="btn btn-danger">Delete Selected Files</button>
+    <form method="post" asp-page-handler="CreateFile" style="display: inline;">
+        <input type="hidden" name="galleryId" value="@Model.GalleryId" />
+        <button style ="margin: 10px;" type="submit" class="btn btn-success float-right">Create File</button>
+    </form>
 
-    <a href="/Gallery/File/CreateFile?galleryId=@Model.GalleryId" style="margin: 10px;" class="btn btn-success float-right">Create File</a>
     <a asp-page="/Gallery/Index" style="margin: 10px;" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Galleries</a>
 </div>
 

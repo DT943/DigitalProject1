@@ -35,6 +35,15 @@ namespace AdminLTE.Pages.Gallery
         [BindProperty]
         public List<AuthenticationGetDto> Users { get; set; } = new List<AuthenticationGetDto>();
 
+        public async Task<IActionResult> OnPostStoreGalleryIdAsync(int galleryId)
+        {
+            // Store the galleryId in TempData
+            TempData["GalleryId"] = galleryId;
+
+            // Redirect to the FileModel page
+            return RedirectToPage("/Gallery/File/Index");
+        }
+
 
         public async Task<IActionResult> OnGetAsync(int? Id, string? name)
         {

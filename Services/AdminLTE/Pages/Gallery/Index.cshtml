@@ -128,7 +128,22 @@
                             <div class="icon">
                                 <i class="ion-android-folder-open" style="font-size: 70px;margin-top: -15px;"></i>
                             </div>
-                            <a href="/Gallery/File/Index?galleryId=@gallery.Id" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <!-- Form to submit the gallery ID -->
+                            <form class="small-box-footer" method="post" asp-page-handler="StoreGalleryId" style="display: inline;">
+                                <input type="hidden" name="galleryId" value="@gallery.Id" />
+                                <button type="submit" class="small-box-footer" style="background: none; border: none; color: inherit; cursor: pointer;">
+                                    More info <i class="fas fa-arrow-circle-right"></i>
+                                </button>
+                            </form>
+
+
+                            <!-- Add a checkbox for selection -->
+                            <div class="custom-control custom-checkbox" style="position: absolute; top: 10px; right: 10px;">
+                                <input type="checkbox" class="custom-control-input gallery-checkbox" id="gallery-@gallery.Id" value="@gallery.Id">
+                                <label class="custom-control-label" for="gallery-@gallery.Id"></label>
+                            </div>
+
+                        
                         </div>
                     </div>
                     <!-- ./col -->
@@ -145,6 +160,10 @@
 </section>
 
 <footer class="footer">
+    <form id="deleteForm" asp-page="/Gallery/DeleteGallery" method="post">
+        <input type="hidden" id="selectedGalleryIds" name="selectedGalleryIds" />
+        <button type="button" id="deleteSelectedButton" class="btn btn-danger float-right">Delete Gallery</button>
+    </form>
     <a asp-page="/Gallery/CreateGallery" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add Gallery</a>
 </footer>
 

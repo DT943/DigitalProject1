@@ -5,6 +5,7 @@ using Gallery.Application.GalleryAppService.Dtos;
 using Gallery.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Offer.Domain.Models;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -40,23 +41,20 @@ namespace AdminLTE.Pages.Gallery.File
         [BindProperty]
         public List<FileGetDto> Files { get; set; } = new List<FileGetDto>();
 
-        public async Task<IActionResult> OnGetAsync(int? Id, int galleryId)
+        public async Task<IActionResult> OnGetAsync(int? Id)
         {
             try
             {
-                //GalleryId = galleryId;
-                /*
                 // Retrieve the galleryId from TempData
-                if (TempData.TryGetValue("GalleryId", out var galleryId))
+                if (TempData.TryGetValue("GalleryId", out var galleryIdObj) && galleryIdObj is int galleryId)
                 {
-                    GalleryId = (int)galleryId;
+                    GalleryId = galleryId;
                 }
                 else
                 {
                     // Handle the case where galleryId is not found in TempData
                     return RedirectToPage("/Error", new { message = "GalleryId not found." });
                 }
-                */
 
 
                 string fileApiUrl = $"/File/getby-galleryid/{galleryId}";
@@ -147,7 +145,49 @@ namespace AdminLTE.Pages.Gallery.File
 
             return Page();
         }
+        public async Task<IActionResult> OnPostAsync()
+        {
+            StringUtility.ConvertStringsToLowercase(FileUpdate);
 
+            var json = JsonSerializer.Serialize(FileUpdate);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"/File", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                TempData["GalleryId"] = FileUpdate.GalleryId;
+
+                return RedirectToPage("/Gallery/File/Index");
+            }
+            else
+            {
+                // Log the error (optional)
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                // Redirect to the error page with a custom message
+                return RedirectToPage("/Error", new { message = $"API Error: {response.StatusCode} - {errorMessage}" });
+            }
+        }
+        
+        public IActionResult OnPostCreateFile(int galleryId)
+        {
+            // Store the galleryId in TempData
+            TempData["GalleryId"] = galleryId;
+
+            // Redirect to the CreateFileModel page
+            return RedirectToPage("/Gallery/File/CreateFile");
+        }
+        public IActionResult OnPostDeleteFile(long fileId, int galleryId)
+        {
+            // Store the galleryId in TempData
+            TempData["GalleryId"] = galleryId;
+
+            // Store the fileId in TempData
+            TempData["FileId"] = fileId.ToString();
+
+            // Redirect to the DeleteFileModel page
+            return RedirectToPage("/Gallery/File/DeleteFile");
+        }
 
 
 

@@ -1,0 +1,44 @@
+﻿@page "/Page/Index"
+@model AdminLTE.Pages.Page.IndexModel
+@{
+}
+<div class="card card-default" data-select2-id="29">
+    <div class="card-header">
+        <h3 class="card-title">Select2 (Default Theme)</h3>
+
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body" data-select2-id="96">
+        <div class="row" data-select2-id="106">
+            @foreach () { 
+
+                <div class="col-md-12" data-select2-id="105">
+                    <div class="form-group" data-select2-id="104">
+                        <label>Minimal</label>
+                        <select class="form-control select2 select2-hidden-accessible" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                            <option selected="selected" data-select2-id="3">Alabama</option>
+                            <option data-select2-id="32">Alaska</option>
+                            <option data-select2-id="33">California</option>
+                            <option data-select2-id="34">Delaware</option>
+                            <option data-select2-id="35">Tennessee</option>
+                            <option data-select2-id="36">Texas</option>
+                            <option data-select2-id="37">Washington</option>
+                        </select><span class="select2 select2-container select2-container--default select2-container--below" dir="ltr" data-select2-id="2" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-disabled="false" aria-labelledby="select2-ygu8-container"><span class="select2-selection__rendered" id="select2-ygu8-container" role="textbox" aria-readonly="true" title="Alabama">Alabama</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span>
+                    </div>
+                    <!-- /.form-group -->
+                </div>
+            }
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.card-body -->
+</div>
