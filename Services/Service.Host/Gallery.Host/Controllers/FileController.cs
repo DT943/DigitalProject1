@@ -27,7 +27,8 @@ namespace Gallery.Host.Controllers
             _appService = appService;
             _fileValidator= fileValidator;
         }
-
+        [RequestSizeLimit(1_000_000_000)] // 1GB
+        [RequestFormLimits(MultipartBodyLengthLimit = 1_000_000_000)]
         public override async Task<ActionResult<FileGetDto>> Create(FileCreateDto createDto)
         {
             var validationResult = await _fileValidator.ValidateAsync(createDto, options => options.IncludeRuleSets("create", "default"));
