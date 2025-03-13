@@ -9,7 +9,7 @@ using Sieve.Models;
 
 namespace Gallery.Application.GalleryAppService
 {
-    public interface IGalleryAppService : IBaseAppService<GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>
+    public interface IGalleryAppService : IBaseAppService<GalleryGetDto, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>
     {
     }
 }

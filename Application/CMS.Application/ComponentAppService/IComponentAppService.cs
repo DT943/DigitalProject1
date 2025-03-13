@@ -10,7 +10,7 @@ using Sieve.Models;
 
 namespace CMS.Application.ComponentAppService
 {
-    public interface IComponentAppService : IBaseAppService<ComponentGetDto, ComponentCreateDto, ComponentUpdateDto, SieveModel>
+    public interface IComponentAppService : IBaseAppService<ComponentGetDto, ComponentGetDto, ComponentCreateDto, ComponentUpdateDto, SieveModel>
     {
     }
 }

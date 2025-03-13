@@ -15,7 +15,7 @@ using CMS.Application.ComponentAppService.Validations;
 
 namespace CMS.Application.ComponentAppService
 {
-    public class ComponentAppService : BaseAppService<CMSDbContext, Domain.Models.Component, ComponentGetDto, ComponentCreateDto, ComponentUpdateDto, SieveModel>, IComponentAppService
+    public class ComponentAppService : BaseAppService<CMSDbContext, Domain.Models.Component, ComponentGetDto, ComponentGetDto, ComponentCreateDto, ComponentUpdateDto, SieveModel>, IComponentAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         CMSDbContext _serviceDbContext;

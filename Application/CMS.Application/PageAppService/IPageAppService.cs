@@ -9,7 +9,7 @@ using Sieve.Models;
 
 namespace CMS.Application.PageAppService
 {
-    public interface IPageAppService : IBaseAppService<PageGetDto, PageCreateDto, PageUpdateDto, SieveModel>
+    public interface IPageAppService : IBaseAppService<PageGetDto, PageGetDto, PageCreateDto, PageUpdateDto, SieveModel>
     {
         public Task<PageGetDto> GetPageBySubUrl(string pos, string lang, string pageUrlName);
 

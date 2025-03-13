@@ -8,10 +8,10 @@ namespace Infrastructure.Service.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class BaseController<TAppService, TEntity,TGetDto,TCreatDto,TUpdateDto, TFilterDto>
+    public class BaseController<TAppService, TEntity, TGetAllDto, TGetDto,TCreatDto,TUpdateDto, TFilterDto>
         : ControllerBase,
-        IBaseController<TAppService, TEntity, TGetDto, TCreatDto, TUpdateDto, TFilterDto>
-        where TAppService : IBaseAppService<TGetDto, TCreatDto, TUpdateDto, TFilterDto>
+        IBaseController<TAppService, TEntity, TGetAllDto, TGetDto, TCreatDto, TUpdateDto, TFilterDto>
+        where TAppService : IBaseAppService< TGetAllDto,TGetDto, TCreatDto, TUpdateDto, TFilterDto>
         where TEntity : BasicEntity
         where TFilterDto : SieveModel
     {
@@ -44,7 +44,7 @@ namespace Infrastructure.Service.Controllers
         }
 
         [HttpGet]
-        public virtual async Task<ActionResult<TGetDto>> GetAll([FromQuery] TFilterDto sieve)
+        public virtual async Task<ActionResult<TGetAllDto>> GetAll([FromQuery] TFilterDto sieve)
         {
 
             var entity = await _appService.GetAll(sieve);

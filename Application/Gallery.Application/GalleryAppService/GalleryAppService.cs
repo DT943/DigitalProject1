@@ -15,7 +15,7 @@ using Sieve.Services;
 
 namespace Gallery.Application.GalleryAppService
 {
-    public class GalleryAppService : BaseAppService<GalleryDbContext, Domain.Models.Gallery, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>, IGalleryAppService
+    public class GalleryAppService : BaseAppService<GalleryDbContext, Domain.Models.Gallery, GalleryGetDto, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>, IGalleryAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         GalleryDbContext _serviceDbContext;

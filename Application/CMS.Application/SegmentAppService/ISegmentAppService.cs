@@ -10,7 +10,7 @@ using Sieve.Models;
 
 namespace CMS.Application.SegmentAppService
 {
-    public interface ISegmentAppService : IBaseAppService<SegmentGetDto, SegmentCreateDto, SegmentUpdateDto, SieveModel>
+    public interface ISegmentAppService : IBaseAppService<SegmentGetDto, SegmentGetDto, SegmentCreateDto, SegmentUpdateDto, SieveModel>
     {
     }
 }
