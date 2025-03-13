@@ -10,7 +10,7 @@ namespace Offer.Host.Controllers
 {
  
         [Authorize]
-        public class OfferController : BaseController<IOfferAppService, Domain.Models.Offer, OfferGetDto, OfferCreateDto, OfferUpdateDto, SieveModel>
+        public class OfferController : BaseController<IOfferAppService, Domain.Models.Offer, OfferGetDto, OfferGetDto, OfferCreateDto, OfferUpdateDto, SieveModel>
         {
             IOfferAppService _appService;
             public OfferController(IOfferAppService appService) : base(appService)

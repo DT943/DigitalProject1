@@ -16,7 +16,7 @@ using Sieve.Services;
 
 namespace CMS.Application.PageAppService
 {
-    public class PageAppService : BaseAppService<CMSDbContext, Domain.Models.Page, PageGetDto, PageCreateDto, PageUpdateDto, SieveModel>, IPageAppService
+    public class PageAppService : BaseAppService<CMSDbContext, Domain.Models.Page, PageGetDto, PageGetDto, PageCreateDto, PageUpdateDto, SieveModel>, IPageAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         CMSDbContext _serviceDbContext;
