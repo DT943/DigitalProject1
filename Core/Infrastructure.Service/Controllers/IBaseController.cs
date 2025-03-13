@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Service.Controllers
 {
-    public interface IBaseController<TAppService, TEntity, TGetDto, TCreatDto, TUpdateDto, TFilterDto>
+    public interface IBaseController<TAppService, TEntity, TGetAllDto, TGetDto, TCreatDto, TUpdateDto, TFilterDto>
     {
         Task<ActionResult<TGetDto>> Create(TCreatDto dto);
         Task<ActionResult<TGetDto>> Delete(int id);
         Task<ActionResult<TGetDto>> Get(int id);
+        Task<ActionResult<TGetAllDto>> GetAll([FromQuery] TFilterDto sieve);
         Task<ActionResult<TGetDto>> Update(TUpdateDto dto);
     }
 }

@@ -9,7 +9,7 @@ using Sieve.Models;
 
 namespace Offer.Application.OfferAppService
 {
-    public interface IOfferAppService : IBaseAppService<OfferGetDto, OfferCreateDto, OfferUpdateDto, SieveModel>
+    public interface IOfferAppService : IBaseAppService<OfferGetDto, OfferGetDto, OfferCreateDto, OfferUpdateDto, SieveModel>
     {
     }
 }

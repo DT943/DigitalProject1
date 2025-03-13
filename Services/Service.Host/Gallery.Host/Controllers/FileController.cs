@@ -18,7 +18,7 @@ using FluentValidation;
 namespace Gallery.Host.Controllers
 {
     [Authorize]
-    public class FileController : BaseController<IFileAppService, Domain.Models.File, FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>
+    public class FileController : BaseController<IFileAppService, Domain.Models.File, FileGetDto, FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>
     {
         IFileAppService _appService;
         FileValidator _fileValidator;

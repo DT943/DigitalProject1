@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Order.Application.OrderAppService
 {
-    public class OrderAppService : BaseAppService<OrderDbContext, Domain.Models.Order, OrderGetDto, OrderCreateDto, OrderUpdateDto, SieveModel>, IOrderAppService
+    public class OrderAppService : BaseAppService<OrderDbContext, Domain.Models.Order, OrderGetDto, OrderGetDto, OrderCreateDto, OrderUpdateDto, SieveModel>, IOrderAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         OrderDbContext _serviceDbContext;
