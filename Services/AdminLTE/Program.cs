@@ -1,6 +1,7 @@
 using AdminLTE.Pages.Gallery;
 using AdminLTE.Pages.Gallery.File;
 using AdminLTE.Pages.Offer;
+using AdminLTE.Pages.Page;
 using AdminLTE.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -63,6 +64,7 @@ builder.Services.AddHttpClient<GalleryModel>();
 builder.Services.AddHttpClient<CreateFileModel>();
 builder.Services.AddHttpClient<DeleteFileModel>();
 
+builder.Services.AddHttpClient<PagesModel>();
 
 
 builder.Services.AddHttpContextAccessor();

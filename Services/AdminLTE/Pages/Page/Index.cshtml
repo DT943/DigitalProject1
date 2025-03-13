@@ -1,7 +1,11 @@
 ﻿@page "/Page/Index"
-@model AdminLTE.Pages.Page.IndexModel
+@model AdminLTE.Pages.Page.PagesModel
 @{
 }
+
+
+<div id="partialViewContainer"></div>
+
 <div class="card card-default" data-select2-id="29">
     <div class="card-header">
         <h3 class="card-title">Select2 (Default Theme)</h3>
@@ -18,7 +22,6 @@
     <!-- /.card-header -->
     <div class="card-body" data-select2-id="96">
         <div class="row" data-select2-id="106">
-            @foreach () { 
 
                 <div class="col-md-12" data-select2-id="105">
                     <div class="form-group" data-select2-id="104">
@@ -35,10 +38,27 @@
                     </div>
                     <!-- /.form-group -->
                 </div>
-            }
             <!-- /.col -->
         </div>
         <!-- /.row -->
     </div>
     <!-- /.card-body -->
 </div>
+
+<script>
+    document.getElementById('inputForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get input values
+        const input1 = document.getElementById('input1').value;
+        const input2 = document.getElementById('input2').value;
+
+        // Fetch the partial view with the input values
+        fetch('/Page/Index?handler=PartialView&input1=' + encodeURIComponent(input1) + '&input2=' + encodeURIComponent(input2))
+            .then(response => response.text())
+            .then(html => {
+                // Update the partial view container
+                document.getElementById('partialViewContainer').innerHTML = html;
+            });
+    });
+</script>
