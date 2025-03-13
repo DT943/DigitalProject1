@@ -17,6 +17,8 @@ namespace Gallery.Application.GalleryAppService.Dtos
         public DateTime CreatedDate { get; set; }
          public string CreatedBy { get; set; }
         public DateTime? ModifiedDate { get; set; }
-         public string? ModifiedBy { get; set; }
+        public string? ModifiedBy { get; set; }
+
+        public IEnumerable<string> FileTypes { get; set; }
     }
 }
