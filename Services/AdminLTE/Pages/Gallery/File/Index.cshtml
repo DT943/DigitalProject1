@@ -1,0 +1,342 @@
+﻿@page "/Gallery/File/Index"
+@model AdminLTE.Pages.Gallery.File.FileModel
+@{
+    var userLookup = Model.Users.ToDictionary(u => u.Code, u => $"{u.FirstName} {u.LastName}");
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-4">
+                <form class="form-group" method="get" id="userForm">
+
+                    <div class="input-group input-group-sm">
+
+                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
+                            <span>Created By</span>
+                        </div>
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <select class="custom-select" asp-for="SelectedUser" onchange="document.getElementById('userForm').submit()" style="height: 30px;padding: 0rem 0rem 0rem 1rem">
+                                <option>AllUsers</option>
+                                @foreach (var user in Model.Users)
+                                {
+                                    <option>@user.FirstName @user.LastName</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+
+            <div class="col-sm-4">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+                        <input id="searchByUpdatedBy" name="updatedBy" class="form-control form-control-navbar" type="search" placeholder="Updated by a user" aria-label="Search By User Update" data-listener-added_94091133="true">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-4">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+                        <input id="searchByName" name="id" class="form-control form-control-navbar" type="search" placeholder="Search by Name" aria-label="Search by name" data-listener-added_94091133="true">
+                        <div class="input-group-append">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+
+                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
+                            <span>Created At</span>
+                        </div>
+
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <span class="input-group-text">Start Date</span>
+                        </div>
+                        <input id="searchByCreatedAtStart" name="createdAtStart" class="form-control form-control-navbar" type="date" aria-label="Created At Start">
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <span class="input-group-text">End Date</span>
+                        </div>
+                        <input id="searchByCreatedAtEnd" name="createdAtEnd" class="form-control form-control-navbar" type="date" aria-label="Created At End">
+                        <div class="input-group-append" style="margin-left: 5px;">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+            <div class="col-sm-6">
+                <form class="search-file">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
+                            <span>Updated At</span>
+                        </div>
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <span class="input-group-text">Start Date</span>
+                        </div>
+                        <input id="searchByUpdatedAtStart" name="updatedAtStart" class="form-control form-control-navbar" type="date" aria-label="Updated At Start">
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <span class="input-group-text">End Date</span>
+                        </div>
+                        <input id="searchByUpdatedAtEnd" name="updatedAtEnd" class="form-control form-control-navbar" type="date" aria-label="Updated At End">
+                        <div class="input-group-append" style="margin-left: 5px;">
+                            <button class="btn btn-navbar" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div><!-- /.col -->
+        </div><!-- /.row -->
+
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card-body">
+                    <div>
+                        <div class="btn-group w-100 mb-2">
+                            <a class="btn btn-info active" href="javascript:void(0)" data-filter="all"> 
+                                <div class="form-check" style="display: flex;padding-left: 1.75rem;">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label"></label>
+                                </div>
+                                All Files 
+                            </a>
+                            <a class="btn btn-info" href="javascript:void(0)" data-filter="1">
+                                <div class="form-check" style="display: flex;padding-left: 1.75rem;">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label"></label>
+                                </div>
+                                Images 
+                            </a>
+                            <a class="btn btn-info" href="javascript:void(0)" data-filter="2">
+                                <div class="form-check" style="display: flex;padding-left: 1.75rem;">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label"></label>
+                                </div>
+                                Videos
+                            </a>
+                            <a class="btn btn-info" href="javascript:void(0)" data-filter="3">
+                                <div class="form-check" style="display: flex;padding-left: 1.75rem;">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label"></label>
+                                </div>
+                                Audios 
+                            </a>
+                            <a class="btn btn-info" href="javascript:void(0)" data-filter="4">
+                                <div class="form-check" style="display: flex;padding-left: 1.75rem;">
+                                    <input class="form-check-input" type="checkbox">
+                                    <label class="form-check-label"></label>
+                                </div>
+                                Other Files
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="filter-container p-0 row" style="padding: 3px; position: relative; width: 100%; display: flex; flex-wrap: wrap; height: 143px;">
+
+                            @if (Model.Files != null && Model.Files.Any())
+                            {
+
+                                @foreach (var file in Model.Files)
+                                {
+                                    var uploadedByName = userLookup.ContainsKey(file.CreatedBy) ? userLookup[file.CreatedBy] : "Unknown User";
+
+                                    <div class="filtr-item col-sm-2 filteredOut" data-category="@(file.FileType == "Image" ? 1 : file.FileType == "Video" ? 2 : file.FileType == "Audio" ? 3 : 4)" data-sort="@file.FileType" style="text-align: center;height:125px; opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
+                                        
+
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#fileModal"
+                                        data-id="@file.Id"
+                                        data-uploadedon="@file.CreatedDate"
+                                        data-uploadedby="@uploadedByName"
+                                        data-fileId="@file.Id"
+                                        data-galleryId="@file.GalleryId"
+                                        data-name="@file.FileName"
+                                        data-filetype="@file.FileType"
+                                        data-size="@file.Size"
+                                        data-fileLength="Length"
+                                        data-fileImagewidth="@file.ImageWidth"
+                                        data-fileImageHeight="@file.ImageHeight"
+                                        data-fileImageAlternativeText="@file.AlternativeText"
+                                        data-filetitle="@file.Title"
+                                        data-caption="@file.Caption"
+                                        data-description="@file.Description"
+                                        data-fileurlpath="@file.FileUrlPath"
+                                        >
+                                        @if (file.FileType == "Image")
+                                        {
+                                            <img src="@file.FileUrlPath" class="img-fluid mb-2" alt="Image File">
+                                        }
+                                        else if (file.FileType == "Video")
+                                        {
+                                            <div class="video-preview" data-video-src="@file.FileUrlPath">
+                                                <img src="" class="img-fluid mb-2" alt="Loading..." style="max-width: 35%;">
+                                            </div>
+                                        }
+                                        else if (file.FileType == "Audio")
+                                        {
+                                            <img src="/TestFile/audio.jpg" class="img-fluid mb-2" alt="Audio" style="max-width: 35%;">
+                                        }
+                                        else if (file.FileType == "Pdf")
+                                        {
+                                            <img src="/TestFile/pdf.jpg" class="img-fluid mb-2" alt="Pdf" style="max-width: 35%;">
+                                        }
+                                        else if (file.FileType == "Word")
+                                        {
+                                            <img src="/TestFile/word.jpg" class="img-fluid mb-2" alt="Word" style="max-width: 35%;">
+                                        }
+                                        else if (file.FileType == "Excel")
+                                        {
+                                            <img src="/TestFile/excel.jpg" class="img-fluid mb-2" alt="Excel" style="max-width: 35%;">
+                                        }
+                                        else
+                                        {
+                                            <img src="/TestFile/file.jpg" class="img-fluid mb-2" alt="File" style="max-width: 35%;">
+                                        }
+                                        </a>
+                                        <p style="text-align: center;margin-top: -10px;">
+                                            <strong>@file.FileName</strong>
+                                        </p>
+                                        <!-- Add a checkbox for selection -->
+                                        <div class="custom-control custom-checkbox" style="position: absolute; top: 10px; right: 10px;">
+                                            <input type="checkbox" class="custom-control-input file-checkbox" id="file-@file.Id" value="@file.Id">
+                                            <label class="custom-control-label" for="file-@file.Id"></label>
+                                        </div>
+
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <p>No file available.</p>
+                            }
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal -->
+<div class="modal fade" id="fileModal" tabindex="-1" role="dialog" aria-labelledby="fileModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="fileModalLabel">File Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page-handler="SendFileData" id="updateFileForm">
+                    <div class="row">
+                        <div class="col-md-4">
+
+                            <input asp-for="@Model.GalleryId" type="hidden" value="@Model.GalleryId" />
+                            <input type="hidden" class="form-control" id="fileId" asp-for="@Model.FileUpdate.Id" />
+                            <input type="hidden" class="form-control" id="galleryId" asp-for="@Model.FileUpdate.GalleryId" />
+
+                            <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="fileUploadedOn"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="fileUploadedBy"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Name:</strong> <span id="fileName"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>File Type:</strong> <span id="fileFileType"></span></p>
+                            <p style="margin-bottom: 0rem"><strong>Size:</strong> <span id="fileSize" ></span>MB</p>
+
+
+
+                            <!-- Image-specific fields -->
+                            <div id="imageDimensions" style="display: none;" class="form-group">
+                                <p style="margin-bottom: 0rem"><strong>Dimensions:</strong> <span id="fileImageWidth" ></span> X <span id="fileImageHeight"></span></p>
+                            </div>
+                            <!-- Video/Audio-specific fields -->
+                            <div id="fileLengthSection" style="display: none;" class="form-group">
+                                <p style="margin-bottom: 0rem"><strong>Length:</strong> <span id="fileLength" ></span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div id="filePreviewContainer">
+                                <!-- Dynamic content based on file type -->
+                            </div>
+                            <!-- Image-specific fields -->
+                            <div id="imageFields" style="display: none;">
+                                <div class="form-group">
+                                    <label for="fileImageAlternativeText">Alternative Text:</label>
+                                    <input asp-for="@Model.FileUpdate.AlternativeText"  type="text" class="form-control" id="fileImageAlternativeText">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Title:</label>
+                                <input asp-for="@Model.FileUpdate.Title" type="text" class="form-control" id="fileTitle">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="fileCaption">Caption:</label>
+                                <input asp-for="@Model.FileUpdate.Caption" class="form-control" id="fileCaption">
+                            </div>
+                            <div class="form-group">
+                                <label for="fileDescription">Description:</label>
+                                <textarea asp-for="@Model.FileUpdate.Description" class="form-control" id="fileDescription"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="fileUrl">FileURL:</label>
+                                <div class="input-group">
+                                    <input class="form-control" id="fileFileUrl" readonly />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary" type="button" id="fileCopyButton">Copy to Clipboard</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>    
+                    </div>
+                    <button id="updateFile" type="submit" class="btn btn-primary">Update</button>
+                </form>
+                    <div class="modal-footer">
+                        <a id="downloadButton" href="#" class="btn btn-primary">Download</a>
+
+                        <form id="delete" method="post" asp-page-handler="DeleteFile" style="display: inline;">
+                            <input id="deletefile" type="hidden" name="fileId" />
+                            <input id="galleryIdforfiledeleted" type="hidden" name="galleryId" />
+                            <button id="deleteonefile" type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card-footer clearfix">
+
+    <form id="deleteFileForm" asp-page="/Gallery/File/DeleteFile" method="post">
+        <input type="hidden" id="selectedFileIds" name="selectedFileIds" />
+        <button style="margin: 10px;" type="button" id="deleteFileSelectedButton" class="btn btn-danger float-right">Delete Files</button>
+    </form>
+
+    <form method="post" asp-page-handler="CreateFile" style="display: inline;">
+        <input type="hidden" name="galleryId" value="@Model.GalleryId" />
+        <button style ="margin: 10px;" type="submit" class="btn btn-success float-right">Create File</button>
+    </form>
+
+    <a asp-page="/Gallery/Index" style="margin: 10px;" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Galleries</a>
+</div>
+

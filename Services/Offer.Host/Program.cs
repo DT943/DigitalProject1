@@ -9,7 +9,6 @@ using System.Net;
 
 Console.WriteLine("Application is starting V.1.3");
 
-
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -55,14 +54,6 @@ builder.Services.AddDbContext<OfferDbContext>((sp, options) =>
 });
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddRazorPages();
-
-//builder.Services.AddHttpClient<OfferModel>();
-//builder.Services.AddHttpClient<CreateFlightModel>();
-//builder.Services.AddHttpClient<UpdateFlightModel>();
-//builder.Services.AddHttpClient<DeleteFlightModel>();
-
-
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();
@@ -71,11 +62,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-app.MapRazorPages();
-
-
 app.Run();

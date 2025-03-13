@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation;
+using Gallery.Application.FileAppservice.Dtos;
 using Gallery.Application.GalleryAppService.Dtos;
 using Gallery.Data.DbContext;
 using Infrastructure.Application.Validations;
@@ -22,7 +23,15 @@ namespace Gallery.Application.GalleryAppService.Validations
                     .NotEmpty()
                     .WithMessage("The Name of the gallery cannot be empty.")
                     .Must((dto, name) => IsUniqueGalleryName(name)) // Custom validation for uniqueness
-                    .WithMessage("The Name of the gallery must be unique.");
+                    .WithMessage("The Name of the gallery must be unique.")
+                    .Must(name => name == null || name == name.ToLower())
+                    .WithMessage("Name must be in lowercase if provided.");
+
+                RuleFor(dto => (dto as GalleryCreateDto).Description)
+                    .NotEmpty()
+                    .WithMessage("The Description of the Gallery cannot be empty.")
+                    .Must(Description => Description == null || Description == Description.ToLower())
+                    .WithMessage("Description must be in lowercase if provided.");
             });
 
             RuleSet("update", () =>
@@ -32,7 +41,15 @@ namespace Gallery.Application.GalleryAppService.Validations
                 .NotEmpty()
                 .WithMessage("The Name of the gallery cannot be empty.")
                 .Must((dto, name) => IsUniqueGalleryName(name)) // Custom validation for uniqueness
-                .WithMessage("The Name of the gallery must be unique.");
+                .WithMessage("The Name of the gallery must be unique.")
+                .Must(name => name == null || name == name.ToLower())
+                .WithMessage("Name must be in lowercase if provided.");
+
+                RuleFor(dto => (dto as GalleryUpdateDto).Description)
+                    .NotEmpty()
+                    .WithMessage("The Description of the Gallery cannot be empty.")
+                    .Must(Description => Description == null || Description == Description.ToLower())
+                    .WithMessage("Description must be in lowercase if provided.");
 
             });
         }

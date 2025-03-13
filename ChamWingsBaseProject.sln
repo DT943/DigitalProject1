@@ -48,33 +48,35 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Host", "Servic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Notification.Application", "Application\Notification.Application\Notification.Application.csproj", "{22C0473F-F538-498A-B80E-41CBD0A6C070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Domain", "Core\Infrastructure.Domain\Infrastructure.Domain.csproj", "{74C8C41D-308C-419A-9135-F4A5D4A91B28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.Domain", "Core\Infrastructure.Domain\Infrastructure.Domain.csproj", "{74C8C41D-308C-419A-9135-F4A5D4A91B28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Host", "Services\Authentication.Host\Authentication.Host.csproj", "{ECEE3142-F84A-4F01-8A1B-8FDFEE58942E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authentication.Host", "Services\Authentication.Host\Authentication.Host.csproj", "{ECEE3142-F84A-4F01-8A1B-8FDFEE58942E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Offer.Domain", "Domain\Offer.Domain\Offer.Domain.csproj", "{9FD2F3B6-DF91-4671-ACF0-E3C93164EA7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Offer.Domain", "Domain\Offer.Domain\Offer.Domain.csproj", "{9FD2F3B6-DF91-4671-ACF0-E3C93164EA7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Offer.Data", "Data\Offer.Data\Offer.Data.csproj", "{C4491B9B-5767-4398-8B88-AE972F34DFC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Offer.Data", "Data\Offer.Data\Offer.Data.csproj", "{C4491B9B-5767-4398-8B88-AE972F34DFC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Offer.Application", "Application\Offer.Application\Offer.Application.csproj", "{EEA245F9-0D2C-478D-864E-8BF2097FF5AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Offer.Application", "Application\Offer.Application\Offer.Application.csproj", "{EEA245F9-0D2C-478D-864E-8BF2097FF5AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Offer.Host", "Services\Offer.Host\Offer.Host.csproj", "{DB38B583-5E6F-4823-AE35-11455E994A22}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Offer.Host", "Services\Offer.Host\Offer.Host.csproj", "{DB38B583-5E6F-4823-AE35-11455E994A22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gallery.Domain", "Domain\Gallery.Domain\Gallery.Domain.csproj", "{25438C4E-7DCA-4EC2-9A84-831CF06F7B1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.Domain", "Domain\Gallery.Domain\Gallery.Domain.csproj", "{25438C4E-7DCA-4EC2-9A84-831CF06F7B1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gallery.data", "Data\Gallery.data\Gallery.data.csproj", "{99184800-389C-47C2-A4F8-C654E43B8341}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.data", "Data\Gallery.data\Gallery.data.csproj", "{99184800-389C-47C2-A4F8-C654E43B8341}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gallery.Application", "Application\Gallery.Application\Gallery.Application.csproj", "{FBAF2496-7E6A-4008-AC44-C447E87EA3BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.Application", "Application\Gallery.Application\Gallery.Application.csproj", "{FBAF2496-7E6A-4008-AC44-C447E87EA3BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gallery.Host", "Services\Service.Host\Gallery.Host\Gallery.Host.csproj", "{271DCE37-1B15-45D8-A039-8B8852E3951B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.Host", "Services\Service.Host\Gallery.Host\Gallery.Host.csproj", "{271DCE37-1B15-45D8-A039-8B8852E3951B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Domain", "Domain\New folder\CMS.Domain\CMS.Domain.csproj", "{912589F2-5DF7-4ABB-A6C1-90A9BD4EE9F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Domain", "Domain\New folder\CMS.Domain\CMS.Domain.csproj", "{912589F2-5DF7-4ABB-A6C1-90A9BD4EE9F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Data", "Data\CMS.Data\CMS.Data.csproj", "{A32CF473-579A-4D3B-8C05-0096FC750B90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Data", "Data\CMS.Data\CMS.Data.csproj", "{A32CF473-579A-4D3B-8C05-0096FC750B90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Application", "Application\CMS.Application\CMS.Application.csproj", "{464AFD07-EF35-472B-ABA1-27B62D4DBE41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Application", "Application\CMS.Application\CMS.Application.csproj", "{464AFD07-EF35-472B-ABA1-27B62D4DBE41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Host", "Services\CMS.Host\CMS.Host.csproj", "{F5D1D9B1-755A-414E-ACF7-8070457EA459}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Host", "Services\CMS.Host\CMS.Host.csproj", "{F5D1D9B1-755A-414E-ACF7-8070457EA459}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdminLTE", "Services\AdminLTE\AdminLTE.csproj", "{7CE66351-4BA3-43A4-B781-8C38315E481C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -202,6 +204,10 @@ Global
 		{F5D1D9B1-755A-414E-ACF7-8070457EA459}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5D1D9B1-755A-414E-ACF7-8070457EA459}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5D1D9B1-755A-414E-ACF7-8070457EA459}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CE66351-4BA3-43A4-B781-8C38315E481C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CE66351-4BA3-43A4-B781-8C38315E481C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CE66351-4BA3-43A4-B781-8C38315E481C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CE66351-4BA3-43A4-B781-8C38315E481C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -237,6 +243,7 @@ Global
 		{A32CF473-579A-4D3B-8C05-0096FC750B90} = {C86C9131-D1F5-46E9-BF53-EF83F03F3B82}
 		{464AFD07-EF35-472B-ABA1-27B62D4DBE41} = {79E93B11-8FA4-4B91-AD51-DFA3799DE4E3}
 		{F5D1D9B1-755A-414E-ACF7-8070457EA459} = {2EF3F720-1FEA-4102-B06C-3098BFD917B2}
+		{7CE66351-4BA3-43A4-B781-8C38315E481C} = {2EF3F720-1FEA-4102-B06C-3098BFD917B2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E20087F2-50FF-4E2A-9AE2-521764CC56F3}

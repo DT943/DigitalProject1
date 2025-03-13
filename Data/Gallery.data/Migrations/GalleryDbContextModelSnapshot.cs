@@ -56,8 +56,15 @@ namespace Gallery.data.Migrations
                     b.Property<TimeSpan?>("Duration")
                         .HasColumnType("INTERVAL DAY(8) TO SECOND(7)");
 
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
                     b.Property<string>("FileType")
                         .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("FileUrlPath")
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<int>("GalleryId")
@@ -68,10 +75,6 @@ namespace Gallery.data.Migrations
 
                     b.Property<int?>("ImageWidth")
                         .HasColumnType("NUMBER(10)");
-
-                    b.Property<string>("Metadata")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("MimeType")
                         .IsRequired()
@@ -84,16 +87,16 @@ namespace Gallery.data.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("TIMESTAMP(7)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR2(2000)");
-
                     b.Property<string>("Path")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<long>("Size")
-                        .HasColumnType("NUMBER(19)");
+                    b.Property<float>("Size")
+                        .HasColumnType("BINARY_FLOAT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("Id");
 
@@ -124,7 +127,6 @@ namespace Gallery.data.Migrations
                         .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("ModifiedBy")
