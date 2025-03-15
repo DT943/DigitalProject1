@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Inventory.Host.Controllers
 {
     [Authorize]
-    public class InventoryController : BaseController<IInventoryAppService, Domain.Models.Inventory, InventoryGetDto, InventoryCreateDto, InventoryUpdateDto, SieveModel>
+    public class InventoryController : BaseController<IInventoryAppService, Domain.Models.Inventory, InventoryGetDto, InventoryGetDto, InventoryCreateDto, InventoryUpdateDto, SieveModel>
     {
         IInventoryAppService _appService;
         public InventoryController(IInventoryAppService appService) : base(appService)

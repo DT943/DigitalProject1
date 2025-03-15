@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ using Sieve.Services;
 
 namespace Gallery.Application.GalleryAppService
 {
-    public class GalleryAppService : BaseAppService<GalleryDbContext, Domain.Models.Gallery, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>, IGalleryAppService
+    public class GalleryAppService : BaseAppService<GalleryDbContext, Domain.Models.Gallery, GalleryGetDto, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>, IGalleryAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         GalleryDbContext _serviceDbContext;
@@ -64,6 +65,45 @@ namespace Gallery.Application.GalleryAppService
             gallery.FileTypes = await _serviceDbContext.Files.Where(x => x.GalleryId == id).Select(g => g.FileType).Distinct().ToListAsync();
 
             return gallery;
+        }
+
+
+        public override async Task<GalleryGetDto> Delete(int id)
+        {
+            var files = await _serviceDbContext.Files
+                .Where(x => x.GalleryId == id)
+                .ToListAsync();
+
+            var filePaths = files.Select(f => f.Path).Distinct().ToList();
+
+            _serviceDbContext.Files.RemoveRange(files);
+            await _serviceDbContext.SaveChangesAsync();
+
+            foreach (var filePath in filePaths)
+            {
+                if (!await _serviceDbContext.Files.AnyAsync(x => x.Path == filePath))
+                {
+                    TryDeleteFile(filePath);
+                }
+            }
+
+            return await base.Delete(id);
+        }
+
+        private void TryDeleteFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    File.Delete(filePath);
+                }
+                catch (Exception ex)
+                {
+                    throw new ValidationException("Exception while Deleting this file:"+ filePath);
+
+                }
+            }
         }
 
 

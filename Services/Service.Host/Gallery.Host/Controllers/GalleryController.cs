@@ -7,7 +7,7 @@ using Sieve.Models;
 namespace Gallery.Host.Controllers
 {
     [Authorize]
-    public class GalleryController : BaseController<IGalleryAppService, Domain.Models.Gallery, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>
+    public class GalleryController : BaseController<IGalleryAppService, Domain.Models.Gallery, GalleryGetDto, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>
     {
         IGalleryAppService _appService;
         public GalleryController(IGalleryAppService appService) : base(appService)

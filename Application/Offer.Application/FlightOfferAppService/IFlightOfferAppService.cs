@@ -10,7 +10,7 @@ using Sieve.Models;
 
 namespace Offer.Application.FlightOfferAppService
 {
-    public interface IFlightOfferAppService : IBaseAppService<FlightOfferGetDto, FlightOfferCreateDto, FlightOfferUpdateDto, SieveModel>
+    public interface IFlightOfferAppService : IBaseAppService<FlightOfferGetDto, FlightOfferGetDto, FlightOfferCreateDto, FlightOfferUpdateDto, SieveModel>
     {
     }
 }

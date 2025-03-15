@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Inventory.Application.InventoryAppService
 {
-    public interface IInventoryAppService : IBaseAppService<InventoryGetDto, InventoryCreateDto, InventoryUpdateDto, SieveModel>
+    public interface IInventoryAppService : IBaseAppService<InventoryGetDto, InventoryGetDto, InventoryCreateDto, InventoryUpdateDto, SieveModel>
 
     { 
         public  Task<OrderDto> ProcessOrder(OrderDto order);

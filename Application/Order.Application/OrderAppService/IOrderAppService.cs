@@ -9,7 +9,7 @@ using Order.Application.OrderAppService.Dtos;
 
 namespace Order.Application.OrderAppService
 {
-    public interface IOrderAppService : IBaseAppService<OrderGetDto, OrderCreateDto, OrderUpdateDto, SieveModel>
+    public interface IOrderAppService : IBaseAppService<OrderGetDto, OrderGetDto, OrderCreateDto, OrderUpdateDto, SieveModel>
     {
     }
 }
