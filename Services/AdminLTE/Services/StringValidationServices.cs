@@ -50,7 +50,7 @@ namespace AdminLTE.Services
             foreach (var property in properties)
             {
                 // Check if the property is a string
-                if(property.Name == "FileUrlPath")
+                if(property.Name == "FileUrlPath" || property.Name == "Path")
                 {
                     continue;
                 }

@@ -167,7 +167,6 @@
             <section class="content">
                 <div class="container-fluid">
                     @RenderBody()
-
                 </div><!-- /.container-fluid -->
             </section>
             <!-- /.content -->
@@ -181,6 +180,8 @@
     </div>
     <!-- ./wrapper -->
     <!-- jQuery -->
+    @RenderSection("Scripts", required: false)
+
     <script src="~/plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -216,6 +217,5 @@
     <script src="~/dist/js/pages/dashboard.js"></script>
 
     @await Html.PartialAsync("_ValidationScriptsPartial")
-
 </body>
 </html>

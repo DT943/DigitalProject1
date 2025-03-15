@@ -167,3 +167,36 @@
     <a asp-page="/Gallery/CreateGallery" class="btn btn-primary float-right"><i class="fas fa-plus"></i> Add Gallery</a>
 </footer>
 
+
+@section Scripts{
+    <!--deleteGalleries-->
+    <script>
+
+        document.getElementById('deleteSelectedButton').addEventListener('click', function () {
+            const checkboxes = document.querySelectorAll('.gallery-checkbox:checked');
+            const selectedIds = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+            if (selectedIds.length === 0) {
+                alert('Please select at least one gallery to delete.');
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('selectedGalleryIds').value = selectedIds.join(',');
+                    document.getElementById('deleteForm').submit();
+                }
+            });
+        });
+
+    </script>
+    <!--deleteGallries-->
+}

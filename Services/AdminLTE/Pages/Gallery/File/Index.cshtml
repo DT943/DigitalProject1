@@ -28,17 +28,27 @@
             </div><!-- /.col -->
 
             <div class="col-sm-4">
-                <form class="search-file">
+                <form class="form-group" method="get" id="userForm">
+
                     <div class="input-group input-group-sm">
-                        <input id="searchByUpdatedBy" name="updatedBy" class="form-control form-control-navbar" type="search" placeholder="Updated by a user" aria-label="Search By User Update" data-listener-added_94091133="true">
-                        <div class="input-group-append">
-                            <button class="btn btn-navbar" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
+
+                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
+                            <span>Updated By</span>
+                        </div>
+                        <div class="input-group-prepend" style="margin-left: 5px;">
+                            <select class="custom-select" asp-for="SelectedUser" onchange="document.getElementById('userForm').submit()" style="height: 30px;padding: 0rem 0rem 0rem 1rem">
+                                <option>AllUsers</option>
+                                @foreach (var user in Model.Users)
+                                {
+                                    <option>@user.FirstName @user.LastName</option>
+                                }
+                            </select>
                         </div>
                     </div>
                 </form>
             </div><!-- /.col -->
+
+
             <div class="col-sm-4">
                 <form class="search-file">
                     <div class="input-group input-group-sm">
@@ -55,55 +65,49 @@
 
         <div class="row mb-2">
             <div class="col-sm-6">
-                <form class="search-file">
-                    <div class="input-group input-group-sm">
 
-                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
-                            <span>Created At</span>
-                        </div>
+                <form>
+                    <div class="form-group">
+                        <label>Created At Range:</label>
 
-                        <div class="input-group-prepend" style="margin-left: 5px;">
-                            <span class="input-group-text">Start Date</span>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control float-right" id="reservation">
                         </div>
-                        <input id="searchByCreatedAtStart" name="createdAtStart" class="form-control form-control-navbar" type="date" aria-label="Created At Start">
-                        <div class="input-group-prepend" style="margin-left: 5px;">
-                            <span class="input-group-text">End Date</span>
-                        </div>
-                        <input id="searchByCreatedAtEnd" name="createdAtEnd" class="form-control form-control-navbar" type="date" aria-label="Created At End">
-                        <div class="input-group-append" style="margin-left: 5px;">
-                            <button class="btn btn-navbar" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
+                        <!-- /.input group -->
                     </div>
                 </form>
+
             </div><!-- /.col -->
             <div class="col-sm-6">
-                <form class="search-file">
-                    <div class="input-group input-group-sm">
-                        <div class="input-group-prepend" style="margin-left: 5px; margin-top: 3px;">
-                            <span>Updated At</span>
+
+                <form>
+                    <div class="form-group">
+                        <label>Updated At Range:</label>
+
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="far fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                            <input type="text" class="form-control float-right" id="update_range">
                         </div>
-                        <div class="input-group-prepend" style="margin-left: 5px;">
-                            <span class="input-group-text">Start Date</span>
-                        </div>
-                        <input id="searchByUpdatedAtStart" name="updatedAtStart" class="form-control form-control-navbar" type="date" aria-label="Updated At Start">
-                        <div class="input-group-prepend" style="margin-left: 5px;">
-                            <span class="input-group-text">End Date</span>
-                        </div>
-                        <input id="searchByUpdatedAtEnd" name="updatedAtEnd" class="form-control form-control-navbar" type="date" aria-label="Updated At End">
-                        <div class="input-group-append" style="margin-left: 5px;">
-                            <button class="btn btn-navbar" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
+                        <!-- /.input group -->
                     </div>
                 </form>
+
             </div><!-- /.col -->
+
         </div><!-- /.row -->
 
     </div><!-- /.container-fluid -->
 </section>
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -160,7 +164,6 @@
 
                                     <div class="filtr-item col-sm-2 filteredOut" data-category="@(file.FileType == "Image" ? 1 : file.FileType == "Video" ? 2 : file.FileType == "Audio" ? 3 : 4)" data-sort="@file.FileType" style="text-align: center;height:125px; opacity: 0; transform: scale(0.5) translate3d(764px, 0px, 0px); backface-visibility: hidden; perspective: 1000px; transform-style: preserve-3d; position: absolute; z-index: -1000; width: 466px; transition: 0.5s ease-out, width 1ms;">
                                         
-
                                         <a href="javascript:void(0)" data-toggle="modal" data-target="#fileModal"
                                         data-id="@file.Id"
                                         data-uploadedon="@file.CreatedDate"
@@ -178,15 +181,15 @@
                                         data-caption="@file.Caption"
                                         data-description="@file.Description"
                                         data-fileurlpath="@file.FileUrlPath"
-                                        >
+                                        data-filepath="@file.Path">
                                         @if (file.FileType == "Image")
                                         {
                                             <img src="@file.FileUrlPath" class="img-fluid mb-2" alt="Image File">
                                         }
                                         else if (file.FileType == "Video")
                                         {
-                                            <div class="video-preview" data-video-src="@file.FileUrlPath">
-                                                <img src="" class="img-fluid mb-2" alt="Loading..." style="max-width: 35%;">
+                                                <div class="video-preview" data-video-src="@file.FileUrlPath">
+                                                <img src="" class="img-fluid mb-2" alt="Loading...">
                                             </div>
                                         }
                                         else if (file.FileType == "Audio")
@@ -195,7 +198,9 @@
                                         }
                                         else if (file.FileType == "Pdf")
                                         {
-                                            <img src="/TestFile/pdf.jpg" class="img-fluid mb-2" alt="Pdf" style="max-width: 35%;">
+                                            <div class="pdf-preview" data-pdf-src="@file.FileUrlPath">
+                                                <img src="" class="img-fluid mb-2" alt="Loading..." style="max-width: 65%;">
+                                            </div>
                                         }
                                         else if (file.FileType == "Word")
                                         {
@@ -210,6 +215,8 @@
                                             <img src="/TestFile/file.jpg" class="img-fluid mb-2" alt="File" style="max-width: 35%;">
                                         }
                                         </a>
+
+
                                         <p style="text-align: center;margin-top: -10px;">
                                             <strong>@file.FileName</strong>
                                         </p>
@@ -227,8 +234,6 @@
                                 <p>No file available.</p>
                             }
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -253,6 +258,7 @@
                             <input asp-for="@Model.GalleryId" type="hidden" value="@Model.GalleryId" />
                             <input type="hidden" class="form-control" id="fileId" asp-for="@Model.FileUpdate.Id" />
                             <input type="hidden" class="form-control" id="galleryId" asp-for="@Model.FileUpdate.GalleryId" />
+                            <input type="hidden" class="form-control" id="filePath" />
 
                             <p style="margin-bottom: 0rem"><strong>Uploaded On:</strong> <span id="fileUploadedOn"></span></p>
                             <p style="margin-bottom: 0rem"><strong>Uploaded By:</strong> <span id="fileUploadedBy"></span></p>
@@ -310,7 +316,8 @@
                     <button id="updateFile" type="submit" class="btn btn-primary">Update</button>
                 </form>
                     <div class="modal-footer">
-                        <a id="downloadButton" href="#" class="btn btn-primary">Download</a>
+
+                    <button type="button" id="downloadBtn" class="btn btn-primary">Download</button>
 
                         <form id="delete" method="post" asp-page-handler="DeleteFile" style="display: inline;">
                             <input id="deletefile" type="hidden" name="fileId" />
@@ -340,3 +347,335 @@
     <a asp-page="/Gallery/Index" style="margin: 10px;" class="btn btn-primary float-right"><i class="fas fa-arrow-left"></i> Back to Galleries</a>
 </div>
 
+
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+
+    <script src="~/dist/js/adminlte.min.js"></script>
+
+    <script src="~/plugins/filterizr/jquery.filterizr.min.js"></script>
+    <script src="~/dist/js/demo.js"></script>
+
+    <!--Modal-->
+    <script>
+        $(function () {
+            $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+                event.preventDefault();
+                $(this).ekkoLightbox({
+                    alwaysShowClose: true
+                });
+            });
+
+            $('.filter-container').filterizr({ gutterPixels: 3 });
+            $('.btn[data-filter]').on('click', function () {
+                $('.btn[data-filter]').removeClass('active');
+                $(this).addClass('active');
+            });
+            // Handle file click to populate modal
+            $('.filtr-item a').on('click', function () {
+                var fileData = $(this).data();
+                $('#fileUploadedOn').text(fileData.uploadedon);
+                $('#fileUploadedBy').text(fileData.uploadedby);
+                $('#fileId').val(fileData.fileid);
+                $('#galleryId').val(fileData.galleryid);
+                $('#fileName').text(fileData.name);
+                $('#fileFileType').text(fileData.filetype);
+
+                let fileSize = fileData.size;
+                let integerPart = Math.floor(fileSize);
+                let decimalPart = fileSize - integerPart;
+                let firstTwoDigitsAfterDot = Math.floor(decimalPart * 100);
+                let result = `${integerPart}.${String(firstTwoDigitsAfterDot).padStart(2, '0')}`;
+
+                $('#fileSize').text(result);
+                $('#fileLength').text(fileData.filelength);
+                $('#fileImagewidth').text(fileData.fileimagewidth);
+                $('#fileImageHeight').text(fileData.fileimageheight);
+                $('#fileImageAlternativeText').val(fileData.fileimagealternativetext);
+                $('#fileTitle').val(fileData.filetitle);
+                $('#fileCaption').val(fileData.caption);
+                $('#fileDescription').val(fileData.description);
+                $('#fileFileUrl').val(fileData.fileurlpath);
+                $('#filePath').val(fileData.path);
+
+
+                var previewContainer = $('#filePreviewContainer');
+                previewContainer.empty();
+                // Hide all file-specific sections initially
+                $('#imageDimensions').hide();
+                $('#fileLengthSection').hide();
+                $('#imageFields').hide();
+                if (fileData.filetype === 'Image') {
+                    previewContainer.html('<img src="' + fileData.fileurlpath + '" class="img-fluid" alt="Image Preview">');
+                    $('#imageDimensions').show();
+                    $('#imageFields').show();
+                    $('#fileImageWidth').text(fileData.fileImagewidth + 'px');
+                    $('#fileImageHeight').text(fileData.fileImageHeight + 'px');
+                    $('#fileImageAlternativeText').val(fileData.fileImageAlternativeText || 'N/A');
+                }
+                else if (fileData.filetype === 'Video') {
+
+                    $('#fileLengthSection').show();
+                    $('#fileLength').text(fileData.fileLength || 'N/A');
+
+                    previewContainer.html('<video class="img-fluid" controls><source src="' + fileData.fileurlpath + '" type="video/mp4">Your browser does not support the video tag.</video>');
+                }
+                else if (fileData.filetype === 'Audio') {
+                    $('#fileLengthSection').show();
+                    $('#fileLength').text(fileData.fileLength || 'N/A');
+
+                    previewContainer.html('<audio class="img-fluid" style="width: 1000px; height: 50px; " controls><source src="' + fileData.path + '" type="audio/mp3">Your browser does not support the audio tag.</audio>');
+                }
+                else {
+                    previewContainer.html('<iframe src="' + fileData.fileurlpath + '" width="100%" height="400px"></iframe>');
+                }
+
+                $('#downloadButton').attr('href', fileData.fileurlpath);
+
+                $('#fileModal').modal('show');
+
+                document.getElementById('deleteonefile').addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#deletefile').val(fileData.fileid);
+                            $('#galleryIdforfiledeleted').val(fileData.galleryid);
+                            $('#delete').submit();
+                            console.log("ok");
+                        }
+                    });
+                });
+                document.getElementById('updateFile').addEventListener('click', function (event) {
+                    event.preventDefault();
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: "You won't be able to revert this!",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, update it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('updateFileForm').submit();
+                        }
+                    });
+                });
+
+
+            });
+        })
+    </script>
+    <!--Modal-->
+    <!--clipboardScript-->
+    <script>
+        // Function to handle copy to clipboard
+        function copyToClipboard(inputId) {
+            const copyText = document.getElementById(inputId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            navigator.clipboard.writeText(copyText.value)
+                .then(() => {
+                    console.error('done copy: ', err);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        }
+        // Add event listeners for each copy button
+        document.getElementById('fileCopyButton').addEventListener('click', function () {
+            copyToClipboard('fileFileUrl');
+        });
+    </script>
+    <!--clipboardScript-->
+    <!--deleteFiles-->
+    <script>
+
+        document.getElementById('deleteFileSelectedButton').addEventListener('click', function () {
+            const checkboxes = document.querySelectorAll('.file-checkbox:checked');
+            const selectedIds = Array.from(checkboxes).map(checkbox => checkbox.value);
+
+            if (selectedIds.length === 0) {
+                alert('Please select at least one file to delete.');
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('selectedFileIds').value = selectedIds.join(',');
+                    document.getElementById('deleteFileForm').submit();
+                }
+            });
+        });
+
+    </script>
+    <!--deleteFiles-->
+    <!--Download-->
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', async function () {
+            const fileUrl = document.getElementById('fileFileUrl').value;
+            if (!fileUrl) {
+                alert('Please enter a valid URL.');
+                return;
+            }
+
+            try {
+                // Fetch the file
+                const response = await fetch(fileUrl);
+
+                if (!response.ok) {
+                    throw new Error('Failed to download file');
+                }
+
+                // Convert the response to a blob
+                const blob = await response.blob();
+
+                // Extract the file name from the URL
+                const fileName = fileUrl.substring(fileUrl.lastIndexOf('/') + 1);
+
+                // Create a temporary link element
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = fileName; // Set the file name for download
+                document.body.appendChild(link);
+
+                // Trigger the download
+                link.click();
+
+                // Clean up
+                document.body.removeChild(link);
+                URL.revokeObjectURL(link.href);
+
+                console.log('File downloaded successfully!');
+            } catch (error) {
+                console.error('An error occurred:', error);
+                alert('Failed to download the file. Please check the URL and try again.');
+            }
+        });
+    </script>
+    <!--Download-->
+    <!--vedioPreview-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get all elements with the class 'video-preview'
+            var videoPreviews = document.querySelectorAll('.video-preview');
+
+            videoPreviews.forEach(function (preview) {
+                var videoUrl = preview.getAttribute('data-video-src');
+                var imgElement = preview.querySelector('img');
+
+                // Create a video element to load the video
+                var video = document.createElement('video');
+                video.src = videoUrl;
+                video.crossOrigin = 'anonymous'; // Handle CORS if needed
+                video.muted = true; // Mute the video to avoid autoplay issues
+                video.preload = 'metadata'; // Preload metadata to get the first frame
+
+                // When the video metadata is loaded, capture the first frame
+                video.addEventListener('loadedmetadata', function () {
+                    // Set the video current time to the first frame
+                    video.currentTime = 0.1; // Small offset to ensure the first frame is captured
+                });
+
+                video.addEventListener('seeked', function () {
+                    // Create a canvas element to draw the first frame
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+
+                    // Set canvas dimensions to match the video
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+
+                    // Draw the first frame onto the canvas
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                    // Convert the canvas content to an image (data URL)
+                    var imageUrl = canvas.toDataURL('image/png');
+
+                    // Set the image URL as the src of the img element
+                    imgElement.src = imageUrl;
+                    imgElement.alt = 'Video Preview';
+                });
+
+                // Load the video
+                video.load();
+            });
+        });
+
+    </script>
+    <!--vedioPreview-->
+
+    <!--pdf-preview-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        var pdfPreviews = document.querySelectorAll('.pdf-preview');
+
+        pdfPreviews.forEach(function (preview) {
+            var pdfUrl = preview.getAttribute('data-pdf-src');
+            var imgElement = preview.querySelector('img');
+
+            // Load the PDF using PDF.js
+            pdfjsLib.getDocument(pdfUrl).promise.then(function (pdf) {
+                // Fetch the first page
+                pdf.getPage(1).then(function (page) {
+                    var viewport = page.getViewport({ scale: 1.0 });
+                    var canvas = document.createElement('canvas');
+                    var context = canvas.getContext('2d');
+
+                    // Set canvas dimensions to match the PDF page
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    // Render the PDF page onto the canvas
+                    var renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+                    page.render(renderContext).promise.then(function () {
+                        // Convert the canvas content to an image (data URL)
+                        var imageUrl = canvas.toDataURL('image/png');
+
+                        // Set the image URL as the src of the img element
+                        imgElement.src = imageUrl;
+                        imgElement.alt = 'PDF Preview';
+                    });
+                });
+            }).catch(function (error) {
+                console.error('Error loading PDF:', error);
+            });
+        });
+    });
+        </script>
+    <!--pdf-preview-->
+
+
+    <!--DateRange-->
+
+    <!--DateRange-->
+}

@@ -7,24 +7,13 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 
 
-<form class="row" asp-page="./CreateFile" method="post" enctype="multipart/form-data" onsubmit="return validateFile()">
+<form class="row" asp-page="./CreateFile" method="post" enctype="multipart/form-data" >
     @Html.AntiForgeryToken()
 
     <div class="col-md-12">
         <div class="card card-default">
             <div class="card-header">
                 <h3>Create File</h3>
-
-                <div class="float-right">
-                    <select class="custom-select" style="width: auto;" id="fileType" data-sortorder="" onchange="toggleAltTextField()">
-                        <option value=""> Select File Type </option>
-                        <option value="image"> Image </option>
-                        <option value="pdf"> Pdf </option>
-                        <option value="word"> Word </option>
-                        <option value="excel"> Excel </option>
-                    </select>
-                    <span id="fileTypeError" class="text-danger" style="display: none;">Please select a valid file type.</span>
-                </div>
             </div>
 
             <div class="card-body">
@@ -35,7 +24,6 @@
                     <label asp-for="@Model.File.File">Choose File</label>
                     <input asp-for="@Model.File.File" class="form-control" id="fileInput" />
                     <span asp-validation-for="@Model.File.File" class="text-danger"></span>
-                    <span id="fileError" class="text-danger" style="display: none;">The uploaded file must match the selected file type.</span>
                 </div>
 
                 <div class="form-group">
@@ -61,7 +49,7 @@
                 <!-- Alternative Text (Hidden unless 'Image' is selected) -->
                 <div class="form-group" id="altTextContainer" style="display: none;">
                     <label asp-for="@Model.File.AlternativeText" class="control-label">Alternative Text</label>
-                    <input asp-for="@Model.File.AlternativeText" class="form-control" placeholder="Alternative Text" />
+                    <input id="alt" asp-for="@Model.File.AlternativeText" class="form-control" placeholder="Alternative Text" />
                     <span asp-validation-for="@Model.File.AlternativeText" class="text-danger"></span>
                 </div>
 
@@ -73,3 +61,33 @@
         </div>
     </div>
 </form>
+
+@section Scripts{
+    <script>
+        function toggleAltTextField() {
+            const fileInput = document.getElementById("fileInput");
+            const altTextContainer = document.getElementById("altTextContainer");
+            const altInput = document.getElementById("alt");
+
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                const fileExtension = fileName.split('.').pop().toLowerCase();
+
+                // Show the alt text input only if the file type is an image
+                if (["jpg", "jpeg", "png", "gif"].includes(fileExtension)) {
+                    altTextContainer.style.display = "block";
+                } else {
+                    altTextContainer.style.display = "none";
+                    altInput.value = "No alternative text provided"; 
+                }
+            } else {
+                altTextContainer.style.display = "none";
+                altInput.value = "No alternative text provided"; 
+            }
+        }
+
+        // Call the function on page load and when the file input changes
+        document.addEventListener("DOMContentLoaded", toggleAltTextField);
+        document.getElementById("fileInput").addEventListener("change", toggleAltTextField);
+    </script>
+}
