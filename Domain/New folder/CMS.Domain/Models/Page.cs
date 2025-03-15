@@ -14,6 +14,7 @@ namespace CMS.Domain.Models
         public string Language { get; set; }
         public string POS { get; set; }
         public string Title { get; set; }
+        public string Status { get; set; }
         public string Description { get; set; }
         public ICollection<Segment> Segments { get; set; } = new List<Segment>();
 
