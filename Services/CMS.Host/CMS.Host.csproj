@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Application\CMS.Application\CMS.Application.csproj" />
+    <ProjectReference Include="..\..\Application\CWCore.Application\CWCore.Application.csproj" />
     <ProjectReference Include="..\..\Core\Infrastructure.Service\Infrastructure.Service.csproj" />
   </ItemGroup>
 

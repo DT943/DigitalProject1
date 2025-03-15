@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
  using System.Net;
+using CWCore.Data.DbContext;
 
 Console.WriteLine("CMS Application is starting V.1.3");
 
@@ -49,6 +50,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
 
 builder.Services.AddDbContext<CMSDbContext>((sp, options) =>
+{
+    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
+           .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
+
+});
+
+builder.Services.AddDbContext<CWDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
