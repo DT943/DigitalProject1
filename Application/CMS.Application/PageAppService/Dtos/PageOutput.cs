@@ -14,6 +14,7 @@ namespace CMS.Application.PageAppService.Dtos
         public string Language { get; set; }
         public string POS { get; set; }
         public string Title { get; set; }
+        public string Status { get; set; }
         public string Description { get; set; }
 
         public ICollection<SegmentGetDto> Segments { get; set; } 
