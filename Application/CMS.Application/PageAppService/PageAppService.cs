@@ -45,6 +45,13 @@ namespace CMS.Application.PageAppService
         }
 
 
+        public async Task<IEnumerable<PageGetDto>> GetPageByStatus(string status)
+        {
+            var result = _serviceDbContext.Pages.Where(x => x.Status.ToLower().Equals(status)).ToList();
+            return await Task.FromResult(_mapper.Map<IEnumerable<PageGetDto>>(result));
+
+        }
+
         public async Task<IEnumerable<PageGetUrl>> GetSubPathsAsync(string pos, string language, string pageUrlName)
         {
             if (string.IsNullOrEmpty(pageUrlName))

@@ -14,5 +14,7 @@ namespace CMS.Application.PageAppService
         public Task<PageGetDto> GetPageBySubUrl(string pos, string lang, string pageUrlName);
 
         public Task<IEnumerable<PageGetUrl>> GetSubPathsAsync(string pos, string language, string pageUrlName);
+
+        public Task<IEnumerable<PageGetDto>> GetPageByStatus(string status);
     }
 }
