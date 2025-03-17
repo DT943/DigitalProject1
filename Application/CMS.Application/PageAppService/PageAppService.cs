@@ -45,31 +45,47 @@ namespace CMS.Application.PageAppService
         }
 
 
-        public async Task<IEnumerable<string>> GetSubPathsAsync(string pos, string language, string pageUrlName)
+        public async Task<IEnumerable<PageGetUrl>> GetSubPathsAsync(string pos, string language, string pageUrlName)
         {
-
             if (string.IsNullOrEmpty(pageUrlName))
             {
-                var parentUrls = _serviceDbContext.Pages.Where(p => p.POS.ToLower().Equals(pos.ToLower()) && p.Language.ToLower().Equals(language.ToLower()))
-                    .Select(p => p.PageUrlName) // Assuming your entity has a `Url` column
+                // Get the parent URLs if pageUrlName is not provided
+                var parentUrls = _serviceDbContext.Pages
+                    .Where(p => p.POS.ToLower().Equals(pos.ToLower()) && p.Language.ToLower().Equals(language.ToLower()))
+                    .Select(p => new { p.Id, p.PageUrlName })
                     .ToList();
 
-                return parentUrls
-                    .Select(url => url.Split('/')[0])  // Get the first part (parent path)
+                var result = parentUrls
+                    .Select(p => new PageGetUrl
+                    {
+                        Id = p.Id,
+                        PageUrlName = p.PageUrlName.Split('/')[0] // Get the first part (parent path)
+                    })
                     .Distinct()
                     .ToList();
+
+                return result;
             }
 
+            // Get the URLs that start with the given pageUrlName if it's provided
             var urls = await _serviceDbContext.Pages
                 .Where(p => p.POS.ToLower().Equals(pos.ToLower()) && p.Language.ToLower().Equals(language.ToLower()) && p.PageUrlName.StartsWith(pageUrlName))
-                .Select(p => p.PageUrlName)
+                .Select(p => new { p.Id, p.PageUrlName })
                 .ToListAsync();
 
-            return urls
-                .Select(url => GetNextLevel(pageUrlName, url))
-                .Where(url => !string.IsNullOrEmpty(url))
-                .Distinct();
+            var resultWithSubPath = urls
+                .Select(p => new PageGetUrl
+                {
+                    Id = p.Id,
+                    PageUrlName = GetNextLevel(pageUrlName, p.PageUrlName) // Get the next level of sub-path
+                })
+                .Where(p => !string.IsNullOrEmpty(p.PageUrlName)) // Filter out null or empty sub-paths
+                .Distinct()
+                .ToList();
+
+            return resultWithSubPath;
         }
+
 
 
         private string GetNextLevel(string inputUrl, string fullUrl)

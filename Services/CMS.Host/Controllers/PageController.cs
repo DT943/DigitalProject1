@@ -25,7 +25,7 @@ namespace CMS.Host.Controllers
         }
         [HttpGet("/get-sub-path/{pos}/{language}/")]
         [HttpGet("/get-sub-path/{pos}/{language}/{*pageUrlName}")]
-        public async Task<IEnumerable<string>> GetSubPathsAsync(string pos, string language, string pageUrlName="")
+        public async Task<IEnumerable<PageGetUrl>> GetSubPathsAsync(string pos, string language, string pageUrlName="")
         {
             return await _appService.GetSubPathsAsync(pos, language, pageUrlName);
         }

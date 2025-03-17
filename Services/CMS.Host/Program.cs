@@ -43,7 +43,16 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin() // Allows requests from any origin
+                  .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
+                  .AllowAnyHeader(); // Allows any headers
+        });
+});
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -67,6 +76,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.ConfigureExceptionHandler();
 if (app.Environment.IsDevelopment())
