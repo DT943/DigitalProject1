@@ -11,6 +11,6 @@ namespace Offer.Domain.Models
     {
         [ForeignKey("Offer")]
         public int OfferID { get; set; }
-        public Offer Offer;
+        public Offer Offer { get; set; }
     }
 }
