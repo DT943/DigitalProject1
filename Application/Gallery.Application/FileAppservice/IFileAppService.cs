@@ -10,9 +10,9 @@ using Sieve.Models;
 
 namespace Gallery.Application.FileAppservice
 {
-    public interface IFileAppService : IBaseAppService<FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>
+    public interface IFileAppService : IBaseAppService<FileGetDto, FileGetDto, FileCreateDto, FileUpdateDto, SieveModel>
     {
-        public bool CheckPath(string path);
+        public Task<bool> CheckPath(string path);
 
         public Task<IEnumerable<FileGetDto>> GetRelatedFileGallery(int GalleryId);
     }

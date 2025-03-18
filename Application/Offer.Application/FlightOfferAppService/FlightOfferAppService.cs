@@ -17,7 +17,7 @@ using Offer.Application.FlightOfferAppService.Validations;
 
 namespace Offer.Application.FlightOfferAppService
 {
-    public class FlightOfferAppService : BaseAppService<OfferDbContext, Domain.Models.FlightOffer, FlightOfferGetDto, FlightOfferCreateDto, FlightOfferUpdateDto, SieveModel>, IFlightOfferAppService
+    public class FlightOfferAppService : BaseAppService<OfferDbContext, Domain.Models.FlightOffer, FlightOfferGetDto, FlightOfferGetDto, FlightOfferCreateDto, FlightOfferUpdateDto, SieveModel>, IFlightOfferAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         OfferDbContext _serviceDbContext;

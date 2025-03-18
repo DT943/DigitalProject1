@@ -13,7 +13,7 @@ Console.WriteLine("Application is starting V.1.3");
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options =>
 {
-    
+    //options.Listen(IPAddress.Any, 7182); // HTTP port
     options.Listen(IPAddress.Any, 7182, listenOptions =>
     {
         listenOptions.UseHttps();  // HTTPS port
@@ -40,12 +40,20 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
-/*
-builder.WebHost.ConfigureKestrel(options =>
+
+
+builder.Services.AddCors(options =>
 {
-    options.ListenAnyIP(5000); // Listen on all IPs for port 5000
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin() // Allows requests from any origin
+                  .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
+                  .AllowAnyHeader(); // Allows any headers
+        });
 });
-*/
+
+
 builder.Logging.AddConsole();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -63,6 +71,8 @@ builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug); // Make sure the level is low enough to show "Information" logs
 
 var app = builder.Build();
+
+app.UseCors("AllowAll"); // Apply CORS policy
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

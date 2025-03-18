@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
  using System.Net;
+using CWCore.Data.DbContext;
 
 Console.WriteLine("CMS Application is starting V.1.3");
 
@@ -42,7 +43,16 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin() // Allows requests from any origin
+                  .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
+                  .AllowAnyHeader(); // Allows any headers
+        });
+});
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -54,11 +64,20 @@ builder.Services.AddDbContext<CMSDbContext>((sp, options) =>
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 
 });
+
+builder.Services.AddDbContext<CWDbContext>((sp, options) =>
+{
+    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
+           .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
+
+});
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 app.ConfigureExceptionHandler();
 if (app.Environment.IsDevelopment())

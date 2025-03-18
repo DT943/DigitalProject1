@@ -9,7 +9,7 @@ using CMS.Application.SegmentAppService;
 namespace CMS.Host.Controllers
 {
     [Authorize]
-    public class SegmentController : BaseController<ISegmentAppService, Domain.Models.Segment, SegmentGetDto, SegmentCreateDto, SegmentUpdateDto, SieveModel>
+    public class SegmentController : BaseController<ISegmentAppService, Domain.Models.Segment, SegmentGetDto, SegmentGetDto, SegmentCreateDto, SegmentUpdateDto, SieveModel>
     {
         ISegmentAppService _appService;
         public SegmentController(ISegmentAppService appService) : base(appService)

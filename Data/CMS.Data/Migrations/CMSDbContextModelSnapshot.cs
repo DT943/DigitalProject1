@@ -98,6 +98,9 @@ namespace CMS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("NUMBER(1)");
+
                     b.Property<string>("Language")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
@@ -114,6 +117,10 @@ namespace CMS.Data.Migrations
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("PageUrlName")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 

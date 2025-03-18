@@ -17,7 +17,7 @@ using CMS.Application.SegmentAppService.Validations;
 
 namespace CMS.Application.SegmentAppService
 {
-    public class SegmentAppService : BaseAppService<CMSDbContext, Domain.Models.Segment, SegmentGetDto, SegmentCreateDto, SegmentUpdateDto, SieveModel>, ISegmentAppService
+    public class SegmentAppService : BaseAppService<CMSDbContext, Domain.Models.Segment, SegmentGetDto, SegmentGetDto, SegmentCreateDto, SegmentUpdateDto, SieveModel>, ISegmentAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         CMSDbContext _serviceDbContext;
