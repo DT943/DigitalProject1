@@ -33,6 +33,12 @@ namespace CMS.Application.PageAppService
             return base.QueryExcuter(input).Include(x => x.Segments).ThenInclude(x => x.Components);
         }
 
+        public override async Task<PageGetDto> Create(PageCreateDto create)
+        {
+            create.Status = "draft";
+
+            return await base.Create(create);
+        }
         public async Task<PageGetDto> GetPageBySubUrl(string pos, string language, string pageUrlName)
         {
             var result =  _serviceDbContext.Pages.Where(x => x.Language.ToLower().Equals(language.ToLower()) 
