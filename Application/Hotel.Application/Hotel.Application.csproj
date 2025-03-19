@@ -7,12 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Infrastructure.Application\Infrastructure.Application.csproj" />
-    <ProjectReference Include="..\..\Data\Hotel.Data\Hotel.Data.csproj" />
+    <Compile Remove="ContactInfoAppService\**" />
+    <EmbeddedResource Remove="ContactInfoAppService\**" />
+    <None Remove="ContactInfoAppService\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ContactInfoAppService\" />
+    <ProjectReference Include="..\..\Core\Infrastructure.Application\Infrastructure.Application.csproj" />
+    <ProjectReference Include="..\..\Data\Hotel.Data\Hotel.Data.csproj" />
+    <ProjectReference Include="..\CWCore.Application\CWCore.Application.csproj" />
+    <ProjectReference Include="..\Gallery.Application\Gallery.Application.csproj" />
   </ItemGroup>
 
 </Project>

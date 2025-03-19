@@ -8,7 +8,7 @@ namespace Hotel.Application.HotelGalleryAppService.Mapping
         public HotelGalleryMappingProfile()
         {
             CreateMap<Domain.Models.HotelGallery, HotelGalleryOutputDto>();
-            CreateMap<HotelGalleryInputDto, Domain.Models.HotelGallery>();
+            CreateMap<HotelGalleryCreateDto, Domain.Models.HotelGallery>();
             CreateMap<HotelGalleryUpdateDto, Domain.Models.HotelGallery>();
         }
     }
