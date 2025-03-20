@@ -20,7 +20,6 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string Governate { get; set; }
         public string Url { get; set; }
 
-        public IEnumerable<RoomOutputDto>? Rooms { get; set; } = Enumerable.Empty<RoomOutputDto>();
         public IEnumerable<HotelGalleryOutputDto>? HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryOutputDto>();
         public IEnumerable<ContactInfoGetDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoGetDto>();
 

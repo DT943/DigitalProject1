@@ -17,14 +17,13 @@ namespace Hotel.Application.HotelAppService.Dtos
 
             CreateMap<HotelCreateDto, Hotel.Domain.Models.Hotel>()
                 .ForMember(dest => dest.Rooms, opt => opt.Ignore())
-                .ForMember(dest => dest.HotelGallery, opt => opt.Ignore())
+                .ForMember(dest => dest.HotelGallery, opt => opt.MapFrom(src => src.HotelGallery))
                 .ForMember(dest => dest.POS, opt => opt.MapFrom(src => src.POS))
                 .ForMember(dest => dest.ContactInfo, opt => opt.MapFrom(src => src.ContactInfo))
                 .ForMember(dest => dest.Rank, opt => opt.MapFrom(src => src.Rank));
 
 
-            CreateMap<HotelCreateDetailsDto,HotelCreateDto>();
-
+ 
 
             CreateMap<CotactInfoCreateDto, ContactInfo>();
 
@@ -36,8 +35,7 @@ namespace Hotel.Application.HotelAppService.Dtos
             CreateMap<Hotel.Domain.Models.Hotel, HotelGetDto>()
                 .ForMember(dest => dest.ContactInfo, opt => opt.MapFrom(src => src.ContactInfo)) // if you want to map ContactInfo
                                                                                                                              // Add any other collection or property mappings here
-                .ForMember(dest => dest.Rooms, opt => opt.Ignore()) // Ignoring properties that don't exist in the DTO
-                .ForMember(dest => dest.HotelGallery, opt => opt.Ignore());
+                 .ForMember(dest => dest.HotelGallery, opt => opt.MapFrom(src => src.HotelGallery));
 
 
             CreateMap<ContactInfo, ContactInfoGetDto>();
