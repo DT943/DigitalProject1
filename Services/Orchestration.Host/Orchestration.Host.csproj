@@ -16,9 +16,6 @@
     <ProjectReference Include="..\..\Application\Gallery.Application\Gallery.Application.csproj" />
     <ProjectReference Include="..\..\Application\Hotel.Application\Hotel.Application.csproj" />
     <ProjectReference Include="..\..\Core\Infrastructure.Service\Infrastructure.Service.csproj" />
-    <ProjectReference Include="..\..\Data\CWCore.Data\CWCore.Data.csproj" />
-    <ProjectReference Include="..\..\Data\Gallery.data\Gallery.data.csproj" />
-    <ProjectReference Include="..\..\Data\Hotel.Data\Hotel.Data.csproj" />
   </ItemGroup>
 
 </Project>
