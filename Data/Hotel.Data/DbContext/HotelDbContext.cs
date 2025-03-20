@@ -15,7 +15,8 @@ namespace Hotel.Data.DbContext
     {
         private readonly IConfiguration _configuration;
 
-        public HotelDbContext(DbContextOptions<HotelDbContext> options, IConfiguration configuration) : base(options)
+        public HotelDbContext(DbContextOptions<HotelDbContext> options, IConfiguration configuration)
+            : base(options)
         {
             _configuration = configuration;
         }

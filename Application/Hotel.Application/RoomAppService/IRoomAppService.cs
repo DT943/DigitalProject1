@@ -7,6 +7,6 @@ namespace Hotel.Application.RoomAppService
 {
     public interface IRoomAppService : IBaseAppService<RoomOutputDto, RoomOutputDto, RoomCreateDto, RoomUpdateDto, SieveModel>
     {
-        Task<List<RoomOutputDto>> GetRoomsByHotelIdAsync(int hotelId);
+        Task<IEnumerable<RoomOutputDto>> GetRoomsByHotelIdAsync(int hotelId);
     }
 }

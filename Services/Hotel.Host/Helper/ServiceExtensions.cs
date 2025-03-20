@@ -21,6 +21,7 @@ namespace Hotel.Host.Helper
             services.AddTransient<IHotelAppService, HotelAppService>();
             services.AddTransient<IHotelGalleryAppService, HotelGalleryAppService>();
             services.AddTransient<IRoomAppService, RoomAppService>();
+            //services.AddTransient<IPOSAppService, POSAppService>();
 
             // Register Validators
             services.AddTransient<HotelValidator>();

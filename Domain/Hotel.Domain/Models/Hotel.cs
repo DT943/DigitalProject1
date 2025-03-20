@@ -11,17 +11,14 @@ namespace Hotel.Domain.Models
     public class Hotel : BasicEntityWithAuditInfo
     {
         public string Name { get; set; }
-
         public string POS { get; set; }
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
-
-        public int Rank { get; set; } // 1-5 stars
-
-        public List<Room> Rooms { get; set; } = new List<Room>();
-        public IEnumerable<HotelGallery> HotelGallery { get; set; }
+        public int Rank { get; set; } 
+        public IEnumerable<Room> Rooms { get; set; } = Enumerable.Empty<Room>();
+        public IEnumerable<HotelGallery> HotelGallery { get; set; } = Enumerable.Empty<HotelGallery>();
         // validation 10 
-        public IEnumerable<ContactInfo> ContactInfo { get; set; }
+        public IEnumerable<ContactInfo> ContactInfo { get; set; } = Enumerable.Empty<ContactInfo>();
 
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
@@ -30,7 +27,7 @@ namespace Hotel.Domain.Models
         public bool HasPool { get; set; }
         public bool HasRestaurant { get; set; }
         public bool HasWifi { get; set; }
-        public bool HasSwimmingPool { get; set; }
+        public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
     }
 }

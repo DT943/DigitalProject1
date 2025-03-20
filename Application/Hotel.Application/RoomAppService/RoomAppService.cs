@@ -30,14 +30,21 @@ namespace Hotel.Application.RoomAppService
             _mapper = mapper;
         }
 
-        public async Task<List<RoomOutputDto>> GetRoomsByHotelIdAsync(int hotelId)
+        public async Task<IEnumerable<RoomOutputDto>> GetRoomsByHotelIdAsync(int hotelId)
         {
             var rooms = await _serviceDbContext.Rooms
                 .Include(r => r.Hotel)
                 .Where(r => r.HotelId == hotelId)
                 .ToListAsync();
 
-            return _mapper.Map<List<RoomOutputDto>>(rooms);
+            return _mapper.Map<IEnumerable<RoomOutputDto>>(rooms);
         }
+
+        protected override IQueryable<Domain.Models.Room> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input);
+        }
+
+
     }
 }

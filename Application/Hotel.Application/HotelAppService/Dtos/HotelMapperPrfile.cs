@@ -15,6 +15,11 @@ namespace Hotel.Application.HotelAppService.Dtos
             CreateMap<Hotel.Domain.Models.Hotel, HotelGetDto>();
             CreateMap<HotelCreateDto, Hotel.Domain.Models.Hotel>();
             CreateMap<HotelUpdateDto, Hotel.Domain.Models.Hotel>();
+            CreateMap<HotelGetDto, HotelGetDetailsDto>()
+                .ForMember(dest => dest.Rooms, opt => opt.Ignore()) 
+                .ForMember(dest => dest.HotelGallery, opt => opt.Ignore()) 
+                .ForMember(dest => dest.POS, opt => opt.MapFrom(src => src.POS)); 
+
         }
     }
 }

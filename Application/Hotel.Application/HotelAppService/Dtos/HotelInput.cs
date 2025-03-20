@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hotel.Application.HotelGalleryAppService.Dtos;
 using Hotel.Domain.Models;
 using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Validations;
@@ -12,17 +14,15 @@ namespace Hotel.Application.HotelAppService.Dtos
     public class HotelCreateDto : IValidatableDto
     {
         public string Name { get; set; }
-
-        public string POS { get;set;}
-
+        public string POS { get; set; }
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
-        public List<(string PhoneNumber, string Email, string ResponsiblePerson)> ContactInfo { get; set; }
-            = new List<(string, string, string)>();
-        public int Rank { get; set; } // 1-5 stars
-        public List<Room> Rooms { get; set; } = new List<Room>();
-        public int GalleryId { get; set; }
-        public HotelGallery HotelGallery { get; set; }
+
+        public int Rank { get; set; }
+        //public IEnumerable<RoomCreateDto> Rooms { get; set; } = Enumerable.Empty<RoomCreateDto>();
+        //public IEnumerable<HotelGalleryCreateDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryCreateDto>();
+
+        public IEnumerable<CotactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoCreateDto>();
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
         public bool HasGym { get; set; }
@@ -30,8 +30,9 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasPool { get; set; }
         public bool HasRestaurant { get; set; }
         public bool HasWifi { get; set; }
-        public bool HasSwimmingPool { get; set; }
+        public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
+
     }
 
     public class HotelUpdateDto : IEntityUpdateDto
@@ -40,12 +41,11 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string POS { get; set; }
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
-        public List<(string PhoneNumber, string Email, string ResponsiblePerson)> ContactInfo { get; set; }
-            = new List<(string, string, string)>();
-        public int Rank { get; set; } // 1-5 stars
-        public List<Room> Rooms { get; set; } = new List<Room>();
-        public int GalleryId { get; set; }
-        public HotelGallery HotelGallery { get; set; }
+
+        public int Rank { get; set; }
+        //public IEnumerable<RoomUpdateDto> Rooms { get; set; } = Enumerable.Empty<RoomUpdateDto>();
+        //public IEnumerable<HotelGallery> HotelGallery { get; set; } = Enumerable.Empty<HotelGallery>();
+        public IEnumerable<CotactInfoUpdateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoUpdateDto>();
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
         public bool HasGym { get; set; }
@@ -53,8 +53,22 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasPool { get; set; }
         public bool HasRestaurant { get; set; }
         public bool HasWifi { get; set; }
-        public bool HasSwimmingPool { get; set; }
+        public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
     }
-}
+    public class CotactInfoCreateDto : IValidatableDto
+    {
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string ResponsiblePerson { get; set; }
 
+    }
+    public class CotactInfoUpdateDto : IEntityUpdateDto
+    {
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string ResponsiblePerson { get; set; }
+
+    }
+
+}

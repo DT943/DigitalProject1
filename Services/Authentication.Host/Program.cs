@@ -13,7 +13,7 @@ Console.WriteLine("Application is starting V.1.3");
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options =>
 {
-    //options.Listen(IPAddress.Any, 7182); // HTTP port
+    options.Listen(IPAddress.Any, 7189); // HTTP port
     options.Listen(IPAddress.Any, 7182, listenOptions =>
     {
         listenOptions.UseHttps();  // HTTPS port
