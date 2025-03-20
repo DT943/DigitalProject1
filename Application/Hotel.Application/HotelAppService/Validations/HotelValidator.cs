@@ -45,13 +45,6 @@ namespace Hotel.Application.HotelAppService.Validations
                     .InclusiveBetween(1, 5)
                     .WithMessage("Rank must be between 1 and 5.");
 
-                //RuleForEach(dto => (dto as HotelCreateDto).Rooms)
-                  //  .NotNull()
-                   // .WithMessage("Room cannot be null.");
-
-                //RuleForEach(dto => (dto as HotelCreateDto).HotelGallery)
-                  //  .NotNull()
-                    //.WithMessage("HotelGallery cannot be null.");
 
                 RuleForEach(dto => (dto as HotelCreateDto).ContactInfo)
                     .NotNull()
@@ -131,10 +124,6 @@ namespace Hotel.Application.HotelAppService.Validations
                     .InclusiveBetween(1, 5)
                     .WithMessage("Rank must be between 1 and 5.");
 
-               // RuleForEach(dto => (dto as HotelUpdateDto).Rooms)
-                 //   .NotNull()
-                   // .WithMessage("Room cannot be null.");
-
 
                 RuleForEach(dto => (dto as HotelUpdateDto).ContactInfo)
                     .NotNull()
@@ -143,6 +132,9 @@ namespace Hotel.Application.HotelAppService.Validations
                     .WithMessage("Phone number must be leass than 10 characters long.")
                     .Must(contact => contact.Email != null && contact.PhoneNumber.Length >= 10)
                     .WithMessage("Phone number must be leass than 10 characters long.")
+                    .Must(contact => contact.PhoneNumber != null && contact.PhoneNumber.All(char.IsDigit))
+                    .WithMessage("Phone number must only contain digits.")
+
                     .Must(contact => contact.Email != null && contact.Email.Length <= 100 && IsValidEmail(contact.Email))
                     .WithMessage("Email must be valid and not exceed 100 characters.");
 

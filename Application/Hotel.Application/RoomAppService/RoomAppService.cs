@@ -3,6 +3,7 @@ using Hotel.Application.HotelAppService.Dtos;
 using Hotel.Application.RoomAppService.Dtos;
 using Hotel.Application.RoomAppService.Validations;
 using Hotel.Data.DbContext;
+using Hotel.Domain.Models;
 using Infrastructure.Application;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,6 @@ namespace Hotel.Application.RoomAppService
         public async Task<IEnumerable<RoomOutputDto>> GetRoomsByHotelIdAsync(int hotelId)
         {
             var rooms = await _serviceDbContext.Rooms
-                .Include(r => r.Hotel)
                 .Where(r => r.HotelId == hotelId)
                 .ToListAsync();
 

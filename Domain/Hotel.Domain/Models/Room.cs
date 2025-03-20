@@ -15,6 +15,7 @@ namespace Hotel.Domain.Models
         public Hotel Hotel { get; set; }
         public string Category { get; set; }
         public int NumberOfAdults { get; set; }
+        public int Price { get; set; }
         public int NumberOfChildren { get; set; }
     }
 }
