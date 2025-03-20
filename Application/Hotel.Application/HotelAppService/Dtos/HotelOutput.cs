@@ -4,8 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CWCore.Application.POSAppService.Dtos;
-using CWCore.Domain.Models;
+using Hotel.Application.ContactInfoAppService.Dtos;
 using Hotel.Application.HotelGalleryAppService.Dtos;
 using Hotel.Application.RoomAppService.Dtos;
 using Hotel.Domain.Models;
@@ -19,9 +18,14 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string Name { get; set; }
         public string POS { get; set; }
         public string Governate { get; set; }
+        public string Url { get; set; }
+
+        public IEnumerable<RoomOutputDto>? Rooms { get; set; } = Enumerable.Empty<RoomOutputDto>();
+        public IEnumerable<HotelGalleryOutputDto>? HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryOutputDto>();
+        public IEnumerable<ContactInfoGetDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoGetDto>();
+
         public string StreetAddress { get; set; }
         public int Rank { get; set; }
-        public IEnumerable<ContactInfoGetDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoGetDto>();
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
         public bool HasGym { get; set; }
@@ -36,14 +40,16 @@ namespace Hotel.Application.HotelAppService.Dtos
     public class HotelGetDetailsDto
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public POSGetDto POS { get; set; }
-        public string Governate { get; set; }
-        public string StreetAddress { get; set; }
+        public string? Name { get; set; }
+        public string? POS { get; set; }
+        public string? Url { get; set; }
 
-        public int Rank { get; set; }
-        public IEnumerable<RoomOutputDto> Rooms { get; set; } = Enumerable.Empty<RoomOutputDto>();
-        public IEnumerable<HotelGalleryOutputDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryOutputDto>();
+        public string? Governate { get; set; }
+        public string? StreetAddress { get; set; }
+
+        public int? Rank { get; set; }
+        public IEnumerable<RoomOutputDto>? Rooms { get; set; } = Enumerable.Empty<RoomOutputDto>();
+        public IEnumerable<HotelGalleryDetailsOutputDto>? HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryDetailsOutputDto>();
         public IEnumerable<ContactInfoGetDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoGetDto>();
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
@@ -54,13 +60,6 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasWifi { get; set; }
         public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
-
-    }
-    public class ContactInfoGetDto 
-    {
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
-        public string ResponsiblePerson { get; set; }
 
     }
 

@@ -21,9 +21,7 @@ namespace Hotel.Application.HotelGalleryAppService.Validations
 
                 RuleFor(dto => (dto as HotelGalleryCreateDto).HotelId)
                    .NotEmpty()
-                   .WithMessage("The HotelId of the HotelGallery cannot be empty.")
-                   .Must(HotelId => _hotelContext.Hotels.Any(h => h.Id == HotelId))
-                   .WithMessage("HotelId not excists");
+                   .WithMessage("The HotelId of the HotelGallery cannot be empty.");
 
                 RuleFor(dto => (dto as HotelGalleryCreateDto).GalleryName)
                     .NotEmpty()

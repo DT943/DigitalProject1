@@ -19,7 +19,7 @@ namespace Hotel.Host.Controllers
         {
             _appService = appService;
         }
-        [HttpGet("{hotelId}")]
+        [HttpGet("ByHotelId/{hotelId}")]
         public async Task<ActionResult<IEnumerable<HotelGalleryOutputDto>>> GetHotelGalleryByHotelIdAsync(int hotelId)
         {
             try

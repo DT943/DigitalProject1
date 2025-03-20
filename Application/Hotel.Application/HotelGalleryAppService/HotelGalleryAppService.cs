@@ -1,6 +1,4 @@
 using AutoMapper;
-using Gallery.Application.GalleryAppService;
-using Gallery.Application.GalleryAppService.Dtos;
 using Hotel.Application.HotelGalleryAppService.Dtos;
 using Hotel.Application.HotelGalleryAppService.Validations;
 using Hotel.Application.RoomAppService.Dtos;
@@ -32,17 +30,12 @@ namespace Hotel.Application.HotelGalleryAppService
         public async Task<IEnumerable<HotelGalleryOutputDto>> GetHotelGalleryByHotelIdAsync(int hotelId)
         {
             var HotelGalleries = await _serviceDbContext.HotelGalleries
-                .Include(r => r.Hotel)
                 .Where(r => r.HotelId == hotelId)
                 .ToListAsync();
 
+
             return _mapper.Map<IEnumerable<HotelGalleryOutputDto>>(HotelGalleries);
         }
-        /*Soon
-        public async Task<GalleryGetDto> GetGalleryByGalleryName(string galleryName)
-        {
-        }
-        */
         protected override IQueryable<Domain.Models.HotelGallery> QueryExcuter(SieveModel input)
         {
             return base.QueryExcuter(input);

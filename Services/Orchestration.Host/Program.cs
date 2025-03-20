@@ -1,18 +1,20 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text;
-using Hotel.Host.Helper;
 using Hotel.Data.DbContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
 using System.Net;
-
+using CWCore.Data.DbContext;
+using Orchestration.Host.Helper;
+using Gallery.Data.DbContext;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Listen(IPAddress.Any, 7183, listenOptions =>
+    options.Listen(IPAddress.Any, 7206, listenOptions =>
     {
         listenOptions.UseHttps();
     });
@@ -55,9 +57,16 @@ builder.Services.AddCustomService();
 
 builder.Services.AddDbContext<HotelDbContext>((sp, options) =>
 {
-    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
+    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("HotelConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 });
+builder.Services.AddDbContext<GalleryDbContext>((sp, options) =>
+{
+    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("GalleryConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
+           .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
+
+});
+
 
 
 builder.Services.AddSwaggerGen();
@@ -74,6 +83,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+if (!app.Environment.IsDevelopment())
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreServices/publish/images"),
+        RequestPath = "/images" // This maps the '/images' URL path to the directory
+    });
+
+
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthorization();
