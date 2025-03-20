@@ -34,4 +34,29 @@ namespace Authentication.Domain.Models
         public Gender Gender { get; set; }
 
     }
+
+
+    public class GetUser 
+    {
+         public int Id { get; set; }
+
+         public string Code { get; set; }
+
+         public string FirstName { get; set; }
+
+         public string LastName { get; set; }
+
+         public string MotherName { get; set; }
+
+         public string FatherName { get; set; }
+
+    }
+
+    public class UserWithRole 
+    {
+        public GetUser applicationUser {  get; set; }
+
+        public IEnumerable<string> Roles { get; set; }
+
+    }
 }

@@ -14,5 +14,6 @@ namespace Authentication.Application.Dtos
         public string LastName { get; set; }
         public string MotherName { get; set; }
         public string FatherName { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }
