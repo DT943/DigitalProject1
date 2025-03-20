@@ -11,6 +11,7 @@ using Hotel.Application.RoomAppService.Dtos;
 using Hotel.Data.DbContext;
 using Hotel.Domain.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,13 +42,14 @@ namespace Orchestration.Host.Controllers
         }
 
         [HttpPost("/CreateHotelWithDetails")]
-        public async Task<ActionResult<HotelGetDetailsDto>> CreateHotelWithDetails([FromForm] HotelCreateDetailsDto hotelCreateDto, IFormFileCollection files)
+        public async Task<ActionResult<HotelGetDetailsDto>> CreateHotelWithDetails([FromBody] HotelCreateDetailsDto hotelCreateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
+            
             try
             {
+                /*
                 // 1. Create the base hotel
                 var hotelCreateBaseDto = _mapper.Map<HotelCreateDto>(hotelCreateDto);
                 var createdHotel = await _hotelAppService.Create(hotelCreateBaseDto);
@@ -55,40 +57,9 @@ namespace Orchestration.Host.Controllers
                 if (createdHotel == null)
                     return BadRequest("Failed to create hotel");
 
-                // 2. Add Contact Info
-                if (hotelCreateDto.ContactInfo.Any())
-                {
-                    var contactInfos = hotelCreateDto.ContactInfo.Select(contactInfoDto =>
-                        new ContactInfo
-                        {
-                            HotelId = createdHotel.Id,
-                            PhoneNumber = contactInfoDto.PhoneNumber,
-                            Email = contactInfoDto.Email,
-                            ResponsiblePerson = contactInfoDto.ResponsiblePerson,
-                        }).ToList();
-
-                    _serviceDbContext.ContactInfo.AddRange(contactInfos);
-                    await _serviceDbContext.SaveChangesAsync();
-                }
-
-                // 3. Add Rooms
-                if (hotelCreateDto.Rooms.Any())
-                {
-                    var rooms = hotelCreateDto.Rooms.Select(roomDto =>
-                        new Room
-                        {
-                            HotelId = createdHotel.Id,
-                            Category = roomDto.Category,
-                            NumberOfAdults = roomDto.NumberOfAdults,
-                            NumberOfChildren = roomDto.NumberOfChildren,
-                        }).ToList();
-
-                    _serviceDbContext.Rooms.AddRange(rooms);
-                    await _serviceDbContext.SaveChangesAsync();
-                }
 
                 // 4. Create Hotel Galleries with Files
-                if (hotelCreateDto.HotelGallery.Any() && files != null && files.Any())
+                if (hotelCreateDto.HotelGallery.Any() )
                 {
                     var fileIndex = 0;
                     foreach (var galleryItem in hotelCreateDto.HotelGallery)
@@ -96,35 +67,25 @@ namespace Orchestration.Host.Controllers
                         // Create gallery
                         var galleryCreateDto = new GalleryCreateDto
                         {
-                            Name = galleryItem.GalleryName ?? $"{galleryItem.GalleryType?.ToLower()}_{createdHotel.Id}",
-                            Description = $"{galleryItem.GalleryType} gallery for hotel: {createdHotel.Name}",
+                            Name = galleryItem.GalleryName.ToLower() ?? $"{galleryItem.GalleryType?.ToLower()}_{createdHotel.Name.ToLower()}",
+                            Description = $"{galleryItem.GalleryType.ToLower()} gallery for hotel: {createdHotel.Name.ToLower()}",
                             Type = "hotel"
                         };
 
                         var gallery = await _galleryAppService.Create(galleryCreateDto);
 
-                        if (gallery != null && fileIndex < files.Count)
+                        if (gallery != null )
                         {
-                            var file = files[fileIndex];
-
-                            var fileCreateDto = new FileCreateDto
-                            {
-                                Title = $"{galleryItem.GalleryName}_{file.FileName}",
-                                FileType = Path.GetExtension(file.FileName).TrimStart('.'),
-                                GalleryId = gallery.Id,
-                                File = file
-                            };
-
-                            await _fileAppServicce.Create(fileCreateDto);
-                            fileIndex++;
-
                             // Link gallery to hotel
                             var hotelGallery = new HotelGallery
                             {
                                 HotelId = createdHotel.Id,
-                                GalleryName = galleryItem.GalleryName,
-                                //GalleryCode = gallery.CreatedBy,
-                                GalleryType = galleryItem.GalleryType
+                                GalleryName = gallery.Name,
+                                GalleryCode = gallery.Code,
+                                Code = gallery.Code,
+                                CreatedBy= gallery.CreatedBy,
+                                CreatedDate = gallery.CreatedDate,
+                                GalleryType = gallery.Type
                             };
 
                             _serviceDbContext.HotelGalleries.Add(hotelGallery);
@@ -132,9 +93,9 @@ namespace Orchestration.Host.Controllers
                         }
                     }
                 }
-
+            */
                 // 5. Return complete hotel details
-                var result = await GetHotelDetails(createdHotel.Id);
+                var result = await GetHotelWithDetails(25);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -142,26 +103,7 @@ namespace Orchestration.Host.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        private async Task<HotelGetDetailsDto> GetHotelDetails(int hotelId)
-        {
-            var hotel = await _serviceDbContext.Hotels
-                .Include(h => h.ContactInfo)
-                .Include(h => h.Rooms)
-                .Include(h => h.HotelGallery)
-                .FirstOrDefaultAsync(h => h.Id == hotelId);
-
-            if (hotel == null)
-                return null;
-
-            var hotelDetailsDto = _mapper.Map<HotelGetDetailsDto>(hotel);
-
-            // Map related entities
-            hotelDetailsDto.ContactInfo = _mapper.Map<IEnumerable<ContactInfoGetDto>>(hotel.ContactInfo);
-            hotelDetailsDto.Rooms = _mapper.Map<IEnumerable<RoomOutputDto>>(hotel.Rooms);
-            hotelDetailsDto.HotelGallery = _mapper.Map<IEnumerable<HotelGalleryDetailsOutputDto>>(hotel.HotelGallery);
-
-            return hotelDetailsDto;
-        }
+ 
         [HttpGet("GetHotelWithDetails/{id}")]
         public async Task<ActionResult<HotelGetDetailsDto>> GetHotelWithDetails(int id)
         {
@@ -190,7 +132,6 @@ namespace Orchestration.Host.Controllers
                 var hotelDetailsDto = _mapper.Map<HotelGetDetailsDto>(hotel);
                 hotelDetailsDto.ContactInfo = _mapper.Map<IEnumerable<ContactInfoGetDto>>(contactInfo);
                 hotelDetailsDto.Rooms = _mapper.Map<IEnumerable<RoomOutputDto>>(rooms);
-
                 if (hotelGalleries != null && hotelGalleries.Any())
                 {
                     var hotelGalleryDtos = new List<HotelGalleryDetailsOutputDto>();

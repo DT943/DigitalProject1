@@ -29,60 +29,6 @@ namespace Hotel.Application.HotelAppService
             _serviceDbContext = serviceDbContext;
             _mapper = mapper;
         }
-        // Override the Create method to include ContactInfo creation
-        public override async Task<HotelGetDto> Create(HotelCreateDto createDto)
-        {
-            // Map HotelCreateDto to Hotel entity
-            var hotel = _mapper.Map<Domain.Models.Hotel>(createDto);
-
-            // Ensure ContactInfo is mapped and associated with the Hotel entity
-            if (createDto.ContactInfo != null && createDto.ContactInfo.Any())
-            {
-                hotel.ContactInfo = _mapper.Map<List<Domain.Models.ContactInfo>>(createDto.ContactInfo);
-            }
-
-            // Add the Hotel entity (including ContactInfo) to the context
-            _serviceDbContext.Hotels.Add(hotel);
-
-            // Save changes (this will save both Hotel and ContactInfo in a single transaction)
-            await _serviceDbContext.SaveChangesAsync();
-
-            // Map the created Hotel entity back to the HotelGetDto and return it
-            return _mapper.Map<HotelGetDto>(hotel);
-
-        }
-        public override async Task<HotelGetDto> Update(HotelUpdateDto updateDto)
-        {
-            // Map HotelCreateDto to Hotel entity
-            var hotel = _mapper.Map<Domain.Models.Hotel>(updateDto);
-
-            // Ensure ContactInfo is mapped and associated with the Hotel entity
-            if (updateDto.ContactInfo != null && updateDto.ContactInfo.Any())
-            {
-                hotel.ContactInfo = _mapper.Map<List<Domain.Models.ContactInfo>>(updateDto.ContactInfo);
-            }
-
-            // Add the Hotel entity (including ContactInfo) to the context
-            _serviceDbContext.Hotels.Update(hotel);
-
-            // Save changes (this will save both Hotel and ContactInfo in a single transaction)
-            await _serviceDbContext.SaveChangesAsync();
-
-            // Map the created Hotel entity back to the HotelGetDto and return it
-            return _mapper.Map<HotelGetDto>(hotel);
-
-        }
-        public override async Task<HotelGetDto> Get(int id)
-        {
-            var hotel = await _serviceDbContext.Hotels
-                .Include(h => h.ContactInfo)
-                .FirstOrDefaultAsync(h => h.Id == id);
-
-            if (hotel == null)
-                return null;
-
-            return _mapper.Map<HotelGetDto>(hotel);
-        }
         /*
         public override async Task<IEnumerable<HotelGetDto>> GetAll()
         {
@@ -95,7 +41,7 @@ namespace Hotel.Application.HotelAppService
         */
         protected override IQueryable<Domain.Models.Hotel> QueryExcuter(SieveModel input)
         {
-            return base.QueryExcuter(input);
+            return base.QueryExcuter(input).Include(x=>x.ContactInfo);
         }
     }
 }

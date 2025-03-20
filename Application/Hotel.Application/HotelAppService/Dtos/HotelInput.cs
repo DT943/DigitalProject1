@@ -18,6 +18,7 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string POS { get; set; }
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
+        public string Url { get; set; }
 
         public int Rank { get; set; }
         public IEnumerable<RoomCreateDto> Rooms { get; set; } = Enumerable.Empty<RoomCreateDto>();
