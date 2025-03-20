@@ -41,7 +41,7 @@ namespace Hotel.Application.HotelAppService
         */
         protected override IQueryable<Domain.Models.Hotel> QueryExcuter(SieveModel input)
         {
-            return base.QueryExcuter(input).Include(x=>x.ContactInfo);
+            return base.QueryExcuter(input).Include(x=>x.HotelGallery).Include(x=>x.ContactInfo);
         }
     }
 }

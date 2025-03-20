@@ -42,14 +42,14 @@ namespace Orchestration.Host.Controllers
         }
 
         [HttpPost("/CreateHotelWithDetails")]
-        public async Task<ActionResult<HotelGetDetailsDto>> CreateHotelWithDetails([FromBody] HotelCreateDetailsDto hotelCreateDto)
+        public async Task<ActionResult<HotelGetDetailsDto>> CreateHotelWithDetails([FromBody] HotelCreateDto hotelCreateDto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             
             try
             {
-                /*
+                
                 // 1. Create the base hotel
                 var hotelCreateBaseDto = _mapper.Map<HotelCreateDto>(hotelCreateDto);
                 var createdHotel = await _hotelAppService.Create(hotelCreateBaseDto);
@@ -93,9 +93,9 @@ namespace Orchestration.Host.Controllers
                         }
                     }
                 }
-            */
+
                 // 5. Return complete hotel details
-                var result = await GetHotelWithDetails(25);
+                var result = await _hotelAppService.Get(createdHotel.Id);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -103,70 +103,6 @@ namespace Orchestration.Host.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
- 
-        [HttpGet("GetHotelWithDetails/{id}")]
-        public async Task<ActionResult<HotelGetDetailsDto>> GetHotelWithDetails(int id)
-        {
-            try
-            {
-                var hotel = await _hotelAppService.Get(id);
-                if (hotel == null)
-                    return NotFound($"Hotel with ID {id} not found");
 
-                // Get Contact Info
-                var contactInfo = await _serviceDbContext.ContactInfo
-                    .Where(x => x.HotelId == hotel.Id)
-                    .ToListAsync();
-
-                // Get Rooms
-                var rooms = await _serviceDbContext.Rooms
-                    .Where(x => x.HotelId == hotel.Id)
-                    .ToListAsync();
-
-                // Get Hotel Galleries with their associated files
-                var hotelGalleries = await _serviceDbContext.HotelGalleries
-                    .Where(x => x.HotelId == hotel.Id)
-                    .ToListAsync();
-
-                // Map to DTO
-                var hotelDetailsDto = _mapper.Map<HotelGetDetailsDto>(hotel);
-                hotelDetailsDto.ContactInfo = _mapper.Map<IEnumerable<ContactInfoGetDto>>(contactInfo);
-                hotelDetailsDto.Rooms = _mapper.Map<IEnumerable<RoomOutputDto>>(rooms);
-                if (hotelGalleries != null && hotelGalleries.Any())
-                {
-                    var hotelGalleryDtos = new List<HotelGalleryDetailsOutputDto>();
-
-                    foreach (var gallery in hotelGalleries)
-                    {
-                        var galleryDto = _mapper.Map<HotelGalleryDetailsOutputDto>(gallery);
-
-                        // Get gallery details including files
-                        var galleryDetails = await _galleryAppService.Get(gallery.Id);
-                        if (galleryDetails != null)
-                        {
-                            var files = await _fileAppServicce.GetRelatedFileGallery(gallery.Id);
-
-                            var lightfiles = files.Select(file => new Hotel.Application.HotelGalleryAppService.Dtos.FileGetModel
-                            {
-                                FileUrlPath = file.FileUrlPath,
-                                // FilePhysicalPath = file.Path
-                            }).ToList();
-
-                            galleryDto.Files = lightfiles;
-                        }
-
-                        hotelGalleryDtos.Add(galleryDto);
-                    }
-
-                    hotelDetailsDto.HotelGallery = hotelGalleryDtos;
-                }
-
-                return Ok(hotelDetailsDto);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
     }
 }

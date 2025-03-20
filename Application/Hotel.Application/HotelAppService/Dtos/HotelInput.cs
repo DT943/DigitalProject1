@@ -12,7 +12,7 @@ using Infrastructure.Application.Validations;
 
 namespace Hotel.Application.HotelAppService.Dtos
 {
-    public class HotelCreateDetailsDto : IValidatableDto
+    public class HotelCreateDto : IValidatableDto
     {
         public string Name { get; set; }
         public string POS { get; set; }
@@ -21,9 +21,7 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string Url { get; set; }
 
         public int Rank { get; set; }
-        public IEnumerable<RoomCreateDto> Rooms { get; set; } = Enumerable.Empty<RoomCreateDto>();
         public IEnumerable<HotelGalleryCreateDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryCreateDto>();
-
         public IEnumerable<CotactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoCreateDto>();
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
@@ -37,6 +35,7 @@ namespace Hotel.Application.HotelAppService.Dtos
 
     }
 
+    /*
     public class HotelCreateDto : IValidatableDto
     {
         public string Name { get; set; }
@@ -58,7 +57,7 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool ArePetsAllowed { get; set; }
 
     }
-
+    */
 
     public class HotelUpdateDto : IEntityUpdateDto
     {
