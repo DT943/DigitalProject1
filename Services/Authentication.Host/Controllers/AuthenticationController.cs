@@ -1,6 +1,7 @@
 ﻿using Authentication.Application;
 using Authentication.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication.Host.Controllers
@@ -56,6 +57,16 @@ namespace Authentication.Host.Controllers
         }
 
 
+        [HttpGet("get-all-roles")]
+        public async Task<IActionResult> GetAllRoles()
+        {
+            var result = await _authenticationAppService.GetAllRolesAsync();
+            return Ok(result);
+        }
+
+
+
+
         [HttpGet("get-user/{code}")]
         public async Task<IActionResult> GetUserByCode(string code)
         {
@@ -73,6 +84,20 @@ namespace Authentication.Host.Controllers
 
             return Ok(result);
         }
+
+
+        [HttpPost("assign-roles/{userCode}")]
+        public async Task<IActionResult> AssignRolesToUser(string userCode, [FromBody] List<string> roles)
+        {
+            if (string.IsNullOrWhiteSpace(userCode) || roles == null || !roles.Any())
+            {
+                return BadRequest("User code and at least one role are required.");
+            }
+
+            var result = await _authenticationAppService.AssignRolesToUserAsync(userCode, roles);
+            return Ok(result);
+        }
+
 
 
     }

@@ -18,5 +18,9 @@ namespace Authentication.Application
 
         public Task<AuthenticationGetDto> GetUserByCodeAsync(string code);
 
+        public Task<IEnumerable<string>> GetAllRolesAsync();
+
+        public Task<UserWithRole> AssignRolesToUserAsync(string userCode, List<string> roles);
+
     }
 }

@@ -16,5 +16,7 @@ namespace Authentication.Domain.Models
         public string LastName { get; set; }
         public string Token { get; set; }
         public DateTime ExpiresOn { get; set; }
+
+        public IEnumerable<string> Roles { get; set; }
     }
 }

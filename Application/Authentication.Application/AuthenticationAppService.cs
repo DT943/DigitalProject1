@@ -3,8 +3,10 @@ using Authentication.Domain.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -74,11 +76,15 @@ namespace Authentication.Application
 
             var jwtSecurityToken = await CreateJwtToken(user);
 
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+
             return new AuthenticationModel
             {
                 Message = "User has been created successfully.",
                 Email = user.Email,
                 ExpiresOn = jwtSecurityToken.ValidTo,
+                Roles = userRoles,
                 IsAuthenticated = true,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 FirstName = user.FirstName,
@@ -129,7 +135,7 @@ namespace Authentication.Application
                 authModel.Message = "Email or Password is incorrect!";
                 return authModel;
             }
-
+            var userRoles = await _userManager.GetRolesAsync(user);
             var jwtSecurityToken = await CreateJwtToken(user);
 
             authModel.Message = "User information has been retrieved successfully.";
@@ -138,6 +144,8 @@ namespace Authentication.Application
             authModel.Email = user.Email;
             authModel.FirstName = user.FirstName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
+            authModel.Roles = userRoles;
+
             return authModel;
         }
 
@@ -148,10 +156,61 @@ namespace Authentication.Application
         }
 
 
+        public async Task<IEnumerable<string>> GetAllRolesAsync()
+        {
+            return await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+        }
+
         public async Task<AuthenticationGetDto> GetUserByCodeAsync(string code)
         {
             var users = await _userManager.Users.Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
-            return _mapper.Map<AuthenticationGetDto>(users);
+            var existingRoles = await _userManager.GetRolesAsync(users);
+            AuthenticationGetDto auth = _mapper.Map<AuthenticationGetDto>(users);
+            auth.Roles = existingRoles;
+            return auth;
+        }
+
+
+        public async Task<UserWithRole> AssignRolesToUserAsync(string userCode,  List<string> roles)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+
+
+
+            var existingRoles = await _userManager.GetRolesAsync(user);
+            var removeResult = await _userManager.RemoveFromRolesAsync(user, existingRoles);
+ 
+
+            // Assign new roles one by one
+            foreach (var role in roles)
+            {
+                var roleExists = await _roleManager.RoleExistsAsync(role);
+                if (roleExists)
+                {
+                    var addRoleResult = await _userManager.AddToRoleAsync(user, role);
+
+                }
+
+            }
+
+            // Get updated roles
+            var userNewRoles = await _userManager.GetRolesAsync(user);
+
+
+
+            return new UserWithRole
+            {
+                applicationUser = new GetUser
+                {
+                    Id = user.Id,
+                    Code = user.Code,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    MotherName = user.MotherName,
+                    FatherName = user.FatherName,
+                },
+                Roles = userNewRoles
+            };  
         }
 
     }
