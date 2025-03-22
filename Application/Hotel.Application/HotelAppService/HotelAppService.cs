@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Sieve.Models;
 using Sieve.Services;
 using Microsoft.EntityFrameworkCore;
+using Gallery.Application.GalleryAppService;
+using Hotel.Application.HotelGalleryAppService.Dtos;
 
 namespace Hotel.Application.HotelAppService
 {
@@ -16,29 +18,47 @@ namespace Hotel.Application.HotelAppService
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HotelDbContext _serviceDbContext;
         private readonly IMapper _mapper;
+        private readonly IGalleryAppService _galleryAppService;
 
         public HotelAppService(
             HotelDbContext serviceDbContext,
             IMapper mapper,
             ISieveProcessor processor,
             HotelValidator validations,
+            IGalleryAppService galleryAppService,
             IHttpContextAccessor httpContextAccessor)
             : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             _serviceDbContext = serviceDbContext;
             _mapper = mapper;
+            _galleryAppService = galleryAppService;
         }
-        /*
-        public override async Task<IEnumerable<HotelGetDto>> GetAll()
-        {
-            var hotels = await _serviceDbContext.Hotels
-                .Include(h => h.ContactInfo)
-                .ToListAsync();
 
-            return _mapper.Map<IEnumerable<HotelGetDto>>(hotels);
+        public override async Task<HotelGetDto> Create(HotelCreateDto create)
+        {
+            var galleries = new List<HotelGalleryCreateDto>();
+
+            string[] gallieryType = ["gym", "lobby"];
+            foreach (var item in gallieryType)
+            {
+                var gymGallery = await _galleryAppService.Create
+                           (
+                             new Gallery.Application.GalleryAppService.Dtos.GalleryCreateDto
+                             {
+                                 Name = create.Name.ToLower() + "-" + item,
+                                 Type = "hotel",
+                                 Description = create.Name.ToLower() + "-" + item
+                             }
+                           );
+                galleries.Add(new HotelGalleryCreateDto { GalleryCode = gymGallery.Code, GalleryName = gymGallery.Name, GalleryType = "hotel" });
+
+            }
+
+            create.HotelGallery = galleries;
+            return await base.Create(create);
         }
-        */
+
         protected override IQueryable<Domain.Models.Hotel> QueryExcuter(SieveModel input)
         {
             return base.QueryExcuter(input).Include(x=>x.HotelGallery).Include(x=>x.ContactInfo);

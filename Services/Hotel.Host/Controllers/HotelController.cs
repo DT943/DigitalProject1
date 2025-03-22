@@ -22,26 +22,6 @@ namespace Hotel.Host.Controllers
 
         public override async Task<ActionResult<HotelGetDto>> Create(HotelCreateDto dto)
         {
-
-            var galleries = new List<HotelGalleryCreateDto>();
-
-            string[] gallieryType = ["gym", "lobby"];
-            foreach (var item in gallieryType)
-            {
-               var gymGallery = await _galleryAppService.Create
-                          (
-                            new Gallery.Application.GalleryAppService.Dtos.GalleryCreateDto
-                            {
-                                Name = dto.Name.ToLower() + "-" + item,
-                                Type = "hotel",
-                                Description = dto.Name.ToLower() + "-" + item
-                            }
-                          );
-                galleries.Add(new HotelGalleryCreateDto { GalleryCode = gymGallery.Code, GalleryName = gymGallery.Name, GalleryType = "hotel" });
-
-            }
-
-            dto.HotelGallery = galleries;
             return await base.Create(dto);
         }
 
