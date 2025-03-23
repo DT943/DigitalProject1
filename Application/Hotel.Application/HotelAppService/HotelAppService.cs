@@ -12,6 +12,7 @@ using Gallery.Application.GalleryAppService;
 using Hotel.Application.HotelGalleryAppService.Dtos;
 using System.ComponentModel.DataAnnotations;
 using FluentValidation;
+using Gallery.Application.GalleryAppService.Dtos;
 namespace Hotel.Application.HotelAppService
 {
     public class HotelAppService : BaseAppService<HotelDbContext, Domain.Models.Hotel, HotelGetDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>, IHotelAppService
@@ -65,6 +66,21 @@ namespace Hotel.Application.HotelAppService
             create.HotelGallery = galleries;
             return await base.Create(create);
         }
+
+        public override async Task<HotelGetDto> Delete(int id)
+        {
+            var galleries = await _serviceDbContext.HotelGalleries
+                .Where(x => x.HotelId == id)
+                .ToListAsync();
+            foreach(var gallery in galleries)
+            {
+                var tempGallery = await _galleryAppService.GetByCode(gallery.GalleryCode);
+                await _galleryAppService.Delete(tempGallery.Id);
+            }
+
+            return await base.Delete(id);
+        }
+
 
         protected override IQueryable<Domain.Models.Hotel> QueryExcuter(SieveModel input)
         {

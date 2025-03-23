@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Gallery.Application.GalleryAppService
 {
@@ -66,6 +67,13 @@ namespace Gallery.Application.GalleryAppService
 
             return gallery;
         }
+
+        public async Task<GalleryGetDto> GetByName(string name)
+        {
+            var gallery = await _serviceDbContext.Galleries.Where(x => x.Name == name).ToListAsync();
+            return _mapper.Map<GalleryGetDto>(gallery);
+        }
+
 
 
         public override async Task<GalleryGetDto> Delete(int id)

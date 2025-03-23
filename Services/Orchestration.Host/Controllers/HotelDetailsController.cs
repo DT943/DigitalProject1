@@ -93,7 +93,7 @@ namespace Orchestration.Host.Controllers
                         }
                     }
                 }
-            */
+            
                 // 5. Return complete hotel details
                 var result = await _hotelAppService.Get(createdHotel.Id);
                 return Ok(result);

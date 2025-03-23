@@ -32,6 +32,7 @@ namespace Gallery.Application.FileAppservice
 
         public override async Task<FileGetDto> Create(FileCreateDto createDto)
         {
+
             if (!string.IsNullOrEmpty(createDto.GalleryCode))
             {
                 var galleryByCode = await _serviceDbContext.Galleries.Where(s => s.Code.Equals(createDto.GalleryCode)).FirstOrDefaultAsync();
