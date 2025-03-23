@@ -27,6 +27,9 @@ namespace Gallery.Application.FileAppservice.Dtos
         public string? Description { get; set; }
         public string? AlternativeText { get; set; }
         public int GalleryId { get; set; }
+
+        public string? GalleryCode { get; set; }
+
         public IFormFile File { get; set; }
 
     }

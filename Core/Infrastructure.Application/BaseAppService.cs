@@ -51,6 +51,14 @@ namespace Infrastructure.Application
             return await Task.FromResult(_mapper.Map<TGetDto>(result));
         }
 
+        public virtual async Task<TGetDto> GetByCode(string code)
+        {
+
+            var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.Code.Equals(code)) ??
+            throw new EntityNotFoundException(typeof(TEntity).Name, code.ToString() ?? "");
+            return await Task.FromResult(_mapper.Map<TGetDto>(result));
+        }
+
         protected virtual TEntity BeforCreate(TCreateDto create)  
         {
             TEntity createdEntity = _mapper.Map<TEntity>(create);
