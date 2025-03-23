@@ -12,6 +12,7 @@ namespace Gallery.Host.Controllers
         IGalleryAppService _appService;
         public GalleryController(IGalleryAppService appService) : base(appService)
         {
+            this.ServiceName = "Gallery";
             _appService = appService;
         }
     }

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Infrastructure.Application;
 using Infrastructure.Domain.Models;
 using Sieve.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Infrastructure.Service.Controllers
 {
@@ -16,44 +18,92 @@ namespace Infrastructure.Service.Controllers
         where TFilterDto : SieveModel
     {
         protected readonly TAppService _appService;
-
+        protected string ServiceName = "";
         public BaseController(TAppService appService)
         {
             _appService = appService;
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Create(TCreatDto dto)
         {
+            var user = HttpContext.User;
+
+            if (!(user.IsInRole("SuperAdmin") || user.IsInRole($"{ServiceName}.Admin")))
+            {
+                return Forbid();
+            }
+
             var entity = await _appService.Create(dto);
             return Ok(entity);
         }
 
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Update(TUpdateDto dto)
         {
+            var user = HttpContext.User;
+            if (!(user.IsInRole("SuperAdmin") ||
+                  user.IsInRole($"{ServiceName}.Admin") ||
+                  user.IsInRole($"{ServiceName}.Supervisor")))
+            {
+                return Forbid();
+            }
+            if (!(user.IsInRole("SuperAdmin") || user.IsInRole($"{ServiceName}.Admin") || user.IsInRole($"{ServiceName}.Officer")))
+            {
+                return Forbid();
+            }
             return Ok(await _appService.Update(dto));
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Get(int id)
         {
-            
+            var user = HttpContext.User;
+
+            if (!(user.IsInRole("SuperAdmin") ||
+                  user.IsInRole($"{ServiceName}.Admin") ||
+                  user.IsInRole($"{ServiceName}.Viewonly") ||
+                  user.IsInRole($"{ServiceName}.Supervisor") ||
+                  user.IsInRole($"{ServiceName}.Officer")))
+            {
+                return Forbid();
+            }
             var entity = await _appService.Get(id);
             return Ok(entity);
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetAllDto>> GetAll([FromQuery] TFilterDto sieve)
         {
+            var user = HttpContext.User;
 
+            if (!(user.IsInRole("SuperAdmin") ||
+                  user.IsInRole($"{ServiceName}.Admin") ||
+                  user.IsInRole($"{ServiceName}.Viewonly") ||
+                  user.IsInRole($"{ServiceName}.Supervisor") ||
+                  user.IsInRole($"{ServiceName}.Officer")))
+            {
+                return Forbid();
+            }
             var entity = await _appService.GetAll(sieve);
             return Ok(entity);
         }
 
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Delete(int id)
         {
+            var user = HttpContext.User;
+
+            if (!(user.IsInRole("SuperAdmin") || 
+                  user.IsInRole($"{ServiceName}.Admin")))
+            {
+                return Forbid();
+            }
             var deletedEntity = await _appService.Delete(id);
             return Ok(deletedEntity);
         }
