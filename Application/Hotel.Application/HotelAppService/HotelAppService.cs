@@ -12,9 +12,6 @@ using Gallery.Application.GalleryAppService;
 using Hotel.Application.HotelGalleryAppService.Dtos;
 using System.ComponentModel.DataAnnotations;
 using FluentValidation;
-using Gallery.Application.FileAppservice;
-using Gallery.Domain.Models;
-using Hotel.Domain.Models;
 using Gallery.Application.GalleryAppService.Dtos;
 namespace Hotel.Application.HotelAppService
 {
