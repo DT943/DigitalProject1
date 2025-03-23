@@ -10,6 +10,7 @@ namespace Gallery.Application.GalleryAppService.Dtos
 {
     public class GalleryCreateDto : IValidatableDto
     {
+        //Test 
         public string Name { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
