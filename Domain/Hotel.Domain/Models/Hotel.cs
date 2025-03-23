@@ -12,6 +12,9 @@ namespace Hotel.Domain.Models
     {
         public string Name { get; set; }
         public string POS { get; set; }
+        public string? Country { get; set; }
+
+
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
         public string Url { get; set; }
@@ -19,7 +22,10 @@ namespace Hotel.Domain.Models
         public ICollection<Room> Rooms { get; set; } 
         public ICollection<HotelGallery> HotelGallery { get; set; }
         // validation 10 
-        public ICollection<ContactInfo> ContactInfo { get; set; } 
+        public ICollection<ContactInfo> ContactInfo { get; set; }
+
+        public string? CommercialDealsFileUrlPath  { get; set; }
+        public string? CommercialDealsFileCode { get; set; }
 
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }

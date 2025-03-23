@@ -16,12 +16,16 @@ namespace Hotel.Application.HotelAppService.Dtos
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Country { get; set; }
+
         public string POS { get; set; }
         public string Governate { get; set; }
         public string Url { get; set; }
 
         public IEnumerable<HotelGalleryOutputDto>? HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryOutputDto>();
         public IEnumerable<ContactInfoGetDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoGetDto>();
+
+      //  public IEnumerable<RoomOutputDto> RoomInfo { get; set; } = Enumerable.Empty<RoomOutputDto>();
 
         public string StreetAddress { get; set; }
         public int Rank { get; set; }

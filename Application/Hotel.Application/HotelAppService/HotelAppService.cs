@@ -12,6 +12,9 @@ using Gallery.Application.GalleryAppService;
 using Hotel.Application.HotelGalleryAppService.Dtos;
 using System.ComponentModel.DataAnnotations;
 using FluentValidation;
+using Gallery.Application.FileAppservice;
+using Gallery.Domain.Models;
+using Hotel.Domain.Models;
 using Gallery.Application.GalleryAppService.Dtos;
 namespace Hotel.Application.HotelAppService
 {
@@ -21,6 +24,8 @@ namespace Hotel.Application.HotelAppService
         private readonly HotelDbContext _serviceDbContext;
         private readonly IMapper _mapper;
         private readonly IGalleryAppService _galleryAppService;
+        private readonly IFileAppService _fileAppService;
+
 
         public HotelAppService(
             HotelDbContext serviceDbContext,
@@ -28,6 +33,7 @@ namespace Hotel.Application.HotelAppService
             ISieveProcessor processor,
             HotelValidator validations,
             IGalleryAppService galleryAppService,
+            IFileAppService fileAppService,
             IHttpContextAccessor httpContextAccessor)
             : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
@@ -35,6 +41,7 @@ namespace Hotel.Application.HotelAppService
             _serviceDbContext = serviceDbContext;
             _mapper = mapper;
             _galleryAppService = galleryAppService;
+            _fileAppService = fileAppService;
         }
 
         public override async Task<HotelGetDto> Create(HotelCreateDto create)
@@ -47,19 +54,43 @@ namespace Hotel.Application.HotelAppService
 
             var galleries = new List<HotelGalleryCreateDto>();
 
-            string[] gallieryType = ["gym", "lobby"];
+            string[] gallieryType = ["main","bar","gym","parking","spa","resturant","breakfast","swimmingpool","room-single", "room-double"];
+            Dictionary<string, GalleryGetDto> galleryDictionary = new Dictionary<string, GalleryGetDto>();
+
             foreach (var item in gallieryType)
             {
-                var gymGallery = await _galleryAppService.Create
+                var createdGallery = await _galleryAppService.Create
                            (
                              new Gallery.Application.GalleryAppService.Dtos.GalleryCreateDto
                              {
-                                 Name = create.Name.ToLower() + "-" + item,
+                                 Name = create.Name.ToLower() + "." + item,
                                  Type = "hotel",
-                                 Description = create.Name.ToLower() + "-" + item
+                                 Description = create.Name.ToLower() + "." + item
                              }
-                           );
-                galleries.Add(new HotelGalleryCreateDto { GalleryCode = gymGallery.Code, GalleryName = gymGallery.Name, GalleryType = "hotel" });
+                );
+
+                galleryDictionary[item] = createdGallery;
+                galleries.Add(new HotelGalleryCreateDto { GalleryCode = createdGallery.Code, GalleryName = createdGallery.Name, GalleryType = "hotel" });
+
+            }
+
+            foreach (var room in create.Rooms)
+            {
+                var gallery = galleryDictionary["rooms"];
+                room.Image.GalleryCode = gallery.Code;
+                room.Image.GalleryId = gallery.Id;
+                var img =  await _fileAppService.Create(room.Image);
+
+                room.ImageUrlPath = img.FileUrlPath;
+
+            }
+
+            {
+                var main = galleryDictionary["main"];
+                create.CommercialDealsFile.GalleryCode = main.Code;
+                create.CommercialDealsFile.GalleryId = main.Id;
+                var commercialDealsFile = await _fileAppService.Create(create.CommercialDealsFile);
+                create.CommercialDealsFileUrlPath = commercialDealsFile.FileUrlPath;
 
             }
 

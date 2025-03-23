@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Gallery.Application.FileAppservice.Dtos;
 using Hotel.Application.ContactInfoAppService.Dtos;
 using Hotel.Application.HotelGalleryAppService.Dtos;
 using Hotel.Domain.Models;
@@ -16,13 +17,21 @@ namespace Hotel.Application.HotelAppService.Dtos
     {
         public string Name { get; set; }
         public string POS { get; set; }
+        public string Country { get; set; }
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
         public string Url { get; set; }
 
         public int Rank { get; set; }
+
+        public FileCreateDto? CommercialDealsFile { get; set;}
+        public string? CommercialDealsFileUrlPath { get; set; }
+        public string? CommercialDealsFileCode { get; set; }
+
         public IEnumerable<HotelGalleryCreateDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryCreateDto>();
         public IEnumerable<CotactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoCreateDto>();
+
+        public IEnumerable<RoomCreateDto> Rooms { get; set; }
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
         public bool HasGym { get; set; }
@@ -64,6 +73,7 @@ namespace Hotel.Application.HotelAppService.Dtos
 
         public string Name { get; set; }
         public string POS { get; set; }
+        public string Country { get; set; }
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
         public string Url { get; set; }
