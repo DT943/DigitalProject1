@@ -10,7 +10,8 @@ using Sieve.Services;
 using Microsoft.EntityFrameworkCore;
 using Gallery.Application.GalleryAppService;
 using Hotel.Application.HotelGalleryAppService.Dtos;
-
+using System.ComponentModel.DataAnnotations;
+using FluentValidation;
 namespace Hotel.Application.HotelAppService
 {
     public class HotelAppService : BaseAppService<HotelDbContext, Domain.Models.Hotel, HotelGetDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>, IHotelAppService
@@ -37,6 +38,12 @@ namespace Hotel.Application.HotelAppService
 
         public override async Task<HotelGetDto> Create(HotelCreateDto create)
         {
+            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("create", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new FluentValidation.ValidationException(validationResult.Errors);
+            }
+
             var galleries = new List<HotelGalleryCreateDto>();
 
             string[] gallieryType = ["gym", "lobby"];
