@@ -24,14 +24,14 @@ namespace Hotel.Application.HotelAppService.Dtos
 
         public int Rank { get; set; }
 
-        public FileCreateDto? CommercialDealsFile { get; set;}
-        public string? CommercialDealsFileUrlPath { get; set; }
-        public string? CommercialDealsFileCode { get; set; }
+        // public FileCreateDto? CommercialDealsFile { get; set;}
+        // public string? CommercialDealsFileUrlPath { get; set; }
+        // public string? CommercialDealsFileCode { get; set; }
 
         public IEnumerable<HotelGalleryCreateDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryCreateDto>();
         public IEnumerable<CotactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoCreateDto>();
 
-        public IEnumerable<RoomCreateDto> Rooms { get; set; }
+        //public IEnumerable<RoomCreateDto> Rooms { get; set; }
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
         public bool HasGym { get; set; }

@@ -12,5 +12,7 @@ namespace Gallery.Application.GalleryAppService
     public interface IGalleryAppService : IBaseAppService<GalleryGetDto, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>
     {
         Task<GalleryGetDto> GetByName(string name);
+        Task<List<GalleryGetDto>> GetGalleriesByNames(List<string> names);
+        Task<List<GalleryGetDto>> CreateBatch(List<GalleryCreateDto> galleries);
     }
 }

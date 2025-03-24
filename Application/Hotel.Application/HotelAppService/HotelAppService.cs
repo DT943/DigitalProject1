@@ -53,46 +53,40 @@ namespace Hotel.Application.HotelAppService
             }
 
             var galleries = new List<HotelGalleryCreateDto>();
+            string[] galleryTypes = ["main", "bar", "gym", "parking", "spa", "resturant", "breakfast", "swimmingpool", "room-single", "room-double"];
 
-            string[] gallieryType = ["main","bar","gym","parking","spa","resturant","breakfast","swimmingpool","room-single", "room-double"];
-            Dictionary<string, GalleryGetDto> galleryDictionary = new Dictionary<string, GalleryGetDto>();
+            // Generate all possible gallery names
+            var galleryNames = galleryTypes.Select(item => create.Name.ToLower() + "." + item).ToList();
 
-            foreach (var item in gallieryType)
+            // Get all existing galleries in one query
+            var existingGalleries = await _galleryAppService.GetGalleriesByNames(galleryNames);
+            var existingGalleryNames = existingGalleries.Select(g => g.Name).ToHashSet();
+
+            // Prepare galleries to be created
+            var galleriesToCreate = galleryNames
+                .Where(name => !existingGalleryNames.Contains(name))
+                .Select(name => new GalleryCreateDto
+                {
+                    Name = name,
+                    Type = "hotel",
+                    Description = name
+                })
+                .ToList();
+
+                // Batch create new galleries
+                var newGalleries = galleriesToCreate.Any()
+                    ? await _galleryAppService.CreateBatch(galleriesToCreate)
+                    : new List<GalleryGetDto>();
+            // Combine existing and new galleries
+            var allGalleries = existingGalleries.Concat(newGalleries);
+
+            // Map to HotelGalleryCreateDto
+            galleries.AddRange(allGalleries.Select(gallery => new HotelGalleryCreateDto
             {
-                var createdGallery = await _galleryAppService.Create
-                           (
-                             new Gallery.Application.GalleryAppService.Dtos.GalleryCreateDto
-                             {
-                                 Name = create.Name.ToLower() + "." + item,
-                                 Type = "hotel",
-                                 Description = create.Name.ToLower() + "." + item
-                             }
-                );
-
-                galleryDictionary[item] = createdGallery;
-                galleries.Add(new HotelGalleryCreateDto { GalleryCode = createdGallery.Code, GalleryName = createdGallery.Name, GalleryType = "hotel" });
-
-            }
-
-            foreach (var room in create.Rooms)
-            {
-                var gallery = galleryDictionary["rooms"];
-                room.Image.GalleryCode = gallery.Code;
-                room.Image.GalleryId = gallery.Id;
-                var img =  await _fileAppService.Create(room.Image);
-
-                room.ImageUrlPath = img.FileUrlPath;
-
-            }
-
-            {
-                var main = galleryDictionary["main"];
-                create.CommercialDealsFile.GalleryCode = main.Code;
-                create.CommercialDealsFile.GalleryId = main.Id;
-                var commercialDealsFile = await _fileAppService.Create(create.CommercialDealsFile);
-                create.CommercialDealsFileUrlPath = commercialDealsFile.FileUrlPath;
-
-            }
+                GalleryCode = gallery.Code,
+                GalleryName = gallery.Name,
+                GalleryType = "hotel"
+            }));
 
             create.HotelGallery = galleries;
             return await base.Create(create);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -70,12 +71,37 @@ namespace Gallery.Application.GalleryAppService
 
         public async Task<GalleryGetDto> GetByName(string name)
         {
-            var gallery = await _serviceDbContext.Galleries.Where(x => x.Name == name).ToListAsync();
+            var gallery = await _serviceDbContext.Galleries.Where(x => x.Name.ToLower() == name.ToLower()).ToListAsync();
             return _mapper.Map<GalleryGetDto>(gallery);
         }
 
+        public async Task<List<GalleryGetDto>> GetGalleriesByNames(List<string> names)
+        {
+            var galleries = await _serviceDbContext.Galleries
+                .Where(g => names.Contains(g.Name))
+                .ToListAsync();
+            return _mapper.Map<List<GalleryGetDto>>(galleries);
+        }
+        protected  override Domain.Models.Gallery BeforCreate(GalleryCreateDto create)
+        {
+            return  base.BeforCreate(create);
+        }
+        public async Task<List<GalleryGetDto>> CreateBatch(List<GalleryCreateDto> galleries)
+        {
+            var entities = new List<Domain.Models.Gallery>();
 
+            foreach (var gallery in galleries)
+            {
+                var entity = _mapper.Map<Domain.Models.Gallery>(gallery);
+                entity =  BeforCreate(gallery);
+                entities.Add(entity);
+            }
 
+            await _serviceDbContext.Galleries.AddRangeAsync(entities);
+            await _serviceDbContext.SaveChangesAsync();
+
+            return _mapper.Map<List<GalleryGetDto>>(entities);
+        }
         public override async Task<GalleryGetDto> Delete(int id)
         {
             var files = await _serviceDbContext.Files
