@@ -51,6 +51,7 @@ namespace Authentication.Application
                 MotherName = model.MotherName,
                 Gender = Gender.Male,
                 IsActive = true,
+                LastLogIn = DateTime.UtcNow
 
             };
 
@@ -70,7 +71,12 @@ namespace Authentication.Application
                 };
             }
 
-            await _userManager.AddToRoleAsync(user, "Customer");
+            // Iterate over each service and create roles for each
+            foreach (var service in Enum.GetNames(typeof(Infrastructure.Domain.Consts.ServiceName)))
+            {
+                var roleName = $"{service}-Officer";
+                await _userManager.AddToRoleAsync(user, roleName);
+            }
 
             var jwtSecurityToken = await CreateJwtToken(user);
 
@@ -188,8 +194,18 @@ namespace Authentication.Application
 
         public async Task<IEnumerable<AuthenticationGetDto>> GetAllUsersAsync()
         {
-            var users = await _userManager.Users.ToListAsync(); // Await here
-            return _mapper.Map<List<AuthenticationGetDto>>(users);
+            var users = await _userManager.Users.ToListAsync();
+            var userDtos = new List<AuthenticationGetDto>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                var authDto = _mapper.Map<AuthenticationGetDto>(user);
+                authDto.Roles = roles;
+                userDtos.Add(authDto);
+            }
+
+            return userDtos;
         }
 
 
@@ -322,6 +338,74 @@ namespace Authentication.Application
                     FatherName = user.FatherName,
                 },
                 Roles = userNewRoles
+            };
+        }
+
+        public async Task<AuthenticationModel> AddUserAsync(AddUserDto newuser)
+        {
+            string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
+
+            if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
+                return new AuthenticationModel { Message = "Email is already exist!" };
+
+            if (await _userManager.FindByNameAsync(userName) is not null)
+                return new AuthenticationModel { Message = "Username is already exist!" };
+
+            var user = new ApplicationUser
+            {
+                Code = "User-" + Guid.NewGuid().ToString("N"),
+                IdentityNumber = " ",
+                PhoneNumber = " ",
+                UserName = userName,
+                Email = newuser.Email,
+                FirstName = newuser.FirstName,
+                LastName = newuser.LastName,
+                FatherName = " ",
+                MotherName = " ",
+                Gender = Gender.Male,
+                IsActive = newuser.IsActive,
+                LastLogIn = DateTime.MinValue,
+                Department = newuser.Department,
+
+            };
+
+            var result = await _userManager.CreateAsync(user, "Hi@2025");
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new AuthenticationModel
+                {
+                    IsAuthenticated = false,
+                    Message = errors
+                };
+            }
+
+            // Iterate over each service and create roles for each
+            foreach (var service in Enum.GetNames(typeof(Infrastructure.Domain.Consts.ServiceName)))
+            {
+                var roleName = $"{service}-Officer";
+                await _userManager.AddToRoleAsync(user, roleName);
+            }
+            if (!string.IsNullOrEmpty(newuser.Role))
+            {
+                var role = AssignRoleToUserByServiceAsync(user.Code, newuser.Role);
+            }
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+
+            return new AuthenticationModel
+            {
+                Message = "User has been created successfully.",
+                Email = user.Email,
+                Roles = userRoles,
+                IsAuthenticated = true,
+                FirstName = user.FirstName,
+                LastName = user.LastName
             };
         }
 
