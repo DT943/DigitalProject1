@@ -24,6 +24,7 @@ namespace Gallery.Host.Controllers
         FileValidator _fileValidator;
         public FileController(IFileAppService appService, FileValidator fileValidator) : base(appService)
         {
+            this.ServiceName = "Gallery";
             _appService = appService;
             _fileValidator= fileValidator;
         }
@@ -35,18 +36,6 @@ namespace Gallery.Host.Controllers
         {
             return await base.Create(createDto);
         }
-
-        public override async Task<ActionResult<FileGetDto>> Update(FileUpdateDto updateDto)
-        {
-            return await base.Update(updateDto);
-        }
- 
-        public async override Task<ActionResult<FileGetDto>> Delete(int id)
-        {
-            return await base.Delete(id);
-        }
-
-
 
         [HttpGet("getby-galleryid/{galleryId}")]
         public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryId(int galleryId)

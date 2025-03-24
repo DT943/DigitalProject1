@@ -29,10 +29,15 @@ namespace Authentication.Domain.Models
 
         [MaxLength(50)]
         public string PhoneNumber { get; set; }
-
+        
         [MaxLength(50)]
         public Gender Gender { get; set; }
 
+        public bool IsActive {  get; set; } = true;
+        [MaxLength(50)]
+        public string? Department { get; set; }
+
+        public DateTime? LastLogIn { get; set; }
     }
 
 
@@ -41,7 +46,9 @@ namespace Authentication.Domain.Models
          public int Id { get; set; }
 
          public string Code { get; set; }
-
+        
+         public bool IsActive {  get; set; }
+        
          public string FirstName { get; set; }
 
          public string LastName { get; set; }

@@ -28,9 +28,6 @@ namespace Authentication.Application
             _jwt = jwt.Value;
             _mapper = mapper;
         }
-
-
-
         public async Task<AuthenticationModel> RegisterAsync(RegisterModel model)
         {
             string userName = (model.FirstName + model.LastName).Replace(" ", "");
@@ -53,6 +50,7 @@ namespace Authentication.Application
                 FatherName = model.FatherName,
                 MotherName = model.MotherName,
                 Gender = Gender.Male,
+                IsActive = true,
 
             };
 
@@ -130,11 +128,50 @@ namespace Authentication.Application
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user is null || !await _userManager.CheckPasswordAsync(user, model.Password))
+            if (user == null)
             {
                 authModel.Message = "Email or Password is incorrect!";
                 return authModel;
             }
+
+
+            if (await _userManager.IsLockedOutAsync(user))
+            {
+                user.IsActive = !user.IsActive;
+                var result = await _userManager.UpdateAsync(user);
+                authModel.Message = "Your account is locked due to multiple failed login attempts.";
+                return authModel;
+            }
+
+            if (!user.IsActive)
+            {
+                authModel.Message = "Your account is deactivated. Please contact support.";
+                return authModel;
+            }
+
+
+            if (!await _userManager.CheckPasswordAsync(user, model.Password))
+            {
+                await _userManager.AccessFailedAsync(user); // Increase failed login attempts
+
+                if (await _userManager.IsLockedOutAsync(user))
+                {
+                    authModel.Message = "Your account has been locked due to multiple failed login attempts.";
+                }
+                else
+                {
+                    authModel.Message = "Email or Password is incorrect!";
+                }
+
+                return authModel;
+            }
+            // Reset failed attempts count on successful login
+            await _userManager.ResetAccessFailedCountAsync(user);
+
+
+            user.LastLogIn = DateTime.UtcNow;
+            var updateResult = await _userManager.UpdateAsync(user);
+
             var userRoles = await _userManager.GetRolesAsync(user);
             var jwtSecurityToken = await CreateJwtToken(user);
 
@@ -169,7 +206,6 @@ namespace Authentication.Application
             auth.Roles = existingRoles;
             return auth;
         }
-
 
         public async Task<UserWithRole> AssignRolesToUserAsync(string userCode,  List<string> roles)
         {
@@ -211,6 +247,82 @@ namespace Authentication.Application
                 },
                 Roles = userNewRoles
             };  
+        }
+        public async Task<bool> ChangeUserStatusAsync(string userCode)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.IsActive = !user.IsActive;
+            var result = await _userManager.UpdateAsync(user);
+
+            return result.Succeeded;
+        }
+
+        public async Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+
+            // Extract service name from the new role (before the '-')
+            var newRoleParts = newRole.Split('-');
+            if (newRoleParts.Length < 2)
+            {
+                throw new Exception("Invalid role format. Expected format: 'ServiceName-RoleName'");
+            }
+            var newService = newRoleParts[0]; // Extract the service name (e.g., "CMS" from "CMS-Admin")
+
+            // Get user's existing roles
+            var existingRoles = await _userManager.GetRolesAsync(user);
+
+            // Filter roles that belong to the same service
+            var rolesToRemove = existingRoles.Where(r => r.StartsWith($"{newService}-")).ToList();
+
+            if (rolesToRemove.Any())
+            {
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+                if (!removeResult.Succeeded)
+                {
+                    throw new Exception($"Failed to remove existing roles from service {newService}");
+                }
+            }
+
+            // Check if the new role exists before assigning
+            var roleExists = await _roleManager.RoleExistsAsync(newRole);
+            if (roleExists)
+            {
+                var addRoleResult = await _userManager.AddToRoleAsync(user, newRole);
+                if (!addRoleResult.Succeeded)
+                {
+                    throw new Exception($"Failed to assign role {newRole} to user.");
+                }
+            }
+            else
+            {
+                throw new Exception($"Role {newRole} does not exist.");
+            }
+
+            // Get updated roles
+            var userNewRoles = await _userManager.GetRolesAsync(user);
+
+            return new UserWithRole
+            {
+                applicationUser = new GetUser
+                {
+                    Id = user.Id,
+                    Code = user.Code,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    MotherName = user.MotherName,
+                    FatherName = user.FatherName,
+                },
+                Roles = userNewRoles
+            };
         }
 
     }
