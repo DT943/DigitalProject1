@@ -17,7 +17,7 @@ namespace Hotel.Application.HotelAppService.Dtos
 
             CreateMap<HotelCreateDto, Hotel.Domain.Models.Hotel>()
                 .ForMember(dest => dest.Rooms, opt => opt.Ignore())
-                .ForMember(dest => dest.HotelGallery, opt => opt.MapFrom(src => src.HotelGallery))
+                .ForMember(dest => dest.HotelGallery, opt => opt.Ignore())
                 .ForMember(dest => dest.POS, opt => opt.MapFrom(src => src.POS))
                 .ForMember(dest => dest.ContactInfo, opt => opt.MapFrom(src => src.ContactInfo))
                 .ForMember(dest => dest.Rank, opt => opt.MapFrom(src => src.Rank));

@@ -48,6 +48,8 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string Url { get; set; }
 
         public int Rank { get; set; }
+        public IEnumerable<HotelGalleryCreateDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryCreateDto>();
+
         public IEnumerable<CotactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoCreateDto>();
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
