@@ -137,7 +137,9 @@ namespace Authentication.Application
 
             if (await _userManager.IsLockedOutAsync(user))
             {
-                authModel.Message = "Your account is locked due to multiple failed login attempts. Try again later.";
+                user.IsActive = !user.IsActive;
+                var result = await _userManager.UpdateAsync(user);
+                authModel.Message = "Your account is locked due to multiple failed login attempts.";
                 return authModel;
             }
 

@@ -40,7 +40,7 @@ namespace Authentication.Data.Seeds
             // Seed all roles into the database
             builder.Entity<IdentityRole>().HasData(roles);
 
-
+            /*
             // **Seed Users**
             var passwordHasher = new PasswordHasher<IdentityUser>();
 
@@ -80,6 +80,7 @@ namespace Authentication.Data.Seeds
                     RoleId = "CMS-Manager" // Example service role
                 }
             );
+            */
 
         }
     }

@@ -35,9 +35,9 @@ namespace Authentication.Domain.Models
 
         public bool IsActive {  get; set; } = true;
         [MaxLength(50)]
-        public string Department { get; set; }
+        public string? Department { get; set; }
 
-        public DateTime LastLogIn { get; set; }
+        public DateTime? LastLogIn { get; set; }
     }
 
 
