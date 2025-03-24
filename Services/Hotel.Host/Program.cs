@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
 using System.Net;
 using Gallery.Data.DbContext;
+using Microsoft.Extensions.FileProviders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -80,6 +81,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+if (!app.Environment.IsDevelopment())
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider("/var/www/ChamWingsAspNetCoreServices/publish/images"),
+        RequestPath = "/images" // This maps the '/images' URL path to the directory
+    });
+
+
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthorization();

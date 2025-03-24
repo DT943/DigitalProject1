@@ -32,8 +32,6 @@ namespace Hotel.Application.HotelAppService.Dtos
 
         public IEnumerable<HotelGalleryCreateDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryCreateDto>();
         public IEnumerable<CotactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoCreateDto>();
-
-        //public IEnumerable<RoomCreateDto> Rooms { get; set; }
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
         public bool HasGym { get; set; }

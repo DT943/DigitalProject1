@@ -7,6 +7,7 @@ using Gallery.Application.FileAppservice.Dtos;
 using Hotel.Domain.Models;
 using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Validations;
+using Microsoft.AspNetCore.Http;
 
 namespace Hotel.Application.HotelAppService.Dtos
     {
@@ -24,6 +25,7 @@ namespace Hotel.Application.HotelAppService.Dtos
             public int NumberOfChildren { get; set; }
         }
 
+
         public class RoomUpdateDto : IEntityUpdateDto
         {
             public string Category { get; set; }
@@ -31,6 +33,8 @@ namespace Hotel.Application.HotelAppService.Dtos
 
             public int NumberOfAdults { get; set; }
             public int Price { get; set; }
+            public string? ImageUrlPath { get; set; }
+            public string? ImageCode { get; set; }
 
             public int NumberOfChildren { get; set; }
 

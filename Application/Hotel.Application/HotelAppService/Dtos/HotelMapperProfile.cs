@@ -23,35 +23,22 @@ namespace Hotel.Application.HotelAppService.Dtos
                 .ForMember(dest => dest.Rank, opt => opt.MapFrom(src => src.Rank));
 
 
- 
-
             CreateMap<CotactInfoCreateDto, ContactInfo>();
+
 
             CreateMap<HotelUpdateDto, Hotel.Domain.Models.Hotel>()
                 .ForMember(dest => dest.Rooms, opt => opt.Ignore())
                 .ForMember(dest => dest.HotelGallery, opt => opt.Ignore());
             CreateMap<CotactInfoUpdateDto, ContactInfo>();
 
-            CreateMap<Hotel.Domain.Models.Hotel, HotelGetDto>()
+
+            CreateMap<Domain.Models.Hotel, HotelGetDto>()
                 .ForMember(dest => dest.ContactInfo, opt => opt.MapFrom(src => src.ContactInfo)) // if you want to map ContactInfo
-                                                                                                                             // Add any other collection or property mappings here
-                 .ForMember(dest => dest.HotelGallery, opt => opt.MapFrom(src => src.HotelGallery));
+                .ForMember(dest => dest.Room, opt => opt.MapFrom(src => src.Rooms))
+                .ForMember(dest => dest.HotelGallery, opt => opt.MapFrom(src => src.HotelGallery));
 
 
             CreateMap<ContactInfo, ContactInfoGetDto>();
-
-
-            CreateMap<HotelGetDto, HotelGetDetailsDto>()
-                .ForMember(dest => dest.Rooms, opt => opt.Ignore()) 
-                .ForMember(dest => dest.HotelGallery, opt => opt.Ignore()) 
-                .ForMember(dest => dest.POS, opt => opt.MapFrom(src => src.POS));
-
-
-
-            CreateMap<Domain.Models.Hotel, HotelGetDetailsDto>()
-                .ForMember(dest => dest.Rooms, opt => opt.Ignore())
-                .ForMember(dest => dest.HotelGallery, opt => opt.Ignore())
-                .ForMember(dest => dest.POS, opt => opt.MapFrom(src => src.POS));
 
         }
     }

@@ -15,9 +15,9 @@ namespace Hotel.Application.HotelAppService.Dtos
     public class HotelGetDto
     {
         public int Id { get; set; }
+        public string Code {  get; set; }
         public string Name { get; set; }
         public string Country { get; set; }
-
         public string POS { get; set; }
         public string Governate { get; set; }
         public string Url { get; set; }

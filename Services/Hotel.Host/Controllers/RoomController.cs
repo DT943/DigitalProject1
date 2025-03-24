@@ -8,6 +8,7 @@ using Sieve.Models;
 using Hotel.Application.RoomAppService;
 using Hotel.Application.HotelAppService.Dtos;
 using Hotel.Domain.Models;
+using Gallery.Application.FileAppservice.Dtos;
 
 namespace Hotel.Host.Controllers
 {
@@ -19,7 +20,12 @@ namespace Hotel.Host.Controllers
         {
             _appService = appService;
         }
-        
+
+        public override async Task<ActionResult<RoomOutputDto>> Create([FromForm] RoomCreateDto createDto)
+        {
+            return await base.Create(createDto);
+        }
+
         [HttpGet("ByHotelId/{hotelId}")]
         public async Task<ActionResult<IEnumerable<RoomOutputDto>>> GetRoomsByHotelIdAsync(int hotelId)
         {
