@@ -22,15 +22,33 @@ namespace Infrastructure.Service.Controllers
         public BaseController(TAppService appService)
         {
             _appService = appService;
+            ServiceName = GetServiceName();
         }
 
+        private string GetServiceName()
+        {
+            // Gets the class name of the child class that inherits BaseController
+            var childClassName = GetType().Name;
+
+            // Removes "Controller" suffix if present
+            if (childClassName.EndsWith("Controller"))
+            {
+                childClassName = childClassName.Replace("Controller", "");
+            }
+
+            return childClassName;
+        }
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Create(TCreatDto dto)
         {
             var user = HttpContext.User;
 
-            if (!(user.IsInRole("SuperAdmin") || user.IsInRole($"{ServiceName}.Admin")))
+            if (!(user.IsInRole("SuperAdmin") || 
+                user.IsInRole($"{ServiceName}-Admin") || 
+                user.IsInRole($"{ServiceName}-Manager") ||
+                user.IsInRole($"{ServiceName}-Supervisor")
+                ))
             {
                 return Forbid();
             }
@@ -45,12 +63,11 @@ namespace Infrastructure.Service.Controllers
         {
             var user = HttpContext.User;
             if (!(user.IsInRole("SuperAdmin") ||
-                  user.IsInRole($"{ServiceName}.Admin") ||
-                  user.IsInRole($"{ServiceName}.Supervisor")))
-            {
-                return Forbid();
-            }
-            if (!(user.IsInRole("SuperAdmin") || user.IsInRole($"{ServiceName}.Admin") || user.IsInRole($"{ServiceName}.Officer")))
+                  user.IsInRole($"{ServiceName}-Admin") ||
+                  user.IsInRole($"{ServiceName}-Manager")||
+                  user.IsInRole($"{ServiceName}-Supervisor") ||
+                  user.IsInRole($"{ServiceName}-Officer")
+                  ))
             {
                 return Forbid();
             }
@@ -64,10 +81,10 @@ namespace Infrastructure.Service.Controllers
             var user = HttpContext.User;
 
             if (!(user.IsInRole("SuperAdmin") ||
-                  user.IsInRole($"{ServiceName}.Admin") ||
-                  user.IsInRole($"{ServiceName}.Viewonly") ||
-                  user.IsInRole($"{ServiceName}.Supervisor") ||
-                  user.IsInRole($"{ServiceName}.Officer")))
+                  user.IsInRole($"{ServiceName}-Admin") ||
+                  user.IsInRole($"{ServiceName}-Manager") ||
+                  user.IsInRole($"{ServiceName}-Supervisor") ||
+                  user.IsInRole($"{ServiceName}-Officer")))
             {
                 return Forbid();
             }
@@ -82,10 +99,10 @@ namespace Infrastructure.Service.Controllers
             var user = HttpContext.User;
 
             if (!(user.IsInRole("SuperAdmin") ||
-                  user.IsInRole($"{ServiceName}.Admin") ||
-                  user.IsInRole($"{ServiceName}.Viewonly") ||
-                  user.IsInRole($"{ServiceName}.Supervisor") ||
-                  user.IsInRole($"{ServiceName}.Officer")))
+                  user.IsInRole($"{ServiceName}-Admin") ||
+                  user.IsInRole($"{ServiceName}-Manager") ||
+                  user.IsInRole($"{ServiceName}-Supervisor") ||
+                  user.IsInRole($"{ServiceName}-Officer")))
             {
                 return Forbid();
             }
@@ -98,15 +115,15 @@ namespace Infrastructure.Service.Controllers
         public virtual async Task<ActionResult<TGetDto>> Delete(int id)
         {
             var user = HttpContext.User;
-
             if (!(user.IsInRole("SuperAdmin") || 
-                  user.IsInRole($"{ServiceName}.Admin")))
+                  user.IsInRole($"{ServiceName}-Admin")))
             {
                 return Forbid();
             }
             var deletedEntity = await _appService.Delete(id);
             return Ok(deletedEntity);
         }
+    
     }
 
 

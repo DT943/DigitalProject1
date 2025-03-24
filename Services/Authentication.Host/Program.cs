@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.AspNetCore.Identity;
 Console.WriteLine("Application is starting V.1.3");
 
 
@@ -69,6 +70,16 @@ builder.Services.AddSwaggerGen();
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug); // Make sure the level is low enough to show "Information" logs
+
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15); // Lock account for 15 minutes
+    options.Lockout.MaxFailedAccessAttempts = 5; // Lock account after 5 failed attempts
+    options.Lockout.AllowedForNewUsers = true; // Enable lockout for new users
+});
+
+
 
 var app = builder.Build();
 

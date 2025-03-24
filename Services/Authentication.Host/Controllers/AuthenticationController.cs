@@ -97,8 +97,29 @@ namespace Authentication.Host.Controllers
             var result = await _authenticationAppService.AssignRolesToUserAsync(userCode, roles);
             return Ok(result);
         }
+        
+        [HttpPut("ChangeUserAccountStatus/{userCode}")]
+        public async Task<IActionResult> ChangeUserStatus(string userCode)
+        {
+            var result = await _authenticationAppService.ChangeUserStatusAsync(userCode);
+            return result ? Ok("User status updated successfully.") : BadRequest("Failed to update user status.");
+        }
 
+        [HttpPost("AssignServiceRoleToUser/{userCode}")]
+        public async Task<IActionResult> AssignRoleToUserByService(string userCode, [FromBody] string newRole)
+        {
+            if (string.IsNullOrWhiteSpace(userCode) || string.IsNullOrWhiteSpace(newRole))
+                return BadRequest("User code and role are required.");
 
-
+            try
+            {
+                var result = await _authenticationAppService.AssignRoleToUserByServiceAsync(userCode, newRole);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

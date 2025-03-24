@@ -13,6 +13,16 @@ namespace Infrastructure.Domain
             Male,
             Female
         }
+        public enum ServiceName {
+            CMS,
+            Offer,
+            Authntication,
+            CWCore,
+            Gallery,
+            Hotel,
+            Notification
+        }
+
 
         public static class RideRequestStatus
         {

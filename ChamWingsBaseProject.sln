@@ -56,23 +56,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Application", "Applicat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Host", "Services\CMS.Host\CMS.Host.csproj", "{F5D1D9B1-755A-414E-ACF7-8070457EA459}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CWCore.Domain", "Domain\CWCore.Domain\CWCore.Domain.csproj", "{6A6DFB55-5896-4867-8D93-5256ADA1C090}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CWCore.Domain", "Domain\CWCore.Domain\CWCore.Domain.csproj", "{6A6DFB55-5896-4867-8D93-5256ADA1C090}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CWCore.Application", "Application\CWCore.Application\CWCore.Application.csproj", "{209146DA-4553-4D40-AA9F-4C7A524D927D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CWCore.Application", "Application\CWCore.Application\CWCore.Application.csproj", "{209146DA-4553-4D40-AA9F-4C7A524D927D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CWCore.Data", "Data\CWCore.Data\CWCore.Data.csproj", "{53246A55-A586-42C5-92B4-52C6EEDC2C68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CWCore.Data", "Data\CWCore.Data\CWCore.Data.csproj", "{53246A55-A586-42C5-92B4-52C6EEDC2C68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gallery.Host", "Services\Gallery.Host\Gallery.Host.csproj", "{392EE078-A1AA-46AF-88C4-2669B655AE86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gallery.Host", "Services\Gallery.Host\Gallery.Host.csproj", "{392EE078-A1AA-46AF-88C4-2669B655AE86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Host", "Services\Hotel.Host\Hotel.Host.csproj", "{8D1B8C8F-A71F-4D23-8085-DB4409F70137}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel.Host", "Services\Hotel.Host\Hotel.Host.csproj", "{8D1B8C8F-A71F-4D23-8085-DB4409F70137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Domain", "Domain\Hotel.Domain\Hotel.Domain.csproj", "{25554184-0B49-47CC-8E37-B19A93DDB535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel.Domain", "Domain\Hotel.Domain\Hotel.Domain.csproj", "{25554184-0B49-47CC-8E37-B19A93DDB535}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Data", "Data\Hotel.Data\Hotel.Data.csproj", "{901B8FAA-475B-4190-8BB9-0F74EA9FA74B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel.Data", "Data\Hotel.Data\Hotel.Data.csproj", "{901B8FAA-475B-4190-8BB9-0F74EA9FA74B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hotel.Application", "Application\Hotel.Application\Hotel.Application.csproj", "{0FEA4577-FDD6-4E14-832C-CE23ED606DCA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hotel.Application", "Application\Hotel.Application\Hotel.Application.csproj", "{0FEA4577-FDD6-4E14-832C-CE23ED606DCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CMS.Domain", "Domain\CMS.Domain\CMS.Domain.csproj", "{F78F4A4B-6D48-4994-AF54-105EA7B8636C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CMS.Domain", "Domain\CMS.Domain\CMS.Domain.csproj", "{F78F4A4B-6D48-4994-AF54-105EA7B8636C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
