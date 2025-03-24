@@ -34,7 +34,7 @@ namespace Hotel.Application.HotelAppService.Dtos
 
             CreateMap<Domain.Models.Hotel, HotelGetDto>()
                 .ForMember(dest => dest.ContactInfo, opt => opt.MapFrom(src => src.ContactInfo)) // if you want to map ContactInfo
-                .ForMember(dest => dest.Room, opt => opt.MapFrom(src => src.Rooms))
+                .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
                 .ForMember(dest => dest.HotelGallery, opt => opt.MapFrom(src => src.HotelGallery));
 
 

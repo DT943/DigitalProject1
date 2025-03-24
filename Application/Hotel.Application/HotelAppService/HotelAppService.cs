@@ -13,6 +13,7 @@ using Hotel.Application.HotelGalleryAppService.Dtos;
 using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using Gallery.Application.GalleryAppService.Dtos;
+using Gallery.Application.FileAppservice;
 namespace Hotel.Application.HotelAppService
 {
     public class HotelAppService : BaseAppService<HotelDbContext, Domain.Models.Hotel, HotelGetDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>, IHotelAppService
