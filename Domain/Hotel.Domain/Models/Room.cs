@@ -14,7 +14,14 @@ namespace Hotel.Domain.Models
         public int HotelId { get; set; }
         public Hotel Hotel { get; set; }
         public string Category { get; set; }
+
+        public string RoomTypeName { get; set; }
+        public string? Description { get; set; }
+        public string? ImageUrlPath { get; set; }
+        public string? ImageCode { get; set; }
+
         public int NumberOfAdults { get; set; }
+        public int? Price { get; set; }
         public int NumberOfChildren { get; set; }
     }
 }

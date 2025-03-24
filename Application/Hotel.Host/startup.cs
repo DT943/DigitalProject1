@@ -1,0 +1,13 @@
+// ... existing code ...
+
+public void ConfigureServices(IServiceCollection services)
+{
+    // ... existing service registrations ...
+    
+    // Register the GalleryAppService
+    services.AddTransient<Gallery.Application.GalleryAppService.IGalleryAppService, Gallery.Application.GalleryAppService.GalleryAppService>();
+    
+    // ... other service registrations ...
+}
+
+// ... existing code ...

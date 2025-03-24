@@ -10,6 +10,7 @@ namespace Gallery.Application.FileAppservice.Dtos
 {
     public class FileGetDto
     {
+        public string Code { get; set; }
         public int Id { get; set; }
         public string Title { get; set; }
         public string FileName { get; set; }

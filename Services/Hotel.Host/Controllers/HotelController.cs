@@ -1,5 +1,7 @@
-﻿using Hotel.Application.HotelAppService;
+﻿using Gallery.Application.GalleryAppService;
+using Hotel.Application.HotelAppService;
 using Hotel.Application.HotelAppService.Dtos;
+using Hotel.Application.HotelGalleryAppService.Dtos;
 using Infrastructure.Service.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,48 +12,19 @@ namespace Hotel.Host.Controllers
     [Authorize]
     public class HotelController : BaseController<IHotelAppService, Domain.Models.Hotel, HotelGetDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>
     {
-        IHotelAppService _appService;
-        public HotelController(IHotelAppService appService) : base(appService)
+        IHotelAppService _hotelAppService;
+        IGalleryAppService _galleryAppService;
+        public HotelController(IHotelAppService hotelAppService, IGalleryAppService galleryAppService) : base(hotelAppService)
         {
-            _appService = appService;
+            _hotelAppService = hotelAppService;
+            _galleryAppService = galleryAppService;
         }
-        [HttpGet("Details/{id}")]
-        public async Task<ActionResult<HotelGetDetailsDto>> GetHotelDetailsWithReviews(int id)
+
+        public override async Task<ActionResult<HotelGetDto>> Create(HotelCreateDto dto)
         {
-            try
-            {
-                var hotelDetails = await _appService.GetWithDetal(id);
-                if (hotelDetails == null)
-                {
-                    return NotFound();
-                }
-                return Ok(hotelDetails);
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions, you can log the error or return a more specific message if needed
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error fetching hotel details");
-            }
+            return await base.Create(dto);
         }
-        /*
-        [HttpGet("WithContactInfo")]
-        public async Task<ActionResult<IEnumerable<HotelGetDto>>> GetAll(SieveModel input)
-        {
-            try
-            {
-                var hotels = await _appService.GetAllWithContactInfo(input);
-                if (hotels == null)
-                {
-                    return NotFound();
-                }
-                return Ok(hotels);
-            }
-            catch (Exception ex)
-            {
-                // Handle any exceptions, you can log the error or return a more specific message if needed
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error fetching hotel info");
-            }
-        }
-        */
+
+
     }
 }

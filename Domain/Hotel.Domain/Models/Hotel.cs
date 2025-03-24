@@ -12,13 +12,20 @@ namespace Hotel.Domain.Models
     {
         public string Name { get; set; }
         public string POS { get; set; }
+        public string? Country { get; set; }
+
+
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
+        public string Url { get; set; }
         public int Rank { get; set; } 
-        public IEnumerable<Room> Rooms { get; set; } = Enumerable.Empty<Room>();
-        public IEnumerable<HotelGallery> HotelGallery { get; set; } = Enumerable.Empty<HotelGallery>();
+        public ICollection<Room> Rooms { get; set; } 
+        public ICollection<HotelGallery> HotelGallery { get; set; }
         // validation 10 
-        public IEnumerable<ContactInfo> ContactInfo { get; set; } = Enumerable.Empty<ContactInfo>();
+        public ICollection<ContactInfo> ContactInfo { get; set; }
+
+        public string? CommercialDealsFileUrlPath  { get; set; }
+        public string? CommercialDealsFileCode { get; set; }
 
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }

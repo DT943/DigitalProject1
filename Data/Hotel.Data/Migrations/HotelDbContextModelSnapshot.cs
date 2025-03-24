@@ -89,6 +89,16 @@ namespace Hotel.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("NVARCHAR2(50)");
 
+                    b.Property<string>("CommercialDealsFileCode")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("CommercialDealsFileUrlPath")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -144,6 +154,10 @@ namespace Hotel.Data.Migrations
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("StreetAddress")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
@@ -227,8 +241,17 @@ namespace Hotel.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("TIMESTAMP(7)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("NVARCHAR2(2000)");
+
                     b.Property<int>("HotelId")
                         .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("ImageCode")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("ImageUrlPath")
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(50)
@@ -242,6 +265,13 @@ namespace Hotel.Data.Migrations
 
                     b.Property<int>("NumberOfChildren")
                         .HasColumnType("NUMBER(10)");
+
+                    b.Property<int?>("Price")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("RoomTypeName")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.HasKey("Id");
 

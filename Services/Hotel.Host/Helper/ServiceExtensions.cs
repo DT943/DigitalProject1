@@ -1,5 +1,10 @@
 using AutoMapper;
-
+using Gallery.Application.FileAppservice;
+using Gallery.Application.FileAppservice.Dtos;
+using Gallery.Application.FileAppservice.Validations;
+using Gallery.Application.GalleryAppService;
+using Gallery.Application.GalleryAppService.Dtos;
+using Gallery.Application.GalleryAppService.Validations;
 using Hotel.Application.HotelAppService;
 using Hotel.Application.HotelAppService.Dtos;
 using Hotel.Application.HotelAppService.Validations;
@@ -21,12 +26,17 @@ namespace Hotel.Host.Helper
             services.AddTransient<IHotelAppService, HotelAppService>();
             services.AddTransient<IHotelGalleryAppService, HotelGalleryAppService>();
             services.AddTransient<IRoomAppService, RoomAppService>();
-            //services.AddTransient<IPOSAppService, POSAppService>();
+
+            services.AddTransient<IGalleryAppService, GalleryAppService>();
+            services.AddTransient<IFileAppService, FileAppService>();
+
 
             // Register Validators
             services.AddTransient<HotelValidator>();
             services.AddTransient<HotelGalleryValidator>();
             services.AddTransient<RoomValidator>();
+            services.AddTransient<GalleryValidator>();
+            services.AddTransient<FileValidator>();
 
             // Register Sieve
             services.AddScoped<ISieveProcessor, SieveProcessor>();
@@ -34,6 +44,8 @@ namespace Hotel.Host.Helper
             // Configure AutoMapper
             var mapperConfig = new MapperConfiguration(mc =>
             {
+                mc.AddProfile(new GalleryMapperProfile());
+                mc.AddProfile(new FileMapperProfile());
                 mc.AddProfile(new HotelMapperProfile());
                 mc.AddProfile(new HotelGalleryMappingProfile());
                 mc.AddProfile(new RoomMappingProfile());

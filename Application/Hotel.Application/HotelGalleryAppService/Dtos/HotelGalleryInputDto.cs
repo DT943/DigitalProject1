@@ -9,7 +9,7 @@ namespace Hotel.Application.HotelGalleryAppService.Dtos
    
         public int HotelId { get; set; }
         public string GalleryName { get; set; }
-        public string GalleryCode { get; set; }
+        public string? GalleryCode { get; set; }
         public string GalleryType { get; set; }
 
     }
@@ -17,7 +17,7 @@ namespace Hotel.Application.HotelGalleryAppService.Dtos
     {
            
         public string GalleryName { get; set; }
-        public string GalleryCode { get; set; }
+        public string? GalleryCode { get; set; }
         public string GalleryType { get; set; }
 
     }

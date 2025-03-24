@@ -26,12 +26,12 @@ namespace Hotel.Application.RoomAppService.Validations
 
 
                 RuleFor(dto => (dto as RoomCreateDto).NumberOfAdults)
-                    .NotEmpty()
-                    .WithMessage("Number of adults cannot be empty.");
+                    .Must(d =>d >=0)
+                    .WithMessage("Number of adults is not correct.");
 
                 RuleFor(dto => (dto as RoomCreateDto).NumberOfChildren)
-                    .NotEmpty()
-                    .WithMessage("Number of children cannot be empty.");
+                    .Must(d => d >= 0)
+                    .WithMessage("Number of children is not correct.");
 
                 RuleFor(dto => (dto as RoomCreateDto).Category)
                      .Must(type => AllowedCategory.Contains(type))
