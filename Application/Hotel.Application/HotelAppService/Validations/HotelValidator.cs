@@ -45,7 +45,11 @@ namespace Hotel.Application.HotelAppService.Validations
                     .InclusiveBetween(1, 5)
                     .WithMessage("Rank must be between 1 and 5.");
 
-
+                RuleForEach(dto => (dto as HotelCreateDto).ContactInfo).ChildRules(contact =>
+                {
+                     contact.RuleFor(c => c.Category).NotEmpty().WithMessage("Category is required");
+                    contact.RuleFor(c => c.ContactType).NotEmpty().WithMessage("Contact type is required");
+                });
                 RuleForEach(dto => (dto as HotelCreateDto).ContactInfo)
                     .NotNull()
                     .WithMessage("ContactInfo cannot be null.")
