@@ -1,4 +1,5 @@
 ﻿using Authentication.Application;
+using Authentication.Application.Dtos;
 using Authentication.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -121,5 +122,21 @@ namespace Authentication.Host.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("AddNewUser")]
+        public async Task<IActionResult> AddNewUser(AddUserDto addUserDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                var result = await _authenticationAppService.AddUserAsync(addUserDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
