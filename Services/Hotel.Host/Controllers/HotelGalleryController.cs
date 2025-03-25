@@ -37,6 +37,7 @@ namespace Hotel.Host.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error fetching gallery info");
             }
         }
+
     }
 
 }

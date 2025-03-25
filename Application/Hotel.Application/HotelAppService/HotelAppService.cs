@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using FluentValidation;
 using Gallery.Application.GalleryAppService.Dtos;
 using Gallery.Application.FileAppservice;
+using Gallery.Application.FileAppservice.Dtos;
 namespace Hotel.Application.HotelAppService
 {
     public class HotelAppService : BaseAppService<HotelDbContext, Domain.Models.Hotel, HotelGetDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>, IHotelAppService
@@ -103,6 +104,60 @@ namespace Hotel.Application.HotelAppService
 
             return await base.Delete(id);
         }
+
+        public async Task<FileGetDto> MakeContract(ContractCreateDto contractCreateDto)
+        {
+            // Validate file is PDF
+            if (contractCreateDto.File == null || !contractCreateDto.File.ContentType.Equals("application/pdf", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new System.ComponentModel.DataAnnotations.ValidationException("Only PDF files are allowed for contracts");
+            }
+
+            // Get hotel and its galleries
+            var hotel = await _serviceDbContext.Hotels
+                .Include(h => h.HotelGallery)
+                .FirstOrDefaultAsync(h => h.Code == contractCreateDto.HotelCode);
+
+            if (hotel == null)
+            {
+                throw new System.ComponentModel.DataAnnotations.ValidationException($"Hotel with code {contractCreateDto.HotelCode} not found");
+            }
+
+            // Get the main gallery code
+            var galleryCode = hotel.HotelGallery
+                .FirstOrDefault(g => g.GalleryName.EndsWith("main"))?.GalleryCode;
+
+            if (string.IsNullOrEmpty(galleryCode))
+            {
+                throw new System.ComponentModel.DataAnnotations.ValidationException($"Main gallery not found for hotel {hotel.Name}");
+            }
+
+            // Create file dto with proper mapping
+            var fileDto = new FileCreateDto
+            {
+                Title = contractCreateDto.Title,
+                GalleryCode = galleryCode,
+                FileName = contractCreateDto.FileName,
+                FileType = contractCreateDto.FileType,
+                Size = contractCreateDto.Size,
+                Path = contractCreateDto.Path,
+                MimeType = contractCreateDto.MimeType,
+                ImageWidth = contractCreateDto.ImageWidth,
+                ImageHeight = contractCreateDto.ImageHeight,
+                FileUrlPath = contractCreateDto.FileUrlPath,
+                Duration = contractCreateDto.Duration,
+                Caption = contractCreateDto.Caption,
+                Description = contractCreateDto.Description,
+                AlternativeText = contractCreateDto.AlternativeText,
+                File = contractCreateDto.File
+            };
+
+            // Upload file using file service
+            var result = await _fileAppService.Create(fileDto);
+
+            return result;
+        }
+
 
 
         protected override IQueryable<Domain.Models.Hotel> QueryExcuter(SieveModel input)

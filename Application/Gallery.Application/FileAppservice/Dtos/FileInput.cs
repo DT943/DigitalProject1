@@ -61,5 +61,25 @@ namespace Gallery.Application.FileAppservice.Dtos
     {
         public string FilePath { get; set; }
     }
+    public class ContractCreateDto : IValidatableDto
+    {
+        public string HotelCode { get; set; }
+
+        public string Title { get; set; }
+        public string? FileName { get; set; }
+        public string? FileType { get; set; }
+        public float? Size { get; set; }
+        public string? Path { get; set; }
+        public string? MimeType { get; set; }
+        public int? ImageWidth { get; set; }
+        public int? ImageHeight { get; set; }
+        public string? FileUrlPath { get; set; }
+        public TimeSpan? Duration { get; set; }
+        public string? Caption { get; set; }
+        public string? Description { get; set; }
+        public string? AlternativeText { get; set; }
+        public IFormFile? File { get; set; }
+
+    }
 
 }
