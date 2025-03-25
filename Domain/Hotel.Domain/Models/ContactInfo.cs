@@ -21,13 +21,20 @@ namespace Hotel.Domain.Models
         public bool IsPrimary { get; set; } = false;
         [MaxLength(50)]
 
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
         [MaxLength(50)]
 
-        public string Email {  get; set; }
+        public string? Email {  get; set; }
         public string? Url { get; set; }
         [MaxLength(50)]
 
-        public string ResponsiblePerson { get; set; }
+        public string? ResponsiblePerson { get; set; }
+
+        [MaxLength(50)]
+
+        public string? ResponsiblePersonRole { get; set; }
+        [MaxLength(50)]
+
+        public string? DisplayLabel { get; set; }
     }
 }
