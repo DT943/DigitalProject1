@@ -47,9 +47,13 @@ namespace Hotel.Application.HotelAppService.Validations
 
                 RuleForEach(dto => (dto as HotelCreateDto).ContactInfo).ChildRules(contact =>
                 {
-                     contact.RuleFor(c => c.Category).NotEmpty().WithMessage("Category is required");
-                    contact.RuleFor(c => c.ContactType).NotEmpty().WithMessage("Contact type is required");
+                     contact.RuleFor(c => c.ContactType).NotEmpty().WithMessage("Contact Type is required");
+                     contact.RuleFor(c => c.Category).NotEmpty().WithMessage("Category is required")
+                                                        .Must(type => type == "website" || type == "contact")
+                                                        .WithMessage("Category must be either 'website' or 'contact'");
+
                 });
+
                 RuleForEach(dto => (dto as HotelCreateDto).ContactInfo)
                     .NotNull()
                     .WithMessage("ContactInfo cannot be null.")
@@ -57,8 +61,8 @@ namespace Hotel.Application.HotelAppService.Validations
                     .WithMessage("Phone number must be leass than 10 characters long.")
                     .Must(contact => contact.Email != null && contact.PhoneNumber.Length >= 10)
                     .WithMessage("Phone number must be leass than 10 characters long.")
-                    .Must(contact => contact.Email != null && contact.Email.Length <= 100 && IsValidEmail(contact.Email))
-                    .WithMessage("Email must be valid and not exceed 100 characters.");
+                    .Must(contact => contact.PhoneNumber != null && contact.PhoneNumber.All(char.IsDigit))
+                    .WithMessage("Phone number must only contain digits.");
 
                 RuleFor(dto => (dto as HotelCreateDto).HasAirConditioning)
                     .NotNull()
