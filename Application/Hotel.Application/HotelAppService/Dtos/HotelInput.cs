@@ -14,6 +14,7 @@ namespace Hotel.Application.HotelAppService.Dtos
 {
     public class HotelCreateDetailsDto : IValidatableDto
     {
+        
         public string Name { get; set; }
         public string POS { get; set; }
         public string Governate { get; set; }

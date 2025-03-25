@@ -3,6 +3,7 @@ using System;
 using Hotel.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace Hotel.Data.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    partial class HotelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325075332_add-websitedetailstocontact")]
+    partial class addwebsitedetailstocontact
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,8 +36,7 @@ namespace Hotel.Data.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -43,8 +45,7 @@ namespace Hotel.Data.Migrations
 
                     b.Property<string>("ContactType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
@@ -56,8 +57,7 @@ namespace Hotel.Data.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<int>("HotelId")
                         .HasColumnType("NUMBER(10)");
@@ -74,13 +74,11 @@ namespace Hotel.Data.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("ResponsiblePerson")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("Url")
                         .HasColumnType("NVARCHAR2(2000)");
