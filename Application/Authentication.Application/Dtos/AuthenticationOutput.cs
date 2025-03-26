@@ -16,6 +16,8 @@ namespace Authentication.Application.Dtos
         public string Email { get; set; }
 
         public bool IsActive { get; set; }
+        public bool IsLocked { get; set; }
+
         [MaxLength(50)]
         public string? Department { get; set; }
 
@@ -23,5 +25,5 @@ namespace Authentication.Application.Dtos
 
         public IEnumerable<string> Roles { get; set; }
     }
-    
+
 }

@@ -95,7 +95,7 @@ namespace Authentication.Host.Controllers
             var result = await _authenticationAppService.AssignRolesToUserAsync(userCode, roles);
             return Ok(result);
         }
-        
+
         [HttpPut("ChangeUserAccountStatus/{userCode}")]
         public async Task<IActionResult> ChangeUserStatus(string userCode)
         {
@@ -134,6 +134,34 @@ namespace Authentication.Host.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPut("EditUserDepartment/{userCode}")]
 
+        public async Task<IActionResult> EditUserDepartment(string userCode, [FromBody] string newDepartment)
+        {
+            try
+            {
+                var result = await _authenticationAppService.EditUserDepartment(userCode, newDepartment);
+                return Ok( result );
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+        [HttpPut("UpdateUserProfile/{userCode}")]
+        public async Task<IActionResult> UpdateUserProfile(string userCode, [FromBody] UpdateUserDto newUser)
+        {
+            try
+            {
+                var result = await _authenticationAppService.UpdateUserAsync(newUser, userCode);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+
+        }
     }
 }

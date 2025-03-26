@@ -24,8 +24,11 @@ namespace Authentication.Application
 
 
         Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole);
+
         Task<bool> ChangeUserStatusAsync(string userCode);
         Task<AuthenticationModel> AddUserAsync(AddUserDto newuser);
+        Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment);
+        Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
 
     }
 }
