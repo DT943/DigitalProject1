@@ -37,12 +37,26 @@ namespace Gallery.Host.Controllers
             return await base.Create(createDto);
         }
 
+
+        [RequestSizeLimit(1_000_000_000)] // 1GB
+        [RequestFormLimits(MultipartBodyLengthLimit = 1_000_000_000)]
+        [HttpPost("upload-multi-files")]
+        public async Task<ActionResult<List<FileGetDto>>> CreateMultipleFiles([FromForm]MultiFileCreateDto createDto)
+        {
+            return await _appService.CreateMultipleFiles(createDto);
+        }
+
         [HttpGet("getby-galleryid/{galleryId}")]
         public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryId(int galleryId)
         {
             var files = await _appService.GetRelatedFileGallery(galleryId);
- 
+            return Ok(files);
+        }
 
+        [HttpGet("getby-gallerycode/{gallerycode}")]
+        public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryCodeAsync(string galleryCode)
+        {
+            var files = await _appService.GetRelatedFileGalleryByCodeAsync(galleryCode);
             return Ok(files);
         }
 

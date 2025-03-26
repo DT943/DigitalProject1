@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 using FluentValidation;
+using Gallery.Application.FileAppservice.Dtos;
 namespace Hotel.Application.RoomAppService
 {
     public class RoomAppService : BaseAppService<HotelDbContext, Domain.Models.Room, RoomOutputDto, RoomOutputDto, RoomCreateDto, RoomUpdateDto, SieveModel>, IRoomAppService
@@ -47,44 +48,6 @@ namespace Hotel.Application.RoomAppService
 
         public override async Task<RoomOutputDto> Create(RoomCreateDto create)
         {
-            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("create", "default"));
-            if (!validationResult.IsValid)
-            {
-                throw new FluentValidation.ValidationException(validationResult.Errors);
-            }
-
-            // Get hotel and its galleries
-            var hotel = await _serviceDbContext.Hotels
-                .Include(h => h.HotelGallery)
-                .FirstOrDefaultAsync(h => h.Id == create.HotelId);
-
-            if (hotel == null)
-            {
-                throw new FluentValidation.ValidationException($"Hotel with ID {create.HotelId} not found");
-            }
-
-            // Get the appropriate gallery code based on room type
-            var galleryType ="hotel";
-            var galleryCode = hotel.HotelGallery
-                .FirstOrDefault(g => g.GalleryName.EndsWith(create.RoomTypeName=="single"? "room-single" : "room-double"))?.GalleryCode;
-
-            if (string.IsNullOrEmpty(galleryCode))
-            {
-                throw new FluentValidation.ValidationException($"Gallery for {galleryType} not found in hotel {hotel.Name}");
-            }
-            
-            // Assign gallery code to the room
-            create.Image.GalleryCode = galleryCode;
-
-            // Create file if image is provided
-            if (create.Image != null)
-            {
-               var createdFile = await _fileAppService.Create(create.Image);
-               create.ImageCode = createdFile.Code;
-               create.ImageUrlPath = createdFile.FileUrlPath;
-
-            }
-            
             return await base.Create(create);
         }
 

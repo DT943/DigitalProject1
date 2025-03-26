@@ -11,6 +11,7 @@ namespace Hotel.Application.RoomAppService.Mapping
             CreateMap<Domain.Models.Room, RoomOutputDto>();
             CreateMap<RoomCreateDto, Domain.Models.Room>();
             CreateMap<RoomUpdateDto, Domain.Models.Room>();
+
         }
     }
 }

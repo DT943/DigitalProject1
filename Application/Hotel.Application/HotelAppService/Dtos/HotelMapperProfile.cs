@@ -16,7 +16,7 @@ namespace Hotel.Application.HotelAppService.Dtos
         {
 
             CreateMap<HotelCreateDto, Hotel.Domain.Models.Hotel>()
-                .ForMember(dest => dest.Rooms, opt => opt.Ignore())
+                .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
                 .ForMember(dest => dest.HotelGallery, opt => opt.MapFrom(src => src.HotelGallery))
                 .ForMember(dest => dest.POS, opt => opt.MapFrom(src => src.POS))
                 .ForMember(dest => dest.ContactInfo, opt => opt.MapFrom(src => src.ContactInfo))
@@ -27,7 +27,7 @@ namespace Hotel.Application.HotelAppService.Dtos
 
 
             CreateMap<HotelUpdateDto, Hotel.Domain.Models.Hotel>()
-                .ForMember(dest => dest.Rooms, opt => opt.Ignore())
+                .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
                 .ForMember(dest => dest.HotelGallery, opt => opt.Ignore());
             CreateMap<CotactInfoUpdateDto, ContactInfo>();
 
@@ -36,7 +36,7 @@ namespace Hotel.Application.HotelAppService.Dtos
                 .ForMember(dest => dest.ContactInfo, opt => opt.MapFrom(src => src.ContactInfo)) // if you want to map ContactInfo
                 .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
                 .ForMember(dest => dest.HotelGallery, opt => opt.MapFrom(src => src.HotelGallery));
-
+            CreateMap<Domain.Models.Hotel, HotelGetAllDto>();
 
             CreateMap<ContactInfo, ContactInfoGetDto>();
 

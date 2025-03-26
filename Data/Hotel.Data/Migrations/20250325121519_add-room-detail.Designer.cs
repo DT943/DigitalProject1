@@ -3,6 +3,7 @@ using System;
 using Hotel.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace Hotel.Data.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    partial class HotelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250325121519_add-room-detail")]
+    partial class addroomdetail
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,9 +194,6 @@ namespace Hotel.Data.Migrations
                     b.Property<string>("IBAN")
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<string>("LogoUrl")
-                        .HasColumnType("NVARCHAR2(2000)");
-
                     b.Property<bool>("MobilePayment")
                         .HasColumnType("NUMBER(1)");
 
@@ -312,9 +312,6 @@ namespace Hotel.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<int?>("ExtraBedPrice")
-                        .HasColumnType("NUMBER(10)");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("NUMBER(10)");
 
@@ -343,6 +340,50 @@ namespace Hotel.Data.Migrations
                     b.HasIndex("HotelId");
 
                     b.ToTable("Rooms", "HOTEL");
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Models.RoomImages", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("NUMBER(10)");
+
+                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<string>("ImageCode")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("ImageUrlPath")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("TIMESTAMP(7)");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("RoomImages", "HOTEL");
                 });
 
             modelBuilder.Entity("Hotel.Domain.Models.ContactInfo", b =>
@@ -378,6 +419,17 @@ namespace Hotel.Data.Migrations
                     b.Navigation("Hotel");
                 });
 
+            modelBuilder.Entity("Hotel.Domain.Models.RoomImages", b =>
+                {
+                    b.HasOne("Hotel.Domain.Models.Room", "Room")
+                        .WithMany("RoomImages")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("Hotel.Domain.Models.Hotel", b =>
                 {
                     b.Navigation("ContactInfo");
@@ -385,6 +437,11 @@ namespace Hotel.Data.Migrations
                     b.Navigation("HotelGallery");
 
                     b.Navigation("Rooms");
+                });
+
+            modelBuilder.Entity("Hotel.Domain.Models.Room", b =>
+                {
+                    b.Navigation("RoomImages");
                 });
 #pragma warning restore 612, 618
         }

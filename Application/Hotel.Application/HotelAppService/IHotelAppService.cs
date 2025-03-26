@@ -10,7 +10,7 @@ using Sieve.Models;
 
 namespace Hotel.Application.HotelAppService
 {
-    public interface IHotelAppService : IBaseAppService<HotelGetDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>
+    public interface IHotelAppService : IBaseAppService<HotelGetAllDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>
     {
         Task<FileGetDto> MakeContract(ContractCreateDto contractCreateDto);
 
