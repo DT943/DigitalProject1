@@ -17,7 +17,7 @@ using Gallery.Application.FileAppservice;
 using Gallery.Application.FileAppservice.Dtos;
 namespace Hotel.Application.HotelAppService
 {
-    public class HotelAppService : BaseAppService<HotelDbContext, Domain.Models.Hotel, HotelGetDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>, IHotelAppService
+    public class HotelAppService : BaseAppService<HotelDbContext, Domain.Models.Hotel, HotelGetAllDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>, IHotelAppService
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly HotelDbContext _serviceDbContext;
@@ -158,11 +158,9 @@ namespace Hotel.Application.HotelAppService
             return result;
         }
 
-
-
         protected override IQueryable<Domain.Models.Hotel> QueryExcuter(SieveModel input)
         {
-            return base.QueryExcuter(input).Include(x=>x.HotelGallery).Include(x=>x.Rooms).ThenInclude(x=>x.RoomImages).Include(x=>x.ContactInfo);
+            return base.QueryExcuter(input).Include(x=>x.HotelGallery).Include(x=>x.Rooms).Include(x=>x.ContactInfo);
         }
     }
 }

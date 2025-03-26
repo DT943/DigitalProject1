@@ -43,7 +43,6 @@ namespace Gallery.Host.Controllers
         [HttpPost("upload-multi-files")]
         public async Task<ActionResult<List<FileGetDto>>> CreateMultipleFiles([FromForm]MultiFileCreateDto createDto)
         {
-            int i = 0;
             return await _appService.CreateMultipleFiles(createDto);
         }
 
@@ -51,8 +50,6 @@ namespace Gallery.Host.Controllers
         public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryId(int galleryId)
         {
             var files = await _appService.GetRelatedFileGallery(galleryId);
- 
-
             return Ok(files);
         }
 

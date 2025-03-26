@@ -15,24 +15,11 @@ namespace Hotel.Domain.Models
         public int HotelId { get; set; }
         public Hotel Hotel { get; set; }
         public string Category { get; set; }
-
+        public int? ExtraBedPrice {  get; set; }
         public string RoomTypeName { get; set; }
         public string? Description { get; set; }
-        public ICollection<RoomImages> RoomImages { get; set; }
         public int NumberOfAdults { get; set; }
         public int? Price { get; set; }
         public int NumberOfChildren { get; set; }
-    }
-
-    public class RoomImages
-    {
-        [Key]
-        public int Id { get; set; }
-        [ForeignKey("Room")]
-        public int RoomId { get; set; }
-        public Room Room { get; set; }
-
-        public string? ImageUrlPath { get; set; }
-        public string? ImageCode { get; set; }
     }
 }

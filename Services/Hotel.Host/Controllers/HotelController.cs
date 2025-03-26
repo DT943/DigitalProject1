@@ -11,14 +11,12 @@ using Sieve.Models;
 namespace Hotel.Host.Controllers
 {
     [Authorize]
-    public class HotelController : BaseController<IHotelAppService, Domain.Models.Hotel, HotelGetDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>
+    public class HotelController : BaseController<IHotelAppService, Domain.Models.Hotel, HotelGetAllDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>
     {
         IHotelAppService _hotelAppService;
-        IGalleryAppService _galleryAppService;
-        public HotelController(IHotelAppService hotelAppService, IGalleryAppService galleryAppService) : base(hotelAppService)
+         public HotelController(IHotelAppService hotelAppService) : base(hotelAppService)
         {
             _hotelAppService = hotelAppService;
-            _galleryAppService = galleryAppService;
         }
 
         public override async Task<ActionResult<HotelGetDto>> Create(HotelCreateDto dto)
