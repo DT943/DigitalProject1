@@ -5,6 +5,9 @@ using Gallery.Application.FileAppservice.Validations;
 using Gallery.Application.GalleryAppService;
 using Gallery.Application.GalleryAppService.Dtos;
 using Gallery.Application.GalleryAppService.Validations;
+using Hotel.Application.ContractAppService;
+using Hotel.Application.ContractAppService.Dtos;
+using Hotel.Application.ContractAppService.Validations;
 using Hotel.Application.HotelAppService;
 using Hotel.Application.HotelAppService.Dtos;
 using Hotel.Application.HotelAppService.Validations;
@@ -29,14 +32,15 @@ namespace Hotel.Host.Helper
 
             services.AddTransient<IGalleryAppService, GalleryAppService>();
             services.AddTransient<IFileAppService, FileAppService>();
-
-
+            services.AddTransient<IContractAppService, ContractAppService>();
+ 
             // Register Validators
             services.AddTransient<HotelValidator>();
             services.AddTransient<HotelGalleryValidator>();
             services.AddTransient<RoomValidator>();
             services.AddTransient<GalleryValidator>();
             services.AddTransient<FileValidator>();
+            services.AddTransient<ContractValidator>();
 
             // Register Sieve
             services.AddScoped<ISieveProcessor, SieveProcessor>();
@@ -49,6 +53,8 @@ namespace Hotel.Host.Helper
                 mc.AddProfile(new HotelMapperProfile());
                 mc.AddProfile(new HotelGalleryMappingProfile());
                 mc.AddProfile(new RoomMappingProfile());
+                mc.AddProfile(new ContractMapperProfile());
+
             });
             
             IMapper mapper = mapperConfig.CreateMapper();

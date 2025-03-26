@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hotel.Application.ContactInfoAppService.Dtos;
+using Hotel.Application.ContractAppService.Dtos;
 using Hotel.Application.HotelGalleryAppService.Dtos;
 using Hotel.Application.RoomAppService.Dtos;
 using Hotel.Domain.Models;
@@ -25,6 +26,8 @@ namespace Hotel.Application.HotelAppService.Dtos
         public IEnumerable<RoomOutputDto>? Rooms { get; set; } = Enumerable.Empty<RoomOutputDto>();
         public IEnumerable<HotelGalleryOutputDto>? HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryOutputDto>();
         public IEnumerable<ContactInfoGetDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoGetDto>();
+        public IEnumerable<ContractGetDto> Contracts { get; set; } = Enumerable.Empty<ContractGetDto>();
+
         public string StreetAddress { get; set; }
         public int Rank { get; set; }
         public bool HasAirConditioning { get; set; }
