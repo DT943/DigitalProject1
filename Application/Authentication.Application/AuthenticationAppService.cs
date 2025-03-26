@@ -286,42 +286,65 @@ namespace Authentication.Application
                 throw new Exception("User not found");
             }
 
-            // Extract service name from the new role (before the '-')
-            var newRoleParts = newRole.Split('-');
-            if (newRoleParts.Length < 2)
-            {
-                throw new Exception("Invalid role format. Expected format: 'ServiceName-RoleName'");
-            }
-            var newService = newRoleParts[0]; // Extract the service name (e.g., "CMS" from "CMS-Admin")
-
             // Get user's existing roles
             var existingRoles = await _userManager.GetRolesAsync(user);
-
-            // Filter roles that belong to the same service
-            var rolesToRemove = existingRoles.Where(r => r.StartsWith($"{newService}-")).ToList();
-
-            if (rolesToRemove.Any())
+            if (existingRoles.Contains("SuperAdmin"))
             {
-                var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
-                if (!removeResult.Succeeded)
-                {
-                    throw new Exception($"Failed to remove existing roles from service {newService}");
-                }
+                throw new Exception("User is already a SuperAdmin and has all permissions by default.");
             }
 
-            // Check if the new role exists before assigning
-            var roleExists = await _roleManager.RoleExistsAsync(newRole);
-            if (roleExists)
+            if (newRole == "SuperAdmin")
             {
-                var addRoleResult = await _userManager.AddToRoleAsync(user, newRole);
-                if (!addRoleResult.Succeeded)
+                // Remove all roles
+                var removeAllResult = await _userManager.RemoveFromRolesAsync(user, existingRoles);
+                if (!removeAllResult.Succeeded)
                 {
-                    throw new Exception($"Failed to assign role {newRole} to user.");
+                    throw new Exception("Failed to remove all existing roles before assigning SuperAdmin.");
+                }
+
+                // Assign SuperAdmin role
+                var addSuperAdminResult = await _userManager.AddToRoleAsync(user, "SuperAdmin");
+                if (!addSuperAdminResult.Succeeded)
+                {
+                    throw new Exception("Failed to assign SuperAdmin role to user.");
                 }
             }
             else
             {
-                throw new Exception($"Role {newRole} does not exist.");
+                // Extract service name from the new role (before the '-')
+                var newRoleParts = newRole.Split('-');
+                if (newRoleParts.Length < 2)
+                {
+                    throw new Exception("Invalid role format. Expected format: 'ServiceName-RoleName'");
+                }
+                var newService = newRoleParts[0]; // Extract the service name (e.g., "CMS" from "CMS-Admin")
+
+                // Filter roles that belong to the same service
+                var rolesToRemove = existingRoles.Where(r => r.StartsWith($"{newService}-")).ToList();
+
+                if (rolesToRemove.Any())
+                {
+                    var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+                    if (!removeResult.Succeeded)
+                    {
+                        throw new Exception($"Failed to remove existing roles from service {newService}");
+                    }
+                }
+
+                // Check if the new role exists before assigning
+                var roleExists = await _roleManager.RoleExistsAsync(newRole);
+                if (roleExists)
+                {
+                    var addRoleResult = await _userManager.AddToRoleAsync(user, newRole);
+                    if (!addRoleResult.Succeeded)
+                    {
+                        throw new Exception($"Failed to assign role {newRole} to user.");
+                    }
+                }
+                else
+                {
+                    throw new Exception($"Role {newRole} does not exist.");
+                }
             }
 
             // Get updated roles

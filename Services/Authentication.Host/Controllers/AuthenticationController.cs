@@ -66,8 +66,6 @@ namespace Authentication.Host.Controllers
         }
 
 
-
-
         [HttpGet("get-user/{code}")]
         public async Task<IActionResult> GetUserByCode(string code)
         {
@@ -85,7 +83,6 @@ namespace Authentication.Host.Controllers
 
             return Ok(result);
         }
-
 
         [HttpPost("assign-roles/{userCode}")]
         public async Task<IActionResult> AssignRolesToUser(string userCode, [FromBody] List<string> roles)
