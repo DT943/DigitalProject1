@@ -9,22 +9,13 @@ namespace Hotel.Application.RoomAppService.Dtos
         public int Id { get; set; }
         public int HotelId { get; set; }
         public string Category { get; set; }
+        public string RoomTypeName { get; set; }
+        public string? Description { get; set; }
         public int NumberOfAdults { get; set; }
-        public int Price { get; set; }
-        public string? ImageUrlPath { get; set; }
-        public string? ImageCode { get; set; }
+        public int? Price { get; set; }
+        public int? ExtraBedPrice { get; set; }
         public int NumberOfChildren { get; set; }
 
-        public IList<RoomImageGetDto>? RoomImages { get; set; }
-
-    }
-
-
-    public class RoomImageGetDto : IValidatableDto
-    {
-        public int RoomId { get; set; }
-        public string? ImageUrlPath { get; set; }
-        public string? ImageCode { get; set; }
     }
 }
 

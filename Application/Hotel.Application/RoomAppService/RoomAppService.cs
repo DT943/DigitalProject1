@@ -48,47 +48,6 @@ namespace Hotel.Application.RoomAppService
 
         public override async Task<RoomOutputDto> Create(RoomCreateDto create)
         {
-            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("create", "default"));
-            if (!validationResult.IsValid)
-            {
-                throw new FluentValidation.ValidationException(validationResult.Errors);
-            }
-
-            // Get hotel and its galleries
-            var hotel = await _serviceDbContext.Hotels
-                .Include(h => h.HotelGallery)
-                .FirstOrDefaultAsync(h => h.Id == create.HotelId);
-
-            if (hotel == null)
-            {
-                throw new FluentValidation.ValidationException($"Hotel with ID {create.HotelId} not found");
-            }
-
-            // Get the appropriate gallery code based on room type
-            var galleryType ="hotel";
-            var galleryCode = hotel.HotelGallery
-                .FirstOrDefault(g => g.GalleryName.EndsWith(create.RoomTypeName=="single"? "room-single" : "room-double"))?.GalleryCode;
-
-            if (string.IsNullOrEmpty(galleryCode))
-            {
-                throw new FluentValidation.ValidationException($"Gallery for {galleryType} not found in hotel {hotel.Name}");
-            }
-
-            var roomMetaData = new List<RoomImageCreateDto>();
-
-            if (create.Images != null && create.Images.Any())
-            {
-                var createdFiles = new List<FileGetDto>();
-
-                foreach (var image in create.Images)
-                {
-                    image.GalleryCode = galleryCode;
-                    var createdFile = await _fileAppService.Create(image);
-                    createdFiles.Add(createdFile);
-                    roomMetaData.Add(new RoomImageCreateDto { ImageCode = createdFile.Code, ImageUrlPath = createdFile.FileUrlPath });
-                }
-            }
-            create.RoomImages = roomMetaData;
             return await base.Create(create);
         }
 

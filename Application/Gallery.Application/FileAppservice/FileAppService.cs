@@ -274,7 +274,10 @@ namespace Gallery.Application.FileAppservice
 
         public async Task<IEnumerable<FileGetDto>> GetRelatedFileGalleryByCodeAsync(string GalleryCode)
         {
-            return _mapper.Map<List<FileGetDto>>(_serviceDbContext.Files.Where(f => f.Code == GalleryCode).ToList());
+            var gallery = _serviceDbContext.Galleries.Where(f => f.Code == GalleryCode).FirstOrDefault();
+            if (gallery == null) _mapper.Map<List<FileGetDto>>(new List<FileGetDto>());
+
+            return _mapper.Map<List<FileGetDto>>(_serviceDbContext.Files.Where(f => f.GalleryId == gallery.Id).ToList());
         }
 
         protected override IQueryable<Domain.Models.File> QueryExcuter(SieveModel input)
