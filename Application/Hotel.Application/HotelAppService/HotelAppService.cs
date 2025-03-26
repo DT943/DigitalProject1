@@ -52,7 +52,7 @@ namespace Hotel.Application.HotelAppService
             }
 
             var galleries = new List<HotelGalleryCreateDto>();
-            string[] galleryTypes = ["main", "bar", "gym", "parking", "spa", "resturant", "breakfast", "swimmingpool", "room-single", "room-double"];
+            string[] galleryTypes = ["main", "bar", "gym", "parking", "spa", "resturant", "breakfast", "swimmingpool", "contract", "room-single", "room-double"];
 
             // Generate all possible gallery names
             var galleryNames = galleryTypes.Select(item => create.Name.ToLower() + "." + item).ToList();
@@ -160,7 +160,7 @@ namespace Hotel.Application.HotelAppService
 
         protected override IQueryable<Domain.Models.Hotel> QueryExcuter(SieveModel input)
         {
-            return base.QueryExcuter(input).Include(x=>x.HotelGallery).Include(x=>x.Rooms).Include(x=>x.ContactInfo);
+            return base.QueryExcuter(input).Include(x=>x.HotelGallery).Include(x=>x.Rooms).Include(x=>x.Contracts).Include(x=>x.ContactInfo);
         }
     }
 }

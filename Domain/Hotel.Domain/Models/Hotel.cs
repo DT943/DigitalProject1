@@ -18,7 +18,9 @@ namespace Hotel.Domain.Models
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
         public string Url { get; set; }
-        public int Rank { get; set; } 
+        public int Rank { get; set; }
+        public ICollection<Contract> Contracts { get; set; }
+
         public ICollection<Room> Rooms { get; set; } 
         public ICollection<HotelGallery> HotelGallery { get; set; }
         // validation 10 
