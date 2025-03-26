@@ -34,6 +34,12 @@ namespace Gallery.Application.FileAppservice.Dtos
 
     }
 
+    public class MultiFileCreateDto : IValidatableDto
+    {
+        public string GalleryCode { get; set; }
+        public IList<FileCreateDto> Files { get; set; }
+    }
+
     public class FileUpdateDto : IEntityUpdateDto
     {
         public string Title { get; set; }
