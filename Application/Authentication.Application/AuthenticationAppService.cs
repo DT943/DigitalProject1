@@ -41,16 +41,12 @@ namespace Authentication.Application
             var user = new ApplicationUser
             {
                 Code = "User-" + Guid.NewGuid().ToString("N"),
-                IdentityNumber = model.IdentityNumber,
-                PhoneNumber = model.PhoneNumber,
                 UserName = userName,
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                FatherName = model.FatherName,
-                MotherName = model.MotherName,
-                Gender = Gender.Male,
                 IsActive = true,
+                IsLocked = false,
                 LastLogIn = DateTime.UtcNow
 
 
@@ -145,6 +141,7 @@ namespace Authentication.Application
             if (await _userManager.IsLockedOutAsync(user))
             {
                 user.IsActive = !user.IsActive;
+                user.IsLocked = true;
                 var result = await _userManager.UpdateAsync(user);
                 authModel.Message = "Your account is locked due to multiple failed login attempts.";
                 return authModel;
@@ -224,7 +221,7 @@ namespace Authentication.Application
             return auth;
         }
 
-        public async Task<UserWithRole> AssignRolesToUserAsync(string userCode,  List<string> roles)
+        public async Task<UserWithRole> AssignRolesToUserAsync(string userCode, List<string> roles)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
 
@@ -232,7 +229,7 @@ namespace Authentication.Application
 
             var existingRoles = await _userManager.GetRolesAsync(user);
             var removeResult = await _userManager.RemoveFromRolesAsync(user, existingRoles);
- 
+
 
             // Assign new roles one by one
             foreach (var role in roles)
@@ -259,11 +256,11 @@ namespace Authentication.Application
                     Code = user.Code,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    MotherName = user.MotherName,
-                    FatherName = user.FatherName,
+                    IsLocked = user.IsLocked,
+                    IsActive = user.IsActive
                 },
                 Roles = userNewRoles
-            };  
+            };
         }
         public async Task<bool> ChangeUserStatusAsync(string userCode)
         {
@@ -358,8 +355,8 @@ namespace Authentication.Application
                     Code = user.Code,
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    MotherName = user.MotherName,
-                    FatherName = user.FatherName,
+                    IsActive = user.IsActive,
+                    IsLocked = user.IsLocked,
                 },
                 Roles = userNewRoles
             };
@@ -378,16 +375,12 @@ namespace Authentication.Application
             var user = new ApplicationUser
             {
                 Code = "User-" + Guid.NewGuid().ToString("N"),
-                IdentityNumber = " ",
-                PhoneNumber = " ",
                 UserName = userName,
                 Email = newuser.Email,
                 FirstName = newuser.FirstName,
                 LastName = newuser.LastName,
-                FatherName = " ",
-                MotherName = " ",
-                Gender = Gender.Male,
-                IsActive = newuser.IsActive,
+                IsLocked = false,
+                IsActive = true,
                 LastLogIn = DateTime.MinValue,
                 Department = newuser.Department,
 
@@ -415,7 +408,7 @@ namespace Authentication.Application
                 var roleName = $"{service}-Officer";
                 await _userManager.AddToRoleAsync(user, roleName);
             }
-       
+
             var userRoles = await _userManager.GetRolesAsync(user);
 
 
@@ -429,8 +422,98 @@ namespace Authentication.Application
                 LastName = user.LastName
             };
         }
+        public async Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.Department = newDepartment;
+            var result = await _userManager.UpdateAsync(user);
+
+            return new AuthenticationModel
+            {
+                Message = "User has been created successfully.",
+                Email = user.Email,
+                IsAuthenticated = true,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            };
+
+        }
+
+        public async Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+
+            if (user == null)
+                return new AuthenticationModel { Message = "User not found!" };
+
+            string userName = (newUser.FirstName + newUser.LastName).Replace(" ", "");
+
+            // Check if the provided password is correct before proceeding
+            var passwordValid = await _userManager.CheckPasswordAsync(user, newUser.OldPassword);
+            if (!passwordValid)
+                return new AuthenticationModel { Message = "Incorrect old password!" };
+
+            if (await _userManager.FindByEmailAsync(newUser.Email) is not null)
+                return new AuthenticationModel { Message = "Email is already exist!" };
+
+            if (await _userManager.FindByNameAsync(userName) is not null)
+                return new AuthenticationModel { Message = "Username is already exist!" };
 
 
+            user.FirstName = newUser.FirstName;
+            user.LastName = newUser.LastName;
+            user.Email = newUser.Email;
+            user.UserName = userName;
+
+            // Change Password if provided
+            if (!string.IsNullOrWhiteSpace(newUser.Password))
+            {
+                var passwordResetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var passwordResult = await _userManager.ResetPasswordAsync(user, passwordResetToken, newUser.Password);
+
+                if (!passwordResult.Succeeded)
+                {
+                    var errors = string.Join(", ", passwordResult.Errors.Select(e => e.Description));
+                    return new AuthenticationModel
+                    {
+                        IsAuthenticated = false,
+                        Message = $"Password update failed: {errors}"
+                    };
+                }
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new AuthenticationModel
+                {
+                    IsAuthenticated = true,
+                    Message = errors
+                };
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            return new AuthenticationModel
+            {
+                Message = "User has been created successfully.",
+                Email = user.Email,
+                Roles = userRoles,
+                IsAuthenticated = true,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+        }
 
     }
 }
