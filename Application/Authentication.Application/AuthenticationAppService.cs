@@ -51,9 +51,8 @@ namespace Authentication.Application
                 MotherName = model.MotherName,
                 Gender = Gender.Male,
                 IsActive = true,
-                LastLogIn = DateTime.UtcNow
-
-
+                LastLogIn = DateTime.UtcNow,
+                LoginCount = 0
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -149,13 +148,16 @@ namespace Authentication.Application
                 authModel.Message = "Your account is locked due to multiple failed login attempts.";
                 return authModel;
             }
-
-            if (!user.IsActive)
+            if (user.OTP != null)
             {
-                authModel.Message = "Your account is deactivated. Please contact support.";
+                authModel.Message = "Please verify your OTP and reset your password before logging in.";
                 return authModel;
             }
-
+            if (!user.IsActive)
+            {
+                authModel.Message = "Your account has been deactivated by an admin. Please contact support.";
+                return authModel;
+            }
 
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
             {
@@ -175,7 +177,7 @@ namespace Authentication.Application
             // Reset failed attempts count on successful login
             await _userManager.ResetAccessFailedCountAsync(user);
 
-
+            user.LoginCount++;
             user.LastLogIn = DateTime.UtcNow;
             var updateResult = await _userManager.UpdateAsync(user);
 
@@ -208,7 +210,6 @@ namespace Authentication.Application
 
             return userDtos;
         }
-
 
         public async Task<IEnumerable<string>> GetAllRolesAsync()
         {
@@ -352,6 +353,12 @@ namespace Authentication.Application
             if (await _userManager.FindByNameAsync(userName) is not null)
                 return new AuthenticationModel { Message = "Username is already exist!" };
 
+            string staticPassword = "Temp@1234"; // Static password
+            string activationLink = "https://yourapp.com/activate"; // Activation link
+
+            string generatedOtp = GenerateOtp(); // Generate OTP
+            DateTime otpExpiry = DateTime.UtcNow.AddMinutes(5); // OTP expires in 5 mins
+
             var user = new ApplicationUser
             {
                 Code = "User-" + Guid.NewGuid().ToString("N"),
@@ -364,12 +371,27 @@ namespace Authentication.Application
                 FatherName = " ",
                 MotherName = " ",
                 Gender = Gender.Male,
-                IsActive = newuser.IsActive,
-                LastLogIn = DateTime.MinValue,
+                IsActive = false,
+                //LastLogIn = DateTime.MinValue,
                 Department = newuser.Department,
+                OTP = generatedOtp,
+                OTPExpiry = otpExpiry,
+                LoginCount = 0
+
 
             };
+            var result = await _userManager.CreateAsync(user, staticPassword);
 
+            if (!result.Succeeded)
+            {
+                return new AuthenticationModel { IsAuthenticated = false, Message = string.Join(", ", result.Errors.Select(e => e.Description)) };
+            }
+            await SendEmailWithPassword(user.Email, staticPassword, activationLink);
+
+            return new AuthenticationModel { Message = "User created. Static password sent.", Email = user.Email, IsAuthenticated = false };
+        }
+
+        /*
             var result = await _userManager.CreateAsync(user, "Hi@2025");
 
             if (!result.Succeeded)
@@ -386,6 +408,10 @@ namespace Authentication.Application
                 };
             }
 
+            // Send OTP via email (Assuming email service exists)
+            await SendOtpToUser(user.Email, generatedOtp);
+
+
             // Iterate over each service and create roles for each
             foreach (var service in Enum.GetNames(typeof(Infrastructure.Domain.Consts.ServiceName)))
             {
@@ -398,15 +424,48 @@ namespace Authentication.Application
 
             return new AuthenticationModel
             {
-                Message = "User has been created successfully.",
+                Message = "User created successfully. OTP sent for verification.",
                 Email = user.Email,
-                Roles = userRoles,
-                IsAuthenticated = true,
+                //Roles = userRoles,
+                IsAuthenticated = false,
                 FirstName = user.FirstName,
                 LastName = user.LastName
             };
         }
+        */
 
+        public async Task<bool> VerifyOtpAsync(string email, string otp)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || user.OTP != otp || user.OTPExpiry < DateTime.UtcNow) return false;
+            user.OTP = null;
+            user.OTPExpiry = DateTime.MinValue;
+            await _userManager.UpdateAsync(user);
+            return true;
+        }
+        public async Task<bool> ResetPasswordAsync(string email, string newPassword)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null) return false;
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, newPassword);
+            if (!result.Succeeded) return false;
+            user.IsActive = true;
+            await _userManager.UpdateAsync(user);
+            return true;
+        }
+
+
+        private string GenerateOtp()
+        {
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString(); // Generates a 6-digit OTP
+        }
+        private async Task SendEmailWithPassword(string email, string Password, string activationLink)
+        {
+            // Implement email service here
+            Console.WriteLine($"Sending OTP to {email}");
+        }
 
 
     }

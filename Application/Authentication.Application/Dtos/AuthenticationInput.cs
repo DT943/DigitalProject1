@@ -20,7 +20,5 @@ namespace Authentication.Application.Dtos
 
         public string? Department { get; set; }
 
-        public bool IsActive { get; set; }
-
     }
 }

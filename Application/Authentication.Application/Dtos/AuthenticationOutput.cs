@@ -15,6 +15,8 @@ namespace Authentication.Application.Dtos
         public string MotherName { get; set; }
         public string FatherName { get; set; }
 
+        public string Email { get; set; }   
+
         public bool IsActive { get; set; }
         [MaxLength(50)]
         public string? Department { get; set; }

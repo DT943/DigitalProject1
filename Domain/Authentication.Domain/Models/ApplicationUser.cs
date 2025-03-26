@@ -38,6 +38,13 @@ namespace Authentication.Domain.Models
         public string? Department { get; set; }
 
         public DateTime? LastLogIn { get; set; }
+
+        public int LoginCount { get; set; }
+
+        public string OTP { get; set; } // Store generated OTP
+        public DateTime OTPExpiry { get; set; } // Store OTP expiration time
+
+
     }
 
 
