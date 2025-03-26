@@ -162,7 +162,7 @@ namespace Hotel.Application.HotelAppService
 
         protected override IQueryable<Domain.Models.Hotel> QueryExcuter(SieveModel input)
         {
-            return base.QueryExcuter(input).Include(x=>x.HotelGallery).Include(x=>x.Rooms).Include(x=>x.ContactInfo);
+            return base.QueryExcuter(input).Include(x=>x.HotelGallery).Include(x=>x.Rooms).ThenInclude(x=>x.RoomImages).Include(x=>x.ContactInfo);
         }
     }
 }

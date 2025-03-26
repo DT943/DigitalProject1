@@ -36,6 +36,25 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
 
+
+        // Payment Info
+        public bool Cash { get; set; }
+        public bool CreditCard { get; set; }
+        public bool DebitCard { get; set; }
+        public bool BankTransfer { get; set; }
+        public bool PayPal { get; set; }
+        public bool MobilePayment { get; set; }
+        public bool CryptoCurrency { get; set; }
+
+        public string? AccountName { get; set; }
+
+        public string? AccountNumber { get; set; }
+        public string? BankName { get; set; }
+        public string? BranchName { get; set; }
+        public string? SWIFTCode { get; set; }
+        public string? IBAN { get; set; }
+        public string? AdditionalInfo { get; set; }
+
     }
 
     public class HotelCreateDto : IValidatableDto
@@ -61,6 +80,24 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasWifi { get; set; }
         public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
+        // Payment Info
+        public bool Cash { get; set; }
+        public bool CreditCard { get; set; }
+        public bool DebitCard { get; set; }
+        public bool BankTransfer { get; set; }
+        public bool PayPal { get; set; }
+        public bool MobilePayment { get; set; }
+        public bool CryptoCurrency { get; set; }
+
+        public string? AccountName { get; set; }
+
+        public string? AccountNumber { get; set; }
+        public string? BankName { get; set; }
+        public string? BranchName { get; set; }
+        public string? SWIFTCode { get; set; }
+        public string? IBAN { get; set; }
+        public string? AdditionalInfo { get; set; }
+
 
     }
 
@@ -84,6 +121,24 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasWifi { get; set; }
         public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
+
+        // Payment Info
+        public bool Cash { get; set; }
+        public bool CreditCard { get; set; }
+        public bool DebitCard { get; set; }
+        public bool BankTransfer { get; set; }
+        public bool PayPal { get; set; }
+        public bool MobilePayment { get; set; }
+        public bool CryptoCurrency { get; set; }
+
+        public string? AccountName { get; set; }
+
+        public string? AccountNumber { get; set; }
+        public string? BankName { get; set; }
+        public string? BranchName { get; set; }
+        public string? SWIFTCode { get; set; }
+        public string? IBAN { get; set; }
+        public string? AdditionalInfo { get; set; }
     }
 
 }

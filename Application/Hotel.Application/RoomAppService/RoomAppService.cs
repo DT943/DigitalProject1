@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 using FluentValidation;
+using Gallery.Application.FileAppservice.Dtos;
 namespace Hotel.Application.RoomAppService
 {
     public class RoomAppService : BaseAppService<HotelDbContext, Domain.Models.Room, RoomOutputDto, RoomOutputDto, RoomCreateDto, RoomUpdateDto, SieveModel>, IRoomAppService
@@ -72,19 +73,22 @@ namespace Hotel.Application.RoomAppService
             {
                 throw new FluentValidation.ValidationException($"Gallery for {galleryType} not found in hotel {hotel.Name}");
             }
-            
-            // Assign gallery code to the room
-            create.Image.GalleryCode = galleryCode;
 
-            // Create file if image is provided
-            if (create.Image != null)
+            var roomMetaData = new List<RoomImageCreateDto>();
+
+            if (create.Images != null && create.Images.Any())
             {
-               var createdFile = await _fileAppService.Create(create.Image);
-               create.ImageCode = createdFile.Code;
-               create.ImageUrlPath = createdFile.FileUrlPath;
+                var createdFiles = new List<FileGetDto>();
 
+                foreach (var image in create.Images)
+                {
+                    image.GalleryCode = galleryCode;
+                    var createdFile = await _fileAppService.Create(image);
+                    createdFiles.Add(createdFile);
+                    roomMetaData.Add(new RoomImageCreateDto { ImageCode = createdFile.Code, ImageUrlPath = createdFile.FileUrlPath });
+                }
             }
-            
+            create.RoomImages = roomMetaData;
             return await base.Create(create);
         }
 

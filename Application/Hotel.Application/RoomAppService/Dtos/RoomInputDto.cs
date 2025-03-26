@@ -19,23 +19,32 @@ namespace Hotel.Application.HotelAppService.Dtos
             public string? Description { get; set; }
             public int NumberOfAdults { get; set; }
             public int? Price { get; set; }
-            public FileCreateDto? Image { get; set; }
-            public string? ImageUrlPath { get; set; }
-            public string? ImageCode { get; set; }
+            public IList<FileCreateDto>? Images { get; set; }
+
+            public IList<RoomImageCreateDto>? RoomImages { get; set; }
             public int NumberOfChildren { get; set; }
         }
-
-
-        public class RoomUpdateDto : IEntityUpdateDto
+        public class RoomImageCreateDto : IValidatableDto
         {
-            public string Category { get; set; }
-            public string RoomTypeName { get; set; }
 
-            public int NumberOfAdults { get; set; }
-            public int Price { get; set; }
             public string? ImageUrlPath { get; set; }
             public string? ImageCode { get; set; }
+        }
+        public class RoomImageUpdateDto : IValidatableDto
+        {
 
+            public string? ImageUrlPath { get; set; }
+            public string? ImageCode { get; set; }
+        }
+        public class RoomUpdateDto : IEntityUpdateDto
+        {
+            public int HotelId { get; set; }
+            public string Category { get; set; }
+            public string RoomTypeName { get; set; }
+            public string? Description { get; set; }
+            public int NumberOfAdults { get; set; }
+            public int? Price { get; set; }
+            public IList<RoomImageCreateDto>? RoomImages { get; set; }
             public int NumberOfChildren { get; set; }
 
         }
