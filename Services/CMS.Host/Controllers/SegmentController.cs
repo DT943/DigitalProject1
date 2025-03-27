@@ -12,7 +12,7 @@ namespace CMS.Host.Controllers
     public class SegmentController : BaseController<ISegmentAppService, Domain.Models.Segment, SegmentGetDto, SegmentGetDto, SegmentCreateDto, SegmentUpdateDto, SieveModel>
     {
         ISegmentAppService _appService;
-        public SegmentController(ISegmentAppService appService) : base(appService)
+        public SegmentController(ISegmentAppService appService) : base(appService, "CMS")
         {
             _appService = appService;
         }

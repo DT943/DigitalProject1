@@ -14,7 +14,7 @@ namespace Hotel.Host.Controllers
     public class ContractController : BaseController<IContractAppService, Domain.Models.Contract, ContractGetDto, ContractGetDto, ContractCreateDto, ContractUpdateDto, SieveModel>
     {
         IContractAppService _contractAppService;
-        public ContractController(IContractAppService contractAppService) : base(contractAppService)
+        public ContractController(IContractAppService contractAppService) : base(contractAppService,"Hotel")
         {
             _contractAppService = contractAppService;
         }

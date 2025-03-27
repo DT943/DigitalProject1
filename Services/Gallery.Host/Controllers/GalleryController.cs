@@ -12,9 +12,8 @@ namespace Gallery.Host.Controllers
     public class GalleryController : BaseController<IGalleryAppService, Domain.Models.Gallery, GalleryGetDto, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>
     {
         IGalleryAppService _appService;
-        public GalleryController(IGalleryAppService appService) : base(appService)
+        public GalleryController(IGalleryAppService appService) : base(appService,"Gallary")
         {
-            this.ServiceName = "Gallery";
             _appService = appService;
         }
 

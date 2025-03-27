@@ -13,7 +13,7 @@ namespace Offer.Host.Controllers
     public class HolidayOfferController : BaseController<IHolidayAppService, Domain.Models.HolidayOffer, HolidayGetDto, HolidayGetDto, HolidayCreateDto, HolidayUpdateDto, SieveModel>
     {
         IHolidayAppService _appService;
-        public HolidayOfferController(IHolidayAppService appService) : base(appService)
+        public HolidayOfferController(IHolidayAppService appService) : base(appService, "Offer")
         {
             _appService = appService;
         }

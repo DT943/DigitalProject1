@@ -12,7 +12,7 @@ namespace CMS.Host.Controllers
     public class PageController : BaseController<IPageAppService, Domain.Models.Page, PageGetDto, PageGetDto, PageCreateDto, PageUpdateDto, SieveModel>
     {
         IPageAppService _appService;
-        public PageController(IPageAppService appService) : base(appService)
+        public PageController(IPageAppService appService) : base(appService, "CMS")
         {
             _appService = appService;
         }

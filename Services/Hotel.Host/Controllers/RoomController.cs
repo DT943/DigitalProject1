@@ -16,7 +16,7 @@ namespace Hotel.Host.Controllers
     public class RoomController : BaseController<IRoomAppService, Domain.Models.Room, RoomOutputDto, RoomOutputDto, RoomCreateDto, RoomUpdateDto, SieveModel>
     {
         IRoomAppService _appService;
-        public RoomController(IRoomAppService appService) : base(appService)
+        public RoomController(IRoomAppService appService) : base(appService, "Hotel")
         {
             _appService = appService;
         }

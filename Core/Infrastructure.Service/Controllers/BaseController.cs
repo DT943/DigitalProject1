@@ -18,26 +18,13 @@ namespace Infrastructure.Service.Controllers
         where TFilterDto : SieveModel
     {
         protected readonly TAppService _appService;
-        protected string ServiceName = "";
-        public BaseController(TAppService appService)
+        protected readonly string ServiceName;
+        public BaseController(TAppService appService, string serviceName)
         {
             _appService = appService;
-            ServiceName = GetServiceName();
+            ServiceName = serviceName;
         }
 
-        private string GetServiceName()
-        {
-            // Gets the class name of the child class that inherits BaseController
-            var childClassName = GetType().Name;
-
-            // Removes "Controller" suffix if present
-            if (childClassName.EndsWith("Controller"))
-            {
-                childClassName = childClassName.Replace("Controller", "");
-            }
-
-            return childClassName;
-        }
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Create(TCreatDto dto)
@@ -64,9 +51,7 @@ namespace Infrastructure.Service.Controllers
             var user = HttpContext.User;
             if (!(user.IsInRole("SuperAdmin") ||
                   user.IsInRole($"{ServiceName}-Admin") ||
-                  user.IsInRole($"{ServiceName}-Manager")||
-                  user.IsInRole($"{ServiceName}-Supervisor") ||
-                  user.IsInRole($"{ServiceName}-Officer")
+                  user.IsInRole($"{ServiceName}-Manager")
                   ))
             {
                 return Forbid();
@@ -115,8 +100,7 @@ namespace Infrastructure.Service.Controllers
         public virtual async Task<ActionResult<TGetDto>> Delete(int id)
         {
             var user = HttpContext.User;
-            if (!(user.IsInRole("SuperAdmin") || 
-                  user.IsInRole($"{ServiceName}-Admin")))
+            if (!user.IsInRole("SuperAdmin"))
             {
                 return Forbid();
             }
