@@ -29,6 +29,10 @@ namespace Authentication.Application
         Task<AuthenticationModel> AddUserAsync(AddUserDto newuser);
         Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment);
         Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
+        Task<AuthenticationModel> SendOTP(SendOtpRequestDto sendOtpRequestDto);
+        Task<AuthenticationModel> LogInWithOTP(SendOtpRequestDto sendOtpRequestDto);
+        Task<AuthenticationModel> FirstLogIn(FirestLogInDto firestLogInDto);
+
 
     }
 }

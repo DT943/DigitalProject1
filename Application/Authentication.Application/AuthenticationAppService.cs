@@ -20,13 +20,17 @@ namespace Authentication.Application
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly JWT _jwt;
         private readonly IMapper _mapper;
+        private readonly IEmailAppService _emailService;
 
-        public AuthenticationAppService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, IMapper mapper)
+
+        public AuthenticationAppService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, IMapper mapper, IEmailAppService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
             _mapper = mapper;
+            _emailService = emailService;
+
         }
         public async Task<AuthenticationModel> RegisterAsync(RegisterModel model)
         {
@@ -136,8 +140,6 @@ namespace Authentication.Application
                 authModel.Message = "Email or Password is incorrect!";
                 return authModel;
             }
-
-
             if (await _userManager.IsLockedOutAsync(user))
             {
                 user.IsActive = !user.IsActive;
@@ -146,14 +148,11 @@ namespace Authentication.Application
                 authModel.Message = "Your account is locked due to multiple failed login attempts.";
                 return authModel;
             }
-
             if (!user.IsActive)
             {
                 authModel.Message = "Your account is deactivated. Please contact support.";
                 return authModel;
             }
-
-
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 await _userManager.AccessFailedAsync(user); // Increase failed login attempts
@@ -171,9 +170,8 @@ namespace Authentication.Application
             }
             // Reset failed attempts count on successful login
             await _userManager.ResetAccessFailedCountAsync(user);
-
-
             user.LastLogIn = DateTime.UtcNow;
+            user.NumberOfLogIn += 1;
             var updateResult = await _userManager.UpdateAsync(user);
 
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -188,6 +186,202 @@ namespace Authentication.Application
             authModel.Roles = userRoles;
 
             return authModel;
+        }
+
+        public async Task<AuthenticationModel> AddUserAsync(AddUserDto newuser)
+        {
+            string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
+
+            if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
+                return new AuthenticationModel { Message = "Email is already exist!" };
+
+            if (await _userManager.FindByNameAsync(userName) is not null)
+                return new AuthenticationModel { Message = "Username is already exist!" };
+
+            var user = new ApplicationUser
+            {
+                Code = "User-" + Guid.NewGuid().ToString("N"),
+                UserName = userName,
+                Email = newuser.Email,
+                FirstName = newuser.FirstName,
+                LastName = newuser.LastName,
+                IsLocked = false,
+                IsActive = true,
+                LastLogIn = DateTime.MinValue,
+                Department = newuser.Department,
+
+            };
+
+            string staticPassword = Infrastructure.Domain.Consts.StaticPassword;
+            var result = await _userManager.CreateAsync(user, staticPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new AuthenticationModel
+                {
+                    IsAuthenticated = false,
+                    Message = errors
+                };
+            }
+
+            // Iterate over each service and create roles for each
+            foreach (var service in Enum.GetNames(typeof(Infrastructure.Domain.Consts.ServiceName)))
+            {
+                var roleName = $"{service}-Officer";
+                await _userManager.AddToRoleAsync(user, roleName);
+            }
+
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            string loginUrl = "https://yourapp.com/login"; // Replace with your actual login URL
+            string subject = "Your Account Has Been Created";
+            string message = $@"
+                <p>Dear {user.FirstName},</p>
+                <p>Your account has been successfully created.</p>
+                <p><strong>Login Email:</strong> {user.Email}</p>
+                <p><strong>Temporary Password:</strong> {staticPassword}</p>
+                <p>Please log in using the following link: <a href='{loginUrl}'>{loginUrl}</a></p>
+                <p>For security reasons, please change your password after logging in.</p>
+                <p>Best regards,<br>Your Company</p>";
+
+            await _emailService.SendEmailAsync(user.Email, subject, message);
+
+
+
+            return new AuthenticationModel
+            {
+                Message = "User has been created successfully.",
+                Email = user.Email,
+                Roles = userRoles,
+                IsAuthenticated = true,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+        }
+        public async Task<AuthenticationModel> SendOTP(SendOtpRequestDto sendOtpRequestDto)
+        {
+            var user = await _userManager.FindByEmailAsync(sendOtpRequestDto.Email);
+
+            if (user == null)
+            {
+                return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
+            }
+
+            // Verify the static password
+            if (!await _userManager.CheckPasswordAsync(user, sendOtpRequestDto.Password))
+            {
+                return new AuthenticationModel { Message = "Invalid static password!", IsAuthenticated = false };
+            }
+
+            // Generate a random OTP (6-digit code)
+            var otp = new Random().Next(100000, 999999).ToString();
+
+            // Set OTP expiration time (e.g., 5 minutes from now)
+            var expirationTime = DateTime.UtcNow.AddMinutes(5);
+
+            // Store OTP and expiration time (You may save it in the database or cache)
+            user.OTP = otp;
+            user.OTPExpiration = expirationTime;
+            await _userManager.UpdateAsync(user);
+
+            // Email subject and body
+            string subject = "Your One-Time Password (OTP)";
+            string message = $@"
+                <p>Dear {user.FirstName},</p>
+                <p>Your OTP for login verification is: <strong>{otp}</strong></p>
+                <p>This OTP will expire at <strong>{expirationTime.ToString("yyyy-MM-dd HH:mm:ss UTC")}</strong></p>
+                <p>If you did not request this, please ignore this email.</p>
+                <p>Best regards,<br>Your Company</p>";
+
+            // Send OTP via email
+            await _emailService.SendEmailAsync(user.Email, subject, message);
+
+            return new AuthenticationModel
+            {
+                Message = "OTP has been sent to your email.",
+                IsAuthenticated = true,
+                Email = user.Email
+            };
+
+
+        }
+        public async Task <AuthenticationModel> FirstLogIn(FirestLogInDto firestLogInDto)
+        {
+            var user = await _userManager.FindByEmailAsync(firestLogInDto.Email);
+
+            if (user == null)
+            {
+                return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
+            }
+
+            // Ensure the provided OldPassword is the StaticPassword from Consts
+            if (firestLogInDto.OldPassword != Infrastructure.Domain.Consts.StaticPassword)
+            {
+                return new AuthenticationModel { Message = "Invalid old password!", IsAuthenticated = false };
+            }
+
+            // Ensure new password and confirm password match
+            if (firestLogInDto.Password != firestLogInDto.ConfirmPassword)
+            {
+                return new AuthenticationModel { Message = "New passwords do not match!", IsAuthenticated = false };
+            }
+
+            // Update user password
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, firestLogInDto.Password);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                return new AuthenticationModel { Message = $"Password reset failed: {errors}", IsAuthenticated = false };
+            }
+
+            return new AuthenticationModel
+            {
+                Message = "Password has been successfully reset. You can now log in with your new password.",
+                IsAuthenticated = true,
+                Email = user.Email
+            };
+        }
+
+        public async Task<AuthenticationModel> LogInWithOTP(SendOtpRequestDto sendOtpRequestDto)
+        {
+            var user = await _userManager.FindByEmailAsync(sendOtpRequestDto.Email);
+
+            if (user == null)
+            {
+                return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
+            }
+
+            // Check if the provided OTP matches the stored one
+            if (user.OTP != sendOtpRequestDto.Password) // StaticPassword is being used as OTP here
+            {
+                return new AuthenticationModel { Message = "Invalid OTP!", IsAuthenticated = false };
+            }
+
+            // Check if the OTP has expired
+            if (user.OTPExpiration == null || user.OTPExpiration < DateTime.UtcNow)
+            {
+                return new AuthenticationModel { Message = "OTP has expired. Please request a new one.", IsAuthenticated = false };
+            }
+
+            // Clear the OTP after successful verification
+            user.OTP = null;
+            user.OTPExpiration = DateTime.MinValue;
+            await _userManager.UpdateAsync(user);
+
+            return new AuthenticationModel
+            {
+                Message = "OTP is correct. Now you need to reset your password.",
+                IsAuthenticated = true,
+                Email = user.Email
+            };
+
         }
 
         public async Task<IEnumerable<AuthenticationGetDto>> GetAllUsersAsync()
@@ -359,67 +553,6 @@ namespace Authentication.Application
                     IsLocked = user.IsLocked,
                 },
                 Roles = userNewRoles
-            };
-        }
-
-        public async Task<AuthenticationModel> AddUserAsync(AddUserDto newuser)
-        {
-            string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
-
-            if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
-                return new AuthenticationModel { Message = "Email is already exist!" };
-
-            if (await _userManager.FindByNameAsync(userName) is not null)
-                return new AuthenticationModel { Message = "Username is already exist!" };
-
-            var user = new ApplicationUser
-            {
-                Code = "User-" + Guid.NewGuid().ToString("N"),
-                UserName = userName,
-                Email = newuser.Email,
-                FirstName = newuser.FirstName,
-                LastName = newuser.LastName,
-                IsLocked = false,
-                IsActive = true,
-                LastLogIn = DateTime.MinValue,
-                Department = newuser.Department,
-
-            };
-
-            var result = await _userManager.CreateAsync(user, "Hi@2025");
-
-            if (!result.Succeeded)
-            {
-                var errors = string.Empty;
-
-                foreach (var error in result.Errors)
-                    errors += $"{error.Description},";
-
-                return new AuthenticationModel
-                {
-                    IsAuthenticated = false,
-                    Message = errors
-                };
-            }
-
-            // Iterate over each service and create roles for each
-            foreach (var service in Enum.GetNames(typeof(Infrastructure.Domain.Consts.ServiceName)))
-            {
-                var roleName = $"{service}-Officer";
-                await _userManager.AddToRoleAsync(user, roleName);
-            }
-
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-
-            return new AuthenticationModel
-            {
-                Message = "User has been created successfully.",
-                Email = user.Email,
-                Roles = userRoles,
-                IsAuthenticated = true,
-                FirstName = user.FirstName,
-                LastName = user.LastName
             };
         }
         public async Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment)

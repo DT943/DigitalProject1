@@ -160,8 +160,46 @@ namespace Authentication.Host.Controllers
             {
                 return BadRequest(new { Message = ex.Message });
             }
+        }
+        [HttpPost("SendOTP")]
+        public async Task<IActionResult> SendOTP([FromBody] SendOtpRequestDto sendOtpRequestDto)
+        {
+            try
+            {
+                var result = await _authenticationAppService.SendOTP(sendOtpRequestDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
 
-
+        [HttpPost("LogInWithOTP")]
+        public async Task<IActionResult> LogInWithOTP([FromBody] SendOtpRequestDto sendOtpRequestDto)
+        {
+            try
+            {
+                var result = await _authenticationAppService.LogInWithOTP(sendOtpRequestDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+        [HttpPost("FirstLogIn")]
+        public async Task<IActionResult> FirstLogIn([FromBody] FirestLogInDto firestLogInDto)
+        {
+            try
+            {
+                var result = await _authenticationAppService.FirstLogIn(firestLogInDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
         }
     }
 }

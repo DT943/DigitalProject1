@@ -15,6 +15,7 @@ namespace Authentication.Host.Helper
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
+            services.AddScoped<IEmailAppService, EmailAppService>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
