@@ -74,7 +74,7 @@ builder.Logging.SetMinimumLevel(LogLevel.Debug); // Make sure the level is low e
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15); // Lock account for 15 minutes
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); // Lock account for 1 minutes
     options.Lockout.MaxFailedAccessAttempts = 5; // Lock account after 5 failed attempts
     options.Lockout.AllowedForNewUsers = true; // Enable lockout for new users
 });

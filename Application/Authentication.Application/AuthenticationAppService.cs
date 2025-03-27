@@ -140,7 +140,7 @@ namespace Authentication.Application
                 authModel.Message = "Email or Password is incorrect!";
                 return authModel;
             }
-            if (await _userManager.IsLockedOutAsync(user))
+            if (await _userManager.IsLockedOutAsync(user) || user.IsLocked)
             {
                 user.IsActive = !user.IsActive;
                 user.IsLocked = true;
@@ -187,7 +187,6 @@ namespace Authentication.Application
 
             return authModel;
         }
-
         public async Task<AuthenticationModel> AddUserAsync(AddUserDto newuser)
         {
             string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
@@ -400,7 +399,6 @@ namespace Authentication.Application
             return userDtos;
         }
 
-
         public async Task<IEnumerable<string>> GetAllRolesAsync()
         {
             return await _roleManager.Roles.Select(r => r.Name).ToListAsync();
@@ -464,6 +462,10 @@ namespace Authentication.Application
                 throw new Exception("User not found");
             }
             user.IsActive = !user.IsActive;
+            if (user.IsActive && user.IsLocked)
+            {
+                user.IsLocked = false;
+            }
             var result = await _userManager.UpdateAsync(user);
 
             return result.Succeeded;
