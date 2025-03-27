@@ -22,9 +22,9 @@ namespace Gallery.Host.Controllers
     {
         IFileAppService _appService;
         FileValidator _fileValidator;
-        public FileController(IFileAppService appService, FileValidator fileValidator) : base(appService)
+        public FileController(IFileAppService appService, FileValidator fileValidator) : base(appService,"Gallery")
         {
-            this.ServiceName = "Gallery";
+          
             _appService = appService;
             _fileValidator= fileValidator;
         }

@@ -10,7 +10,7 @@ namespace CMS.Host.Controllers
     public class POSController : BaseController<IPOSAppService, CWCore.Domain.Models.POS, POSGetDto, POSGetDto, POSCreateDto, POSUpdateDto, SieveModel>
     {
         IPOSAppService _appService;
-        public POSController(IPOSAppService appService) : base(appService)
+        public POSController(IPOSAppService appService) : base(appService, "CMS")
         {
             _appService = appService;
         }

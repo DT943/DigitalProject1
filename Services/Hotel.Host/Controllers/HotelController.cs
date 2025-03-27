@@ -14,7 +14,7 @@ namespace Hotel.Host.Controllers
     public class HotelController : BaseController<IHotelAppService, Domain.Models.Hotel, HotelGetAllDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>
     {
         IHotelAppService _hotelAppService;
-         public HotelController(IHotelAppService hotelAppService) : base(hotelAppService)
+         public HotelController(IHotelAppService hotelAppService) : base(hotelAppService, "Hotel")
         {
             _hotelAppService = hotelAppService;
         }

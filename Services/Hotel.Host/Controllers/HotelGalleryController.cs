@@ -15,7 +15,7 @@ namespace Hotel.Host.Controllers
     public class HotelGalleryController : BaseController<IHotelGalleryAppService, Domain.Models.HotelGallery, HotelGalleryOutputDto, HotelGalleryOutputDto, HotelGalleryCreateDto, HotelGalleryUpdateDto, SieveModel>
     {
         IHotelGalleryAppService _appService;
-        public HotelGalleryController(IHotelGalleryAppService appService) : base(appService)
+        public HotelGalleryController(IHotelGalleryAppService appService) : base(appService, "Hotel")
         {
             _appService = appService;
         }

@@ -9,7 +9,7 @@ namespace Offer.Host.Controllers
     public class FlightOfferController: BaseController<IFlightOfferAppService, Domain.Models.FlightOffer, FlightOfferGetDto, FlightOfferGetDto, FlightOfferCreateDto, FlightOfferUpdateDto, SieveModel>
     {
         IFlightOfferAppService _appService;
-        public FlightOfferController(IFlightOfferAppService appService) : base(appService)
+        public FlightOfferController(IFlightOfferAppService appService) : base(appService,"Offer")
         {
             _appService = appService;
         }
