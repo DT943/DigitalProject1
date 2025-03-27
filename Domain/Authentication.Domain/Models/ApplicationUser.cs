@@ -21,10 +21,14 @@ namespace Authentication.Domain.Models
         public bool IsActive { get; set; } = true;
         public bool IsLocked { get; set; } = false;
 
+        public int NumberOfLogIn { get; set; } = 0;
+
         [MaxLength(50)]
         public string? Department { get; set; }
 
         public DateTime? LastLogIn { get; set; }
+        public string? OTP {  get; set; }
+        public DateTime OTPExpiration {  get; set; }
         //info not used
         public string? MotherName { get; set; }
         public string? FatherName { get; set; }

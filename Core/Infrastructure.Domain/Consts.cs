@@ -22,7 +22,7 @@ namespace Infrastructure.Domain
             Hotel,
             Notification
         }
-
+        public static readonly string StaticPassword = "StaticPassword";
 
         public static class RideRequestStatus
         {
