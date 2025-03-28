@@ -17,6 +17,7 @@ namespace Authentication.Application.Dtos
 
         public bool IsActive { get; set; }
         public bool IsLocked { get; set; }
+        public bool IsFrozed { get; set; }
         public int NumberOfLogIn { get; set; }
 
         [MaxLength(50)]

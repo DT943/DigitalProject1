@@ -102,9 +102,9 @@ namespace Authentication.Application
             var userClaims = await _userManager.GetClaimsAsync(user);
             var roles = await _userManager.GetRolesAsync(user);
             var roleClaims = new List<Claim>();
-
+            
             foreach (var role in roles)
-                roleClaims.Add(new Claim("roles", role));
+                roleClaims.Add(new Claim(ClaimTypes.Role, role));
 
             var claims = new[]
             {
@@ -140,19 +140,6 @@ namespace Authentication.Application
                 authModel.Message = "Email or Password is incorrect!";
                 return authModel;
             }
-            if (await _userManager.IsLockedOutAsync(user) || user.IsLocked)
-            {
-                user.IsActive = !user.IsActive;
-                user.IsLocked = true;
-                var result = await _userManager.UpdateAsync(user);
-                authModel.Message = "Your account is locked due to multiple failed login attempts.";
-                return authModel;
-            }
-            if (!user.IsActive)
-            {
-                authModel.Message = "Your account is deactivated. Please contact support.";
-                return authModel;
-            }
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 await _userManager.AccessFailedAsync(user); // Increase failed login attempts
@@ -168,10 +155,71 @@ namespace Authentication.Application
 
                 return authModel;
             }
+            if (user.NumberOfLogIn == 0 && user.IsFrozed)
+            {
+                if (!await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    return new AuthenticationModel { Message = "Invalid static password!", IsAuthenticated = false };
+                }
+                var otp = GenerateSecurePassword();
+                var expirationTime = DateTime.UtcNow.AddMinutes(3);
+
+                Console.WriteLine(otp);
+
+                user.OTP = otp;
+                user.OTPExpiration = expirationTime;
+                await _userManager.UpdateAsync(user);
+                string subject = "Your One-Time Password (OTP), FirstLogInToSystem";
+                //await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
+                authModel.Message = "Please reset OTP at the first time you get to system, Check your email!";
+                return authModel;
+            }
+
+            if (DateTime.UtcNow - user.LastLogIn > TimeSpan.FromDays(3))
+            {
+                user.IsFrozed = true;
+                if (!await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    return new AuthenticationModel { Message = "Invalid static password!", IsAuthenticated = false };
+                }
+
+                var otp = GenerateSecurePassword();
+
+                // Set OTP expiration time (e.g., 3 minutes from now)
+                var expirationTime = DateTime.UtcNow.AddMinutes(3);
+
+                // Store OTP and expiration time (You may save it in the database or cache)
+                user.OTP = otp;
+                user.OTPExpiration = expirationTime;
+                await _userManager.UpdateAsync(user);
+
+                // Email subject and body
+                string subject = "Your One-Time Password (OTP),The last login was a long time ago.";
+
+                //await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
+                authModel.Message = "Please reset OTP, The last login was a long time ago, Check your email!";
+                return authModel;
+            }
+            if (await _userManager.IsLockedOutAsync(user) || user.IsLocked)
+            {
+                user.IsActive = !user.IsActive;
+                user.IsLocked = true;
+                var result = await _userManager.UpdateAsync(user);
+                authModel.Message = "Your account is locked due to multiple failed login attempts.";
+                return authModel;
+            }
+            if (!user.IsActive)
+            {
+                authModel.Message = "Your account is deactivated. Please contact support.";
+                return authModel;
+            }
+
+
             // Reset failed attempts count on successful login
             await _userManager.ResetAccessFailedCountAsync(user);
             user.LastLogIn = DateTime.UtcNow;
             user.NumberOfLogIn += 1;
+
             var updateResult = await _userManager.UpdateAsync(user);
 
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -206,12 +254,12 @@ namespace Authentication.Application
                 LastName = newuser.LastName,
                 IsLocked = false,
                 IsActive = true,
+                IsFrozed = true,
                 LastLogIn = DateTime.MinValue,
                 Department = newuser.Department,
 
             };
-
-            string staticPassword = Infrastructure.Domain.Consts.StaticPassword;
+            var staticPassword = GenerateSecurePassword();
             var result = await _userManager.CreateAsync(user, staticPassword);
 
             if (!result.Succeeded)
@@ -237,20 +285,9 @@ namespace Authentication.Application
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            string loginUrl = "https://yourapp.com/login"; // Replace with your actual login URL
-            string subject = "Your Account Has Been Created";
-            string message = $@"
-                <p>Dear {user.FirstName},</p>
-                <p>Your account has been successfully created.</p>
-                <p><strong>Login Email:</strong> {user.Email}</p>
-                <p><strong>Temporary Password:</strong> {staticPassword}</p>
-                <p>Please log in using the following link: <a href='{loginUrl}'>{loginUrl}</a></p>
-                <p>For security reasons, please change your password after logging in.</p>
-                <p>Best regards,<br>Your Company</p>";
+            string subject = "Your Account Has Been Created, Welcome to our website";
 
-            await _emailService.SendEmailAsync(user.Email, subject, message);
-
-
+            //await _emailService.SendEmailAsync(newuser.Email, subject, staticPassword, newuser.FirstName);
 
             return new AuthenticationModel
             {
@@ -262,54 +299,76 @@ namespace Authentication.Application
                 LastName = user.LastName
             };
         }
-        public async Task<AuthenticationModel> SendOTP(SendOtpRequestDto sendOtpRequestDto)
+        public async Task<AuthenticationModel> SendOTP(string lastpassword, ClaimsPrincipal user)
         {
-            var user = await _userManager.FindByEmailAsync(sendOtpRequestDto.Email);
+            var email = user.FindFirst(ClaimTypes.Email)?.Value;
 
-            if (user == null)
+            var existuser = await _userManager.FindByEmailAsync(email);
+
+            if (existuser == null)
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
             }
 
             // Verify the static password
-            if (!await _userManager.CheckPasswordAsync(user, sendOtpRequestDto.Password))
+            if (!await _userManager.CheckPasswordAsync(existuser, lastpassword))
             {
                 return new AuthenticationModel { Message = "Invalid static password!", IsAuthenticated = false };
             }
 
-            // Generate a random OTP (6-digit code)
-            var otp = new Random().Next(100000, 999999).ToString();
+            
+            var otp = GenerateSecurePassword();
 
             // Set OTP expiration time (e.g., 5 minutes from now)
-            var expirationTime = DateTime.UtcNow.AddMinutes(5);
+            var expirationTime = DateTime.UtcNow.AddMinutes(3);
 
             // Store OTP and expiration time (You may save it in the database or cache)
-            user.OTP = otp;
-            user.OTPExpiration = expirationTime;
-            await _userManager.UpdateAsync(user);
+            existuser.OTP = otp;
+            existuser.OTPExpiration = expirationTime;
+            await _userManager.UpdateAsync(existuser);
 
             // Email subject and body
             string subject = "Your One-Time Password (OTP)";
             string message = $@"
-                <p>Dear {user.FirstName},</p>
-                <p>Your OTP for login verification is: <strong>{otp}</strong></p>
-                <p>This OTP will expire at <strong>{expirationTime.ToString("yyyy-MM-dd HH:mm:ss UTC")}</strong></p>
-                <p>If you did not request this, please ignore this email.</p>
-                <p>Best regards,<br>Your Company</p>";
+                Dear {existuser.FirstName},
+                Your OTP for login verification is: {otp}
+                This OTP will expire at {expirationTime.ToString("yyyy-MM-dd HH:mm:ss UTC")}
+                If you did not request this, please ignore this email.
+                Best regards,Your Company";
 
             // Send OTP via email
-            await _emailService.SendEmailAsync(user.Email, subject, message);
+            await _emailService.SendEmailAsync(existuser.Email, subject, otp, existuser.FirstName);
 
             return new AuthenticationModel
             {
                 Message = "OTP has been sent to your email.",
                 IsAuthenticated = true,
-                Email = user.Email
+                Email = existuser.Email
             };
 
-
         }
-        public async Task <AuthenticationModel> FirstLogIn(FirestLogInDto firestLogInDto)
+        private string GenerateSecurePassword()
+        {
+            Random random = new Random();
+
+            // 1. Generate OTP (6 digits)
+            string otp = random.Next(100000, 999999).ToString();
+
+            // 2. Ensure at least one lowercase, one uppercase, and one special character
+            char lowercase = (char)random.Next('a', 'z' + 1);
+            char uppercase = (char)random.Next('A', 'Z' + 1);
+            char specialChar = "!@#$%^&*_-=+."[random.Next(0, 12)];
+
+            // 3. Combine all required parts
+            string combined = $"{lowercase}{uppercase}{specialChar}{otp}";
+
+            // 4. Shuffle for better randomness
+            string shuffled = new string(combined.OrderBy(c => random.Next()).ToArray());
+
+            return shuffled;
+        }
+
+        public async Task <AuthenticationModel> ResetPassword(FirestLogInDto firestLogInDto)
         {
             var user = await _userManager.FindByEmailAsync(firestLogInDto.Email);
 
@@ -317,13 +376,14 @@ namespace Authentication.Application
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
             }
-
-            // Ensure the provided OldPassword is the StaticPassword from Consts
-            if (firestLogInDto.OldPassword != Infrastructure.Domain.Consts.StaticPassword)
+            if (user.NumberOfLogIn > 0)
             {
-                return new AuthenticationModel { Message = "Invalid old password!", IsAuthenticated = false };
+                // Ensure the provided OldPassword is the StaticPassword from Consts
+                var passwordValid = await _userManager.CheckPasswordAsync(user, firestLogInDto.OldPassword);
+                if (!passwordValid)
+                    return new AuthenticationModel { Message = "Invalid old password!", IsAuthenticated = false };
             }
-
+            
             // Ensure new password and confirm password match
             if (firestLogInDto.Password != firestLogInDto.ConfirmPassword)
             {
@@ -339,6 +399,9 @@ namespace Authentication.Application
                 var errors = string.Join(", ", result.Errors.Select(e => e.Description));
                 return new AuthenticationModel { Message = $"Password reset failed: {errors}", IsAuthenticated = false };
             }
+            user.IsFrozed = false;
+            user.LastLogIn = DateTime.UtcNow;
+            await _userManager.UpdateAsync(user);
 
             return new AuthenticationModel
             {
@@ -348,37 +411,37 @@ namespace Authentication.Application
             };
         }
 
-        public async Task<AuthenticationModel> LogInWithOTP(SendOtpRequestDto sendOtpRequestDto)
+        public async Task<AuthenticationModel> LogInWithOTP(LogInModel model)
         {
-            var user = await _userManager.FindByEmailAsync(sendOtpRequestDto.Email);
+            var existuser = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user == null)
+            if (existuser == null)
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
             }
 
             // Check if the provided OTP matches the stored one
-            if (user.OTP != sendOtpRequestDto.Password) // StaticPassword is being used as OTP here
+            if (existuser.OTP != model.Password) // StaticPassword is being used as OTP here
             {
                 return new AuthenticationModel { Message = "Invalid OTP!", IsAuthenticated = false };
             }
 
             // Check if the OTP has expired
-            if (user.OTPExpiration == null || user.OTPExpiration < DateTime.UtcNow)
+            if (existuser.OTPExpiration == null || existuser.OTPExpiration < DateTime.UtcNow)
             {
                 return new AuthenticationModel { Message = "OTP has expired. Please request a new one.", IsAuthenticated = false };
             }
 
             // Clear the OTP after successful verification
-            user.OTP = null;
-            user.OTPExpiration = DateTime.MinValue;
-            await _userManager.UpdateAsync(user);
+            existuser.OTP = null;
+            existuser.OTPExpiration = DateTime.MinValue;
+            await _userManager.UpdateAsync(existuser);
 
             return new AuthenticationModel
             {
                 Message = "OTP is correct. Now you need to reset your password.",
                 IsAuthenticated = true,
-                Email = user.Email
+                Email = existuser.Email
             };
 
         }

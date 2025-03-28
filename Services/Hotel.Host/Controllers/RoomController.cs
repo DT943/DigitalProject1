@@ -29,6 +29,10 @@ namespace Hotel.Host.Controllers
         [HttpGet("ByHotelId/{hotelId}")]
         public async Task<ActionResult<IEnumerable<RoomOutputDto>>> GetRoomsByHotelIdAsync(int hotelId)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
             try
             {
                 var rooms = await _appService.GetRoomsByHotelIdAsync(hotelId);

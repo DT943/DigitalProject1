@@ -8,7 +8,7 @@ namespace Authentication.Application
 {
     public interface IEmailAppService
     {
-        Task SendEmailAsync(string email, string subject, string message);
+        Task SendEmailAsync(string email, string subject, string password, string userName);
 
     }
 }

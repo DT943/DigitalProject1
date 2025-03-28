@@ -29,6 +29,10 @@ namespace Hotel.Host.Controllers
         [HttpPost("MakeContract")]
         public async Task<IActionResult> MakeContract(ContractCreateDto contractCreateDto)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
+            {
+                return Forbid();
+            }
             try
             {
                 var file = await _appService.MakeContract(contractCreateDto);
