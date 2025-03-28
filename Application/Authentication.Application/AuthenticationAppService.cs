@@ -170,7 +170,7 @@ namespace Authentication.Application
                 user.OTPExpiration = expirationTime;
                 await _userManager.UpdateAsync(user);
                 string subject = "Your One-Time Password (OTP), FirstLogInToSystem";
-                //await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
+                await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
                 authModel.Message = "Please reset OTP at the first time you get to system, Check your email!";
                 return authModel;
             }
@@ -196,7 +196,7 @@ namespace Authentication.Application
                 // Email subject and body
                 string subject = "Your One-Time Password (OTP),The last login was a long time ago.";
 
-                //await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
+                await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
                 authModel.Message = "Please reset OTP, The last login was a long time ago, Check your email!";
                 return authModel;
             }
@@ -285,9 +285,9 @@ namespace Authentication.Application
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            string subject = "Your Account Has Been Created, Welcome to our website";
+            string subject = "Your Account Has Been Created, Welcome to our website.";
 
-            //await _emailService.SendEmailAsync(newuser.Email, subject, staticPassword, newuser.FirstName);
+            await _emailService.SendEmailAsync(newuser.Email, subject, staticPassword, newuser.FirstName);
 
             return new AuthenticationModel
             {
@@ -299,6 +299,7 @@ namespace Authentication.Application
                 LastName = user.LastName
             };
         }
+        /*
         public async Task<AuthenticationModel> SendOTP(string lastpassword, ClaimsPrincipal user)
         {
             var email = user.FindFirst(ClaimTypes.Email)?.Value;
@@ -347,6 +348,7 @@ namespace Authentication.Application
             };
 
         }
+        */
         private string GenerateSecurePassword()
         {
             Random random = new Random();

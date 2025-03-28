@@ -208,22 +208,6 @@ namespace Authentication.Host.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
-        [HttpPost("SendOTP")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
-        public async Task<IActionResult> SendOTP([FromBody] string lastPassword)
-        {
-            var user = HttpContext.User;
-            try
-            {
-                var result = await _authenticationAppService.SendOTP(lastPassword,user);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
-        }
 
         [HttpPost("LogInWithOTP")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
