@@ -1,12 +1,16 @@
-﻿using Authentication.Application;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Authentication.Application;
 using Authentication.Application.Dtos;
 using Authentication.Domain.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication.Host.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
@@ -19,8 +23,13 @@ namespace Authentication.Host.Controllers
         }
 
         [HttpPost("register")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> RegisterAsync([FromBody] RegisterModel model)
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
@@ -36,6 +45,7 @@ namespace Authentication.Host.Controllers
         }
 
         [HttpPost("login")]
+
         public async Task<IActionResult> LogIn([FromBody] LogInModel model)
         {
 
@@ -48,27 +58,38 @@ namespace Authentication.Host.Controllers
 
             return Ok(result);
         }
-
-
         [HttpGet("get-all-users")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> GetAllUsers()
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
             var result = await _authenticationAppService.GetAllUsersAsync();
             return Ok(result);
         }
 
 
         [HttpGet("get-all-roles")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> GetAllRoles()
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
             var result = await _authenticationAppService.GetAllRolesAsync();
             return Ok(result);
         }
 
 
         [HttpGet("get-user/{code}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> GetUserByCode(string code)
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
             if (string.IsNullOrWhiteSpace(code))
             {
                 return BadRequest("Code is required.");
@@ -85,8 +106,13 @@ namespace Authentication.Host.Controllers
         }
 
         [HttpPost("assign-roles/{userCode}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> AssignRolesToUser(string userCode, [FromBody] List<string> roles)
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
             if (string.IsNullOrWhiteSpace(userCode) || roles == null || !roles.Any())
             {
                 return BadRequest("User code and at least one role are required.");
@@ -97,15 +123,25 @@ namespace Authentication.Host.Controllers
         }
 
         [HttpPut("ChangeUserAccountStatus/{userCode}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> ChangeUserStatus(string userCode)
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
             var result = await _authenticationAppService.ChangeUserStatusAsync(userCode);
             return result ? Ok("User status updated successfully.") : BadRequest("Failed to update user status.");
         }
 
         [HttpPost("AssignServiceRoleToUser/{userCode}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> AssignRoleToUserByService(string userCode, [FromBody] string newRole)
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
             if (string.IsNullOrWhiteSpace(userCode) || string.IsNullOrWhiteSpace(newRole))
                 return BadRequest("User code and role are required.");
 
@@ -120,8 +156,13 @@ namespace Authentication.Host.Controllers
             }
         }
         [HttpPost("AddNewUser")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> AddNewUser(AddUserDto addUserDto)
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             try
@@ -135,9 +176,13 @@ namespace Authentication.Host.Controllers
             }
         }
         [HttpPut("EditUserDepartment/{userCode}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
         public async Task<IActionResult> EditUserDepartment(string userCode, [FromBody] string newDepartment)
         {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
             try
             {
                 var result = await _authenticationAppService.EditUserDepartment(userCode, newDepartment);
@@ -149,6 +194,8 @@ namespace Authentication.Host.Controllers
             }
         }
         [HttpPut("UpdateUserProfile/{userCode}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> UpdateUserProfile(string userCode, [FromBody] UpdateUserDto newUser)
         {
             try
@@ -162,11 +209,14 @@ namespace Authentication.Host.Controllers
             }
         }
         [HttpPost("SendOTP")]
-        public async Task<IActionResult> SendOTP([FromBody] SendOtpRequestDto sendOtpRequestDto)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> SendOTP([FromBody] string lastPassword)
         {
+            var user = HttpContext.User;
             try
             {
-                var result = await _authenticationAppService.SendOTP(sendOtpRequestDto);
+                var result = await _authenticationAppService.SendOTP(lastPassword,user);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -176,11 +226,13 @@ namespace Authentication.Host.Controllers
         }
 
         [HttpPost("LogInWithOTP")]
-        public async Task<IActionResult> LogInWithOTP([FromBody] SendOtpRequestDto sendOtpRequestDto)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> LogInWithOTP([FromBody] LogInModel model)
         {
             try
             {
-                var result = await _authenticationAppService.LogInWithOTP(sendOtpRequestDto);
+                var result = await _authenticationAppService.LogInWithOTP(model);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -188,12 +240,14 @@ namespace Authentication.Host.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
-        [HttpPost("FirstLogIn")]
-        public async Task<IActionResult> FirstLogIn([FromBody] FirestLogInDto firestLogInDto)
+        [HttpPost("ResetPassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> ResetPassword([FromBody] FirestLogInDto firestLogInDto)
         {
             try
             {
-                var result = await _authenticationAppService.FirstLogIn(firestLogInDto);
+                var result = await _authenticationAppService.ResetPassword(firestLogInDto);
                 return Ok(result);
             }
             catch (Exception ex)

@@ -45,19 +45,12 @@ namespace Authentication.Application.Dtos
         public string ConfirmPassword { get; set; }
 
     }
-    public class SendOtpRequestDto
-    {
-        public string Password { get; set; }
-        public string Email { get; set; }
-    }
     public class FirestLogInDto
     {
         [Required, StringLength(128)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Old password is required.")]
-
-        public string OldPassword { get; set; }
+        public string? OldPassword { get; set; }
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -68,7 +61,6 @@ namespace Authentication.Application.Dtos
         public string ConfirmPassword { get; set; }
 
     }
-
 
 
 }

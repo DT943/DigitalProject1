@@ -3,6 +3,7 @@ using Authentication.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,9 +30,9 @@ namespace Authentication.Application
         Task<AuthenticationModel> AddUserAsync(AddUserDto newuser);
         Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment);
         Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
-        Task<AuthenticationModel> SendOTP(SendOtpRequestDto sendOtpRequestDto);
-        Task<AuthenticationModel> LogInWithOTP(SendOtpRequestDto sendOtpRequestDto);
-        Task<AuthenticationModel> FirstLogIn(FirestLogInDto firestLogInDto);
+        Task<AuthenticationModel> SendOTP(string lastPassword, ClaimsPrincipal user);
+        Task<AuthenticationModel> LogInWithOTP(LogInModel model);
+        Task<AuthenticationModel> ResetPassword(FirestLogInDto firestLogInDto);
 
 
     }

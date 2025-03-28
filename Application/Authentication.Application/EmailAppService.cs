@@ -4,46 +4,37 @@ using MimeKit;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace Authentication.Application
 {
     public class EmailAppService : IEmailAppService
     {
-        private readonly IConfiguration _configuration;
 
-        public EmailAppService(IConfiguration configuration)
+        private readonly HttpClient _httpClient;
+
+        public EmailAppService(HttpClient httpClient)
         {
-            _configuration = configuration;
+            _httpClient = httpClient;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string message)
+        public async Task SendEmailAsync(string email, string subject, string password, string userName)
         {
-            var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress("ChamWings", _configuration["EmailSettings:SenderEmail"]));
-            emailMessage.To.Add(new MailboxAddress("", email));
-            emailMessage.Subject = subject;
-
-            var bodyBuilder = new BodyBuilder { HtmlBody = message };
-            emailMessage.Body = bodyBuilder.ToMessageBody();
-
-            using var smtpClient = new SmtpClient();
-            try
+            var payload = new
             {
-                await smtpClient.ConnectAsync(
-                    _configuration["EmailSettings:SmtpServer"],
-                    int.Parse(_configuration["EmailSettings:Port"]),
-                    SecureSocketOptions.StartTls);
+                email = email,
+                subject = subject,
+                userName = userName,
+                password = password,
+            };
 
-                await smtpClient.AuthenticateAsync(
-                    _configuration["EmailSettings:Username"],
-                    _configuration["EmailSettings:Password"]);
+            var jsonPayload = JsonSerializer.Serialize(payload);
+            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-                await smtpClient.SendAsync(emailMessage);
-            }
-            finally
-            {
-                await smtpClient.DisconnectAsync(true);
-            }
+            var response = await _httpClient.PostAsync("https://hooks.zapier.com/hooks/catch/17823706/2ef80xk/", content);
+
+            response.EnsureSuccessStatusCode();
         }
 
     }

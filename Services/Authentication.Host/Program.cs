@@ -8,6 +8,7 @@ using System.Text;
 using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 Console.WriteLine("Application is starting V.1.3");
 
 
@@ -26,10 +27,9 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
 }).AddJwtBearer(o => {
     o.RequireHttpsMetadata = false;
-    o.SaveToken = false;
+    o.SaveToken = true;
     o.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
@@ -38,10 +38,14 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidIssuer = builder.Configuration["JWT:Issuer"],
         ValidAudience = builder.Configuration["JWT:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
+        ClockSkew = TimeSpan.Zero
     };
 });
 
+builder.Services.AddAuthorization(//options =>
+//{ options.AddPolicy("SuperAdmin", policy => policy.RequireRole("SuperAdmin"));}
+);
 
 builder.Services.AddCors(options =>
 {
@@ -75,15 +79,13 @@ builder.Logging.SetMinimumLevel(LogLevel.Debug); // Make sure the level is low e
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1); // Lock account for 1 minutes
-    options.Lockout.MaxFailedAccessAttempts = 5; // Lock account after 5 failed attempts
+    options.Lockout.MaxFailedAccessAttempts = 3; // Lock account after 5 failed attempts
     options.Lockout.AllowedForNewUsers = true; // Enable lockout for new users
 });
 
 
 
 var app = builder.Build();
-
-app.UseCors("AllowAll"); // Apply CORS policy
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -93,6 +95,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
+
+// Important: Authentication must come before Authorization
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -22,6 +22,10 @@ namespace Hotel.Host.Controllers
         [HttpGet("ByHotelId/{hotelId}")]
         public async Task<ActionResult<IEnumerable<HotelGalleryOutputDto>>> GetHotelGalleryByHotelIdAsync(int hotelId)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
             try
             {
                 var gallerys = await _appService.GetHotelGalleryByHotelIdAsync(hotelId);

@@ -43,12 +43,20 @@ namespace Gallery.Host.Controllers
         [HttpPost("upload-multi-files")]
         public async Task<ActionResult<List<FileGetDto>>> CreateMultipleFiles([FromForm]MultiFileCreateDto createDto)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
+            {
+                return Forbid();
+            }
             return await _appService.CreateMultipleFiles(createDto);
         }
 
         [HttpGet("getby-galleryid/{galleryId}")]
         public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryId(int galleryId)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
             var files = await _appService.GetRelatedFileGallery(galleryId);
             return Ok(files);
         }
@@ -56,6 +64,11 @@ namespace Gallery.Host.Controllers
         [HttpGet("getby-gallerycode/{gallerycode}")]
         public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryCodeAsync(string galleryCode)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
+
             var files = await _appService.GetRelatedFileGalleryByCodeAsync(galleryCode);
             return Ok(files);
         }

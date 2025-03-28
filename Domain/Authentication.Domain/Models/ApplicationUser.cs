@@ -20,6 +20,7 @@ namespace Authentication.Domain.Models
 
         public bool IsActive { get; set; } = true;
         public bool IsLocked { get; set; } = false;
+        public bool IsFrozed { get; set; } = false;
 
         public int NumberOfLogIn { get; set; } = 0;
 

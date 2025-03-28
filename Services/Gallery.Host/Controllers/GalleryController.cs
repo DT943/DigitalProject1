@@ -21,6 +21,12 @@ namespace Gallery.Host.Controllers
         [HttpGet("getby-galleryName/{galleryName}")]
         public virtual async Task<ActionResult<GalleryGetDto>> GetGalleryByName(string galleryName)
         {
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
             var gallery = await _appService.GetByName(galleryName);
             return Ok(gallery);
         }
