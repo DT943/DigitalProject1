@@ -30,7 +30,7 @@ namespace Authentication.Application
         Task<AuthenticationModel> AddUserAsync(AddUserDto newuser);
         Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment);
         Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
-        Task<AuthenticationModel> SendOTP(string lastPassword, ClaimsPrincipal user);
+        //Task<AuthenticationModel> SendOTP(string lastPassword, ClaimsPrincipal user);
         Task<AuthenticationModel> LogInWithOTP(LogInModel model);
         Task<AuthenticationModel> ResetPassword(FirestLogInDto firestLogInDto);
 
