@@ -8,6 +8,7 @@ using Sieve.Models;
 using Hotel.Application.HotelGalleryAppService;
 using Hotel.Application.HotelGalleryAppService.Dtos;
 using Hotel.Application.RoomAppService.Dtos;
+using static Infrastructure.Domain.Consts;
 
 namespace Hotel.Host.Controllers
 {
@@ -15,7 +16,7 @@ namespace Hotel.Host.Controllers
     public class HotelGalleryController : BaseController<IHotelGalleryAppService, Domain.Models.HotelGallery, HotelGalleryOutputDto, HotelGalleryOutputDto, HotelGalleryCreateDto, HotelGalleryUpdateDto, SieveModel>
     {
         IHotelGalleryAppService _appService;
-        public HotelGalleryController(IHotelGalleryAppService appService) : base(appService, "Hotel")
+        public HotelGalleryController(IHotelGalleryAppService appService) : base(appService, Servics.HOTEL)
         {
             _appService = appService;
         }

@@ -1,13 +1,11 @@
-﻿using MailKit.Net.Smtp;
-using MailKit.Security;
-using MimeKit;
+﻿
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Text.Json;
 
-namespace Authentication.Application
+namespace Notification.Application
 {
     public class EmailAppService : IEmailAppService
     {

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Sieve.Models;
 using CMS.Application.SegmentAppService.Dtos;
 using CMS.Application.SegmentAppService;
+using static Infrastructure.Domain.Consts;
 
 namespace CMS.Host.Controllers
 {
@@ -12,7 +13,7 @@ namespace CMS.Host.Controllers
     public class SegmentController : BaseController<ISegmentAppService, Domain.Models.Segment, SegmentGetDto, SegmentGetDto, SegmentCreateDto, SegmentUpdateDto, SieveModel>
     {
         ISegmentAppService _appService;
-        public SegmentController(ISegmentAppService appService) : base(appService, "CMS")
+        public SegmentController(ISegmentAppService appService) : base(appService, Servics.CMS)
         {
             _appService = appService;
         }

@@ -9,6 +9,7 @@ using Hotel.Application.RoomAppService;
 using Hotel.Application.HotelAppService.Dtos;
 using Hotel.Domain.Models;
 using Gallery.Application.FileAppservice.Dtos;
+using static Infrastructure.Domain.Consts;
 
 namespace Hotel.Host.Controllers
 {
@@ -16,7 +17,7 @@ namespace Hotel.Host.Controllers
     public class RoomController : BaseController<IRoomAppService, Domain.Models.Room, RoomOutputDto, RoomOutputDto, RoomCreateDto, RoomUpdateDto, SieveModel>
     {
         IRoomAppService _appService;
-        public RoomController(IRoomAppService appService) : base(appService, "Hotel")
+        public RoomController(IRoomAppService appService) : base(appService, Servics.HOTEL)
         {
             _appService = appService;
         }

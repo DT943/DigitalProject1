@@ -5,6 +5,7 @@ using Infrastructure.Service.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
+using static Infrastructure.Domain.Consts;
 
 namespace CMS.Host.Controllers
 {
@@ -13,7 +14,7 @@ namespace CMS.Host.Controllers
     {
         IPageAppService _appService;
      
-        public PageController(IPageAppService appService) : base(appService, "CMS")
+        public PageController(IPageAppService appService) : base(appService, Servics.CMS)
         {
             _appService = appService;
         }

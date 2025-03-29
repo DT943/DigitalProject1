@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Authentication.Application
+namespace Notification.Application
 {
     public interface IEmailAppService
     {
