@@ -45,9 +45,25 @@ namespace Infrastructure.Application
         }
         public virtual async Task<TGetDto> Get(int id)
         {
-            
+            try
+            {
+                var result2 = await QueryExcuter(null).FirstOrDefaultAsync(x => x.Id.Equals(id)) ??
+                    throw new EntityNotFoundException(typeof(TEntity).Name, id.ToString() ?? "");
+            }
+            catch(Exception e)
+            {
+
+            }
             var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.Id.Equals(id)) ??
             throw new EntityNotFoundException(typeof(TEntity).Name, id.ToString() ?? "");
+            return await Task.FromResult(_mapper.Map<TGetDto>(result));
+        }
+
+        public virtual async Task<TGetDto> GetByCode(string code)
+        {
+
+            var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.Code.Equals(code)) ??
+            throw new EntityNotFoundException(typeof(TEntity).Name, code.ToString() ?? "");
             return await Task.FromResult(_mapper.Map<TGetDto>(result));
         }
 

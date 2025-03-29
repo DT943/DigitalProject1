@@ -39,6 +39,10 @@ namespace Authentication.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("NVARCHAR2(2000)");
 
+                    b.Property<string>("Department")
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("NVARCHAR2(256)");
@@ -47,23 +51,30 @@ namespace Authentication.Data.Migrations
                         .HasColumnType("NUMBER(1)");
 
                     b.Property<string>("FatherName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("NVARCHAR2(50)");
 
-                    b.Property<int>("Gender")
-                        .HasMaxLength(50)
+                    b.Property<int?>("Gender")
                         .HasColumnType("NUMBER(10)");
 
                     b.Property<string>("IdentityNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("NUMBER(1)");
+
+                    b.Property<bool>("IsFrozed")
+                        .HasColumnType("NUMBER(1)");
+
+                    b.Property<bool>("IsLocked")
+                        .HasColumnType("NUMBER(1)");
+
+                    b.Property<DateTime?>("LastLogIn")
+                        .HasColumnType("TIMESTAMP(7)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -77,9 +88,7 @@ namespace Authentication.Data.Migrations
                         .HasColumnType("TIMESTAMP(7) WITH TIME ZONE");
 
                     b.Property<string>("MotherName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -89,13 +98,20 @@ namespace Authentication.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("NVARCHAR2(256)");
 
+                    b.Property<int>("NumberOfLogIn")
+                        .HasColumnType("NUMBER(10)");
+
+                    b.Property<string>("OTP")
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<DateTime>("OTPExpiration")
+                        .HasColumnType("TIMESTAMP(7)");
+
                     b.Property<string>("PasswordHash")
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("NUMBER(1)");
@@ -152,27 +168,177 @@ namespace Authentication.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9e1fe89a-77ac-411f-befa-7c69399dbb1e",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Id = "7b2aa64f-2c21-4cd3-869a-3d08bce412d0",
+                            Name = "CMS-Admin",
+                            NormalizedName = "CMS-ADMIN"
                         },
                         new
                         {
-                            Id = "1e168f05-f689-4875-8918-68cdc7d9a325",
-                            Name = "Customer",
-                            NormalizedName = "CUSTOMER"
+                            Id = "249d5350-8dd9-4109-bc6a-995e7650bb9b",
+                            Name = "CMS-Manager",
+                            NormalizedName = "CMS-MANAGER"
                         },
                         new
                         {
-                            Id = "95f928f8-ebb8-4beb-b759-283e01079497",
-                            Name = "Driver",
-                            NormalizedName = "DRIVER"
+                            Id = "fd1ef1e6-e601-4d78-b625-e4a65afac09b",
+                            Name = "CMS-Supervisor",
+                            NormalizedName = "CMS-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "b6aabc39-a78f-4aab-9f3a-d0041a101943",
-                            Name = "CustomerService",
-                            NormalizedName = "CUSTOMERSERVICE"
+                            Id = "7eae305d-afc1-465d-a392-a39ecbee525a",
+                            Name = "CMS-Officer",
+                            NormalizedName = "CMS-OFFICER"
+                        },
+                        new
+                        {
+                            Id = "877b5bff-ec24-4119-84a7-0f89b52d235c",
+                            Name = "Offer-Admin",
+                            NormalizedName = "OFFER-ADMIN"
+                        },
+                        new
+                        {
+                            Id = "fc13f516-a1b8-4445-bfcc-e04a400b0e7a",
+                            Name = "Offer-Manager",
+                            NormalizedName = "OFFER-MANAGER"
+                        },
+                        new
+                        {
+                            Id = "4310baf1-e069-418e-9e22-13975a21d9fc",
+                            Name = "Offer-Supervisor",
+                            NormalizedName = "OFFER-SUPERVISOR"
+                        },
+                        new
+                        {
+                            Id = "6bf0d6ea-6331-44aa-ae46-6e0af234dc66",
+                            Name = "Offer-Officer",
+                            NormalizedName = "OFFER-OFFICER"
+                        },
+                        new
+                        {
+                            Id = "f6bd22b4-bcc5-4664-992f-8ad3ec9a48df",
+                            Name = "Authntication-Admin",
+                            NormalizedName = "AUTHNTICATION-ADMIN"
+                        },
+                        new
+                        {
+                            Id = "6a4f546c-eb5b-4346-9ccf-f77f7a2c728e",
+                            Name = "Authntication-Manager",
+                            NormalizedName = "AUTHNTICATION-MANAGER"
+                        },
+                        new
+                        {
+                            Id = "5ee754f9-46cb-415e-a382-fa0e1896eb6d",
+                            Name = "Authntication-Supervisor",
+                            NormalizedName = "AUTHNTICATION-SUPERVISOR"
+                        },
+                        new
+                        {
+                            Id = "2a560d28-8edf-44de-9bd7-7266a8e28487",
+                            Name = "Authntication-Officer",
+                            NormalizedName = "AUTHNTICATION-OFFICER"
+                        },
+                        new
+                        {
+                            Id = "5aef887f-acf7-481d-9d33-47f8a2f38996",
+                            Name = "CWCore-Admin",
+                            NormalizedName = "CWCORE-ADMIN"
+                        },
+                        new
+                        {
+                            Id = "eb1d9bcd-2874-4fba-b719-1ff63f0b4d3f",
+                            Name = "CWCore-Manager",
+                            NormalizedName = "CWCORE-MANAGER"
+                        },
+                        new
+                        {
+                            Id = "30a27a69-e016-4373-baee-69d1cf128bbd",
+                            Name = "CWCore-Supervisor",
+                            NormalizedName = "CWCORE-SUPERVISOR"
+                        },
+                        new
+                        {
+                            Id = "5f36d8e3-1bb7-449f-9853-b17f1fa306b8",
+                            Name = "CWCore-Officer",
+                            NormalizedName = "CWCORE-OFFICER"
+                        },
+                        new
+                        {
+                            Id = "38b944e8-ef31-42c7-8662-ef46bb03e253",
+                            Name = "Gallery-Admin",
+                            NormalizedName = "GALLERY-ADMIN"
+                        },
+                        new
+                        {
+                            Id = "8ce71c02-3000-4a9d-a262-01ecdc9789e9",
+                            Name = "Gallery-Manager",
+                            NormalizedName = "GALLERY-MANAGER"
+                        },
+                        new
+                        {
+                            Id = "0d39a088-6914-4c5a-a71c-b4e496b7c4dd",
+                            Name = "Gallery-Supervisor",
+                            NormalizedName = "GALLERY-SUPERVISOR"
+                        },
+                        new
+                        {
+                            Id = "65c184b5-9787-41be-83d2-e30787934f20",
+                            Name = "Gallery-Officer",
+                            NormalizedName = "GALLERY-OFFICER"
+                        },
+                        new
+                        {
+                            Id = "7fb085c9-b003-4c12-b130-470f72f1dcd9",
+                            Name = "Hotel-Admin",
+                            NormalizedName = "HOTEL-ADMIN"
+                        },
+                        new
+                        {
+                            Id = "63b51b72-5e22-4a51-ba92-5833693eac7f",
+                            Name = "Hotel-Manager",
+                            NormalizedName = "HOTEL-MANAGER"
+                        },
+                        new
+                        {
+                            Id = "cc618b51-3d07-4673-b4f1-6b3abd682317",
+                            Name = "Hotel-Supervisor",
+                            NormalizedName = "HOTEL-SUPERVISOR"
+                        },
+                        new
+                        {
+                            Id = "8c92ce49-861d-4c99-a001-1605049a570b",
+                            Name = "Hotel-Officer",
+                            NormalizedName = "HOTEL-OFFICER"
+                        },
+                        new
+                        {
+                            Id = "be680c63-bf8b-49f0-a50d-eacc73e76d3b",
+                            Name = "Notification-Admin",
+                            NormalizedName = "NOTIFICATION-ADMIN"
+                        },
+                        new
+                        {
+                            Id = "3bd68ef3-3fef-45e1-9330-1652bb419c15",
+                            Name = "Notification-Manager",
+                            NormalizedName = "NOTIFICATION-MANAGER"
+                        },
+                        new
+                        {
+                            Id = "ac983ac1-83a7-40f2-8fcd-1b24496d3d73",
+                            Name = "Notification-Supervisor",
+                            NormalizedName = "NOTIFICATION-SUPERVISOR"
+                        },
+                        new
+                        {
+                            Id = "732de7b1-0ab3-42dc-9322-53e65bb9cf61",
+                            Name = "Notification-Officer",
+                            NormalizedName = "NOTIFICATION-OFFICER"
+                        },
+                        new
+                        {
+                            Id = "efb3300b-39fd-4757-80f5-c02e87841315",
+                            Name = "SuperAdmin",
+                            NormalizedName = "SUPERADMIN"
                         });
                 });
 

@@ -5,6 +5,7 @@ using Infrastructure.Service.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
+using static Infrastructure.Domain.Consts;
 
 namespace CMS.Host.Controllers
 {
@@ -12,34 +13,52 @@ namespace CMS.Host.Controllers
     public class PageController : BaseController<IPageAppService, Domain.Models.Page, PageGetDto, PageGetDto, PageCreateDto, PageUpdateDto, SieveModel>
     {
         IPageAppService _appService;
-        public PageController(IPageAppService appService) : base(appService)
+     
+        public PageController(IPageAppService appService) : base(appService, Servics.CMS)
         {
             _appService = appService;
         }
-
- 
         [HttpGet("/{pos}/{language}/{pageUrlName}")]
         public async Task<ActionResult<PageGetDto>> GetPage(string pos, string language, string pageUrlName)
         {
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
             return await _appService.GetPageBySubUrl(pos, language, pageUrlName);
         }
         [HttpGet("/get-sub-path/{pos}/{language}/")]
         [HttpGet("/get-sub-path/{pos}/{language}/{*pageUrlName}")]
-        public async Task<IEnumerable<PageGetUrl>> GetSubPathsAsync(string pos, string language, string pageUrlName="")
+        public async Task<ActionResult<IEnumerable<PageGetUrl>>> GetSubPathsAsync(string pos, string language, string pageUrlName="")
         {
-            return await _appService.GetSubPathsAsync(pos, language, pageUrlName);
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
+            return Ok(await _appService.GetSubPathsAsync(pos, language, pageUrlName));
         }
 
         [HttpGet("/get-page-by-status")]
-        public async Task<IEnumerable<PageGetDto>> GetPageByStatus()
+        public async Task<ActionResult<IEnumerable<PageGetDto>>> GetPageByStatus()
         {
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
+
             if (!HttpContext.Request.Headers.TryGetValue("status", out var statusValues))
             {
-                return (IEnumerable<PageGetDto>)BadRequest("Missing 'status' header.");
+                return BadRequest("Missing 'status' header.");
             }
 
             string status = statusValues.ToString();
-            return await _appService.GetPageByStatus(status);
+            return Ok(await _appService.GetPageByStatus(status));
         }
 
     }

@@ -15,5 +15,10 @@ namespace Gallery.Application.FileAppservice
         public Task<bool> CheckPath(string path);
 
         public Task<IEnumerable<FileGetDto>> GetRelatedFileGallery(int GalleryId);
+
+        public Task<IEnumerable<FileGetDto>> GetRelatedFileGalleryByCodeAsync(string Code);
+
+        public Task<List<FileGetDto>> CreateMultipleFiles(MultiFileCreateDto multiFileCreateDto);
+
     }
 }

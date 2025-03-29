@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Infrastructure.Data\Infrastructure.Data.csproj" />
-    <ProjectReference Include="..\..\Domain\New folder\CMS.Domain\CMS.Domain.csproj" />
+    <ProjectReference Include="..\..\Domain\CMS.Domain\CMS.Domain.csproj" />
   </ItemGroup>
 
 </Project>

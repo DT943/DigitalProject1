@@ -13,9 +13,12 @@ namespace Authentication.Host.Helper
         public static void AddCustomService(this IServiceCollection services)
         {
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
-
+            
+            
+            services.AddHttpClient();
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AuthenticationMapperProfile());

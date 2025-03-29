@@ -21,6 +21,7 @@ namespace Offer.Domain.Models
         public string TripType { get; set; }
 
         public string ClassType { get; set; }
+        public string OfferFor { get; set; }
 
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

@@ -5,6 +5,7 @@ using RabbitMQ.Client;
 
 using Infrastructure.Application.MessageBroker;
 using Notification.Application.EventListener;
+using Notification.Application;
 
 namespace Inventory.Host.Helper
 {
@@ -14,6 +15,8 @@ namespace Inventory.Host.Helper
         public static void AddCustomService(this IServiceCollection services)
         {
             services.AddScoped<ISieveProcessor, SieveProcessor>();
+            services.AddScoped<IEmailAppService, EmailAppService>();
+
 
         }
 

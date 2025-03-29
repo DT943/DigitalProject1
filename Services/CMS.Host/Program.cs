@@ -43,6 +43,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -87,6 +88,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 app.UseHttpsRedirection();
+
 app.UseAuthorization();
 app.MapControllers();
 app.MapRazorPages();

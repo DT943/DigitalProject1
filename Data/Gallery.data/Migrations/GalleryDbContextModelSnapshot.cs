@@ -140,6 +140,10 @@ namespace Gallery.data.Migrations
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
+                    b.Property<string>("Type")
+                        .HasMaxLength(50)
+                        .HasColumnType("NVARCHAR2(50)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Galleries", "GALLERY");
