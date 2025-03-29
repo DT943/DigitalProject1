@@ -45,7 +45,7 @@ namespace Authentication.Application.Dtos
         public string ConfirmPassword { get; set; }
 
     }
-    public class FirestLogInDto
+    public class FirstLogInDto
     {
         [Required, StringLength(128)]
         public string Email { get; set; }

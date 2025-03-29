@@ -370,7 +370,7 @@ namespace Authentication.Application
             return shuffled;
         }
 
-        public async Task <AuthenticationModel> ResetPassword(FirestLogInDto firestLogInDto)
+        public async Task <AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto)
         {
             var user = await _userManager.FindByEmailAsync(firestLogInDto.Email);
 

@@ -32,7 +32,7 @@ namespace Authentication.Application
         Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
         //Task<AuthenticationModel> SendOTP(string lastPassword, ClaimsPrincipal user);
         Task<AuthenticationModel> LogInWithOTP(LogInModel model);
-        Task<AuthenticationModel> ResetPassword(FirestLogInDto firestLogInDto);
+        Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto);
 
 
     }

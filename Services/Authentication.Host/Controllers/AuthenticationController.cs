@@ -227,7 +227,7 @@ namespace Authentication.Host.Controllers
         [HttpPost("ResetPassword")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-        public async Task<IActionResult> ResetPassword([FromBody] FirestLogInDto firestLogInDto)
+        public async Task<IActionResult> ResetPassword([FromBody] FirstLogInDto firestLogInDto)
         {
             try
             {
