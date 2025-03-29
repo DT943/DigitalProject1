@@ -10,7 +10,7 @@ using Sieve.Models;
 
 namespace Hotel.Application.ContactInfoAppService
 {
-    public interface IContactInfoAppService: IBaseAppService<ContactInfoGetDto, ContactInfoGetDto, CotactInfoCreateDto, CotactInfoUpdateDto, SieveModel>
+    public interface IContactInfoAppService: IBaseAppService<ContactInfoGetDto, ContactInfoGetDto, ContactInfoCreateDto, ContactInfoUpdateDto, SieveModel>
     {
     }
 }

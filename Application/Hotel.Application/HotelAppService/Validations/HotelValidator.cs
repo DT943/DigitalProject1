@@ -58,10 +58,23 @@ namespace Hotel.Application.HotelAppService.Validations
 
                 RuleForEach(dto => (dto as HotelCreateDto).ContactInfo).ChildRules(contact =>
                 {
-                     contact.RuleFor(c => c.ContactType).NotEmpty().WithMessage("Contact Type is required");
-                     contact.RuleFor(c => c.Category).NotEmpty().WithMessage("Category is required")
-                                                        .Must(type => type == "website" || type == "contact")
-                                                        .WithMessage("Category must be either 'website' or 'contact'");
+                    contact.RuleFor(c => c.ContactType).NotEmpty().WithMessage("Contact Type is required");
+                    contact.RuleFor(c => c.Category).NotEmpty().WithMessage("Category is required")
+                                                       .Must(type => type == "website" || type == "contact")
+                                                       .WithMessage("Category must be either 'website' or 'contact'");
+                    contact.When(c => c.Category == "website", () =>
+                    {
+                        contact.RuleFor(c => c.Url)
+                            .NotEmpty()
+                            .WithMessage("URL is required for website category");
+                    });
+
+                    contact.When(c => c.Category == "contact", () =>
+                    {
+                        contact.RuleFor(c => c.PhoneNumber)
+                            .NotEmpty()
+                            .WithMessage("Phone is required for contact category");
+                    });
 
                 });
 
@@ -130,6 +143,35 @@ namespace Hotel.Application.HotelAppService.Validations
                     .NotNull()
                     .WithMessage("Please specify if pets are allowed.");
 
+                RuleFor(dto => (dto as HotelCreateDto).BankTransfer)
+                .NotNull()
+                .WithMessage("Please specify if BankTransfer are allowed.");
+
+                When(dto => (dto as HotelCreateDto).BankTransfer == true, () =>
+                {
+                    RuleFor(dto => (dto as HotelCreateDto).AccountName)
+                        .NotEmpty()
+                        .WithMessage("Account Name is required.");
+
+                    RuleFor(dto => (dto as HotelCreateDto).AccountNumber)
+                        .NotEmpty()
+                        .WithMessage("Account Number is required.");
+
+                    RuleFor(dto => (dto as HotelCreateDto).BankName)
+                        .NotEmpty()
+                        .WithMessage("Bank Name is required.");
+
+                    RuleFor(dto => (dto as HotelCreateDto).SWIFTCode)
+                        .NotEmpty()
+                        .WithMessage("SWIFT Code is required.");
+
+                    RuleFor(dto => (dto as HotelCreateDto).IBAN)
+                        .NotEmpty()
+                        .WithMessage("IBAN is required.");
+ 
+                });
+
+
             });
 
             RuleSet("update", () =>
@@ -168,13 +210,36 @@ namespace Hotel.Application.HotelAppService.Validations
                     .WithMessage("ContactInfo cannot be null.")
                     .Must(contact => contact.PhoneNumber != null && contact.PhoneNumber.Length >= 10)
                     .WithMessage("Phone number must be leass than 10 characters long.")
-                    .Must(contact => contact.Email != null && contact.PhoneNumber.Length >= 10)
+                    .Must(contact => contact.Email != null && contact.Email.Length >= 10)
                     .WithMessage("Phone number must be leass than 10 characters long.")
                     .Must(contact => contact.PhoneNumber != null && contact.PhoneNumber.All(char.IsDigit))
                     .WithMessage("Phone number must only contain digits.")
 
                     .Must(contact => contact.Email != null && contact.Email.Length <= 100 && IsValidEmail(contact.Email))
                     .WithMessage("Email must be valid and not exceed 100 characters.");
+
+                RuleForEach(dto => (dto as HotelUpdateDto).ContactInfo).ChildRules(contact =>
+                {
+                    contact.RuleFor(c => c.ContactType).NotEmpty().WithMessage("Contact Type is required");
+                    contact.RuleFor(c => c.Category).NotEmpty().WithMessage("Category is required")
+                                                       .Must(type => type == "website" || type == "contact")
+                                                       .WithMessage("Category must be either 'website' or 'contact'");
+                    contact.When(c => c.Category == "website", () =>
+                    {
+                        contact.RuleFor(c => c.Url)
+                            .NotEmpty()
+                            .WithMessage("URL is required for website category");
+                    });
+
+                    contact.When(c => c.Category == "contact", () =>
+                    {
+                        contact.RuleFor(c => c.PhoneNumber)
+                            .NotEmpty()
+                            .WithMessage("Phone is required for contact category");
+                    });
+
+                });
+
                 RuleForEach(dto => (dto as HotelUpdateDto).Rooms).ChildRules(room =>
                 {
 
@@ -228,6 +293,35 @@ namespace Hotel.Application.HotelAppService.Validations
                 RuleFor(dto => (dto as HotelUpdateDto).ArePetsAllowed)
                     .NotNull()
                     .WithMessage("Please specify if pets are allowed.");
+
+                RuleFor(dto => (dto as HotelUpdateDto).BankTransfer)
+                .NotNull()
+                .WithMessage("Please specify if BankTransfer are allowed.");
+
+
+                When(dto => (dto as HotelUpdateDto).BankTransfer == true, () =>
+                {
+                    RuleFor(dto => (dto as HotelUpdateDto).AccountName)
+                        .NotEmpty()
+                        .WithMessage("Account Name is required.");
+
+                    RuleFor(dto => (dto as HotelUpdateDto).AccountNumber)
+                        .NotEmpty()
+                        .WithMessage("Account Number is required.");
+
+                    RuleFor(dto => (dto as HotelUpdateDto).BankName)
+                        .NotEmpty()
+                        .WithMessage("Bank Name is required.");
+
+                    RuleFor(dto => (dto as HotelUpdateDto).SWIFTCode)
+                        .NotEmpty()
+                        .WithMessage("SWIFT Code is required.");
+
+                    RuleFor(dto => (dto as HotelUpdateDto).IBAN)
+                        .NotEmpty()
+                        .WithMessage("IBAN is required.");
+
+                });
 
             });
         }

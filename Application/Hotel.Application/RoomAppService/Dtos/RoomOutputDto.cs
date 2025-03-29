@@ -13,7 +13,6 @@ namespace Hotel.Application.RoomAppService.Dtos
         public string? Description { get; set; }
         public int NumberOfAdults { get; set; }
         public int? Price { get; set; }
-        public int? ExtraBedPrice { get; set; }
         public int NumberOfChildren { get; set; }
 
     }

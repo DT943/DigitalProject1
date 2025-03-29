@@ -23,13 +23,13 @@ namespace Hotel.Application.HotelAppService.Dtos
                 .ForMember(dest => dest.Rank, opt => opt.MapFrom(src => src.Rank));
 
 
-            CreateMap<CotactInfoCreateDto, ContactInfo>();
+            CreateMap<ContactInfoCreateDto, ContactInfo>();
 
 
             CreateMap<HotelUpdateDto, Hotel.Domain.Models.Hotel>()
                 .ForMember(dest => dest.Rooms, opt => opt.MapFrom(src => src.Rooms))
                 .ForMember(dest => dest.HotelGallery, opt => opt.Ignore());
-            CreateMap<CotactInfoUpdateDto, ContactInfo>();
+            CreateMap<ContactInfoUpdateDto, ContactInfo>();
 
 
             CreateMap<Domain.Models.Hotel, HotelGetDto>()

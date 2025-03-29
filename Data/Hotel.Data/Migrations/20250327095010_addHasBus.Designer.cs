@@ -3,6 +3,7 @@ using System;
 using Hotel.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace Hotel.Data.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    partial class HotelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250327095010_addHasBus")]
+    partial class addHasBus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,9 +208,6 @@ namespace Hotel.Data.Migrations
                     b.Property<bool>("DebitCard")
                         .HasColumnType("NUMBER(1)");
 
-                    b.Property<int?>("ExtraBedPrice")
-                        .HasColumnType("NUMBER(10)");
-
                     b.Property<string>("Governate")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
@@ -215,13 +215,10 @@ namespace Hotel.Data.Migrations
                     b.Property<bool>("HasAirConditioning")
                         .HasColumnType("NUMBER(1)");
 
+                    b.Property<bool?>("HasAirportShuttle")
+                        .HasColumnType("NUMBER(1)");
+
                     b.Property<bool>("HasBar")
-                        .HasColumnType("NUMBER(1)");
-
-                    b.Property<bool>("HasBreakfast")
-                        .HasColumnType("NUMBER(1)");
-
-                    b.Property<bool>("HasExtraBed")
                         .HasColumnType("NUMBER(1)");
 
                     b.Property<bool>("HasGym")
@@ -237,9 +234,6 @@ namespace Hotel.Data.Migrations
                         .HasColumnType("NUMBER(1)");
 
                     b.Property<bool>("HasSPA")
-                        .HasColumnType("NUMBER(1)");
-
-                    b.Property<bool?>("HasShuttle")
                         .HasColumnType("NUMBER(1)");
 
                     b.Property<bool>("HasWifi")
@@ -278,11 +272,11 @@ namespace Hotel.Data.Migrations
                     b.Property<string>("SWIFTCode")
                         .HasColumnType("NVARCHAR2(2000)");
 
-                    b.Property<string>("Status")
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
                     b.Property<string>("StreetAddress")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("NVARCHAR2(2000)");
 
@@ -368,6 +362,9 @@ namespace Hotel.Data.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("NVARCHAR2(2000)");
+
+                    b.Property<int?>("ExtraBedPrice")
+                        .HasColumnType("NUMBER(10)");
 
                     b.Property<int>("HotelId")
                         .HasColumnType("NUMBER(10)");
