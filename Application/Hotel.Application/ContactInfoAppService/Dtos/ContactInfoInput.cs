@@ -9,7 +9,7 @@ using Infrastructure.Application.Validations;
 
 namespace Hotel.Application.ContactInfoAppService.Dtos
 {
-    public class CotactInfoCreateDto : IValidatableDto
+    public class ContactInfoCreateDto : IValidatableDto
     {
         public int HotelId { get; set; }
         public string Category { get; set; }
@@ -24,7 +24,7 @@ namespace Hotel.Application.ContactInfoAppService.Dtos
 
 
     }
-    public class CotactInfoUpdateDto : IEntityUpdateDto
+    public class ContactInfoUpdateDto : IEntityUpdateDto
     {
         public int HotelId { get; set; }
         public string Category { get; set; }

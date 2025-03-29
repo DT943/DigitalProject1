@@ -20,12 +20,12 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string Country { get; set; }
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
-        public string Url { get; set; }
         public string? LogoUrl { get; set; }
+        public string Status { get; set; }
 
         public int Rank { get; set; }
         public IEnumerable<HotelGalleryCreateDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryCreateDto>();
-        public IEnumerable<CotactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoCreateDto>();
+        public IEnumerable<ContactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoCreateDto>();
         public IEnumerable<RoomCreateDto> Rooms { get; set; } = Enumerable.Empty<RoomCreateDto>();
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
@@ -36,6 +36,11 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasWifi { get; set; }
         public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
+        public bool HasShuttle { get; set; }
+        public bool HasBreakfast { get; set; }
+        public bool HasExtraBed { get; set; }
+        public int? ExtraBedPrice { get; set; }
+
         // Payment Info
         public bool Cash { get; set; }
         public bool CreditCard { get; set; }
@@ -63,13 +68,14 @@ namespace Hotel.Application.HotelAppService.Dtos
 
         public string Name { get; set; }
         public string POS { get; set; }
+        public string Country { get; set; }
         public string Governate { get; set; }
         public string StreetAddress { get; set; }
-        public string Url { get; set; }
         public string? LogoUrl { get; set; }
+        public string Status { get; set; }
 
         public int Rank { get; set; }
-        public IEnumerable<CotactInfoUpdateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoUpdateDto>();
+        public IEnumerable<ContactInfoUpdateDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoUpdateDto>();
         public IEnumerable<RoomUpdateDto> Rooms { get; set; } = Enumerable.Empty<RoomUpdateDto>();
 
         public bool HasAirConditioning { get; set; }
@@ -81,6 +87,10 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasWifi { get; set; }
         public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
+        public bool HasShuttle { get; set; }
+        public bool HasBreakfast { get; set; }
+        public bool HasExtraBed { get; set; }
+        public int? ExtraBedPrice { get; set; }
 
         // Payment Info
         public bool Cash { get; set; }
@@ -116,7 +126,7 @@ namespace Hotel.Application.HotelAppService.Dtos
         public IEnumerable<RoomCreateDto> Rooms { get; set; } = Enumerable.Empty<RoomCreateDto>();
         public IEnumerable<HotelGalleryCreateDto> HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryCreateDto>();
 
-        public IEnumerable<CotactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<CotactInfoCreateDto>();
+        public IEnumerable<ContactInfoCreateDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoCreateDto>();
         public bool HasAirConditioning { get; set; }
         public bool HasBar { get; set; }
         public bool HasGym { get; set; }

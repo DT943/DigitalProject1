@@ -21,8 +21,9 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string Country { get; set; }
         public string POS { get; set; }
         public string Governate { get; set; }
-        public string Url { get; set; }
         public string? LogoUrl { get; set; }
+        public string Status { get; set; }
+
         public IEnumerable<RoomOutputDto>? Rooms { get; set; } = Enumerable.Empty<RoomOutputDto>();
         public IEnumerable<HotelGalleryOutputDto>? HotelGallery { get; set; } = Enumerable.Empty<HotelGalleryOutputDto>();
         public IEnumerable<ContactInfoGetDto> ContactInfo { get; set; } = Enumerable.Empty<ContactInfoGetDto>();
@@ -39,6 +40,11 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasWifi { get; set; }
         public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
+        public bool HasShuttle { get; set; }
+
+        public bool HasBreakfast { get; set; }
+        public bool HasExtraBed { get; set; }
+        public int? ExtraBedPrice { get; set; }
 
         // Payment Info
         public bool Cash { get; set; }
@@ -81,6 +87,12 @@ namespace Hotel.Application.HotelAppService.Dtos
         public bool HasWifi { get; set; }
         public bool HasSPA { get; set; }
         public bool ArePetsAllowed { get; set; }
+
+        public bool HasShuttle { get; set; }
+
+        public bool HasBreakfast { get; set; }
+        public bool HasExtraBed { get; set; }
+        public int? ExtraBedPrice { get; set; }
 
     }
     public class HotelGetDetailsDto

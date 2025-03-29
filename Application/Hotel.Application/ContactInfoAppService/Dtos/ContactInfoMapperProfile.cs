@@ -8,15 +8,15 @@ using Hotel.Application.HotelAppService.Dtos;
 
 namespace Hotel.Application.ContactInfoAppService.Dtos
 {
-    class ContactInfoMapperProfile : Profile 
+    public class ContactInfoMapperProfile : Profile 
     {
         public ContactInfoMapperProfile() {
 
             CreateMap<Hotel.Domain.Models.ContactInfo, ContactInfoGetDto>();
 
-            CreateMap<CotactInfoCreateDto, Hotel.Domain.Models.ContactInfo>();
+            CreateMap<ContactInfoCreateDto, Hotel.Domain.Models.ContactInfo>();
 
-            CreateMap<CotactInfoUpdateDto, Hotel.Domain.Models.ContactInfo>();
+            CreateMap<ContactInfoUpdateDto, Hotel.Domain.Models.ContactInfo>();
         }
 
     }

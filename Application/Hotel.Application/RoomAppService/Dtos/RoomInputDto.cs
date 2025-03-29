@@ -19,7 +19,6 @@ namespace Hotel.Application.HotelAppService.Dtos
             public string? Description { get; set; }
             public int NumberOfAdults { get; set; }
             public int? Price { get; set; }
-            public int? ExtraBedPrice { get; set; }
             public int NumberOfChildren { get; set; }
         }
 
@@ -31,7 +30,6 @@ namespace Hotel.Application.HotelAppService.Dtos
             public string? Description { get; set; }
             public int NumberOfAdults { get; set; }
             public int? Price { get; set; }
-            public int? ExtraBedPrice { get; set; }
             public int NumberOfChildren { get; set; }
 
         }
