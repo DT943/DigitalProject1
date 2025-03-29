@@ -13,6 +13,7 @@ using Xabe.FFmpeg;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 using Gallery.Application.FileAppservice.Validations;
 using FluentValidation;
+using static Infrastructure.Domain.Consts;
 
 
 namespace Gallery.Host.Controllers
@@ -22,7 +23,7 @@ namespace Gallery.Host.Controllers
     {
         IFileAppService _appService;
         FileValidator _fileValidator;
-        public FileController(IFileAppService appService, FileValidator fileValidator) : base(appService,"Gallery")
+        public FileController(IFileAppService appService, FileValidator fileValidator) : base(appService, Servics.GALLERY)
         {
           
             _appService = appService;

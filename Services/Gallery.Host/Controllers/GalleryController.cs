@@ -5,6 +5,7 @@ using Infrastructure.Service.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
+using static Infrastructure.Domain.Consts;
 
 namespace Gallery.Host.Controllers
 {
@@ -12,7 +13,7 @@ namespace Gallery.Host.Controllers
     public class GalleryController : BaseController<IGalleryAppService, Domain.Models.Gallery, GalleryGetDto, GalleryGetDto, GalleryCreateDto, GalleryUpdateDto, SieveModel>
     {
         IGalleryAppService _appService;
-        public GalleryController(IGalleryAppService appService) : base(appService,"Gallary")
+        public GalleryController(IGalleryAppService appService) : base(appService, Servics.GALLERY)
         {
             _appService = appService;
         }

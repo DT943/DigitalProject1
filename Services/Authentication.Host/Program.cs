@@ -47,6 +47,13 @@ builder.Services.AddAuthorization(//options =>
 //{ options.AddPolicy("SuperAdmin", policy => policy.RequireRole("SuperAdmin"));}
 );
 
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
+    });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",

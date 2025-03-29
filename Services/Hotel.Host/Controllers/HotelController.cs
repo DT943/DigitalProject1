@@ -7,6 +7,7 @@ using Infrastructure.Service.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
+using static Infrastructure.Domain.Consts;
 
 namespace Hotel.Host.Controllers
 {
@@ -14,7 +15,7 @@ namespace Hotel.Host.Controllers
     public class HotelController : BaseController<IHotelAppService, Domain.Models.Hotel, HotelGetAllDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>
     {
         IHotelAppService _hotelAppService;
-         public HotelController(IHotelAppService hotelAppService) : base(hotelAppService, "Hotel")
+         public HotelController(IHotelAppService hotelAppService) : base(hotelAppService, Servics.HOTEL)
         {
             _hotelAppService = hotelAppService;
         }
