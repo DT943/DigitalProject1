@@ -6,6 +6,7 @@ using Sieve.Models;
 using Hotel.Application.ContractAppService;
 using Hotel.Application.ContractAppService.Dtos;
 using Microsoft.AspNetCore.Authorization;
+using static Infrastructure.Domain.Consts;
 
 namespace Hotel.Host.Controllers
 {
@@ -14,7 +15,7 @@ namespace Hotel.Host.Controllers
     public class ContractController : BaseController<IContractAppService, Domain.Models.Contract, ContractGetDto, ContractGetDto, ContractCreateDto, ContractUpdateDto, SieveModel>
     {
         IContractAppService _contractAppService;
-        public ContractController(IContractAppService contractAppService) : base(contractAppService)
+        public ContractController(IContractAppService contractAppService) : base(contractAppService, Servics.HOTEL)
         {
             _contractAppService = contractAppService;
         }

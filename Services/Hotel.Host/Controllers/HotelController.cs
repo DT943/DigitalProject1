@@ -7,6 +7,7 @@ using Infrastructure.Service.Controllers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
+using static Infrastructure.Domain.Consts;
 
 namespace Hotel.Host.Controllers
 {
@@ -14,7 +15,7 @@ namespace Hotel.Host.Controllers
     public class HotelController : BaseController<IHotelAppService, Domain.Models.Hotel, HotelGetAllDto, HotelGetDto, HotelCreateDto, HotelUpdateDto, SieveModel>
     {
         IHotelAppService _hotelAppService;
-         public HotelController(IHotelAppService hotelAppService) : base(hotelAppService)
+         public HotelController(IHotelAppService hotelAppService) : base(hotelAppService, Servics.HOTEL)
         {
             _hotelAppService = hotelAppService;
         }
@@ -29,6 +30,10 @@ namespace Hotel.Host.Controllers
         [HttpPost("MakeContract")]
         public async Task<IActionResult> MakeContract(ContractCreateDto contractCreateDto)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
+            {
+                return Forbid();
+            }
             try
             {
                 var file = await _appService.MakeContract(contractCreateDto);

@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="MailKit" Version="4.11.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\Authentication.Data\Authentication.Data.csproj" />
+    <ProjectReference Include="..\Notification.Application\Notification.Application.csproj" />
   </ItemGroup>
 
 </Project>

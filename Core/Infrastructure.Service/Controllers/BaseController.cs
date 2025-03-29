@@ -17,38 +17,34 @@ namespace Infrastructure.Service.Controllers
         where TEntity : BasicEntity
         where TFilterDto : SieveModel
     {
+        protected bool UserHasPermission(params string[] requiredRoles)
+        {
+            var user = HttpContext.User;
+
+            if (user.IsInRole("SuperAdmin")) return true; 
+
+            foreach (var role in requiredRoles)
+            {
+                var servicerole = $"{ServiceName}-{role}";
+                if (user.IsInRole(servicerole))
+                    return true;
+            }
+            return false;
+        }
+
         protected readonly TAppService _appService;
-        protected string ServiceName = "";
-        public BaseController(TAppService appService)
+        protected readonly string ServiceName;
+        public BaseController(TAppService appService, string serviceName)
         {
             _appService = appService;
-            ServiceName = GetServiceName();
+            ServiceName = serviceName;
         }
 
-        private string GetServiceName()
-        {
-            // Gets the class name of the child class that inherits BaseController
-            var childClassName = GetType().Name;
-
-            // Removes "Controller" suffix if present
-            if (childClassName.EndsWith("Controller"))
-            {
-                childClassName = childClassName.Replace("Controller", "");
-            }
-
-            return childClassName;
-        }
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Create(TCreatDto dto)
         {
-            var user = HttpContext.User;
-
-            if (!(user.IsInRole("SuperAdmin") || 
-                user.IsInRole($"{ServiceName}-Admin") || 
-                user.IsInRole($"{ServiceName}-Manager") ||
-                user.IsInRole($"{ServiceName}-Supervisor")
-                ))
+            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
             {
                 return Forbid();
             }
@@ -61,13 +57,7 @@ namespace Infrastructure.Service.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Update(TUpdateDto dto)
         {
-            var user = HttpContext.User;
-            if (!(user.IsInRole("SuperAdmin") ||
-                  user.IsInRole($"{ServiceName}-Admin") ||
-                  user.IsInRole($"{ServiceName}-Manager")||
-                  user.IsInRole($"{ServiceName}-Supervisor") ||
-                  user.IsInRole($"{ServiceName}-Officer")
-                  ))
+            if (!UserHasPermission("Admin", "Manager"))
             {
                 return Forbid();
             }
@@ -80,11 +70,7 @@ namespace Infrastructure.Service.Controllers
         {
             var user = HttpContext.User;
 
-            if (!(user.IsInRole("SuperAdmin") ||
-                  user.IsInRole($"{ServiceName}-Admin") ||
-                  user.IsInRole($"{ServiceName}-Manager") ||
-                  user.IsInRole($"{ServiceName}-Supervisor") ||
-                  user.IsInRole($"{ServiceName}-Officer")))
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
             {
                 return Forbid();
             }
@@ -98,11 +84,7 @@ namespace Infrastructure.Service.Controllers
         {
             var user = HttpContext.User;
 
-            if (!(user.IsInRole("SuperAdmin") ||
-                  user.IsInRole($"{ServiceName}-Admin") ||
-                  user.IsInRole($"{ServiceName}-Manager") ||
-                  user.IsInRole($"{ServiceName}-Supervisor") ||
-                  user.IsInRole($"{ServiceName}-Officer")))
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
             {
                 return Forbid();
             }
@@ -115,8 +97,7 @@ namespace Infrastructure.Service.Controllers
         public virtual async Task<ActionResult<TGetDto>> Delete(int id)
         {
             var user = HttpContext.User;
-            if (!(user.IsInRole("SuperAdmin") || 
-                  user.IsInRole($"{ServiceName}-Admin")))
+            if (!UserHasPermission())
             {
                 return Forbid();
             }

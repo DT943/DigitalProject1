@@ -18,50 +18,44 @@ namespace Authentication.Domain.Models
         [MaxLength(50)]
         public string LastName { get; set; }
 
-        [MaxLength(50)]
-        public string MotherName { get; set; }
+        public bool IsActive { get; set; } = true;
+        public bool IsLocked { get; set; } = false;
+        public bool IsFrozed { get; set; } = false;
 
-        [MaxLength(50)]
-        public string FatherName { get; set; }
+        public int NumberOfLogIn { get; set; } = 0;
 
-        [MaxLength(50)]
-        public string IdentityNumber { get; set; }
-
-        [MaxLength(50)]
-        public string PhoneNumber { get; set; }
-        
-        [MaxLength(50)]
-        public Gender Gender { get; set; }
-
-        public bool IsActive {  get; set; } = true;
         [MaxLength(50)]
         public string? Department { get; set; }
 
         public DateTime? LastLogIn { get; set; }
-    }
-
-
-    public class GetUser 
-    {
-         public int Id { get; set; }
-
-         public string Code { get; set; }
-        
-         public bool IsActive {  get; set; }
-        
-         public string FirstName { get; set; }
-
-         public string LastName { get; set; }
-
-         public string MotherName { get; set; }
-
-         public string FatherName { get; set; }
+        public string? OTP {  get; set; }
+        public DateTime OTPExpiration {  get; set; }
+        //info not used
+        public string? MotherName { get; set; }
+        public string? FatherName { get; set; }
+        public Gender? Gender { get; set; }
+        public string? IdentityNumber { get; set; }
 
     }
 
-    public class UserWithRole 
+
+    public class GetUser
     {
-        public GetUser applicationUser {  get; set; }
+        public int Id { get; set; }
+
+        public string Code { get; set; }
+
+        public bool IsActive { get; set; }
+        public bool IsLocked { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+    }
+
+    public class UserWithRole
+    {
+        public GetUser applicationUser { get; set; }
 
         public IEnumerable<string> Roles { get; set; }
 

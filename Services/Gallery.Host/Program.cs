@@ -41,6 +41,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
+builder.Services.AddAuthorization();
 
 
 builder.Services.AddCors(options =>
@@ -84,6 +85,7 @@ if (!app.Environment.IsDevelopment())
 });
 
 app.UseHttpsRedirection();
+
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
