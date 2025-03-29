@@ -17,7 +17,7 @@ using Hotel.Application.ContactInfoAppService.Dtos;
 
 namespace Hotel.Application.ContactInfoAppService
 {
-    class ContactInfoAppService : BaseAppService<HotelDbContext, Domain.Models.ContactInfo, ContactInfoGetDto, ContactInfoGetDto, CotactInfoCreateDto, CotactInfoUpdateDto, SieveModel>, IContactInfoAppService
+    public class ContactInfoAppService : BaseAppService<HotelDbContext, Domain.Models.ContactInfo, ContactInfoGetDto, ContactInfoGetDto, ContactInfoCreateDto, ContactInfoUpdateDto, SieveModel>, IContactInfoAppService
     {
         IHttpContextAccessor _httpContextAccessor;
         HotelDbContext _serviceDbContext;
