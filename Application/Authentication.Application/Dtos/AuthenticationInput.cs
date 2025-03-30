@@ -62,5 +62,13 @@ namespace Authentication.Application.Dtos
 
     }
 
+    public class UserFakeDeleteDto
+    {
+        public string Code { get; set; }
+        
+        public bool IsDeleted { get; set; }
+
+    }
+
 
 }

@@ -239,5 +239,23 @@ namespace Authentication.Host.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+
+        [HttpPost("FakeDelete")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> FakeDelete([FromBody] UserFakeDeleteDto dto)
+        {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+            try
+            {
+                var result = await _authenticationAppService.UserFakeDeleteAsync(dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
     }
 }

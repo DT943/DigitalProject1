@@ -34,6 +34,6 @@ namespace Authentication.Application
         Task<AuthenticationModel> LogInWithOTP(LogInModel model);
         Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto);
 
-
+        Task<AuthenticationGetDto> UserFakeDeleteAsync(UserFakeDeleteDto dto);
     }
 }

@@ -35,7 +35,7 @@ namespace Authentication.Domain.Models
         public string? FatherName { get; set; }
         public Gender? Gender { get; set; }
         public string? IdentityNumber { get; set; }
-
+        public bool IsDeleted { get; set; } = false;
     }
 
 

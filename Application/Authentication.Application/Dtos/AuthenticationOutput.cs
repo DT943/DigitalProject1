@@ -26,6 +26,8 @@ namespace Authentication.Application.Dtos
         public DateTime? LastLogIn { get; set; }
 
         public IEnumerable<string> Roles { get; set; }
+        public bool IsDeleted { get; set; }
+
     }
 
 }

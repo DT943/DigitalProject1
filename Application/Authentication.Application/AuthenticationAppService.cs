@@ -300,56 +300,7 @@ namespace Authentication.Application
                 LastName = user.LastName
             };
         }
-        /*
-        public async Task<AuthenticationModel> SendOTP(string lastpassword, ClaimsPrincipal user)
-        {
-            var email = user.FindFirst(ClaimTypes.Email)?.Value;
 
-            var existuser = await _userManager.FindByEmailAsync(email);
-
-            if (existuser == null)
-            {
-                return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
-            }
-
-            // Verify the static password
-            if (!await _userManager.CheckPasswordAsync(existuser, lastpassword))
-            {
-                return new AuthenticationModel { Message = "Invalid static password!", IsAuthenticated = false };
-            }
-
-            
-            var otp = GenerateSecurePassword();
-
-            // Set OTP expiration time (e.g., 5 minutes from now)
-            var expirationTime = DateTime.UtcNow.AddMinutes(3);
-
-            // Store OTP and expiration time (You may save it in the database or cache)
-            existuser.OTP = otp;
-            existuser.OTPExpiration = expirationTime;
-            await _userManager.UpdateAsync(existuser);
-
-            // Email subject and body
-            string subject = "Your One-Time Password (OTP)";
-            string message = $@"
-                Dear {existuser.FirstName},
-                Your OTP for login verification is: {otp}
-                This OTP will expire at {expirationTime.ToString("yyyy-MM-dd HH:mm:ss UTC")}
-                If you did not request this, please ignore this email.
-                Best regards,Your Company";
-
-            // Send OTP via email
-            await _emailService.SendEmailAsync(existuser.Email, subject, otp, existuser.FirstName);
-
-            return new AuthenticationModel
-            {
-                Message = "OTP has been sent to your email.",
-                IsAuthenticated = true,
-                Email = existuser.Email
-            };
-
-        }
-        */
         private string GenerateSecurePassword()
         {
             Random random = new Random();
@@ -536,7 +487,6 @@ namespace Authentication.Application
 
             return result.Succeeded;
         }
-
         public async Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
@@ -643,7 +593,6 @@ namespace Authentication.Application
             };
 
         }
-
         public async Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
@@ -715,6 +664,15 @@ namespace Authentication.Application
                 LastName = user.LastName
             };
         }
+
+        public async Task<AuthenticationGetDto> UserFakeDeleteAsync(UserFakeDeleteDto dto)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == dto.Code);
+            user.IsDeleted = dto.IsDeleted;
+            await _userManager.UpdateAsync(user);
+            return _mapper.Map<AuthenticationGetDto>(user);
+        }
+
 
     }
 }
