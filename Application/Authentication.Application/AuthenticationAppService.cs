@@ -136,7 +136,7 @@ namespace Authentication.Application
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user == null)
+            if (user == null|| user.IsDeleted)
             {
                 authModel.Message = "Email or Password is incorrect!";
                 return authModel;
@@ -668,8 +668,24 @@ namespace Authentication.Application
         public async Task<AuthenticationGetDto> UserFakeDeleteAsync(UserFakeDeleteDto dto)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == dto.Code);
-            user.IsDeleted = dto.IsDeleted;
-            await _userManager.UpdateAsync(user);
+
+
+            if (user != null)
+            {
+                user.IsDeleted = dto.IsDeleted;
+                user.IsActive = user.IsFrozed = user.IsLocked = false;
+               // Get all roles assigned to the user
+               var roles = await _userManager.GetRolesAsync(user);
+
+                // Remove user from all roles
+                if (roles.Any())
+                {
+                    await _userManager.RemoveFromRolesAsync(user, roles);
+                }
+
+                await _userManager.UpdateAsync(user);
+            }
+
             return _mapper.Map<AuthenticationGetDto>(user);
         }
 
