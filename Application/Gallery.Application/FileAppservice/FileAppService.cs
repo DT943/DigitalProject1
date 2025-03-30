@@ -108,7 +108,7 @@ namespace Gallery.Application.FileAppservice
             createDto.FileType = fileType;
             createDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(createDto.Path).Length;
-            createDto.Size = (float)(fileSizeBytes / (1024.0 * 10240.0));
+            createDto.Size = (float)(fileSizeBytes / (1024.0 * 1024.0));
             createDto.FileUrlPath = fileUrl;
             createDto.FileName = fileName;
 
