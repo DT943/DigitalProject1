@@ -30,6 +30,8 @@ namespace Authentication.Domain.Models
         public DateTime? LastLogIn { get; set; }
         public string? OTP {  get; set; }
         public DateTime OTPExpiration {  get; set; }
+
+        public DateTime LastOTPChecked {  get; set; } = DateTime.MinValue;
         //info not used
         public string? MotherName { get; set; }
         public string? FatherName { get; set; }

@@ -9,9 +9,11 @@ using Microsoft.IdentityModel.Tokens;
 using Notification.Application;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 using static Infrastructure.Domain.Consts;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Authentication.Application
 {
@@ -52,9 +54,8 @@ namespace Authentication.Application
                 LastName = model.LastName,
                 IsActive = true,
                 IsLocked = false,
-                LastLogIn = DateTime.UtcNow
-
-
+                IsFrozed = false,
+                LastLogIn = DateTime.Now
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -94,7 +95,8 @@ namespace Authentication.Application
                 IsAuthenticated = true,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+               
             };
         }
 
@@ -132,13 +134,14 @@ namespace Authentication.Application
 
         public async Task<AuthenticationModel> GetTokenAsync(LogInModel model)
         {
-            var authModel = new AuthenticationModel();
+            var authModel = new AuthenticationModel(); 
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (user == null|| user.IsDeleted)
             {
                 authModel.Message = "Email or Password is incorrect!";
+                authModel.IsAuthenticated = true;
                 return authModel;
             }
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
@@ -147,10 +150,12 @@ namespace Authentication.Application
 
                 if (await _userManager.IsLockedOutAsync(user))
                 {
+                    authModel.IsAuthenticated = true;
                     authModel.Message = "Your account has been locked due to multiple failed login attempts.";
                 }
                 else
                 {
+                    authModel.IsAuthenticated = true;
                     authModel.Message = "Email or Password is incorrect!";
                 }
 
@@ -160,34 +165,37 @@ namespace Authentication.Application
             {
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    return new AuthenticationModel { Message = "Invalid static password!", IsAuthenticated = false };
+                    return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = true };
                 }
                 var otp = GenerateSecurePassword();
-                var expirationTime = DateTime.UtcNow.AddMinutes(3);
+                var expirationTime = DateTime.Now.AddMinutes(3);
 
-                Console.WriteLine(otp);
+                //Console.WriteLine(otp);
 
                 user.OTP = otp;
                 user.OTPExpiration = expirationTime;
                 await _userManager.UpdateAsync(user);
+
                 string subject = "Your One-Time Password (OTP), FirstLogInToSystem";
                 await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
+                authModel.IsAuthenticated = true;
                 authModel.Message = "Please reset OTP at the first time you get to system, Check your email!";
                 return authModel;
             }
 
-            if (DateTime.UtcNow - user.LastLogIn > TimeSpan.FromDays(3))
+            if (DateTime.Now - user.LastLogIn > TimeSpan.FromDays(3))
             {
                 user.IsFrozed = true;
+                user.IsActive = false;
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    return new AuthenticationModel { Message = "Invalid static password!", IsAuthenticated = false };
+                    return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = true };
                 }
 
                 var otp = GenerateSecurePassword();
 
                 // Set OTP expiration time (e.g., 3 minutes from now)
-                var expirationTime = DateTime.UtcNow.AddMinutes(3);
+                var expirationTime = DateTime.Now.AddMinutes(3);
 
                 // Store OTP and expiration time (You may save it in the database or cache)
                 user.OTP = otp;
@@ -198,6 +206,7 @@ namespace Authentication.Application
                 string subject = "Your One-Time Password (OTP),The last login was a long time ago.";
 
                 await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
+                authModel.IsAuthenticated = true;
                 authModel.Message = "Please reset OTP, The last login was a long time ago, Check your email!";
                 return authModel;
             }
@@ -205,12 +214,14 @@ namespace Authentication.Application
             {
                 user.IsActive = !user.IsActive;
                 user.IsLocked = true;
+                authModel.IsAuthenticated = true;
                 var result = await _userManager.UpdateAsync(user);
                 authModel.Message = "Your account is locked due to multiple failed login attempts.";
                 return authModel;
             }
             if (!user.IsActive)
             {
+                authModel.IsAuthenticated = true;
                 authModel.Message = "Your account is deactivated. Please contact support.";
                 return authModel;
             }
@@ -218,7 +229,7 @@ namespace Authentication.Application
 
             // Reset failed attempts count on successful login
             await _userManager.ResetAccessFailedCountAsync(user);
-            user.LastLogIn = DateTime.UtcNow;
+            user.LastLogIn = DateTime.Now;
             user.NumberOfLogIn += 1;
 
             var updateResult = await _userManager.UpdateAsync(user);
@@ -254,8 +265,9 @@ namespace Authentication.Application
                 FirstName = newuser.FirstName,
                 LastName = newuser.LastName,
                 IsLocked = false,
-                IsActive = true,
+                IsActive = false,
                 IsFrozed = true,
+                LastOTPChecked = DateTime.MaxValue,
                 LastLogIn = DateTime.MinValue,
                 Department = newuser.Department,
 
@@ -330,6 +342,7 @@ namespace Authentication.Application
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
             }
+
             if (user.NumberOfLogIn > 0)
             {
                 // Ensure the provided OldPassword is the StaticPassword from Consts
@@ -337,7 +350,14 @@ namespace Authentication.Application
                 if (!passwordValid)
                     return new AuthenticationModel { Message = "Invalid old password!", IsAuthenticated = false };
             }
-            
+            else
+            {
+                if (user.LastOTPChecked > DateTime.Now)
+                {
+                    return new AuthenticationModel { Message = "You should send your OTP!", IsAuthenticated = true };
+
+                }
+            }
             // Ensure new password and confirm password match
             if (firestLogInDto.Password != firestLogInDto.ConfirmPassword)
             {
@@ -354,7 +374,9 @@ namespace Authentication.Application
                 return new AuthenticationModel { Message = $"Password reset failed: {errors}", IsAuthenticated = false };
             }
             user.IsFrozed = false;
-            user.LastLogIn = DateTime.UtcNow;
+            user.IsActive = true;
+            user.LastLogIn = DateTime.Now;
+            user.LastOTPChecked = DateTime.MaxValue;
             await _userManager.UpdateAsync(user);
 
             return new AuthenticationModel
@@ -364,6 +386,7 @@ namespace Authentication.Application
                 Email = user.Email
             };
         }
+        
 
         public async Task<AuthenticationModel> LogInWithOTP(LogInModel model)
         {
@@ -377,11 +400,11 @@ namespace Authentication.Application
             // Check if the provided OTP matches the stored one
             if (existuser.OTP != model.Password) // StaticPassword is being used as OTP here
             {
-                return new AuthenticationModel { Message = "Invalid OTP!", IsAuthenticated = false };
+                return new AuthenticationModel { Message = "Invalid OTP!", IsAuthenticated = true };
             }
 
             // Check if the OTP has expired
-            if (existuser.OTPExpiration == null || existuser.OTPExpiration < DateTime.UtcNow)
+            if (existuser.OTP == null || existuser.OTPExpiration < DateTime.Now)
             {
                 return new AuthenticationModel { Message = "OTP has expired. Please request a new one.", IsAuthenticated = false };
             }
@@ -389,6 +412,7 @@ namespace Authentication.Application
             // Clear the OTP after successful verification
             existuser.OTP = null;
             existuser.OTPExpiration = DateTime.MinValue;
+            existuser.LastOTPChecked = DateTime.Now;
             await _userManager.UpdateAsync(existuser);
 
             return new AuthenticationModel
@@ -410,6 +434,39 @@ namespace Authentication.Application
                 var roles = await _userManager.GetRolesAsync(user);
                 var authDto = _mapper.Map<AuthenticationGetDto>(user);
                 authDto.Roles = roles;
+                if (!user.IsActive)
+                {
+                    if (user.IsDeleted) {
+                        authDto.Status = "Deleted";
+                        authDto.Reason = "";
+                    }
+                    else if (user.IsFrozed && user.IsLocked)
+                    {
+                        authDto.Status = user.NumberOfLogIn == 0
+                            ? "Frozen"
+                            : "Locked & Frozen";
+                        authDto.Reason = user.NumberOfLogIn == 0
+                            ? "Number Of LogIn Zero Need OTP"
+                            : "Try wrong password multiple times";
+
+                    }
+                    else if (user.IsFrozed)
+                    {
+                        authDto.Status = user.NumberOfLogIn == 0
+                            ? "Frozen"
+                            : "Frozen";
+                        authDto.Reason = user.NumberOfLogIn == 0
+                            ? "Number Of LogIn Zero"
+                            : "Last LogIn A long Time Ago";
+
+                    }
+                    else if (user.IsLocked)
+                    {
+                        authDto.Status = "Locked";
+                        authDto.Reason = "Try wrong password multiple times";
+                    }
+                }
+
                 userDtos.Add(authDto);
             }
 
@@ -434,8 +491,6 @@ namespace Authentication.Application
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
 
-
-
             var existingRoles = await _userManager.GetRolesAsync(user);
             var removeResult = await _userManager.RemoveFromRolesAsync(user, existingRoles);
 
@@ -454,9 +509,6 @@ namespace Authentication.Application
 
             // Get updated roles
             var userNewRoles = await _userManager.GetRolesAsync(user);
-
-
-
             return new UserWithRole
             {
                 applicationUser = new GetUser
@@ -471,12 +523,21 @@ namespace Authentication.Application
                 Roles = userNewRoles
             };
         }
-        public async Task<bool> ChangeUserStatusAsync(string userCode)
+        public async Task<AuthenticationModel> ChangeUserStatusAsync(string userCode)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
             if (user == null)
             {
-                throw new Exception("User not found");
+                return new AuthenticationModel { Message = "User not found!" };
+            }
+            if (user.IsFrozed)
+            {
+                return new AuthenticationModel {
+                    
+                    Message = "User Frozen!",
+                    IsAuthenticated = false,
+
+                };
             }
             user.IsActive = !user.IsActive;
             if (user.IsActive && user.IsLocked)
@@ -485,7 +546,10 @@ namespace Authentication.Application
             }
             var result = await _userManager.UpdateAsync(user);
 
-            return result.Succeeded;
+            return new AuthenticationModel{
+                Message = "Status change successfully!",
+                IsAuthenticated = true
+            };            
         }
         public async Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole)
         {
