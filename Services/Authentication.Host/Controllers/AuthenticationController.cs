@@ -131,7 +131,7 @@ namespace Authentication.Host.Controllers
             if (!user.IsInRole("SuperAdmin")) return Forbid();
 
             var result = await _authenticationAppService.ChangeUserStatusAsync(userCode);
-            return result ? Ok("User status updated successfully.") : BadRequest("Failed to update user status.");
+            return  Ok(result);
         }
 
         [HttpPost("AssignServiceRoleToUser/{userCode}")]

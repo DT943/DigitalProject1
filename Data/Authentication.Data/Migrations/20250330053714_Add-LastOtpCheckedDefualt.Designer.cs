@@ -3,6 +3,7 @@ using System;
 using Authentication.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace Authentication.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250330053714_Add-LastOtpCheckedDefualt")]
+    partial class AddLastOtpCheckedDefualt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,9 +68,6 @@ namespace Authentication.Data.Migrations
                         .HasColumnType("NVARCHAR2(2000)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("NUMBER(1)");
-
-                    b.Property<bool>("IsDeleted")
                         .HasColumnType("NUMBER(1)");
 
                     b.Property<bool>("IsFrozed")
@@ -174,175 +174,175 @@ namespace Authentication.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9ae19cb6-ab27-4aca-a925-8c02d47ccd7c",
+                            Id = "775e89da-d8af-4e09-ab57-ad64abc38863",
                             Name = "CMS-Admin",
                             NormalizedName = "CMS-ADMIN"
                         },
                         new
                         {
-                            Id = "bb0c383b-4a5e-4dd8-aa17-1c623b47292f",
+                            Id = "418452c5-721b-4c3d-8845-09416c7a7715",
                             Name = "CMS-Manager",
                             NormalizedName = "CMS-MANAGER"
                         },
                         new
                         {
-                            Id = "9a6297a5-8562-42f3-b5d5-7459229c20aa",
+                            Id = "660e7e45-1d70-4801-a294-003694b6b8c5",
                             Name = "CMS-Supervisor",
                             NormalizedName = "CMS-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "7b8f9123-4758-47da-ab0f-4aef706130ad",
+                            Id = "edf82bed-f183-4776-ac6c-eb32c7b8256a",
                             Name = "CMS-Officer",
                             NormalizedName = "CMS-OFFICER"
                         },
                         new
                         {
-                            Id = "2a58cea6-cbca-4169-b8bf-1049e15d43a7",
+                            Id = "d200f10f-9b4c-4524-b877-03d310956b86",
                             Name = "Offer-Admin",
                             NormalizedName = "OFFER-ADMIN"
                         },
                         new
                         {
-                            Id = "06ac0ccf-f158-48ad-b227-0dacfbc91eea",
+                            Id = "2b62626c-84c0-498a-96c9-df883ce1b60f",
                             Name = "Offer-Manager",
                             NormalizedName = "OFFER-MANAGER"
                         },
                         new
                         {
-                            Id = "6d92af99-4ba2-4619-9215-e50920a98c44",
+                            Id = "49e6341e-cb38-4e53-b4ad-ddfc47ac3265",
                             Name = "Offer-Supervisor",
                             NormalizedName = "OFFER-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "44903731-1e44-4233-8c3a-d72dd7b63eeb",
+                            Id = "7ffbffaa-d6d2-4dfe-ba3f-791584dde974",
                             Name = "Offer-Officer",
                             NormalizedName = "OFFER-OFFICER"
                         },
                         new
                         {
-                            Id = "c86cc9f6-31bb-4791-90e8-0106b5e8a464",
+                            Id = "3a050682-d744-4b34-918e-6cc9ba978f57",
                             Name = "Authntication-Admin",
                             NormalizedName = "AUTHNTICATION-ADMIN"
                         },
                         new
                         {
-                            Id = "8f1fbea3-2a57-481d-a2ec-0740dc00b0ee",
+                            Id = "12f35d91-4395-493c-8286-9aca814e89bc",
                             Name = "Authntication-Manager",
                             NormalizedName = "AUTHNTICATION-MANAGER"
                         },
                         new
                         {
-                            Id = "97b5a966-97e5-46ce-8871-6c7ece1ef839",
+                            Id = "9f16beed-85c0-4c2c-8b25-1a35a59abd81",
                             Name = "Authntication-Supervisor",
                             NormalizedName = "AUTHNTICATION-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "0d8334e6-c0fc-4a8d-a487-079ff5e45661",
+                            Id = "860a44f4-c0e7-4d2c-a70a-8c9f23a41444",
                             Name = "Authntication-Officer",
                             NormalizedName = "AUTHNTICATION-OFFICER"
                         },
                         new
                         {
-                            Id = "6b4c75d1-1da8-4435-b4c4-d230106de5d8",
+                            Id = "05b85d54-66b4-4553-918a-e353c704c6da",
                             Name = "CWCore-Admin",
                             NormalizedName = "CWCORE-ADMIN"
                         },
                         new
                         {
-                            Id = "8a1910ec-64fa-4936-8c2e-533e21cbf0fc",
+                            Id = "bdcc8ecf-ef40-4ec5-9531-da6fc4a5535c",
                             Name = "CWCore-Manager",
                             NormalizedName = "CWCORE-MANAGER"
                         },
                         new
                         {
-                            Id = "36d183ce-f422-4833-ae14-8b3a8c5dfcf5",
+                            Id = "1b9dae3f-a369-4c0b-9574-d0c0e0eda64e",
                             Name = "CWCore-Supervisor",
                             NormalizedName = "CWCORE-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "ecadd959-56f0-4bd5-a8f4-d3ebf420efdc",
+                            Id = "5af77219-e944-4461-97a2-6990fd969a0e",
                             Name = "CWCore-Officer",
                             NormalizedName = "CWCORE-OFFICER"
                         },
                         new
                         {
-                            Id = "efece749-6d30-49b3-994a-8c576ffa9d6a",
+                            Id = "0a1f0e8b-756b-4b05-80db-23df4c1bead7",
                             Name = "Gallery-Admin",
                             NormalizedName = "GALLERY-ADMIN"
                         },
                         new
                         {
-                            Id = "44a8b5b8-3a72-400e-ac54-8b7e161d9473",
+                            Id = "448ecdb9-fee1-4939-9358-5e2bef96e817",
                             Name = "Gallery-Manager",
                             NormalizedName = "GALLERY-MANAGER"
                         },
                         new
                         {
-                            Id = "69925828-9fea-4b8c-96c2-75fd37e44948",
+                            Id = "020d60ac-78e7-46ed-855f-159c69a609f5",
                             Name = "Gallery-Supervisor",
                             NormalizedName = "GALLERY-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "e363469a-1a7f-42e8-9d15-7c482d638f46",
+                            Id = "936db107-ed29-413d-8d33-1312afa09ea6",
                             Name = "Gallery-Officer",
                             NormalizedName = "GALLERY-OFFICER"
                         },
                         new
                         {
-                            Id = "e55357b8-3bc5-454a-8a12-3e4ee0c337a8",
+                            Id = "454dabe9-9b14-40b5-b429-179da3a6a7b7",
                             Name = "Hotel-Admin",
                             NormalizedName = "HOTEL-ADMIN"
                         },
                         new
                         {
-                            Id = "0ce50872-c060-49f0-af6a-52ddd097e50e",
+                            Id = "efc4891a-430c-4350-b82a-35d49b7e6e62",
                             Name = "Hotel-Manager",
                             NormalizedName = "HOTEL-MANAGER"
                         },
                         new
                         {
-                            Id = "34c7aa8d-27a6-4fd8-81c0-3e35ff4f0b38",
+                            Id = "8439ec37-ec16-4e3c-9a09-df3217d215c3",
                             Name = "Hotel-Supervisor",
                             NormalizedName = "HOTEL-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "8a5b0ba2-858c-4299-b0c8-505db9038c0f",
+                            Id = "9a37f78e-f856-41fa-9510-5d80f37e4930",
                             Name = "Hotel-Officer",
                             NormalizedName = "HOTEL-OFFICER"
                         },
                         new
                         {
-                            Id = "87d0ce8c-6877-4689-adac-0686a6fa907b",
+                            Id = "59630bbb-bc8f-4cfd-9fa0-77564628def0",
                             Name = "Notification-Admin",
                             NormalizedName = "NOTIFICATION-ADMIN"
                         },
                         new
                         {
-                            Id = "d9406233-6e11-46fb-8a62-1fb000cbd40f",
+                            Id = "f3991da0-25cc-4232-8368-b5f0b92014a2",
                             Name = "Notification-Manager",
                             NormalizedName = "NOTIFICATION-MANAGER"
                         },
                         new
                         {
-                            Id = "968f0066-a3f5-482a-8aec-653c24692510",
+                            Id = "e6caaba6-8288-45ff-b235-ee143f202d87",
                             Name = "Notification-Supervisor",
                             NormalizedName = "NOTIFICATION-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "4a4fadf8-5cc9-4fe7-b9b7-13b6da40fb86",
+                            Id = "6e60310d-7fe9-49b6-879b-c0ffc47a923e",
                             Name = "Notification-Officer",
                             NormalizedName = "NOTIFICATION-OFFICER"
                         },
                         new
                         {
-                            Id = "e001af42-b3fa-42af-a2dd-4477cd0990ae",
+                            Id = "82482d6e-f9c2-4dd3-a53a-d1fde553dfb8",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         });
