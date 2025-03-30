@@ -5,6 +5,7 @@ using Authentication.Domain.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Notification.Application;
 
 namespace Authentication.Host.Helper
 {
@@ -16,8 +17,9 @@ namespace Authentication.Host.Helper
             
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
-            
-            
+            services.AddScoped<IEmailAppService, EmailAppService>();
+
+
             services.AddHttpClient();
             var mapperConfig = new MapperConfiguration(mc =>
             {
