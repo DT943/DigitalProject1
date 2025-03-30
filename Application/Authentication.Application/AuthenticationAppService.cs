@@ -139,6 +139,7 @@ namespace Authentication.Application
             if (user == null|| user.IsDeleted)
             {
                 authModel.Message = "Email or Password is incorrect!";
+                authModel.IsAuthenticated = true;
                 return authModel;
             }
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
@@ -147,10 +148,12 @@ namespace Authentication.Application
 
                 if (await _userManager.IsLockedOutAsync(user))
                 {
+                    authModel.IsAuthenticated = true;
                     authModel.Message = "Your account has been locked due to multiple failed login attempts.";
                 }
                 else
                 {
+                    authModel.IsAuthenticated = true;
                     authModel.Message = "Email or Password is incorrect!";
                 }
 
@@ -160,7 +163,7 @@ namespace Authentication.Application
             {
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    return new AuthenticationModel { Message = "Invalid static password!", IsAuthenticated = false };
+                    return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = true };
                 }
                 var otp = GenerateSecurePassword();
                 var expirationTime = DateTime.UtcNow.AddMinutes(3);
@@ -170,8 +173,10 @@ namespace Authentication.Application
                 user.OTP = otp;
                 user.OTPExpiration = expirationTime;
                 await _userManager.UpdateAsync(user);
+
                 string subject = "Your One-Time Password (OTP), FirstLogInToSystem";
                 await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
+                authModel.IsAuthenticated = true;
                 authModel.Message = "Please reset OTP at the first time you get to system, Check your email!";
                 return authModel;
             }
@@ -198,6 +203,7 @@ namespace Authentication.Application
                 string subject = "Your One-Time Password (OTP),The last login was a long time ago.";
 
                 await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
+                authModel.IsAuthenticated = true;
                 authModel.Message = "Please reset OTP, The last login was a long time ago, Check your email!";
                 return authModel;
             }
@@ -205,12 +211,14 @@ namespace Authentication.Application
             {
                 user.IsActive = !user.IsActive;
                 user.IsLocked = true;
+                authModel.IsAuthenticated = true;
                 var result = await _userManager.UpdateAsync(user);
                 authModel.Message = "Your account is locked due to multiple failed login attempts.";
                 return authModel;
             }
             if (!user.IsActive)
             {
+                authModel.IsAuthenticated = true;
                 authModel.Message = "Your account is deactivated. Please contact support.";
                 return authModel;
             }
