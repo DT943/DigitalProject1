@@ -15,9 +15,6 @@ namespace Authentication.Application.Dtos
 
         public string Email { get; set; }
 
-        public bool IsActive { get; set; }
-        public bool IsLocked { get; set; }
-        public bool IsFrozed { get; set; }
         public int NumberOfLogIn { get; set; }
 
         [MaxLength(50)]
@@ -28,8 +25,6 @@ namespace Authentication.Application.Dtos
         public IEnumerable<string> Roles { get; set; }
         public string Status { get; set; }
         public string Reason { get; set; }
-
-        public bool IsDeleted { get; set; }
 
     }
 
