@@ -7,8 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Notification.Application;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
@@ -140,7 +142,7 @@ namespace Authentication.Application
 
             if (user == null|| user.IsDeleted)
             {
-                authModel.Message = "Email or Password is incorrect!";
+                authModel.Message = "User Not exist!";
                 authModel.IsAuthenticated = true;
                 return authModel;
             }
@@ -167,7 +169,10 @@ namespace Authentication.Application
                 {
                     return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = true };
                 }
-                var otp = GenerateSecurePassword();
+                //var otp = GenerateSecurePassword();
+                Random random = new Random();
+                var otp = random.Next(100000, 999999).ToString();
+
                 var expirationTime = DateTime.Now.AddMinutes(3);
 
                 //Console.WriteLine(otp);
@@ -192,7 +197,8 @@ namespace Authentication.Application
                     return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = true };
                 }
 
-                var otp = GenerateSecurePassword();
+                Random random = new Random();
+                var otp = random.Next(100000, 999999).ToString();
 
                 // Set OTP expiration time (e.g., 3 minutes from now)
                 var expirationTime = DateTime.Now.AddMinutes(3);
@@ -392,7 +398,7 @@ namespace Authentication.Application
         {
             var existuser = await _userManager.FindByEmailAsync(model.Email);
 
-            if (existuser == null)
+            if (existuser == null || existuser.IsDeleted)
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
             }
@@ -436,7 +442,8 @@ namespace Authentication.Application
                 authDto.Roles = roles;
                 if (!user.IsActive)
                 {
-                    if (user.IsDeleted) {
+                    if (user.IsDeleted)
+                    {
                         authDto.Status = "Deleted";
                         authDto.Reason = "";
                     }
@@ -466,6 +473,11 @@ namespace Authentication.Application
                         authDto.Reason = "Try wrong password multiple times";
                     }
                 }
+                else {
+                    authDto.Status = "Active";
+                    authDto.Reason = "";
+
+                }
 
                 userDtos.Add(authDto);
             }
@@ -480,10 +492,51 @@ namespace Authentication.Application
 
         public async Task<AuthenticationGetDto> GetUserByCodeAsync(string code)
         {
-            var users = await _userManager.Users.Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
-            var existingRoles = await _userManager.GetRolesAsync(users);
-            AuthenticationGetDto auth = _mapper.Map<AuthenticationGetDto>(users);
+            var user = await _userManager.Users.Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
+            var existingRoles = await _userManager.GetRolesAsync(user);
+            AuthenticationGetDto auth = _mapper.Map<AuthenticationGetDto>(user);
             auth.Roles = existingRoles;
+
+            if (!user.IsActive)
+            {
+                if (user.IsDeleted)
+                {
+                    auth.Status = "Deleted";
+                    auth.Reason = "";
+                }
+                else if (user.IsFrozed && user.IsLocked)
+                {
+                    auth.Status = user.NumberOfLogIn == 0
+                        ? "Frozen"
+                        : "Locked & Frozen";
+                    auth.Reason = user.NumberOfLogIn == 0
+                        ? "Number Of LogIn Zero Need OTP"
+                        : "Try wrong password multiple times";
+
+                }
+                else if (user.IsFrozed)
+                {
+                    auth.Status = user.NumberOfLogIn == 0
+                        ? "Frozen"
+                        : "Frozen";
+                    auth.Reason = user.NumberOfLogIn == 0
+                        ? "Number Of LogIn Zero"
+                        : "Last LogIn A long Time Ago";
+
+                }
+                else if (user.IsLocked)
+                {
+                    auth.Status = "Locked";
+                    auth.Reason = "Try wrong password multiple times";
+                }
+            }
+            else
+            {
+                auth.Status = "Active";
+                auth.Reason = "";
+
+            }
+
             return auth;
         }
 
