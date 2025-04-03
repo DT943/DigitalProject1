@@ -28,6 +28,7 @@ namespace Infrastructure.Domain
         {
             public static readonly string GALLERY = "Gallery";
             public static readonly string HOTEL = "Hotel";
+            public static readonly string EVENT = "Event";
             public static readonly string CMS = "CMS";
             public static readonly string OFFER = "Offer";
             public static readonly string CWCORE = "CWCore";
