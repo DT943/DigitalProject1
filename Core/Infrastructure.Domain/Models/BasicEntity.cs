@@ -25,11 +25,11 @@ namespace Infrastructure.Domain.Models
 
     public class BasicEntityWithAuditAndFakeDelete : BasicEntityWithAuditInfo
     {
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 
     public class BasicEntityAndFakeDelete : BasicEntity
     {
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

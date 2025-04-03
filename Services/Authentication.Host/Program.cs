@@ -9,7 +9,8 @@ using System.Net;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-Console.WriteLine("Application is starting V.1.3");
+using System.Security.Cryptography.X509Certificates;
+Console.WriteLine("Application is starting V.1.9.1");
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,7 +19,8 @@ builder.WebHost.ConfigureKestrel(options =>
     options.Listen(IPAddress.Any, 7189); // HTTP port
     options.Listen(IPAddress.Any, 7182, listenOptions =>
     {
-        listenOptions.UseHttps();  // HTTPS port
+        listenOptions.UseHttps(/*"/var/www/ChamWingsAspNetCoreServices/publish/localhost.pfx", "tarek"*/);
+        
     });
 });
 // Add services to the container.
@@ -100,9 +102,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
-app.UseCors("AllowAll");
 
 // Important: Authentication must come before Authorization
 app.UseAuthentication();

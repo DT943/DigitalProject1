@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hotel.Domain.Models
 {
-    public class Hotel : BasicEntityWithAuditInfo
+    public class Hotel : BasicEntityWithAuditAndFakeDelete
     {
         public string Name { get; set; }
         public string POS { get; set; }
