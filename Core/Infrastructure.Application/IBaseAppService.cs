@@ -19,5 +19,7 @@ namespace Infrastructure.Application
 
         public Task<TGetDto> Update(TUpdateDto update);
         public Task<IEnumerable<TGetAllDto>> GetAll(TFilterDto input);
+        public Task<TGetDto> FakeDelete(bool delete, int id);
+
     }
 }

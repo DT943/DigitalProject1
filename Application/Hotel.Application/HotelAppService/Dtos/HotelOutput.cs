@@ -63,6 +63,7 @@ namespace Hotel.Application.HotelAppService.Dtos
         public string? SWIFTCode { get; set; }
         public string? IBAN { get; set; }
         public string? AdditionalInfo { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 

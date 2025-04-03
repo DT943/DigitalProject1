@@ -104,7 +104,28 @@ namespace Infrastructure.Service.Controllers
             var deletedEntity = await _appService.Delete(id);
             return Ok(deletedEntity);
         }
-    
+
+        [HttpDelete("{id}/{delete}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public virtual async Task<ActionResult<TGetDto>> FakeDelete(int id, bool delete)
+        {
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager"))
+            {
+                return Forbid();
+            }
+
+            var deletedEntity = await _appService.FakeDelete(delete, id);
+
+            if (deletedEntity == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(deletedEntity);
+        }
+
     }
 
 
