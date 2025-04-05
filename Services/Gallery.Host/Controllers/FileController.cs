@@ -44,7 +44,7 @@ namespace Gallery.Host.Controllers
         [HttpPost("upload-multi-files")]
         public async Task<ActionResult<List<FileGetDto>>> CreateMultipleFiles([FromForm]MultiFileCreateDto createDto)
         {
-            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
             {
                 return Forbid();
             }

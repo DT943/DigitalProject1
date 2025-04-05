@@ -30,7 +30,7 @@ namespace Hotel.Host.Controllers
         [HttpPost("MakeContract")]
         public async Task<IActionResult> MakeContract(ContractCreateDto contractCreateDto)
         {
-            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
             {
                 return Forbid();
             }
