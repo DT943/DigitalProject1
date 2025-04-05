@@ -44,7 +44,7 @@ namespace Infrastructure.Service.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetDto>> Create(TCreatDto dto)
         {
-            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
+            if (!UserHasPermission("Admin", "Manager", "Supervisor","Officer"))
             {
                 return Forbid();
             }
