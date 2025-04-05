@@ -9,12 +9,16 @@ using System.Net;
 
 using Microsoft.Extensions.FileProviders;
 
+ 
+ 
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Listen(IPAddress.Any, 7183, listenOptions =>
+    options.Listen(IPAddress.Any, 7185, listenOptions =>
     {
         listenOptions.UseHttps();
     });
@@ -58,11 +62,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
 builder.Services
-    .AddControllers();/*
+    .AddControllers()
     .AddNewtonsoftJson(options =>
     {
         options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
-    });*/
+    });
 
 builder.Services.AddDbContext<EventDbContext>((sp, options) =>
 {

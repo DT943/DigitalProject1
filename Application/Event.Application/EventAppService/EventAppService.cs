@@ -9,6 +9,7 @@ using Event.Application.EventAppService.Validations;
 using Event.Data.DbContext;
 using Infrastructure.Application;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -20,5 +21,11 @@ namespace Event.Application.EventAppService
         {
  
         }
+
+        protected override IQueryable<Domain.Models.Event> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input).Include(x => x.Tickets);
+        }
+
     }
 }

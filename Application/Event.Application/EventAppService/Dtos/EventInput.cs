@@ -40,6 +40,6 @@ namespace Event.Application.EventAppService.Dtos
         public string? Country { get; set; }
         public int? BasePrice { get; set; }
         public int? TotalCapacity { get; set; }
-     }
+    }
 
 }

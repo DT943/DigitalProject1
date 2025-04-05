@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Event.Application.TicketAppService.Dtos;
 
 namespace Event.Application.EventAppService.Dtos
 {
@@ -38,5 +39,7 @@ namespace Event.Application.EventAppService.Dtos
         public string? Country { get; set; }
         public int? BasePrice { get; set; }
         public int? TotalCapacity { get; set; }
+        public IEnumerable<TicketGetDto>? Tickets { get; set; } = Enumerable.Empty<TicketGetDto>();
+
     }
 }

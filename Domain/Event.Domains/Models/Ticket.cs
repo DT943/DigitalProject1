@@ -20,8 +20,8 @@ namespace Event.Domain.Models
 
         public bool? AvailableForSales { get; set; }
 
-        [ForeignKey("Events")]
-        public int EventsId { get; set; }
+        [ForeignKey("Event")]
+        public int EventId { get; set; }
 
         public Event Event { get; set; }
 
