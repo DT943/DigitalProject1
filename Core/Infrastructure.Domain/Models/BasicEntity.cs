@@ -7,7 +7,7 @@ namespace Infrastructure.Domain.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string Code { get; set; }
 
 

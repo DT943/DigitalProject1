@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Event.Application.TicketInventoryAppService.Dtos;
+using Event.Domain.Models;
 
 namespace Event.Application.TicketAppService.Dtos
 {
@@ -15,6 +17,7 @@ namespace Event.Application.TicketAppService.Dtos
         public int? Quantity { get; set; }
         public bool? AvailableForSales { get; set; }
         public int EventId { get; set; }
+        public int SoldTicketCount { get; set; }
     }
 
     public class TicketGetAllDto
@@ -26,5 +29,6 @@ namespace Event.Application.TicketAppService.Dtos
         public int? Quantity { get; set; }
         public bool? AvailableForSales { get; set; }
         public int EventId { get; set; }
+        public int SoldTicketCount { get; set; }
     }
 }

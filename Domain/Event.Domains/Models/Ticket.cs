@@ -25,5 +25,8 @@ namespace Event.Domain.Models
 
         public Event Event { get; set; }
 
+        public ICollection<TicketInventory> TicketInventory { get; set; }
+
+
     }
 }
