@@ -5,6 +5,9 @@ using Event.Application.EventAppService.Validations;
 using Event.Application.TicketAppService;
 using Event.Application.TicketAppService.Dtos;
 using Event.Application.TicketAppService.Validations;
+using Event.Application.TicketInventoryAppService;
+using Event.Application.TicketInventoryAppService.Dtos;
+using Event.Application.TicketInventoryAppService.Validations;
 using Sieve.Services;
 
 namespace Event.Host.Helper
@@ -19,10 +22,15 @@ namespace Event.Host.Helper
             services.AddTransient<ITicketAppService, TicketAppService>();
             services.AddTransient<TicketValidator>();
 
+
+            services.AddTransient<ITicketInventoryAppService, TicketInventoryAppService>();
+            services.AddTransient<TicketInventoryValidator>();
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new EventMapperProfile());
                 mc.AddProfile(new TicketMapperProfile());
+                mc.AddProfile(new TicketInventoryMapperProfile());
 
             });
             services.AddScoped<ISieveProcessor, SieveProcessor>();

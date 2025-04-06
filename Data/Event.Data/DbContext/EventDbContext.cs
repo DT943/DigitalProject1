@@ -30,6 +30,7 @@ namespace Event.Data.DbContext
 
         public DbSet<Domain.Models.Event> Events { get; set; }
         public DbSet<Domain.Models.Ticket> Tickets { get; set; }
- 
+        public DbSet<Domain.Models.TicketInventory> TicketInventory { get; set; }
+
     }
 }

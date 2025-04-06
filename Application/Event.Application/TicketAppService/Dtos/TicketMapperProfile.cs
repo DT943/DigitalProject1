@@ -12,8 +12,8 @@ namespace Event.Application.TicketAppService.Dtos
     {
         public TicketMapperProfile()
         {
-            CreateMap<Domain.Models.Ticket, TicketGetDto>();
-            CreateMap<Domain.Models.Ticket, TicketGetAllDto>();
+            CreateMap<Domain.Models.Ticket, TicketGetDto>().ForMember(dest => dest.SoldTicketCount, opt => opt.MapFrom(src => src.TicketInventory.Count())); 
+            CreateMap<Domain.Models.Ticket, TicketGetAllDto>().ForMember(dest => dest.SoldTicketCount, opt => opt.MapFrom(src => src.TicketInventory.Count()));
             CreateMap<TicketCreateDto, Domain.Models.Ticket>();
             CreateMap<TicketUpdateDto, Domain.Models.Ticket>();
         }

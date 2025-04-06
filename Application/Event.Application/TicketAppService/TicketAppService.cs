@@ -24,5 +24,10 @@ namespace Event.Application.TicketAppService
         {
 
         }
+        protected override IQueryable<Domain.Models.Ticket> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input).Include(x => x.TicketInventory);
+        }
+
     }
 }
