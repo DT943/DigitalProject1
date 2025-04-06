@@ -16,6 +16,7 @@ namespace Gallery.Application.FileAppservice.Validations
 
         public FileValidator(GalleryDbContext galleryRepository)
         {
+            // test
             _galleryRepository = galleryRepository;
             RuleSet("create", () =>
             {
