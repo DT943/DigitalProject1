@@ -34,6 +34,10 @@ namespace Infrastructure.Domain
             public static readonly string CWCORE = "CWCore";
             public static readonly string NOTIFICATION = "Notification";
             public static readonly string AUTHNTICATION = "Authntication";
+            public static readonly string HR = "HR";
+            public static readonly string BranchesManagement = "BranchesManagement";
+
+
 
         }
 

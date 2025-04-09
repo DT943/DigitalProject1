@@ -8,7 +8,7 @@ using Infrastructure.Domain.Models;
 
 namespace HR.Domain.Models
 {
-    public class JobPosting : BasicEntityWithAuditInfo
+    public class JobPost : BasicEntityWithAuditInfo
     {
 
         public string JobTitle { get; set;}
