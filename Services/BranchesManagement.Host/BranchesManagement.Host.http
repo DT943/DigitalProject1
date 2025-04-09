@@ -1,0 +1,6 @@
+@BranchesManagement.Host_HostAddress = http://localhost:5220
+
+GET {{BranchesManagement.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

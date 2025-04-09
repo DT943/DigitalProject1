@@ -1,24 +1,20 @@
-using Microsoft.EntityFrameworkCore;
-using System.Text;
-using Event.Host.Helper;
-using Event.Data.DbContext;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using HR.Data.DbContext;
+using HR.Host.Helper;
 using Infrastructure.Service;
-using System.Net;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
-
+using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using System.Text;
  
- 
-
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.Listen(IPAddress.Any, 7185, listenOptions =>
+    options.Listen(IPAddress.Any, 7081, listenOptions =>
     {
         listenOptions.UseHttps();
     });
@@ -61,18 +57,17 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
-builder.Services
-    .AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
-    });
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
+});
 
-builder.Services.AddDbContext<EventDbContext>((sp, options) =>
+builder.Services.AddDbContext<HRDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 });
+
 
 builder.Services.AddSwaggerGen();
 
