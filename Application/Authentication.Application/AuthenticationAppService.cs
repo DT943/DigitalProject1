@@ -7,14 +7,18 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Notification.Application;
+using Sieve.Models;
+using Sieve.Services;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using static Infrastructure.Domain.Consts;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Authentication.Application
@@ -26,26 +30,74 @@ namespace Authentication.Application
         private readonly JWT _jwt;
         private readonly IMapper _mapper;
         private readonly IEmailAppService _emailService;
+        private readonly ISieveProcessor _sieveProcessor;
+        string key = "MySuperSecretKey!";
 
 
-        public AuthenticationAppService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, IMapper mapper, IEmailAppService emailService)
+        public AuthenticationAppService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, IMapper mapper, ISieveProcessor sieveProcessor, IEmailAppService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwt = jwt.Value;
             _mapper = mapper;
             _emailService = emailService;
+            _sieveProcessor = sieveProcessor;
 
         }
+
+        private static byte[] GetKeyBytes(string key, int length)
+        {
+            using SHA256 sha = SHA256.Create();
+            byte[] hash = sha.ComputeHash(Encoding.UTF8.GetBytes(key));
+            byte[] result = new byte[length];
+            Array.Copy(hash, result, length);
+            return result;
+        }
+
+        public static string Encrypt(string plainText, string key)
+        {
+            byte[] aesKey = GetKeyBytes(key, 32); // 256-bit key
+            byte[] aesIV = GetKeyBytes(key, 16);  // 128-bit IV
+
+            using Aes aesAlg = Aes.Create();
+            aesAlg.Key = aesKey;
+            aesAlg.IV = aesIV;
+
+            using MemoryStream msEncrypt = new();
+            using (CryptoStream csEncrypt = new(msEncrypt, aesAlg.CreateEncryptor(), CryptoStreamMode.Write))
+            using (StreamWriter swEncrypt = new(csEncrypt))
+            {
+                swEncrypt.Write(plainText);
+            }
+
+            // ✅ Now the MemoryStream is fully written
+            return Convert.ToBase64String(msEncrypt.ToArray());
+        }
+
+        public static string Decrypt(string cipherText, string key)
+        {
+            byte[] aesKey = GetKeyBytes(key, 32);
+            byte[] aesIV = GetKeyBytes(key, 16);
+
+            using Aes aesAlg = Aes.Create();
+            aesAlg.Key = aesKey;
+            aesAlg.IV = aesIV;
+
+            using MemoryStream msDecrypt = new(Convert.FromBase64String(cipherText));
+            using CryptoStream csDecrypt = new(msDecrypt, aesAlg.CreateDecryptor(), CryptoStreamMode.Read);
+            using StreamReader srDecrypt = new(csDecrypt);
+            return srDecrypt.ReadToEnd();
+        }
+
         public async Task<AuthenticationModel> RegisterAsync(RegisterModel model)
         {
             string userName = (model.FirstName + model.LastName).Replace(" ", "");
 
             if (await _userManager.FindByEmailAsync(model.Email) is not null)
-                return new AuthenticationModel { Message = "Email is already registered!" };
+                return new AuthenticationModel { Message = "Email is already registered!" ,IsAuthenticated = false };
 
             if (await _userManager.FindByNameAsync(userName) is not null)
-                return new AuthenticationModel { Message = "Username is already registered!" };
+                return new AuthenticationModel { Message = "Username is already registered!" , IsAuthenticated = false };
 
             var user = new ApplicationUser
             {
@@ -143,7 +195,7 @@ namespace Authentication.Application
             if (user == null|| user.IsDeleted)
             {
                 authModel.Message = "User Not exist!";
-                authModel.IsAuthenticated = true;
+                authModel.IsAuthenticated = false;
                 return authModel;
             }
             if (!await _userManager.CheckPasswordAsync(user, model.Password))
@@ -152,22 +204,28 @@ namespace Authentication.Application
 
                 if (await _userManager.IsLockedOutAsync(user))
                 {
-                    authModel.IsAuthenticated = true;
+                    authModel.IsAuthenticated = false;
                     authModel.Message = "Your account has been locked due to multiple failed login attempts.";
                 }
                 else
                 {
-                    authModel.IsAuthenticated = true;
+                    authModel.IsAuthenticated = false;
                     authModel.Message = "Email or Password is incorrect!";
                 }
 
                 return authModel;
             }
+
             if (user.NumberOfLogIn == 0 && user.IsFrozed)
             {
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = true };
+                    return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = false };
+                }
+
+                if (user.OTPExpiration> DateTime.Now)
+                {
+                    return new AuthenticationModel { Message = "OTP is already send", IsAuthenticated = true };
                 }
                 //var otp = GenerateSecurePassword();
                 Random random = new Random();
@@ -184,6 +242,8 @@ namespace Authentication.Application
                 string subject = "Your One-Time Password (OTP), FirstLogInToSystem";
                 await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
                 authModel.IsAuthenticated = true;
+                authModel.NumberOfLogin = user.NumberOfLogIn;
+                authModel.Token = Encrypt(user.Email, this.key);
                 authModel.Message = "Please reset OTP at the first time you get to system, Check your email!";
                 return authModel;
             }
@@ -194,7 +254,7 @@ namespace Authentication.Application
                 user.IsActive = false;
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
                 {
-                    return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = true };
+                    return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = false };
                 }
 
                 Random random = new Random();
@@ -220,14 +280,14 @@ namespace Authentication.Application
             {
                 user.IsActive = !user.IsActive;
                 user.IsLocked = true;
-                authModel.IsAuthenticated = true;
+                authModel.IsAuthenticated = false;
                 var result = await _userManager.UpdateAsync(user);
                 authModel.Message = "Your account is locked due to multiple failed login attempts.";
                 return authModel;
             }
             if (!user.IsActive)
             {
-                authModel.IsAuthenticated = true;
+                authModel.IsAuthenticated = false;
                 authModel.Message = "Your account is deactivated. Please contact support.";
                 return authModel;
             }
@@ -250,7 +310,7 @@ namespace Authentication.Application
             authModel.FirstName = user.FirstName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = userRoles;
-
+            authModel.NumberOfLogin = user.NumberOfLogIn;
             return authModel;
         }
         public async Task<AuthenticationModel> AddUserAsync(AddUserDto newuser)
@@ -258,10 +318,10 @@ namespace Authentication.Application
             string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
 
             if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
-                return new AuthenticationModel { Message = "Email is already exist!" };
+                return new AuthenticationModel { Message = "Email is already exist!", IsAuthenticated = false };
 
             if (await _userManager.FindByNameAsync(userName) is not null)
-                return new AuthenticationModel { Message = "Username is already exist!" };
+                return new AuthenticationModel { Message = "Username is already exist!" , IsAuthenticated = false };
 
             var user = new ApplicationUser
             {
@@ -308,6 +368,7 @@ namespace Authentication.Application
 
             await _emailService.SendEmailAsync(newuser.Email, subject, staticPassword, newuser.FirstName);
 
+ 
             return new AuthenticationModel
             {
                 Message = "User has been created successfully.",
@@ -315,7 +376,8 @@ namespace Authentication.Application
                 Roles = userRoles,
                 IsAuthenticated = true,
                 FirstName = user.FirstName,
-                LastName = user.LastName
+                LastName = user.LastName,
+                Token = null
             };
         }
 
@@ -340,27 +402,20 @@ namespace Authentication.Application
             return shuffled;
         }
 
-        public async Task <AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto)
+        public async Task <AuthenticationModel> FirstResetPassword(FirstResetLogInDto firestLogInDto)
         {
-            var user = await _userManager.FindByEmailAsync(firestLogInDto.Email);
+            string email = Decrypt(firestLogInDto.Token, this.key);
+            var user = await _userManager.FindByEmailAsync(email);
 
             if (user == null)
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
-            }
-
-            if (user.NumberOfLogIn > 0)
-            {
-                // Ensure the provided OldPassword is the StaticPassword from Consts
-                var passwordValid = await _userManager.CheckPasswordAsync(user, firestLogInDto.OldPassword);
-                if (!passwordValid)
-                    return new AuthenticationModel { Message = "Invalid old password!", IsAuthenticated = false };
-            }
+            } 
             else
             {
                 if (user.LastOTPChecked > DateTime.Now)
                 {
-                    return new AuthenticationModel { Message = "You should send your OTP!", IsAuthenticated = true };
+                    return new AuthenticationModel { Message = "You should send your OTP!", IsAuthenticated = false };
 
                 }
             }
@@ -389,14 +444,67 @@ namespace Authentication.Application
             {
                 Message = "Password has been successfully reset. You can now log in with your new password.",
                 IsAuthenticated = true,
-                Email = user.Email
+                Email = email
             };
         }
-        
 
-        public async Task<AuthenticationModel> LogInWithOTP(LogInModel model)
+        public async Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto)
         {
-            var existuser = await _userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(firestLogInDto.Email);
+
+            if (user == null)
+            {
+                return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
+            }
+
+            if (user.NumberOfLogIn > 0)
+            {
+                // Ensure the provided OldPassword is the StaticPassword from Consts
+                var passwordValid = await _userManager.CheckPasswordAsync(user, firestLogInDto.OldPassword);
+                if (!passwordValid)
+                    return new AuthenticationModel { Message = "Invalid old password!", IsAuthenticated = false };
+            }
+            else
+            {
+                if (user.LastOTPChecked > DateTime.Now)
+                {
+                    return new AuthenticationModel { Message = "You should send your OTP!", IsAuthenticated = false };
+
+                }
+            }
+            // Ensure new password and confirm password match
+            if (firestLogInDto.Password != firestLogInDto.ConfirmPassword)
+            {
+                return new AuthenticationModel { Message = "New passwords do not match!", IsAuthenticated = false };
+            }
+
+            // Update user password
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, firestLogInDto.Password);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                return new AuthenticationModel { Message = $"Password reset failed: {errors}", IsAuthenticated = false };
+            }
+            user.IsFrozed = false;
+            user.IsActive = true;
+            user.LastLogIn = DateTime.Now;
+            user.LastOTPChecked = DateTime.MaxValue;
+            await _userManager.UpdateAsync(user);
+
+            return new AuthenticationModel
+            {
+                Message = "Password has been successfully reset. You can now log in with your new password.",
+                IsAuthenticated = true,
+                Email = firestLogInDto.Email
+            };
+        }
+
+
+        public async Task<AuthenticationModel> LogInWithOTP(LogInOTPModel model)
+        {
+             var existuser = await _userManager.FindByEmailAsync(Decrypt(model.Token, this.key));
 
             if (existuser == null || existuser.IsDeleted)
             {
@@ -406,7 +514,7 @@ namespace Authentication.Application
             // Check if the provided OTP matches the stored one
             if (existuser.OTP != model.Password) // StaticPassword is being used as OTP here
             {
-                return new AuthenticationModel { Message = "Invalid OTP!", IsAuthenticated = true };
+                return new AuthenticationModel { Message = "Invalid OTP!", IsAuthenticated = false };
             }
 
             // Check if the OTP has expired
@@ -425,14 +533,26 @@ namespace Authentication.Application
             {
                 Message = "OTP is correct. Now you need to reset your password.",
                 IsAuthenticated = true,
-                Email = existuser.Email
+                Token = model.Token,
+                NumberOfLogin = existuser.NumberOfLogIn
             };
 
         }
 
-        public async Task<IEnumerable<AuthenticationGetDto>> GetAllUsersAsync()
+        public async Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel)
         {
-            var users = await _userManager.Users.ToListAsync();
+            var query = _userManager.Users.AsQueryable();
+
+            // Apply filter and sort only
+            query = _sieveProcessor.Apply(sieveModel, query, applyPagination: false);
+
+            var totalCount = await query.CountAsync();
+
+            // Apply pagination only
+            query = _sieveProcessor.Apply(sieveModel, query, applyFiltering: false, applySorting: false);
+
+            var users = await query.ToListAsync();
+
             var userDtos = new List<AuthenticationGetDto>();
 
             foreach (var user in users)
@@ -481,9 +601,14 @@ namespace Authentication.Application
 
                 userDtos.Add(authDto);
             }
-
-            return userDtos;
-        }
+            return new PaginatedResult<AuthenticationGetDto>
+            {
+                Items = userDtos,
+                TotalCount = totalCount,
+                Page = sieveModel.Page ?? 1,
+                PageSize = sieveModel.PageSize ?? totalCount
+            };
+         }
 
         public async Task<IEnumerable<string>> GetAllRolesAsync()
         {
@@ -581,7 +706,7 @@ namespace Authentication.Application
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
             if (user == null)
             {
-                return new AuthenticationModel { Message = "User not found!" };
+                return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false};
             }
             if (user.IsFrozed)
             {
@@ -715,20 +840,20 @@ namespace Authentication.Application
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
 
             if (user == null)
-                return new AuthenticationModel { Message = "User not found!" };
+                return new AuthenticationModel { Message = "User not found!",IsAuthenticated = false };
 
             string userName = (newUser.FirstName + newUser.LastName).Replace(" ", "");
 
             // Check if the provided password is correct before proceeding
             var passwordValid = await _userManager.CheckPasswordAsync(user, newUser.OldPassword);
             if (!passwordValid)
-                return new AuthenticationModel { Message = "Incorrect old password!" };
+                return new AuthenticationModel { Message = "Incorrect old password!" , IsAuthenticated = false };
 
             if (await _userManager.FindByEmailAsync(newUser.Email) is not null)
-                return new AuthenticationModel { Message = "Email is already exist!" };
+                return new AuthenticationModel { Message = "Email is already exist!" , IsAuthenticated = false  };
 
             if (await _userManager.FindByNameAsync(userName) is not null)
-                return new AuthenticationModel { Message = "Username is already exist!" };
+                return new AuthenticationModel { Message = "Username is already exist!", IsAuthenticated = false };
 
 
             user.FirstName = newUser.FirstName;
@@ -804,6 +929,35 @@ namespace Authentication.Application
             }
 
             return _mapper.Map<AuthenticationGetDto>(user);
+        }
+
+
+        public async Task<AuthenticationModel> ForgotPassword(ForgotPasswordModel dto)
+        {
+            var existuser = await _userManager.FindByEmailAsync(dto.Email);
+
+            if (existuser == null || existuser.IsDeleted)
+            {
+                return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
+            }
+            var newPassword = GenerateSecurePassword();
+
+            var hasPassword = await _userManager.HasPasswordAsync(existuser);
+            if (hasPassword)
+              await _userManager.RemovePasswordAsync(existuser);
+
+            
+
+            // Add the new password
+            var addResult = await _userManager.AddPasswordAsync(existuser, newPassword);
+            string subject = "Your Password Has Been Generated, Welcome to our website.";
+
+            await _emailService.SendEmailAsync(dto.Email, subject, newPassword, existuser.FirstName);
+            return new AuthenticationModel
+            {
+                IsAuthenticated = true,
+                Message = "A new password has been sent to your email. Please check your inbox"
+            };
         }
 
 
