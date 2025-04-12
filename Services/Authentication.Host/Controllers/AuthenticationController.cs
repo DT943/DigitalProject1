@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Sieve.Models;
 
 namespace Authentication.Host.Controllers
 {
@@ -54,18 +55,22 @@ namespace Authentication.Host.Controllers
 
             var result = await _authenticationAppService.GetTokenAsync(model);
             if (!result.IsAuthenticated)
-                return BadRequest(result.Message);
+                return BadRequest(new ErrorModel
+                {
+                    IsAuthenticated = result.IsAuthenticated,
+                    Message = result.Message
+                });
 
             return Ok(result);
         }
         [HttpGet("get-all-users")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-        public async Task<IActionResult> GetAllUsers()
+        public async Task<IActionResult> GetAllUsers([FromQuery] SieveModel sieveModel)
         {
             var user = HttpContext.User;
             if (!user.IsInRole("SuperAdmin")) return Forbid();
-            var result = await _authenticationAppService.GetAllUsersAsync();
+            var result = await _authenticationAppService.GetAllUsersAsync(sieveModel);
             return Ok(result);
         }
 
@@ -131,6 +136,12 @@ namespace Authentication.Host.Controllers
             if (!user.IsInRole("SuperAdmin")) return Forbid();
 
             var result = await _authenticationAppService.ChangeUserStatusAsync(userCode);
+            if (!result.IsAuthenticated)
+                return BadRequest(new ErrorModel
+                {
+                    IsAuthenticated = result.IsAuthenticated,
+                    Message = result.Message
+                });
             return  Ok(result);
         }
 
@@ -168,6 +179,12 @@ namespace Authentication.Host.Controllers
             try
             {
                 var result = await _authenticationAppService.AddUserAsync(addUserDto);
+                if (!result.IsAuthenticated)
+                    return BadRequest(new ErrorModel
+                    {
+                        IsAuthenticated = result.IsAuthenticated,
+                        Message = result.Message
+                    });
                 return Ok(result);
             }
             catch (Exception ex)
@@ -201,6 +218,7 @@ namespace Authentication.Host.Controllers
             try
             {
                 var result = await _authenticationAppService.UpdateUserAsync(newUser, userCode);
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -210,13 +228,19 @@ namespace Authentication.Host.Controllers
         }
 
         [HttpPost("LogInWithOTP")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [AllowAnonymous]
 
-        public async Task<IActionResult> LogInWithOTP([FromBody] LogInModel model)
+        public async Task<IActionResult> LogInWithOTP([FromBody] LogInOTPModel model)
         {
             try
             {
                 var result = await _authenticationAppService.LogInWithOTP(model);
+                if (!result.IsAuthenticated)
+                    return BadRequest(new ErrorModel
+                    {
+                        IsAuthenticated = result.IsAuthenticated,
+                        Message = result.Message
+                    });
                 return Ok(result);
             }
             catch (Exception ex)
@@ -224,6 +248,28 @@ namespace Authentication.Host.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
+        [HttpPost("FirstResetPassword")]
+
+        [AllowAnonymous]
+        public async Task<IActionResult> FirstResetPassword([FromBody] FirstResetLogInDto firestLogInDto)
+        {
+            try
+            {
+                var result = await _authenticationAppService.FirstResetPassword(firestLogInDto);
+                if (!result.IsAuthenticated)
+                    return BadRequest(new ErrorModel
+                    {
+                        IsAuthenticated = result.IsAuthenticated,
+                        Message = result.Message
+                    });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
         [HttpPost("ResetPassword")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
@@ -232,6 +278,12 @@ namespace Authentication.Host.Controllers
             try
             {
                 var result = await _authenticationAppService.ResetPassword(firestLogInDto);
+                if (!result.IsAuthenticated)
+                    return BadRequest(new ErrorModel
+                    {
+                        IsAuthenticated = result.IsAuthenticated,
+                        Message = result.Message
+                    });
                 return Ok(result);
             }
             catch (Exception ex)
@@ -256,6 +308,38 @@ namespace Authentication.Host.Controllers
             {
                 return BadRequest(new { Message = ex.Message });
             }
+        }
+
+
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel dto)
+        {
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            try
+            {
+                var result = await _authenticationAppService.ForgotPassword(dto);
+                if (!result.IsAuthenticated)
+                    return BadRequest(new ErrorModel
+                    {
+                        IsAuthenticated = result.IsAuthenticated,
+                        Message = result.Message
+                    });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [HttpGet("Departments")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Departments()
+        {
+
+            return Ok(new List<string> { "marketing", "holiday" , "callcenter", "revenue", "digital transformation","scheduling", "interline","cargo","hr" } );
         }
     }
 }

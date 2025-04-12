@@ -45,12 +45,29 @@ namespace Authentication.Application.Dtos
         public string ConfirmPassword { get; set; }
 
     }
+    public class FirstResetLogInDto
+    {
+        [Required, StringLength(128)]
+        public string Token { get; set; }
+
+ 
+        [Required(ErrorMessage = "Password is required.")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+
+        [Required(ErrorMessage = "Confirm Password is required.")]
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        public string ConfirmPassword { get; set; }
+
+    }
+
     public class FirstLogInDto
     {
         [Required, StringLength(128)]
         public string Email { get; set; }
 
-        public string? OldPassword { get; set; }
+        public string OldPassword { get; set; }
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
