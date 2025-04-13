@@ -14,13 +14,17 @@ Console.WriteLine("Application is starting V.1.9.1");
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureKestrel(options =>
+builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    options.Listen(IPAddress.Any, 7189); // HTTP port
-    options.Listen(IPAddress.Any, 7182, listenOptions =>
+    serverOptions.Listen(IPAddress.Any, 7189); // HTTP
+
+    serverOptions.Listen(IPAddress.Any, 7182, listenOptions =>
     {
-        listenOptions.UseHttps(/*"/var/www/ChamWingsAspNetCoreServices/publish/localhost.pfx", "tarek"*/);
-        
+        var cert = new X509Certificate2(
+            "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
+            "HappyHappy@2025");
+
+        listenOptions.UseHttps(cert);
     });
 });
 // Add services to the container.

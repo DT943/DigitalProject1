@@ -1,0 +1,6 @@
+@B2B.Host_HostAddress = http://localhost:5048
+
+GET {{B2B.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

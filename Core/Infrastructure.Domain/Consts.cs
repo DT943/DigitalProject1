@@ -36,6 +36,8 @@ namespace Infrastructure.Domain
             public static readonly string AUTHNTICATION = "Authntication";
             public static readonly string HR = "HR";
             public static readonly string BranchesManagement = "BranchesManagement";
+            public static readonly string B2B = "B2B";
+
 
 
 
