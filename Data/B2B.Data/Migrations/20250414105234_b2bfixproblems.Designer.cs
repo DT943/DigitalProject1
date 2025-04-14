@@ -3,6 +3,7 @@ using System;
 using B2B.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Oracle.EntityFrameworkCore.Metadata;
 
@@ -11,9 +12,11 @@ using Oracle.EntityFrameworkCore.Metadata;
 namespace B2B.Data.Migrations
 {
     [DbContext(typeof(B2BDbContext))]
-    partial class B2BDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250414105234_b2bfixproblems")]
+    partial class b2bfixproblems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,82 +25,6 @@ namespace B2B.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("B2B.Domain.Models.EmployeeApplication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)");
-
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("EmployeeEmail")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<int>("TravelAgentApplicationId")
-                        .HasColumnType("NUMBER(10)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TravelAgentApplicationId");
-
-                    b.ToTable("EmployeeApplications", "B2B");
-                });
-
-            modelBuilder.Entity("B2B.Domain.Models.TravelAgentApplication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)");
-
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccelAeroUserName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("POS")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.Property<string>("TravelAgencyName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("NVARCHAR2(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TravelAgentApplications", "B2B");
-                });
 
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentEmployee", b =>
                 {
@@ -261,17 +188,6 @@ namespace B2B.Data.Migrations
                     b.ToTable("TravelAgentOffices", "B2B");
                 });
 
-            modelBuilder.Entity("B2B.Domain.Models.EmployeeApplication", b =>
-                {
-                    b.HasOne("B2B.Domain.Models.TravelAgentApplication", "TravelAgentApplication")
-                        .WithMany("Employees")
-                        .HasForeignKey("TravelAgentApplicationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TravelAgentApplication");
-                });
-
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentEmployee", b =>
                 {
                     b.HasOne("B2B.Domain.Models.TravelAgentOffice", "TravelAgentOffice")
@@ -281,11 +197,6 @@ namespace B2B.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("TravelAgentOffice");
-                });
-
-            modelBuilder.Entity("B2B.Domain.Models.TravelAgentApplication", b =>
-                {
-                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentOffice", b =>

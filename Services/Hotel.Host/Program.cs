@@ -8,15 +8,24 @@ using Infrastructure.Service;
 using System.Net;
 using Gallery.Data.DbContext;
 using Microsoft.Extensions.FileProviders;
+using System.Security.Cryptography.X509Certificates;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
+builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    options.Listen(IPAddress.Any, 7183, listenOptions =>
+    serverOptions.Listen(IPAddress.Any, 7183, listenOptions =>
     {
-        listenOptions.UseHttps();
+        if (builder.Environment.IsDevelopment())
+
+            listenOptions.UseHttps();
+        else
+
+            listenOptions.UseHttps(new X509Certificate2(
+                "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
+                "HappyHappy@2025"));
+
     });
 });
 

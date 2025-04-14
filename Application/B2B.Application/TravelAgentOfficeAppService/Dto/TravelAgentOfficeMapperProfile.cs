@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 
-namespace B2B.Application.B2BAppService.Dto
+namespace B2B.Application.TravelAgentOffice.Dto
 {
     public class TravelAgentOfficeMapperProfile : Profile
     {

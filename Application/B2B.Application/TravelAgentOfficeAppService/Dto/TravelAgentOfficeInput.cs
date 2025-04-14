@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Validations;
 
-namespace B2B.Application.B2BAppService.Dto
+namespace B2B.Application.TravelAgentOffice.Dto
 {
     public class TravelAgentOfficeCreateDto : IValidatableDto
     {
@@ -16,7 +16,7 @@ namespace B2B.Application.B2BAppService.Dto
 
 
         [MaxLength(100)]
-        public string? AgencyName { get; set; }
+        public string AgencyName { get; set; }
 
         [MaxLength(100)]
         public string FirstEmail { get; set; }
@@ -31,25 +31,25 @@ namespace B2B.Application.B2BAppService.Dto
         public string Governate { get; set; }
 
         [MaxLength(100)]
-        public string VideoFileCode { get; set; }
+        public string? VideoFileCode { get; set; }
 
-        public string VideoFileUrl { get; set; }
-
-        [MaxLength(100)]
-        public string ImageFileCode { get; set; }
-
-        public string ImageFileUrl { get; set; }
+        public string? VideoFileUrl { get; set; }
 
         [MaxLength(100)]
-        public string PdfFileCode { get; set; }
+        public string? ImageFileCode { get; set; }
 
-        public string PdfFileUrl { get; set; }
-
-        [MaxLength(100)]
-        public string UserCode { get; set; }
+        public string? ImageFileUrl { get; set; }
 
         [MaxLength(100)]
-        public string ManagerCode { get; set; }
+        public string? PdfFileCode { get; set; }
+
+        public string? PdfFileUrl { get; set; }
+
+        [MaxLength(100)]
+        public string? UserCode { get; set; }
+
+        [MaxLength(100)]
+        public string? ManagerCode { get; set; }
 
         [MaxLength(50)]
         public string SYD { get; set; }
@@ -58,17 +58,14 @@ namespace B2B.Application.B2BAppService.Dto
         public string SYP { get; set; }
     }
 
-
     public class TravelAgentOfficeUpdateDto : IEntityUpdateDto
     {
-        public int Id {  get; set; }
-
         [MaxLength(100)]
         public string TravelAgentNameISA { get; set; }
 
 
         [MaxLength(100)]
-        public string? AgencyName { get; set; }
+        public string AgencyName { get; set; }
 
         [MaxLength(100)]
         public string FirstEmail { get; set; }
@@ -83,25 +80,25 @@ namespace B2B.Application.B2BAppService.Dto
         public string Governate { get; set; }
 
         [MaxLength(100)]
-        public string VideoFileCode { get; set; }
+        public string? VideoFileCode { get; set; }
 
-        public string VideoFileUrl { get; set; }
-
-        [MaxLength(100)]
-        public string ImageFileCode { get; set; }
-
-        public string ImageFileUrl { get; set; }
+        public string? VideoFileUrl { get; set; }
 
         [MaxLength(100)]
-        public string PdfFileCode { get; set; }
+        public string? ImageFileCode { get; set; }
 
-        public string PdfFileUrl { get; set; }
-
-        [MaxLength(100)]
-        public string UserCode { get; set; }
+        public string? ImageFileUrl { get; set; }
 
         [MaxLength(100)]
-        public string ManagerCode { get; set; }
+        public string? PdfFileCode { get; set; }
+
+        public string? PdfFileUrl { get; set; }
+
+        [MaxLength(100)]
+        public string? UserCode { get; set; }
+
+        [MaxLength(100)]
+        public string? ManagerCode { get; set; }
 
         [MaxLength(50)]
         public string SYD { get; set; }

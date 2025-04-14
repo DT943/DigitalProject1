@@ -1,21 +1,20 @@
-using Microsoft.EntityFrameworkCore;
-using System.Text;
-using Gallery.Host.Helper;
-using Gallery.Data.DbContext;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using B2B.Data.DbContext;
+using B2B.Host.Helper;
 using Infrastructure.Service;
-using System.Net;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
+using System.Net;
+using System.Text;
 using System.Security.Cryptography.X509Certificates;
-
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    serverOptions.Listen(IPAddress.Any, 7181, listenOptions =>
+    serverOptions.Listen(IPAddress.Any, 7288, listenOptions =>
     {
         if (builder.Environment.IsDevelopment())
 
@@ -33,7 +32,6 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
 }).AddJwtBearer(o =>
 {
     o.RequireHttpsMetadata = false;
@@ -49,7 +47,6 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
-builder.Services.AddAuthorization();
 
 
 builder.Services.AddCors(options =>
@@ -62,24 +59,32 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader(); // Allows any headers
         });
 });
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
+});
 
-builder.Services.AddDbContext<GalleryDbContext>((sp, options) =>
+builder.Services.AddDbContext<B2BDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
-
 });
-builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
 
+app.UseCors("AllowAll");
+
 app.ConfigureExceptionHandler();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -87,13 +92,14 @@ if (app.Environment.IsDevelopment())
 }
 if (!app.Environment.IsDevelopment())
     app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
-    RequestPath = "/images" // This maps the '/images' URL path to the directory
-});
+    {
+        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
+        RequestPath = "/images" // This maps the '/images' URL path to the directory
+    });
 
+
+app.UseStaticFiles();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

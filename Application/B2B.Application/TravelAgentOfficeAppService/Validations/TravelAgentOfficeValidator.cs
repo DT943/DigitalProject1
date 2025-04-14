@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using B2B.Application.B2BAppService.Dto;
+using B2B.Application.TravelAgentOffice.Dto;
 using FluentValidation;
 using Infrastructure.Application.Validations;
 
-namespace B2B.Application.B2BAppService.Validations
+namespace B2B.Application.TravelAgentOffice.Validations
 {
     public class TravelAgentOfficeValidator : AbstractValidator<IValidatableDto>
     {
@@ -38,10 +38,7 @@ namespace B2B.Application.B2BAppService.Validations
                 RuleFor(dto => (dto as TravelAgentOfficeCreateDto).SYP)
                     .NotEmpty()
                     .WithMessage("The Local Currency of the Office cannot be empty.");
-
-                RuleFor(dto => (dto as TravelAgentOfficeCreateDto).UserCode)
-                    .NotEmpty()
-                    .WithMessage("The Local Currency of the Office cannot be empty.");
+ 
 
             });
 
@@ -66,12 +63,7 @@ namespace B2B.Application.B2BAppService.Validations
                 RuleFor(dto => (dto as TravelAgentOfficeUpdateDto).SYP)
                     .NotEmpty()
                     .WithMessage("The Local Currency of the Office cannot be empty.");
-
-                RuleFor(dto => (dto as TravelAgentOfficeUpdateDto).UserCode)
-                    .NotEmpty()
-                    .WithMessage("The Local Currency of the Office cannot be empty.");
-
-
+ 
                 RuleFor(dto => (dto as TravelAgentOfficeUpdateDto).FirstEmail)
                   .NotEmpty()
                   .WithMessage("The Email Address of the Office cannot be empty.");
