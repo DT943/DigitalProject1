@@ -131,12 +131,20 @@ namespace Infrastructure.Application
             return await Get(result.Entity.Id);
         }
 
-        public virtual async Task<IEnumerable<TGetAllDto>> GetAll(TFilterDto input)
+        public virtual async Task<PaginatedResult<TGetAllDto>> GetAll(TFilterDto input)
         {
             var result = await QueryExcuter(input).AsNoTracking().ToListAsync();
             var filterdResultForCount = _processor.Apply(input, result.AsQueryable(), applyPagination: false);
             var filterdResult = _processor.Apply(input, filterdResultForCount);
-            return await Task.FromResult(_mapper.Map<List<TGetAllDto>>(filterdResult));
+            var count = filterdResultForCount.Count();
+
+            return new PaginatedResult<TGetAllDto>
+            {
+                Items = await Task.FromResult(_mapper.Map<List<TGetAllDto>>(filterdResult)),
+                TotalCount = count,
+                Page = input.Page ?? 1,
+                PageSize = input.PageSize ?? count
+            };
         }
 
          

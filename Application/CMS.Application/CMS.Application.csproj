@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Infrastructure.Application\Infrastructure.Application.csproj" />
     <ProjectReference Include="..\..\Data\CMS.Data\CMS.Data.csproj" />
+    <ProjectReference Include="..\CWCore.Application\CWCore.Application.csproj" />
   </ItemGroup>
 
 </Project>

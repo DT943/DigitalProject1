@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using B2B.Application.TravelAgentEmployeeAppService.Dto;
+using CWCore.Application.POSAppService;
 using FluentValidation;
 using Infrastructure.Application.Validations;
 

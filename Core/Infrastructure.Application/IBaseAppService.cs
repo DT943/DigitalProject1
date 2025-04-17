@@ -1,4 +1,5 @@
-﻿using Infrastructure.Data.BaseDbContext;
+﻿using Infrastructure.Application.BasicDto;
+using Infrastructure.Data.BaseDbContext;
 using Infrastructure.Domain.Models;
 using Sieve.Models;
 using System;
@@ -18,7 +19,7 @@ namespace Infrastructure.Application
         public Task<TGetDto> Get(int id);
 
         public Task<TGetDto> Update(TUpdateDto update);
-        public Task<IEnumerable<TGetAllDto>> GetAll(TFilterDto input);
+        public Task<PaginatedResult<TGetAllDto>> GetAll(TFilterDto input);
         public Task<TGetDto> FakeDelete(bool delete, int id);
 
     }

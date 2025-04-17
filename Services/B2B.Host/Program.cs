@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using System.Text;
 using System.Security.Cryptography.X509Certificates;
+using CWCore.Data.DbContext;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,7 +76,12 @@ builder.Services.AddDbContext<B2BDbContext>((sp, options) =>
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 });
 
+builder.Services.AddDbContext<CWDbContext>((sp, options) =>
+{
+    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
+           .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 
+});
 builder.Services.AddSwaggerGen();
 
 

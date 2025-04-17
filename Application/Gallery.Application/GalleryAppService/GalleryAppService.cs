@@ -10,6 +10,7 @@ using Gallery.Application.GalleryAppService.Dtos;
 using Gallery.Application.GalleryAppService.Validations;
 using Gallery.Data.DbContext;
 using Infrastructure.Application;
+using Infrastructure.Application.BasicDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
@@ -28,14 +29,14 @@ namespace Gallery.Application.GalleryAppService
             _serviceDbContext = serviceDbContext;
         }
 
-        public override async Task<IEnumerable<GalleryGetDto>> GetAll(SieveModel input)
+        public override async Task<PaginatedResult<GalleryGetDto>> GetAll(SieveModel input)
         {
             // Get all galleries first
             var allGallery = await base.GetAll(input);
 
             // Get distinct file types for each gallery in a single query and map them directly
             var fileTypes = await _serviceDbContext.Files
-                .Where(file => allGallery.Select(g => g.Id).Contains(file.GalleryId))
+                .Where(file => allGallery.Items.Select(g => g.Id).Contains(file.GalleryId))
                 .GroupBy(file => file.GalleryId)
                 .Select(group => new
                 {
@@ -48,7 +49,7 @@ namespace Gallery.Application.GalleryAppService
             var fileTypesDictionary = fileTypes.ToDictionary(x => x.GalleryId, x => x.FileTypes);
 
             // Set the file types for each gallery directly from the dictionary
-            foreach (var item in allGallery)
+            foreach (var item in allGallery.Items)
             {
                 if (fileTypesDictionary.ContainsKey(item.Id))
                 {
