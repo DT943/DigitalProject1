@@ -2,6 +2,9 @@
 using CMS.Application.ComponentAppService;
 using CMS.Application.ComponentAppService.Dto;
 using CMS.Application.ComponentAppService.Validations;
+using CMS.Application.ComponentMetadataAppService;
+using CMS.Application.ComponentMetadataAppService.Dto;
+using CMS.Application.ComponentMetadataAppService.Validations;
 using CMS.Application.PageAppService;
 using CMS.Application.PageAppService.Dtos;
 using CMS.Application.PageAppService.Validations;
@@ -28,6 +31,9 @@ namespace CMS.Host.Helper
             services.AddTransient<IComponentAppService, ComponentAppService>();
             services.AddTransient<ComponentValidator>();
 
+            services.AddTransient<IComponentMetadataAppService, ComponentMetadataAppService>();
+            services.AddTransient<ComponentMetadataValidator>();
+
             services.AddTransient<IPOSAppService, POSAppService>();
             services.AddTransient<POSValidator>();
 
@@ -37,10 +43,8 @@ namespace CMS.Host.Helper
                 mc.AddProfile(new PageMapperProfile());
                 mc.AddProfile(new SegmentMapperProfile());
                 mc.AddProfile(new ComponentMapperProfile());
+                mc.AddProfile(new ComponentMetadataMapperProfile());
                 mc.AddProfile(new POSMapperProfile());
-
-
-
             });
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);

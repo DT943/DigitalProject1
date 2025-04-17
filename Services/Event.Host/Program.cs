@@ -12,7 +12,7 @@ using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(serverOptions =>
+/*builder.WebHost.ConfigureKestrel(serverOptions =>
 {
  
     serverOptions.Listen(IPAddress.Any, 7185, listenOptions =>
@@ -28,7 +28,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 
     });
 });
-
+*/
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

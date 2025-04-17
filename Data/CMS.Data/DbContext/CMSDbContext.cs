@@ -30,6 +30,8 @@ namespace CMS.Data.DbContext
 
         public DbSet<Domain.Models.Component> Components { get; set; }
 
+        public DbSet<Domain.Models.ComponentMetadata> ComponentMetadatas { get; set; }
+
         public DbSet<Domain.Models.Page> Pages { get; set; }
 
         public DbSet<Domain.Models.Segment> Segments { get; set; }

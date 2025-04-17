@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CMS.Application.ComponentAppService.Dto;
+using CMS.Application.ComponentMetadataAppService.Dto;
 using FluentValidation;
 using Infrastructure.Application.Validations;
 
-namespace CMS.Application.ComponentAppService.Validations
+namespace CMS.Application.ComponentMetadataAppService.Validations
 {
-    public class ComponentValidator : AbstractValidator<IValidatableDto>
+    public class ComponentMetadataValidator : AbstractValidator<IValidatableDto>
     {
-        public ComponentValidator()
+        public ComponentMetadataValidator()
         {
             RuleSet("create", () =>
             {
-                RuleFor(dto => (dto as ComponentCreateDto).Type)
+                RuleFor(dto => (dto as ComponentMetadataCreateDto).Type)
                     .NotEmpty()
                     .WithMessage("The Type of the Component cannot be empty.");
 
-                RuleFor(dto => (dto as ComponentCreateDto).Content)
+                RuleFor(dto => (dto as ComponentMetadataCreateDto).Content)
                     .NotEmpty()
-                    .WithMessage("The Content of the Component cannot be empty.")
+                    .WithMessage("The Type of the Component cannot be empty.")
                     .Must(BeValidJson)
                     .WithMessage("The Content must be a valid JSON.");
             });
@@ -29,19 +29,18 @@ namespace CMS.Application.ComponentAppService.Validations
             RuleSet("update", () =>
             {
 
-                RuleFor(dto => (dto as ComponentUpdateDto).Type)
+                RuleFor(dto => (dto as ComponentMetadataUpdateDto).Type)
                 .NotEmpty()
                 .WithMessage("The Type of the Component cannot be empty.");
 
-                RuleFor(dto => (dto as ComponentUpdateDto).Content)
+                RuleFor(dto => (dto as ComponentMetadataUpdateDto).Content)
                 .NotEmpty()
-                .WithMessage("The Content of the Component cannot be empty.")
+                .WithMessage("The Type of the Component cannot be empty.")
                 .Must(BeValidJson)
-                .WithMessage("The Content must be a valid JSON."); 
+                .WithMessage("The Content must be a valid JSON.");
 
             });
-        }
-
+    }
         private bool BeValidJson(string content)
         {
             if (string.IsNullOrWhiteSpace(content)) return false;
@@ -56,6 +55,5 @@ namespace CMS.Application.ComponentAppService.Validations
                 return false;
             }
         }
-
     }
 }
