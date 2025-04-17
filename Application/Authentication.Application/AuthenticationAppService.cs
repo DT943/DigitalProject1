@@ -307,6 +307,7 @@ namespace Authentication.Application
             authModel.IsAuthenticated = true;
             authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
             authModel.Email = user.Email;
+            authModel.Code = user.Code;
             authModel.FirstName = user.FirstName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = userRoles;
@@ -380,7 +381,6 @@ namespace Authentication.Application
                 Token = null
             };
         }
-
         private string GenerateSecurePassword()
         {
             Random random = new Random();
@@ -401,7 +401,6 @@ namespace Authentication.Application
 
             return shuffled;
         }
-
         public async Task <AuthenticationModel> FirstResetPassword(FirstResetLogInDto firestLogInDto)
         {
             string email = Decrypt(firestLogInDto.Token, this.key);
@@ -447,7 +446,6 @@ namespace Authentication.Application
                 Email = email
             };
         }
-
         public async Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto)
         {
             var user = await _userManager.FindByEmailAsync(firestLogInDto.Email);
@@ -609,12 +607,10 @@ namespace Authentication.Application
                 PageSize = sieveModel.PageSize ?? totalCount
             };
          }
-
         public async Task<IEnumerable<string>> GetAllRolesAsync()
         {
             return await _roleManager.Roles.Select(r => r.Name).ToListAsync();
         }
-
         public async Task<AuthenticationGetDto> GetUserByCodeAsync(string code)
         {
             var user = await _userManager.Users.Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
@@ -664,7 +660,6 @@ namespace Authentication.Application
 
             return auth;
         }
-
         public async Task<UserWithRole> AssignRolesToUserAsync(string userCode, List<string> roles)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
@@ -906,7 +901,6 @@ namespace Authentication.Application
                 LastName = user.LastName
             };
         }
-
         public async Task<AuthenticationGetDto> UserFakeDeleteAsync(UserFakeDeleteDto dto)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == dto.Code);
@@ -930,8 +924,6 @@ namespace Authentication.Application
 
             return _mapper.Map<AuthenticationGetDto>(user);
         }
-
-
         public async Task<AuthenticationModel> ForgotPassword(ForgotPasswordModel dto)
         {
             var existuser = await _userManager.FindByEmailAsync(dto.Email);

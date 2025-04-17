@@ -56,7 +56,7 @@ namespace Hotel.Application.HotelAppService
 
             // Generate all possible gallery names
             var galleryNames = galleryTypes.Select(item => create.Name.ToLower() + "." + item).ToList();
-
+           
             // Get all existing galleries in one query
             var existingGalleries = await _galleryAppService.GetGalleriesByNames(galleryNames);
             var existingGalleryNames = existingGalleries.Select(g => g.Name).ToHashSet();

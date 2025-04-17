@@ -12,6 +12,7 @@ namespace Authentication.Domain.Models
         public string Message { get; set; }
         public bool IsAuthenticated { get; set; }
         public string Email { get; set; }
+        public string Code { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Token { get; set; }

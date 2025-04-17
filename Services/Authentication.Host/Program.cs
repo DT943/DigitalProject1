@@ -10,19 +10,29 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
+using System.Runtime.ConstrainedExecution;
 Console.WriteLine("Application is starting V.1.9.1");
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureKestrel(options =>
+builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-    options.Listen(IPAddress.Any, 7189); // HTTP port
-    options.Listen(IPAddress.Any, 7182, listenOptions =>
+    serverOptions.Listen(IPAddress.Any, 7189); // HTTP
+
+    serverOptions.Listen(IPAddress.Any, 7182, listenOptions =>
     {
-        listenOptions.UseHttps(/*"/var/www/ChamWingsAspNetCoreServices/publish/localhost.pfx", "tarek"*/);
+        if (builder.Environment.IsDevelopment())
+        
+            listenOptions.UseHttps(); 
+        else
+        
+            listenOptions.UseHttps(new X509Certificate2(
+                "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
+                "HappyHappy@2025"));
         
     });
 });
+
 // Add services to the container.
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddAuthentication(options =>

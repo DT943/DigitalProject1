@@ -8,6 +8,7 @@ using CMS.Application.PageAppService.Dtos;
 using CMS.Application.PageAppService.Validations;
 using CMS.Data.DbContext;
 using Infrastructure.Application;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,18 +40,18 @@ namespace CMS.Application.PageAppService
 
             return await base.Create(create);
         }
+
         public async Task<PageGetDto> GetPageBySubUrl(string pos, string language, string pageUrlName)
         {
             var result =  _serviceDbContext.Pages.Where(x => x.Language.ToLower().Equals(language.ToLower()) 
             && x.POS.ToLower().Equals(pos.ToLower())
-            && x.PageUrlName.ToLower().Equals(pageUrlName.ToLower())).FirstOrDefault();
-
-            
+            && x.PageUrlName.ToLower().Equals(pageUrlName.ToLower())).Include(x => x.Segments).ThenInclude(x=>x.Components).FirstOrDefault();
+  
             return await Task.FromResult(_mapper.Map<PageGetDto>(result));
             
         }
 
-
+        
         public async Task<IEnumerable<PageGetDto>> GetPageByStatus(string status)
         {
             var result = _serviceDbContext.Pages.Where(x => x.Status.ToLower().Equals(status)).ToList();

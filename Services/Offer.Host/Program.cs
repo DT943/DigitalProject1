@@ -6,20 +6,27 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 
 Console.WriteLine("Application is starting V.1.3");
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureKestrel(options =>
+builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-
-    options.Listen(IPAddress.Any, 7099, listenOptions =>
+    serverOptions.Listen(IPAddress.Any, 7099, listenOptions =>
     {
-        listenOptions.UseHttps();  // HTTPS port
+        if (builder.Environment.IsDevelopment())
+
+            listenOptions.UseHttps();
+        else
+
+            listenOptions.UseHttps(new X509Certificate2(
+                "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
+                "HappyHappy@2025"));
+
     });
 });
 
- 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
