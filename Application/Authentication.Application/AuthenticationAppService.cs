@@ -311,6 +311,7 @@ namespace Authentication.Application
             authModel.FirstName = user.FirstName;
             authModel.ExpiresOn = jwtSecurityToken.ValidTo;
             authModel.Roles = userRoles;
+            authModel.ManagerCode = user.ManagerCode;
             authModel.NumberOfLogin = user.NumberOfLogIn;
             return authModel;
         }
@@ -945,6 +946,65 @@ namespace Authentication.Application
             string subject = "Your Password Has Been Generated, Welcome to our website.";
 
             await _emailService.SendEmailAsync(dto.Email, subject, newPassword, existuser.FirstName);
+            return new AuthenticationModel
+            {
+                IsAuthenticated = true,
+                Message = "A new password has been sent to your email. Please check your inbox"
+            };
+        }
+
+
+        public async Task<AuthenticationModel> SetUserManager(SetUserManagerDto dto)
+        {
+            var existuser = await _userManager.Users.FirstOrDefaultAsync(x => x.Code.Equals(dto.UserCode));
+            var manager = await _userManager.Users.FirstOrDefaultAsync(x => x.Code.Equals(dto.ManagerCode));
+
+            if (existuser == null || manager == null)
+            {
+                return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
+            }
+
+            var roleHierarchy = new Dictionary<string, int>
+            {
+                { "Officer", 1 },
+                { "Supervisor", 2 },
+                { "Manager", 3 },
+                { "Admin", 4 },
+                { "SuperAdmin", 5 }
+            };
+
+            var existUserRoles = await _userManager.GetRolesAsync(existuser);
+            var managerRoles = await _userManager.GetRolesAsync(manager);
+
+            var userRoleMap = existUserRoles
+                .Select(r => r.Split('-'))
+                .Where(p => p.Length == 2 && roleHierarchy.ContainsKey(p[1]))
+                .ToDictionary(p => p[0], p => roleHierarchy[p[1]]); // service => level
+
+            var managerRoleMap = managerRoles
+                .Select(r => r.Split('-'))
+                .Where(p => p.Length == 2 && roleHierarchy.ContainsKey(p[1]))
+                .ToDictionary(p => p[0], p => roleHierarchy[p[1]]); // service => level
+
+            // Find common services
+            var commonServices = userRoleMap.Keys.Intersect(managerRoleMap.Keys);
+
+            // Check that manager's level is higher for all common services
+            foreach (var service in commonServices)
+            {
+                if (managerRoleMap[service] <= userRoleMap[service])
+                {
+                    return new AuthenticationModel
+                    {
+                        Message = $"Manager must have a higher role than user for service '{service}'.",
+                        IsAuthenticated = false
+                    };
+                }
+            }
+
+            existuser.ManagerCode = manager.Code;
+            var result = await _userManager.UpdateAsync(existuser);
+
             return new AuthenticationModel
             {
                 IsAuthenticated = true,

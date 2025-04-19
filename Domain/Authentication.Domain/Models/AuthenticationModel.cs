@@ -19,6 +19,8 @@ namespace Authentication.Domain.Models
         public DateTime ExpiresOn { get; set; }
         public int NumberOfLogin { get; set; }
 
+        public string? ManagerCode { get; set; }
+
         public IEnumerable<string> Roles { get; set; }
     }
 }
