@@ -87,5 +87,11 @@ namespace Authentication.Application.Dtos
 
     }
 
+    public class SetUserManagerDto
+    {
+        public string UserCode { get; set; }
 
+        public bool ManagerCode { get; set; }
+
+    }
 }

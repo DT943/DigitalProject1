@@ -20,15 +20,8 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
     serverOptions.Listen(IPAddress.Any, 7189); // HTTP
 
     serverOptions.Listen(IPAddress.Any, 7182, listenOptions =>
-    {
-        if (builder.Environment.IsDevelopment())
-        
+    { 
             listenOptions.UseHttps(); 
-        else
-        
-            listenOptions.UseHttps(new X509Certificate2(
-                "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
-                "HappyHappy@2025"));
         
     });
 });

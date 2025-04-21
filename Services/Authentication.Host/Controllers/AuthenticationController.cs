@@ -341,5 +341,32 @@ namespace Authentication.Host.Controllers
 
             return Ok(new List<string> { "marketing", "holiday" , "callcenter", "revenue", "digital transformation","scheduling", "interline","cargo","hr" } );
         }
+
+
+        [HttpPost("SetRoles")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> SetRoles(SetUserManagerDto dto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
+            try
+            {
+                var result = await _authenticationAppService.SetUserManager(dto);
+                if (!result.IsAuthenticated)
+                    return BadRequest(new ErrorModel
+                    {
+                        IsAuthenticated = result.IsAuthenticated,
+                        Message = result.Message
+                    });
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+         }
     }
 }

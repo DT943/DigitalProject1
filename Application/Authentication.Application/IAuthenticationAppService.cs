@@ -29,5 +29,8 @@ namespace Authentication.Application
         Task<AuthenticationGetDto> UserFakeDeleteAsync(UserFakeDeleteDto dto);
 
         Task<AuthenticationModel> ForgotPassword(ForgotPasswordModel dto);
+
+        Task<AuthenticationModel> SetUserManager(SetUserManagerDto dto);
+
     }
 }

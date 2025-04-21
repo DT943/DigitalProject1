@@ -12,6 +12,7 @@ namespace Authentication.Application.Dtos
         public string Code { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string ManagerCode { get; set; }
 
         public string Email { get; set; }
 

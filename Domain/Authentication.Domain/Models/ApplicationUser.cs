@@ -28,6 +28,9 @@ namespace Authentication.Domain.Models
         [MaxLength(50)]
         public string? Department { get; set; }
 
+        [MaxLength(50)]
+        public string? ManagerCode { get; set; }
+
         public DateTime? LastLogIn { get; set; }
         public string? OTP {  get; set; }
         public DateTime OTPExpiration {  get; set; }
