@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CMS.Application;
 using CMS.Application.ComponentAppService;
 using CMS.Application.ComponentAppService.Dto;
 using CMS.Application.ComponentAppService.Validations;
@@ -10,6 +11,7 @@ using CMS.Application.CustomFormAppService.Dto;
 using CMS.Application.CustomFormAppService.Validations;
 using CMS.Application.PageAppService;
 using CMS.Application.PageAppService.Dtos;
+using CMS.Application.PageAppService.Processors;
 using CMS.Application.PageAppService.Validations;
 using CMS.Application.SegmentAppService;
 using CMS.Application.SegmentAppService.Dtos;
@@ -51,7 +53,13 @@ namespace CMS.Host.Helper
             services.AddTransient<ICustomFormAppService, CustomFormAppService>();
             services.AddTransient<CustomFormValidator>();
 
-            services.AddScoped<ISieveProcessor, SieveProcessor>();
+            //services.AddScoped<ISieveProcessor, SieveProcessor>();
+
+
+            services.AddScoped<ISieveProcessor, CmsProcessor>();
+            //services.AddSingleton<ISieveConfiguration, FileProcessorConfiguration>();
+            services.AddSingleton<ISieveConfiguration, PageProcessorConfiguration>();
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new PageMapperProfile());
