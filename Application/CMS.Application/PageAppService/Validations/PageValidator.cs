@@ -39,8 +39,13 @@ namespace CMS.Application.PageAppService.Validations
                     .Must(type => type == type.ToLower())
                     .WithMessage("The page url must be in lowercase.");
 
-                
-                
+
+                RuleFor(dto => (dto as PageCreateDto).Description)
+                    .NotEmpty()
+                    .WithMessage("The page url cannot be empty") 
+                    .Must(type => type == type.ToLower())
+                    .WithMessage("The page url must be in lowercase.");
+
                 RuleFor(dto => (dto as PageCreateDto))
                     .MustAsync(async (dto, cancellation) =>
                     {
@@ -55,7 +60,7 @@ namespace CMS.Application.PageAppService.Validations
                         var parentPath = string.Join('/', segments.Take(segments.Length - 1)).ToLower();
                         return await CMSRepository.Pages.Where(x => x.Language.ToLower().Equals(dto.Language.ToLower())
                         && x.POS.ToLower().Equals(dto.POS.ToLower())
-                        && x.PageUrlName.ToLower().Equals(dto.PageUrlName.ToLower())).AnyAsync();
+                        && x.PageUrlName.ToLower().Equals(parentPath.ToLower())).AnyAsync();
                       
                     })
                     .WithMessage("The specified parent path does not exist.")
@@ -109,7 +114,11 @@ namespace CMS.Application.PageAppService.Validations
                     .Must(type => type == type.ToLower())
                     .WithMessage("The page url must be in lowercase.");
 
-
+                RuleFor(dto => (dto as PageUpdateDto).Description)
+                    .NotEmpty()
+                    .WithMessage("The page url cannot be empty")
+                    .Must(type => type == type.ToLower())
+                    .WithMessage("The page url must be in lowercase.");
 
                 RuleFor(dto => (dto as PageUpdateDto))
                     .MustAsync(async (dto, cancellation) =>
@@ -131,7 +140,7 @@ namespace CMS.Application.PageAppService.Validations
                     .WithMessage("The specified parent path does not exist.")
                     .MustAsync(async (dto, cancellation) =>
                     {
-                        return !await CMSRepository.Pages.Where(x => x.Language.ToLower().Equals(dto.Language.ToLower())
+                        return !await CMSRepository.Pages.Where(x => x.Id != dto.Id  && x.Language.ToLower().Equals(dto.Language.ToLower())
                     && x.POS.ToLower().Equals(dto.POS.ToLower())
                     && x.PageUrlName.ToLower().Equals(dto.PageUrlName.ToLower())).AnyAsync();
                     })

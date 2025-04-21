@@ -349,10 +349,12 @@ namespace Authentication.Host.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
 
             try
             {
-                var result = await _authenticationAppService.SetManagerCode(dto);
+                var result = await _authenticationAppService.SetUserManager(dto);
                 if (!result.IsAuthenticated)
                     return BadRequest(new ErrorModel
                     {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CMS.Application.SegmentAppService.Dtos;
+using CMS.Application.StaticComponentAppService.Dto;
 
 namespace CMS.Application.PageAppService.Dtos
 {
@@ -18,7 +19,10 @@ namespace CMS.Application.PageAppService.Dtos
         public string Status { get; set; }
         public string Description { get; set; }
 
-        public ICollection<SegmentGetDto> Segments { get; set; } 
+        public ICollection<SegmentGetDto> Segments { get; set; }
+
+        public ICollection<StaticComponentGetDto> StaticComponents { get; set; }
+
 
     }
 

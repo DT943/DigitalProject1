@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure.Application.BasicDto;
 
-namespace CMS.Application.ComponentMetadataAppService.Dto
+namespace CMS.Application.StaticComponentAppService.Dto
 { 
-    public class ComponentMetadataGetDto
+    public class StaticComponentGetDto
     {
         public int Id { get; set; }
-        public string Type { get; set; }
+         public string Type { get; set; }
         public string Content { get; set; }
+        public int Position { get; set; }
 
     }
+
 }

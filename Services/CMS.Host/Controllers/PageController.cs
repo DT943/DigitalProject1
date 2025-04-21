@@ -18,7 +18,7 @@ namespace CMS.Host.Controllers
         {
             _appService = appService;
         }
-        [HttpGet("/{pos}/{language}/{pageUrlName}")]
+        [HttpGet("/{pos}/{language}/{*pageUrlName}")]
         [AllowAnonymous]
 
         public async Task<ActionResult<PageGetDto>> GetPage(string pos, string language, string pageUrlName)

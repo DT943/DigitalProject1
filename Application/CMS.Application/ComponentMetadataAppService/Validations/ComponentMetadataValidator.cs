@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CMS.Application.ComponentMetadataAppService.Dto;
+using CMS.Data.DbContext;
 using FluentValidation;
 using Infrastructure.Application.Validations;
 
@@ -11,11 +12,13 @@ namespace CMS.Application.ComponentMetadataAppService.Validations
 {
     public class ComponentMetadataValidator : AbstractValidator<IValidatableDto>
     {
-        public ComponentMetadataValidator()
+        public ComponentMetadataValidator(CMSDbContext _cmsDbContext)
         {
             RuleSet("create", () =>
             {
                 RuleFor(dto => (dto as ComponentMetadataCreateDto).Type)
+                    .Must(x => !_cmsDbContext.StaticComponents.Any(y => y.Type.ToLower().Equals(x)))
+                    .WithMessage("The Type of the Component is already excists")
                     .NotEmpty()
                     .WithMessage("The Type of the Component cannot be empty.");
 

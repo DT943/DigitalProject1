@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using CMS.Application.PageAppService.Dtos;
 using CMS.Application.PageAppService.Validations;
+using CMS.Application.StaticComponentAppService;
 using CMS.Data.DbContext;
 using Infrastructure.Application;
+using Infrastructure.Application.Exceptions;
+using Infrastructure.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +22,13 @@ namespace CMS.Application.PageAppService
 {
     public class PageAppService : BaseAppService<CMSDbContext, Domain.Models.Page, PageGetDto, PageGetDto, PageCreateDto, PageUpdateDto, SieveModel>, IPageAppService
     {
+        IStaticComponentAppService _staticComponentAppService;
         IHttpContextAccessor _httpContextAccessor;
         CMSDbContext _serviceDbContext;
         IMapper _mapper;
-        public PageAppService(CMSDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, PageValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
+        public PageAppService(CMSDbContext serviceDbContext, IStaticComponentAppService staticComponentAppService, IMapper mapper, ISieveProcessor processor, PageValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
+            _staticComponentAppService = staticComponentAppService;
             _httpContextAccessor = httpContextAccessor;
             _serviceDbContext = serviceDbContext;
             _mapper = mapper;
@@ -36,7 +41,7 @@ namespace CMS.Application.PageAppService
 
         public override async Task<PageGetDto> Create(PageCreateDto create)
         {
-            create.Status = "draft";
+            create.Status = "published";
 
             return await base.Create(create);
         }
@@ -46,8 +51,10 @@ namespace CMS.Application.PageAppService
             var result =  _serviceDbContext.Pages.Where(x => x.Language.ToLower().Equals(language.ToLower()) 
             && x.POS.ToLower().Equals(pos.ToLower())
             && x.PageUrlName.ToLower().Equals(pageUrlName.ToLower())).Include(x => x.Segments).ThenInclude(x=>x.Components).FirstOrDefault();
-  
-            return await Task.FromResult(_mapper.Map<PageGetDto>(result));
+            var pages = _mapper.Map<PageGetDto>(result);
+            var staticComponents =  await _staticComponentAppService.GetAll(new SieveModel());
+            pages.StaticComponents = (ICollection<StaticComponentAppService.Dto.StaticComponentGetDto>)staticComponents.Items;
+            return await Task.FromResult(pages);
             
         }
 
@@ -100,6 +107,27 @@ namespace CMS.Application.PageAppService
             return resultWithSubPath;
         }
 
+        public async Task<bool> RecursiveDelete(int id)
+        {
+            var result = await _serviceDbContext.Set<Domain.Models.Page>().FirstOrDefaultAsync(x => x.Id.Equals(id));
+            _serviceDbContext.Set<Domain.Models.Page>().Remove(result);
+
+            var sons = await GetSubPathsAsync(result.POS, result.Language, result.PageUrlName);
+            foreach (var item in sons)
+            {
+                await RecursiveDelete(item.Id);
+            }
+
+            return true;
+        }
+
+        public override async Task<PageGetDto> Delete(int id)
+        {
+            var result = await _serviceDbContext.Set<Domain.Models.Page>().FirstOrDefaultAsync(x => x.Id.Equals(id));
+            await RecursiveDelete(id);
+            await _serviceDbContext.SaveChangesAsync();
+            return await Task.FromResult(_mapper.Map<PageGetDto>(result));
+        }
 
 
         private string GetNextLevel(string inputUrl, string fullUrl)

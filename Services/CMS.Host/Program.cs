@@ -18,16 +18,8 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 {
  
     serverOptions.Listen(IPAddress.Any, 7036, listenOptions =>
-    {
-        if (builder.Environment.IsDevelopment())
-
-            listenOptions.UseHttps();
-        else
-
-            listenOptions.UseHttps(new X509Certificate2(
-                "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
-                "HappyHappy@2025"));
-
+    { 
+            listenOptions.UseHttps(); 
     });
 });
 
@@ -64,7 +56,10 @@ builder.Services.AddCors(options =>
         });
 });
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
 
