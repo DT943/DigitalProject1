@@ -16,6 +16,7 @@ using FluentValidation;
 using System.Drawing;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation.Results;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Gallery.Application.FileAppservice
 {

@@ -499,8 +499,6 @@ namespace Authentication.Application
                 Email = firestLogInDto.Email
             };
         }
-
-
         public async Task<AuthenticationModel> LogInWithOTP(LogInOTPModel model)
         {
              var existuser = await _userManager.FindByEmailAsync(Decrypt(model.Token, this.key));

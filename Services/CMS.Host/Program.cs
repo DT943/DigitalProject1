@@ -62,20 +62,41 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
-
+/*
 builder.Services.AddDbContext<CMSDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 
 });
-
+*/
+/*
 builder.Services.AddDbContext<CWDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 
 });
+*/
+builder.Services.AddDbContext<CMSDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+builder.Services.AddDbContext<CWDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddRazorPages();
