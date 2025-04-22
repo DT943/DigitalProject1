@@ -23,6 +23,15 @@ namespace B2B.Application.TravelAgentApplicationAppService
         public TravelAgentApplicationAppService(B2BDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, TravelAgentApplicationValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
         }
+        public async Task<TravelAgentApplicationGetDto> GetByCode(string code)
+        {
+
+            var travelAgent = await _serviceDbContext.TravelAgentApplications.Where(x => x.Code == code).ToListAsync();
+
+
+            return _mapper.Map<TravelAgentApplicationGetDto>(travelAgent);
+        }
+
 
         protected override IQueryable<Domain.Models.TravelAgentApplication> QueryExcuter(SieveModel input)
         {
