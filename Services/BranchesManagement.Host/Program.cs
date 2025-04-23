@@ -5,14 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
-using System.Net;
 using System.Text;
-using System.Security.Cryptography.X509Certificates;
-
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+/*
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Listen(IPAddress.Any, 7130, listenOptions =>
@@ -28,7 +25,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 
     });
 });
-
+*/
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -104,8 +101,9 @@ if (app.Environment.IsDevelopment())
 if (!app.Environment.IsDevelopment())
     app.UseStaticFiles(new StaticFileOptions
     {
-        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
-        RequestPath = "/images" // This maps the '/images' URL path to the directory
+        //FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
+        FileProvider = new PhysicalFileProvider("/applications/images"),
+       // RequestPath = "../images" // This maps the '/images' URL path to the directory
     });
 
 
