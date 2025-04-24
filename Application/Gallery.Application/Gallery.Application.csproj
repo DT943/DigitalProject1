@@ -15,4 +15,8 @@
     <Folder Include="FileAppservice\Processors\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="System.DirectoryServices" Version="6.0.1" />
+  </ItemGroup>
+
 </Project>

@@ -90,7 +90,7 @@ namespace CMS.Application.PageAppService
 
             // Get the URLs that start with the given pageUrlName if it's provided
             var urls = await _serviceDbContext.Pages
-                .Where(p => p.POS.ToLower().Equals(pos.ToLower()) && p.Language.ToLower().Equals(language.ToLower()) && p.PageUrlName.StartsWith(pageUrlName))
+                .Where(p => p.POS.ToLower().Equals(pos.ToLower()) && p.Language.ToLower().Equals(language.ToLower()) && p.PageUrlName.StartsWith(pageUrlName.TrimEnd('/') + "/"))
                 .Select(p => new { p.Id, p.PageUrlName })
                 .ToListAsync();
 

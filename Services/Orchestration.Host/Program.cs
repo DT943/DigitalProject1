@@ -54,7 +54,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
-
+/*
 builder.Services.AddDbContext<HotelDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("HotelConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
@@ -66,6 +66,7 @@ builder.Services.AddDbContext<GalleryDbContext>((sp, options) =>
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 
 });
+*/
 
 
 

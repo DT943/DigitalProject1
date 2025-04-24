@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="7.21.13" />
+    <ProjectReference Include="..\..\Core\Infrastructure.Data\Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\..\Domain\Hotel.Domain\Hotel.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Infrastructure.Data\Infrastructure.Data.csproj" />
-    <ProjectReference Include="..\..\Domain\Hotel.Domain\Hotel.Domain.csproj" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

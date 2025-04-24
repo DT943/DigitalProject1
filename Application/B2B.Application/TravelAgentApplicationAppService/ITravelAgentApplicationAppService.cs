@@ -12,5 +12,6 @@ namespace B2B.Application.TravelAgentApplicationAppService
 {
     public interface ITravelAgentApplicationAppService : IBaseAppService<TravelAgentApplicationGetAllDto, TravelAgentApplicationGetDto, TravelAgentApplicationCreateDto, TravelAgentApplicationUpdateDto, SieveModel>
     {
+        Task<TravelAgentApplicationGetDto> GetByCode(string code);
     }
 }

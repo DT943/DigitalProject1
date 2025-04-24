@@ -8,6 +8,9 @@ using System.Threading.Tasks;
  using Infrastructure.Data.BaseDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore.Design;
+using System.IO;
+
 namespace BranchesManagement.Data.DbContext
 {
     public class BranchesManagementDbContext : BaseDbContext<BranchesManagementDbContext>

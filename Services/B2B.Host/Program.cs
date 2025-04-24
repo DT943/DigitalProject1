@@ -12,7 +12,7 @@ using CWCore.Data.DbContext;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+/*
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Listen(IPAddress.Any, 7288, listenOptions =>
@@ -28,7 +28,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 
     });
 });
-
+*/
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -69,7 +69,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
 });
-
+/*
 builder.Services.AddDbContext<B2BDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
@@ -82,6 +82,9 @@ builder.Services.AddDbContext<CWDbContext>((sp, options) =>
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 
 });
+
+*/
+
 builder.Services.AddSwaggerGen();
 
 

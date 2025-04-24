@@ -67,7 +67,7 @@ namespace Authentication.Application.Dtos
         [Required, StringLength(128)]
         public string Email { get; set; }
 
-        public string OldPassword { get; set; }
+        public string? OldPassword { get; set; }
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }

@@ -108,6 +108,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2B.Application", "Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "B2B.Host", "Services\B2B.Host\B2B.Host.csproj", "{A5D68DE0-EE0A-4B66-AD1F-82049F6B5347}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Domain", "Domain\Loyalty.Domain\Loyalty.Domain.csproj", "{C378F279-4855-4588-B52D-3A7CE83490A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -298,6 +300,10 @@ Global
 		{A5D68DE0-EE0A-4B66-AD1F-82049F6B5347}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A5D68DE0-EE0A-4B66-AD1F-82049F6B5347}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A5D68DE0-EE0A-4B66-AD1F-82049F6B5347}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C378F279-4855-4588-B52D-3A7CE83490A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C378F279-4855-4588-B52D-3A7CE83490A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C378F279-4855-4588-B52D-3A7CE83490A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C378F279-4855-4588-B52D-3A7CE83490A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -349,6 +355,7 @@ Global
 		{02075ABA-D5A1-4D7D-9833-BA0467AC06A3} = {F23A6BBD-CA61-4C31-B533-11A3563F8AC4}
 		{3B267520-747B-4AF3-92A1-46CA07CD6F08} = {79E93B11-8FA4-4B91-AD51-DFA3799DE4E3}
 		{A5D68DE0-EE0A-4B66-AD1F-82049F6B5347} = {2EF3F720-1FEA-4102-B06C-3098BFD917B2}
+		{C378F279-4855-4588-B52D-3A7CE83490A6} = {F23A6BBD-CA61-4C31-B533-11A3563F8AC4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E20087F2-50FF-4E2A-9AE2-521764CC56F3}

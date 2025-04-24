@@ -17,6 +17,17 @@ namespace B2B.Host.Controllers
         {
             _appService = appService;
         }
+        [HttpGet("/get-by-code/{code}")]
+        public async Task<ActionResult<TravelAgentApplicationGetDto>> GetByCode(string code)
+        {
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
+
+            return Ok(await _appService.GetByCode(code));
+        }
 
         [AllowAnonymous]
         public override async Task<ActionResult<TravelAgentApplicationGetDto>> Create(TravelAgentApplicationCreateDto createDto)

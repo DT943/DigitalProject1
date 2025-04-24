@@ -3,8 +3,8 @@ using System;
 using Authentication.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Oracle.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -17,124 +17,124 @@ namespace Authentication.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.20")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            OracleModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Authentication.Domain.Models.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Department")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("NVARCHAR2(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("FatherName")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("Gender")
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
                     b.Property<string>("IdentityNumber")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsFrozed")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsLocked")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastLogIn")
-                        .HasColumnType("TIMESTAMP(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("LastOTPChecked")
-                        .HasColumnType("TIMESTAMP(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TIMESTAMP(7) WITH TIME ZONE");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("ManagerCode")
                         .HasMaxLength(50)
-                        .HasColumnType("NVARCHAR2(50)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("MotherName")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("NVARCHAR2(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("NVARCHAR2(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("NumberOfLogIn")
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
                     b.Property<string>("OTP")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("OTPExpiration")
-                        .HasColumnType("TIMESTAMP(7)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("NUMBER(1)");
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("NVARCHAR2(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -144,7 +144,7 @@ namespace Authentication.Data.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
-                        .HasFilter("\"NormalizedUserName\" IS NOT NULL");
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -152,201 +152,201 @@ namespace Authentication.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("NVARCHAR2(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("NVARCHAR2(256)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
                         .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("\"NormalizedName\" IS NOT NULL");
+                        .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = "c4d8c247-7272-44e8-a0bf-6b86346724dc",
+                            Id = "69f4c7e3-3718-4ddb-a892-a435e009a065",
                             Name = "CMS-Admin",
                             NormalizedName = "CMS-ADMIN"
                         },
                         new
                         {
-                            Id = "6877151c-7861-4098-afe1-e533f459b677",
+                            Id = "75bc483b-ce38-4d4c-83ec-741cb88ca41c",
                             Name = "CMS-Manager",
                             NormalizedName = "CMS-MANAGER"
                         },
                         new
                         {
-                            Id = "5b71ea68-3495-4b44-adad-68e31dfaba24",
+                            Id = "c9d9cd23-6768-41d0-b92f-0a27d5adf8ed",
                             Name = "CMS-Supervisor",
                             NormalizedName = "CMS-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "7aa2f339-130b-4581-9e47-acf943308fda",
+                            Id = "4d64b6db-7d0e-4fa4-adb2-1e169ecb23c2",
                             Name = "CMS-Officer",
                             NormalizedName = "CMS-OFFICER"
                         },
                         new
                         {
-                            Id = "3ec5ed82-1b83-49c2-8373-754d0d2d3601",
+                            Id = "962519aa-5f18-4c72-8617-5beebffff6a7",
                             Name = "Offer-Admin",
                             NormalizedName = "OFFER-ADMIN"
                         },
                         new
                         {
-                            Id = "48554fa8-b615-49d9-b052-6d270d4828c3",
+                            Id = "26aa8d64-6a11-4676-b62e-8ae3bf70fcca",
                             Name = "Offer-Manager",
                             NormalizedName = "OFFER-MANAGER"
                         },
                         new
                         {
-                            Id = "0cd26753-2b40-4f1d-b23e-2d4593d38b02",
+                            Id = "cc974da8-8d20-46fa-8ba2-8dd04289ff3b",
                             Name = "Offer-Supervisor",
                             NormalizedName = "OFFER-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "9d57d6ae-0fad-4545-a5c3-71553db17a8b",
+                            Id = "336bb7c3-4511-4f1c-af52-3060cc53fc32",
                             Name = "Offer-Officer",
                             NormalizedName = "OFFER-OFFICER"
                         },
                         new
                         {
-                            Id = "473bc8dc-0e81-4513-b441-6e2f2ba2b342",
+                            Id = "e2bb3df9-4e9e-4bc0-b99f-2fa739d09934",
                             Name = "Authntication-Admin",
                             NormalizedName = "AUTHNTICATION-ADMIN"
                         },
                         new
                         {
-                            Id = "25e48e04-96b2-415a-a32f-85695dc519ce",
+                            Id = "264a27c6-8b18-452d-af24-49208315d2f4",
                             Name = "Authntication-Manager",
                             NormalizedName = "AUTHNTICATION-MANAGER"
                         },
                         new
                         {
-                            Id = "5265054c-b5fe-4169-a2e5-75fc82b7080b",
+                            Id = "dd3562f1-173e-41e8-af38-ca9dbb0b9c81",
                             Name = "Authntication-Supervisor",
                             NormalizedName = "AUTHNTICATION-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "2ae15542-3234-4f4f-9c99-f3b607934f65",
+                            Id = "d9ff2012-714e-4450-b554-b6ce6f884a9b",
                             Name = "Authntication-Officer",
                             NormalizedName = "AUTHNTICATION-OFFICER"
                         },
                         new
                         {
-                            Id = "859b60db-7ae5-48bb-af9a-9085e3af662b",
+                            Id = "d2baaa05-6b3c-4f9e-89ae-ad6999b927ea",
                             Name = "CWCore-Admin",
                             NormalizedName = "CWCORE-ADMIN"
                         },
                         new
                         {
-                            Id = "40da937d-89a1-44a0-9929-05a55d8a96ec",
+                            Id = "cb935858-f5d8-435f-8306-398b4f589308",
                             Name = "CWCore-Manager",
                             NormalizedName = "CWCORE-MANAGER"
                         },
                         new
                         {
-                            Id = "ce435273-d8fb-4cc7-a5f6-61fc461d53ba",
+                            Id = "6685bf0a-9a3f-4c38-b35d-4ff801149971",
                             Name = "CWCore-Supervisor",
                             NormalizedName = "CWCORE-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "14729d21-cffb-427b-9f0e-a76f28348a2e",
+                            Id = "fd929c43-0673-4281-95a3-be7db745de1a",
                             Name = "CWCore-Officer",
                             NormalizedName = "CWCORE-OFFICER"
                         },
                         new
                         {
-                            Id = "43743c92-129d-4911-a8f3-b68abfeecb5f",
+                            Id = "df27a56c-7b7c-4042-9f91-396665180960",
                             Name = "Gallery-Admin",
                             NormalizedName = "GALLERY-ADMIN"
                         },
                         new
                         {
-                            Id = "5980f82b-c2f9-4147-9adc-edb777848d15",
+                            Id = "fbd700a8-3345-49e2-82bd-11d5af216dc0",
                             Name = "Gallery-Manager",
                             NormalizedName = "GALLERY-MANAGER"
                         },
                         new
                         {
-                            Id = "7a79e4be-16cc-4e83-877f-6cfeafd99f80",
+                            Id = "1699397a-1406-4285-bed1-4f3f6dd45fb1",
                             Name = "Gallery-Supervisor",
                             NormalizedName = "GALLERY-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "c94ad0f3-9b55-4ae3-a600-a6e836dc19ec",
+                            Id = "89bbd946-fe9c-4bb6-8858-e56bc758ecbf",
                             Name = "Gallery-Officer",
                             NormalizedName = "GALLERY-OFFICER"
                         },
                         new
                         {
-                            Id = "ee0f60e3-0cb4-4390-8c43-8501f75f0fe2",
+                            Id = "3b1bb6d5-8d3f-4fd6-9836-0433a7164dbd",
                             Name = "Hotel-Admin",
                             NormalizedName = "HOTEL-ADMIN"
                         },
                         new
                         {
-                            Id = "42dd9978-cf87-4392-b8a3-190afefbb458",
+                            Id = "8a20ef9e-8c71-4abf-8055-e6af97f86286",
                             Name = "Hotel-Manager",
                             NormalizedName = "HOTEL-MANAGER"
                         },
                         new
                         {
-                            Id = "5fd346f5-b707-409d-a7dc-e6bb6fce648f",
+                            Id = "0add298a-7885-4bdc-a3e9-bd458af2216f",
                             Name = "Hotel-Supervisor",
                             NormalizedName = "HOTEL-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "be0ee4a8-406e-4173-959d-854abd51c16c",
+                            Id = "abd1d3e0-5ca1-442a-b49f-b468fb2153c5",
                             Name = "Hotel-Officer",
                             NormalizedName = "HOTEL-OFFICER"
                         },
                         new
                         {
-                            Id = "9fa66e43-a816-4193-85d8-f3efd28d9141",
+                            Id = "e06e8c80-0b7d-4253-85bd-fa4063846f90",
                             Name = "Notification-Admin",
                             NormalizedName = "NOTIFICATION-ADMIN"
                         },
                         new
                         {
-                            Id = "96f56fa2-e69f-49f0-89cf-d299ad0211ce",
+                            Id = "deed1365-7db2-4e33-974f-a17bf066c987",
                             Name = "Notification-Manager",
                             NormalizedName = "NOTIFICATION-MANAGER"
                         },
                         new
                         {
-                            Id = "c20bf05a-9c60-4643-a0ed-445e1982c018",
+                            Id = "143c4dde-de36-4cb0-9470-daea9cfc0605",
                             Name = "Notification-Supervisor",
                             NormalizedName = "NOTIFICATION-SUPERVISOR"
                         },
                         new
                         {
-                            Id = "deda16c8-1f7f-4c36-92c5-268b847039af",
+                            Id = "b7ca6e18-b684-4c9d-ad81-2360c42844ea",
                             Name = "Notification-Officer",
                             NormalizedName = "NOTIFICATION-OFFICER"
                         },
                         new
                         {
-                            Id = "5c3af973-c4b0-4f9e-b82c-162556e0c7ac",
+                            Id = "54077d26-601c-459d-a35f-70568824e23f",
                             Name = "SuperAdmin",
                             NormalizedName = "SUPERADMIN"
                         });
@@ -356,19 +356,19 @@ namespace Authentication.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -381,19 +381,19 @@ namespace Authentication.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("NUMBER(10)");
+                        .HasColumnType("int");
 
-                    OraclePropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -405,17 +405,17 @@ namespace Authentication.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -427,10 +427,10 @@ namespace Authentication.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -442,16 +442,16 @@ namespace Authentication.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("NVARCHAR2(450)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("NVARCHAR2(2000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
