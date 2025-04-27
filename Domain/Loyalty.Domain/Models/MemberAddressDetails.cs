@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Infrastructure.Domain.Models;
 
-namespace MemberDemographicsAndProfile.Models
+namespace Domain.Models
 {
     public class MemberAddressDetails : BasicEntity
     {

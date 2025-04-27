@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Domain.Models;
 
-namespace MemberDemographicsAndProfile.Models
+namespace Domain.Models
 {
     public class MemberTelephoneDetails : BasicEntity
     {

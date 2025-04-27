@@ -13,7 +13,7 @@ Console.WriteLine("CMS Application is starting V.1.3");
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+/*
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
  
@@ -22,7 +22,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
             listenOptions.UseHttps(); 
     });
 });
-
+*/
 
 builder.Services.AddAuthentication(options =>
 {
@@ -90,7 +90,7 @@ builder.Services.AddDbContext<CMSDbContext>((sp, options) =>
 builder.Services.AddDbContext<CWDbContext>((sp, options) =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
-    var connectionString = configuration.GetConnectionString("DefaultConnection");
+    var connectionString = configuration.GetConnectionString("CWCoreDefaultConnection");
 
     options.UseSqlServer(connectionString)
            .EnableSensitiveDataLogging()
