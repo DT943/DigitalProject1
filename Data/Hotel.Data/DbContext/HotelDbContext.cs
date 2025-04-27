@@ -19,14 +19,10 @@ namespace Hotel.Data.DbContext
             : base(options)
         {
             _configuration = configuration;
-        }
-        protected override string GetSchemaName()
-        {
-            return Assembly.GetExecutingAssembly().GetName().Name.Split('.')[0].ToUpper();
-        }
+        } 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(GetSchemaName());
+           // modelBuilder.HasDefaultSchema(GetSchemaName());
         }
         public DbSet<Domain.Models.Hotel> Hotels { get; set; }
         public DbSet<Domain.Models.HotelGallery> HotelGalleries { get; set; }

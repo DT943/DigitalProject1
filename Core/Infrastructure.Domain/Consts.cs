@@ -37,10 +37,7 @@ namespace Infrastructure.Domain
             public static readonly string HR = "HR";
             public static readonly string BranchesManagement = "BranchesManagement";
             public static readonly string B2B = "B2B";
-
-
-
-
+            public static readonly string Loyalty = "Loyalty";
         }
 
         public static class RideRequestStatus
