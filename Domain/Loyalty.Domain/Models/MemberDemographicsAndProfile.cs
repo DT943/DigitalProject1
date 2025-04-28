@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Infrastructure.Domain.Models;
 
-namespace Domain.Models
+namespace Loyalty.Domain.Models
 {
     public class MemberDemographicsAndProfile : BasicEntity
     {

@@ -24,10 +24,15 @@ namespace Loyalty.Data.DbContext
         {
           //  modelBuilder.HasDefaultSchema(GetSchemaName());
         }
-        public DbSet<Domain.Models.MemberAddressDetails> MemberAddressDetails { get; set; }
+        public DbSet<Domain.Models.MemberAddressDetails>         MemberAddressDetails { get; set; }
         public DbSet<Domain.Models.MemberDemographicsAndProfile> MemberDemographicsAndProfiles { get; set; }
-        public DbSet<Domain.Models.MemberTelephoneDetails> MemberTelephoneDetails { get; set; }
-
+        public DbSet<Domain.Models.MemberTelephoneDetails>       MemberTelephoneDetails { get; set; }
+        public DbSet<Domain.Models.MemberPreferenceDetails>      MemberPreferenceDetails { get; set; }
+        public DbSet<Domain.Models.MemberContactPersons>         MemberContactPersons { get; set; }
+        public DbSet<Domain.Models.MemberHobbiesDetails>         MemberHobbiesDetails { get; set; }
+        public DbSet<Domain.Models.MemberTravelAgentDetails>     MemberTravelAgentDetails { get; set; }
+        public DbSet<Domain.Models.MemberSecurityQuestions>      MemberSecurityQuestions { get; set; }
+        public DbSet<Domain.Models.MemberEducationalDetails>     MemberEducationaldetails { get; set; }
 
     }
 }

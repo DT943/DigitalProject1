@@ -15,7 +15,7 @@ Console.WriteLine("Application is starting V.1.9.1");
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.ConfigureKestrel(serverOptions =>
+/*builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Listen(IPAddress.Any, 7189); // HTTP
 
@@ -25,7 +25,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
         
     });
 });
-
+*/
 // Add services to the container.
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddAuthentication(options =>
@@ -121,7 +121,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("AllowAll");
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 // Important: Authentication must come before Authorization
 app.UseAuthentication();
