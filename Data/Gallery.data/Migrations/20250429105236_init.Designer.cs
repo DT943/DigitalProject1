@@ -12,15 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gallery.data.Migrations
 {
     [DbContext(typeof(GalleryDbContext))]
-    [Migration("20250422110358_gallery-service")]
-    partial class galleryservice
+    [Migration("20250429105236_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("GALLERY")
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -105,7 +104,7 @@ namespace Gallery.data.Migrations
 
                     b.HasIndex("GalleryId");
 
-                    b.ToTable("Files", "GALLERY");
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("Gallery.Domain.Models.Gallery", b =>
@@ -149,7 +148,7 @@ namespace Gallery.data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Galleries", "GALLERY");
+                    b.ToTable("Galleries");
                 });
 
             modelBuilder.Entity("Gallery.Domain.Models.File", b =>

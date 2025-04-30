@@ -7,7 +7,10 @@ using B2B.Application.TravelAgentApplicationAppService.Dto;
 using B2B.Application.TravelAgentEmployeeAppService.Dto;
 using CWCore.Application.POSAppService;
 using FluentValidation;
+using Infrastructure.Application.EmailValidation;
 using Infrastructure.Application.Validations;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 
 namespace B2B.Application.TravelAgentApplicationAppService.Validations
 {
@@ -15,9 +18,10 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
     {
         IPOSAppService _appService;
 
-        public TravelAgentApplicationValidator(IPOSAppService appService)
+        public TravelAgentApplicationValidator(IPOSAppService appService, IConfiguration configuration)
         {
             _appService = appService;
+            string _emailValidationApiKey = configuration["EmailValidation:ApiKey"];
             RuleSet("create", () =>
             {
                 RuleFor(dto => (dto as TravelAgentApplicationCreateDto).TravelAgencyName)
@@ -41,7 +45,13 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                     .NotEmpty()
                     .WithMessage("The Email cannot be empty.")
                     .EmailAddress()
-                    .WithMessage("The Email format is invalid.");
+                    .WithMessage("The Email format is invalid.").EmailAddress()
+                    .WithMessage("Invalid email format.")
+                    .MustAsync(async (email, cancellation) =>
+                    {
+                        var score = await EmailValidation.GetEmailValidationScore(_emailValidationApiKey, email);
+                        return score;
+                    }).WithMessage("This email is not valid.");
 
                 RuleFor(dto => (dto as TravelAgentApplicationCreateDto).POS)
                      .MustAsync(async (pos, cancellation) =>
@@ -59,7 +69,12 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                 {
                     employee.RuleFor(e => e.EmployeeEmail)
                         .NotEmpty().WithMessage("Employee email is required.")
-                        .EmailAddress().WithMessage("Invalid email format.")
+                        .EmailAddress().WithMessage("Invalid email format.").MustAsync(async (email, cancellation) =>
+                        {
+                            var score = await EmailValidation.GetEmailValidationScore(_emailValidationApiKey, email);
+                            return score;
+                        }).WithMessage("This email is not valid.")
+
                         .MaximumLength(100);
 
                     employee.RuleFor(e => e.Role)
@@ -97,7 +112,12 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                     .NotEmpty()
                     .WithMessage("The Email cannot be empty.")
                     .EmailAddress()
-                    .WithMessage("The Email format is invalid.");
+                    .WithMessage("The Email format is invalid.")
+                    .MustAsync(async (email, cancellation) =>
+                        {
+                            var score = await EmailValidation.GetEmailValidationScore(_emailValidationApiKey, email);
+                            return score;
+                        }).WithMessage("This email is not valid.");
 
                 RuleFor(dto => (dto as TravelAgentApplicationUpdateDto).POS)
                      .MustAsync(async (pos, cancellation) =>
@@ -116,6 +136,12 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                     employee.RuleFor(e => e.EmployeeEmail)
                         .NotEmpty().WithMessage("Employee email is required.")
                         .EmailAddress().WithMessage("Invalid email format.")
+                        .MustAsync(async (email, cancellation) =>
+                        {
+                            var score = await EmailValidation.GetEmailValidationScore(_emailValidationApiKey, email);
+                            return score;
+                        })
+                         .WithMessage("This email is not valid.")
                         .MaximumLength(100);
 
                     employee.RuleFor(e => e.Role)
@@ -129,5 +155,6 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                 });
             });
         }
+
     }
 }

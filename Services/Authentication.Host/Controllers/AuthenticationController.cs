@@ -12,7 +12,7 @@ using Sieve.Models;
 namespace Authentication.Host.Controllers
 {
 
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {

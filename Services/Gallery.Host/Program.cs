@@ -11,23 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 
 
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.Listen(IPAddress.Any, 7181, listenOptions =>
-    {
-        if (builder.Environment.IsDevelopment())
-
-            listenOptions.UseHttps();
-        else
-
-            listenOptions.UseHttps(new X509Certificate2(
-                "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
-                "HappyHappy@2025"));
-
-    });
-});
+var builder = WebApplication.CreateBuilder(args); 
 
 builder.Services.AddAuthentication(options =>
 {
@@ -100,11 +84,10 @@ if (!app.Environment.IsDevelopment())
     app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
-    RequestPath = "/images" // This maps the '/images' URL path to the directory
+   
 });
 
-app.UseHttpsRedirection();
-
+ 
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

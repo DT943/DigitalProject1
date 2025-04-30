@@ -132,7 +132,16 @@ namespace Infrastructure.Application
         }
 
         public virtual async Task<PaginatedResult<TGetAllDto>> GetAll(TFilterDto input)
-        { 
+        {
+            try
+            {
+                var result2 = await QueryExcuter(input).AsNoTracking().ToListAsync();
+
+            }
+            catch (Exception e)
+            {
+
+            }
             var result = await QueryExcuter(input).AsNoTracking().ToListAsync();
             var filterdResultForCount = _processor.Apply(input, result.AsQueryable(), applyPagination: false);
             var filterdResult = _processor.Apply(input, filterdResultForCount);

@@ -9,7 +9,6 @@ using Infrastructure.Service;
 using CWCore.Data.DbContext;
 using System.Security.Cryptography.X509Certificates;
 
-Console.WriteLine("CMS Application is starting V.1.3");
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -111,12 +110,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseStaticFiles();
-app.UseHttpsRedirection();
+//app.UseStaticFiles();
 
 app.UseAuthorization();
 app.MapControllers();
 app.MapRazorPages();
-
 
 app.Run();

@@ -18,21 +18,21 @@ namespace CMS.Host.Controllers
         {
             _appService = appService;
         }
-        [HttpGet("/{pos}/{language}/{*pageUrlName}")]
+        [HttpGet("{pos}/{language}/{*pageUrlName}")]
         [AllowAnonymous]
 
         public async Task<ActionResult<PageGetDto>> GetPage(string pos, string language, string pageUrlName)
         {
             return await _appService.GetPageBySubUrl(pos, language, pageUrlName);
         }
-        [HttpGet("/get-sub-path/{pos}/{language}/")]
-        [HttpGet("/get-sub-path/{pos}/{language}/{*pageUrlName}")]
+        [HttpGet("get-sub-path/{pos}/{language}/")]
+        [HttpGet("get-sub-path/{pos}/{language}/{*pageUrlName}")]
         public async Task<ActionResult<IEnumerable<PageGetUrl>>> GetSubPathsAsync(string pos, string language, string pageUrlName="")
         { 
             return Ok(await _appService.GetSubPathsAsync(pos, language, pageUrlName));
         }
 
-        [HttpGet("/get-page-by-status")]
+        [HttpGet("get-page-by-status")]
         public async Task<ActionResult<IEnumerable<PageGetDto>>> GetPageByStatus()
         {
             var user = HttpContext.User;

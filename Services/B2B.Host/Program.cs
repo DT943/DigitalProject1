@@ -83,8 +83,29 @@ builder.Services.AddDbContext<CWDbContext>((sp, options) =>
 
 });
 
-*/
 
+
+*/
+builder.Services.AddDbContext<B2BDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
+
+builder.Services.AddDbContext<CWDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("CWCoreDefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
 builder.Services.AddSwaggerGen();
 
 
@@ -103,12 +124,12 @@ if (!app.Environment.IsDevelopment())
     app.UseStaticFiles(new StaticFileOptions
     {
         FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
-        RequestPath = "/images" // This maps the '/images' URL path to the directory
+
     });
 
 
 app.UseStaticFiles();
-app.UseHttpsRedirection();
+
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
