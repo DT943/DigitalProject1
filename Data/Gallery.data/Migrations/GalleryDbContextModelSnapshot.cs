@@ -17,7 +17,6 @@ namespace Gallery.data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("GALLERY")
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
@@ -102,7 +101,7 @@ namespace Gallery.data.Migrations
 
                     b.HasIndex("GalleryId");
 
-                    b.ToTable("Files", "GALLERY");
+                    b.ToTable("Files");
                 });
 
             modelBuilder.Entity("Gallery.Domain.Models.Gallery", b =>
@@ -146,7 +145,7 @@ namespace Gallery.data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Galleries", "GALLERY");
+                    b.ToTable("Galleries");
                 });
 
             modelBuilder.Entity("Gallery.Domain.Models.File", b =>

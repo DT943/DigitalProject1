@@ -6,17 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Gallery.data.Migrations
 {
     /// <inheritdoc />
-    public partial class galleryservice : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "GALLERY");
-
             migrationBuilder.CreateTable(
                 name: "Galleries",
-                schema: "GALLERY",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -37,7 +33,6 @@ namespace Gallery.data.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Files",
-                schema: "GALLERY",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -68,7 +63,6 @@ namespace Gallery.data.Migrations
                     table.ForeignKey(
                         name: "FK_Files_Galleries_GalleryId",
                         column: x => x.GalleryId,
-                        principalSchema: "GALLERY",
                         principalTable: "Galleries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -76,7 +70,6 @@ namespace Gallery.data.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Files_GalleryId",
-                schema: "GALLERY",
                 table: "Files",
                 column: "GalleryId");
         }
@@ -85,12 +78,10 @@ namespace Gallery.data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Files",
-                schema: "GALLERY");
+                name: "Files");
 
             migrationBuilder.DropTable(
-                name: "Galleries",
-                schema: "GALLERY");
+                name: "Galleries");
         }
     }
 }

@@ -19,4 +19,11 @@ namespace CMS.Application.CustomFormAppService.Dto
         public bool IsValid { get; set; }
 
     }
+
+    public class EmailValidationResult
+    {
+        public double QualityScore { get; set; }
+        public string Deliverability { get; set; }
+    }
+
 }

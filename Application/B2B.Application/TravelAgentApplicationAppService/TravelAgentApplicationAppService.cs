@@ -15,6 +15,7 @@ using Sieve.Services;
 using B2B.Application.TravelAgentApplicationAppService.Dto;
 using B2B.Application.TravelAgentApplicationAppService.Validations;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 
 namespace B2B.Application.TravelAgentApplicationAppService
 {
@@ -31,6 +32,10 @@ namespace B2B.Application.TravelAgentApplicationAppService
 
             return _mapper.Map<TravelAgentApplicationGetDto>(travelAgent);
         }
+
+
+
+
 
 
         protected override IQueryable<Domain.Models.TravelAgentApplication> QueryExcuter(SieveModel input)

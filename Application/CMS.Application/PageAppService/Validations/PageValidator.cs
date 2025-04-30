@@ -105,67 +105,14 @@ namespace CMS.Application.PageAppService.Validations
                 RuleFor(dto => (dto as PageUpdateDto).Title)
                     .NotEmpty()
                     .WithMessage("The Title of the page cannot be empty.");
-
-                RuleFor(dto => (dto as PageUpdateDto).PageUrlName)
-                    .NotEmpty()
-                    .WithMessage("The page url cannot be empty")
-                    .Matches(@"^([a-zA-Z0-9_-]+)(/[a-zA-Z0-9_-]+)*$")
-                    .WithMessage("Invalid URL format. Avoid leading/trailing slashes, empty segments, or special characters.")
-                    .Must(type => type == type.ToLower())
-                    .WithMessage("The page url must be in lowercase.");
+   
 
                 RuleFor(dto => (dto as PageUpdateDto).Description)
                     .NotEmpty()
                     .WithMessage("The page url cannot be empty")
                     .Must(type => type == type.ToLower())
                     .WithMessage("The page url must be in lowercase.");
-
-                RuleFor(dto => (dto as PageUpdateDto))
-                    .MustAsync(async (dto, cancellation) =>
-                    {
-                        // Normalize and extract parent path
-                        var trimmed = dto.PageUrlName.Trim('/');
-                        var segments = trimmed.Split('/', StringSplitOptions.RemoveEmptyEntries);
-
-                        if (segments.Length <= 1)
-                            return true; // No parent path to check
-
-                        // Get the parent path (everything except the last segment)
-                        var parentPath = string.Join('/', segments.Take(segments.Length - 1)).ToLower();
-                        return await CMSRepository.Pages.Where(x => x.Language.ToLower().Equals(dto.Language.ToLower())
-                        && x.POS.ToLower().Equals(dto.POS.ToLower())
-                        && x.PageUrlName.ToLower().Equals(dto.PageUrlName.ToLower())).AnyAsync();
-
-                    })
-                    .WithMessage("The specified parent path does not exist.")
-                    .MustAsync(async (dto, cancellation) =>
-                    {
-                        return !await CMSRepository.Pages.Where(x => x.Id != dto.Id  && x.Language.ToLower().Equals(dto.Language.ToLower())
-                    && x.POS.ToLower().Equals(dto.POS.ToLower())
-                    && x.PageUrlName.ToLower().Equals(dto.PageUrlName.ToLower())).AnyAsync();
-                    })
-                    .WithMessage("The Page Url Name is already Exist"); ;
-
-                RuleFor(dto => (dto as PageUpdateDto).Language)
-                    .NotEmpty()
-                    .WithMessage("The Language cannot be empty")
-                    .Must(Language => Language == Language.ToLower())
-                    .WithMessage("The page url must be in lowercase.")
-                    .Must(type => AllowedLangTypes.Contains(type))
-                    .WithMessage($"Type must be one of the following: {string.Join(", ", AllowedLangTypes)}.");
-
-                RuleFor(dto => (dto as PageUpdateDto).POS)
-                    .NotEmpty()
-                    .WithMessage("The POS cannot be empty.")
-                    .Must(type => type == type.ToLower())
-                    .WithMessage("The POS must be in lowercase.")
-                    .MustAsync(async (pos, cancellation) =>
-                    {
-                        var result = await _appService.GetByPOSKey(pos);
-                        return result != null && result.Count() != 0;
-                    })
-                    .WithMessage("POS is not valid");
-
+  
 
                 RuleFor(dto => (dto as PageUpdateDto).Status)
                      .Must(type => AllowedTypes.Contains(type))
