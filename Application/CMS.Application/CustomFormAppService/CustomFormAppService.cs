@@ -13,6 +13,9 @@ using Infrastructure.Application.Validations;
 using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Infrastructure.Application.EmailValidation;
+using Microsoft.EntityFrameworkCore;
+using CMS.Domain.Models;
+using FluentValidation.Results;
 namespace CMS.Application.CustomFormAppService
 {
     public class CustomFormAppService : BaseAppService<CMSDbContext, Domain.Models.CustomForm, CustomFormGetDto, CustomFormGetDto, CustomFormCreateDto, CustomFormUpdateDto, SieveModel>, ICustomFormAppService
@@ -34,14 +37,37 @@ namespace CMS.Application.CustomFormAppService
             if (!validationResult.IsValid)
             {
                 throw new FluentValidation.ValidationException(validationResult.Errors);
-            }
+            } 
 
-            string emailValidationApiKey = _configuration["EmailValidation:ApiKey"];
-            Console.WriteLine("emailValidationApiKey:" + emailValidationApiKey);
-            var Result = await EmailValidation.GetEmailValidationScore(emailValidationApiKey, create.Email);
+            CustomForm cf = await _serviceDbContext.CustomForms.Where(f => f.Email == create.Email).FirstOrDefaultAsync();
 
-            create.IsValid = Result;
-            return await base.Create(create);
+            if (cf == null) return await base.Create(create);
+
+            if (cf.LastSubmissionDate == DateTime.Now.Date && cf.NumberofSubmistion > 2)
+                throw new FluentValidation.ValidationException(new List<ValidationFailure> { new ValidationFailure("Appliction", $"you can't add your application more than three times") });
+
+            List<string> Services1 = cf.Services.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                     .Select(s => s.Trim())
+                                     .ToList();
+
+            List<string> Services2 = create.Services.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                                    .Select(s => s.Trim())
+                                                    .ToList();
+
+            // Get unique union (case-sensitive)
+            List<string> uniqueServices = Services1
+                .Union(Services2)
+                .Distinct()
+                .ToList();
+
+            cf.Services = string.Join(",", uniqueServices);
+              
+
+            cf.LastSubmissionDate = DateTime.Now.Date;
+            cf.NumberofSubmistion++;
+            await _serviceDbContext.SaveChangesAsync();
+
+            return await base.Get(cf.Id);
         }
 
         protected override IQueryable<Domain.Models.CustomForm> QueryExcuter(SieveModel input)
