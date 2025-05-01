@@ -142,11 +142,6 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Validations
                 RuleFor(dto => (dto as MemberDemographicsAndProfileUpdateDto).PassportNumber)
                     .MaximumLength(50);
 
-                RuleFor(dto => (dto as MemberDemographicsAndProfileUpdateDto).PassportExpiryDate)
-                    .GreaterThan(DateTime.Today)
-                    .WithMessage("Passport expiry date must be in the future.");
-
-
                 RuleFor(dto => (dto as MemberDemographicsAndProfileUpdateDto).IDNumber)
                     .MaximumLength(50);
 
