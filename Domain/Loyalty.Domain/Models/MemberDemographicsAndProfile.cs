@@ -14,6 +14,9 @@ namespace Loyalty.Domain.Models
         public string Initials { get; set; }
 
         [MaxLength(100)]
+        public string Email { get; set; }
+
+        [MaxLength(100)]
         public string FirstName { get; set; }
 
         [MaxLength(100)]
@@ -40,7 +43,7 @@ namespace Loyalty.Domain.Models
         public string PassportNumber { get; set; }
 
         [MaxLength(50)]
-        public string PassportExpiryDate { get; set; }
+        public DateTime PassportExpiryDate { get; set; }
 
         [MaxLength(50)]
         public string IDNumber { get; set; }

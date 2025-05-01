@@ -16,10 +16,9 @@ namespace CMS.Domain.Models
         public string Description { get; set; }
 
         public string Services { get; set; }
-       
-        public double Score { get; set; }
 
-        public bool IsValid { get; set; }
+        public int NumberofSubmistion { get; set; }
+        public DateTime LastSubmissionDate { get; set; }
 
     }
 }

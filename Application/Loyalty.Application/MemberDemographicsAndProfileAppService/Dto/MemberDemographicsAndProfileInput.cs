@@ -17,6 +17,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         [MaxLength(100)]
         public string Initials { get; set; }
 
+        public string Email { get; set; }
+
         [MaxLength(100)]
         public string FirstName { get; set; }
 
@@ -44,7 +46,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public string PassportNumber { get; set; }
 
         [MaxLength(50)]
-        public string PassportExpiryDate { get; set; }
+        public DateTime PassportExpiryDate { get; set; }
 
         [MaxLength(50)]
         public string IDNumber { get; set; }
@@ -64,6 +66,9 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
 
         [MaxLength(100)]
         public string Initials { get; set; }
+
+        public string Email { get; set; }
+
 
         [MaxLength(100)]
         public string FirstName { get; set; }
