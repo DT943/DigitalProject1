@@ -16,7 +16,8 @@ namespace CMS.Application.CustomFormAppService.Dto
         public string Description { get; set; }
 
         public string Services { get; set; }
-        public bool IsValid { get; set; }
+
+        public DateTime LastSubmissionDate { get; set; }
 
     }
 
