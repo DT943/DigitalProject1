@@ -39,11 +39,17 @@ namespace CMS.Application.CustomFormAppService
                 throw new FluentValidation.ValidationException(validationResult.Errors);
             } 
 
-            CustomForm cf = await _serviceDbContext.CustomForms.Where(f => f.Email == create.Email).FirstOrDefaultAsync();
+            CustomForm cf = await _serviceDbContext.CustomForms.Where(f => f.Email == create.Email && f.LastSubmissionDate == DateTime.Now.Date).FirstOrDefaultAsync();
 
-            if (cf == null) return await base.Create(create);
+            if (cf == null)
+            {
+                create.NumberofSubmistion = 1;
+                create.LastSubmissionDate = DateTime.Now.Date;
+                return await base.Create(create);
+            }
+            cf.NumberofSubmistion++;
 
-            if (cf.LastSubmissionDate == DateTime.Now.Date && cf.NumberofSubmistion > 2)
+            if (cf.LastSubmissionDate == DateTime.Now.Date && cf.NumberofSubmistion > 3)
                 throw new FluentValidation.ValidationException(new List<ValidationFailure> { new ValidationFailure("Appliction", $"you can't add your application more than three times") });
 
             List<string> Services1 = cf.Services.Split(',', StringSplitOptions.RemoveEmptyEntries)
@@ -63,8 +69,8 @@ namespace CMS.Application.CustomFormAppService
             cf.Services = string.Join(",", uniqueServices);
               
 
-            cf.LastSubmissionDate = DateTime.Now.Date;
-            cf.NumberofSubmistion++;
+           // cf.LastSubmissionDate = DateTime.Now.Date;
+
             await _serviceDbContext.SaveChangesAsync();
 
             return await base.Get(cf.Id);

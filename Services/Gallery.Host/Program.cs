@@ -75,16 +75,17 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();
+app.UseCors("AllowAll");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-if (!app.Environment.IsDevelopment())
-    app.UseStaticFiles(new StaticFileOptions
+
+app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
-   
 });
 
  

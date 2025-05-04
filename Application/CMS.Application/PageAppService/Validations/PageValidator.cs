@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CMS.Application.PageAppService.Dtos;
+using CMS.Application.SegmentAppService.Validations;
 using CMS.Data.DbContext;
 using CWCore.Application.POSAppService;
 using CWCore.Domain.Models;
@@ -119,6 +120,7 @@ namespace CMS.Application.PageAppService.Validations
                      .WithMessage($"Type must be one of the following: {string.Join(", ", AllowedTypes)}.")
                      .Must(type => type == type.ToLower())
                      .WithMessage("The type must be in lowercase.");
+ 
             });
         }
     }
