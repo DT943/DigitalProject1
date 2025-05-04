@@ -75,6 +75,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 app.ConfigureExceptionHandler();
+app.UseCors("AllowAll");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

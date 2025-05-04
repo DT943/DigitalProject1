@@ -142,5 +142,54 @@ namespace CMS.Application.PageAppService
 
             return null;
         }
+
+
+        protected override Domain.Models.Page BeforUpdate(PageUpdateDto update, Domain.Models.Page entity)
+        {
+            if (entity is BasicEntityWithAuditInfo auditInfo)
+            {
+                auditInfo.ModifiedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+                auditInfo.ModifiedDate = DateTime.Now;
+            }
+
+            // Map top-level props
+            var newEntity = _mapper.Map(update, entity);
+
+            // Handle nested collections if Page → Segments → Components
+            if (update is PageUpdateDto pageUpdate && entity is Domain.Models.Page pageEntity)
+            {
+                foreach (var segmentDto in pageUpdate.Segments)
+                {
+                    var existingSegment = pageEntity.Segments.FirstOrDefault(s => s.Id == segmentDto.Id);
+                    if (existingSegment != null)
+                    {
+                        _mapper.Map(segmentDto, existingSegment); // Code is preserved by config
+
+                        // Now map nested Components
+                        /*foreach (var componentDto in segmentDto.Components)
+                        {
+                            var existingComponent = existingSegment.Components.FirstOrDefault(c => c.Id == componentDto.Id);
+                            if (existingComponent != null)
+                            {
+                                _mapper.Map(componentDto, existingComponent); // preserves Code
+                            }
+                            else
+                            {
+                                var newComponent = _mapper.Map<Domain.Models.Component>(componentDto);
+                                existingSegment.Components.Add(newComponent);
+                            }
+                        }*/
+                    }
+                    else
+                    {
+                        var newSegment = _mapper.Map<Domain.Models.Segment>(segmentDto);
+                        pageEntity.Segments.Add(newSegment);
+                    }
+                }
+            }
+
+            return entity;
+        }
+
     }
 }
