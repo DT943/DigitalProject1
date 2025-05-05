@@ -48,7 +48,16 @@ namespace Gallery.Application.FileAppservice.Validations
                    .NotEmpty()
                    .WithMessage("The GalleryId of the File cannot be empty.")
                    .Must(GalleryId => _galleryRepository.Galleries.Any(g => g.Id == GalleryId))
-                   .WithMessage("GalleryId not excists"); 
+                   .WithMessage("GalleryId not excists");
+
+                RuleFor(dto => (dto as FileCreateDto))
+                    .Must(dto =>
+                    {
+                        return !_galleryRepository.Files
+                            .Any(f => f.FileName == dto.FileName && f.GalleryId == dto.GalleryId);
+                    })
+                   .WithMessage("A file with the same name already exists in the selected gallery.");
+
             });
 
             RuleSet("update", () =>
@@ -83,6 +92,14 @@ namespace Gallery.Application.FileAppservice.Validations
                    .WithMessage("The GalleryId of the File cannot be empty.")
                    .Must(GalleryId => _galleryRepository.Galleries.Any(g => g.Id == GalleryId))
                    .WithMessage("GalleryId not excists");
+
+                RuleFor(dto => (dto as FileUpdateDto))
+                   .Must(dto =>
+                   {
+                       return !_galleryRepository.Files
+                           .Any(f => f.FileName == dto.FileName && f.GalleryId == dto.GalleryId);
+                   })
+                  .WithMessage("A file with the same name already exists in the selected gallery.");
 
             });
 
@@ -123,6 +140,7 @@ namespace Gallery.Application.FileAppservice.Validations
                         .WithMessage("The Description cannot be empty.")
                         .Must(text => text == null || text == text.ToLower())
                         .WithMessage("Description must be in lowercase if provided.");
+
                 });
             });
         }
