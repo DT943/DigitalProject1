@@ -30,8 +30,8 @@ namespace CMS.Application.SegmentAppService.Validations
                 .NotEmpty()
                 .WithMessage("The Name of the page cannot be empty.");
 
-               /* RuleForEach(dto => (dto as SegmentUpdateDto).Components)
-                    .SetValidator(new ComponentValidator());*/
+                RuleForEach(dto => (dto as SegmentUpdateDto).Components)
+                    .SetValidator(new ComponentValidator());
 
             });
         }
