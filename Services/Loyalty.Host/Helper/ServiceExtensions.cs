@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using Authentication.Application;
+using Authentication.Data.DbContext;
+using Authentication.Domain.Models;
+using AutoMapper;
 using AutoMapper.Execution;
 using Loyalty.Application.MemberAddressDetailsAppService;
 using Loyalty.Application.MemberAddressDetailsAppService.Dtos;
@@ -27,6 +30,9 @@ using Loyalty.Application.MemberTelephoneDetailsAppService.Validations;
 using Loyalty.Application.MemberTravelAgentDetailsAppService;
 using Loyalty.Application.MemberTravelAgentDetailsAppService.Dto;
 using Loyalty.Application.MemberTravelAgentDetailsAppService.Validations;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Notification.Application;
 using Sieve.Services;
 
 namespace Loyalty.Host.Helper
@@ -35,6 +41,13 @@ namespace Loyalty.Host.Helper
     {
         public static void AddCustomService(this IServiceCollection services)
         {
+
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
+            services.AddScoped<IEmailAppService, EmailAppService>();
+
 
             services.AddTransient<IMemberAddressDetailsAppService, MemberAddressDetailsAppService>();
             services.AddTransient<MemberAddressDetailsValidator>();
@@ -63,6 +76,7 @@ namespace Loyalty.Host.Helper
             services.AddTransient<IMemberTravelAgentDetailsAppService, MemberTravelAgentDetailsAppService>();
             services.AddTransient<MemberTravelAgentDetailsValidator>();
             //MemberTravelAgentDetails
+
             services.AddScoped<ISieveProcessor, SieveProcessor>();
 
             var mapperConfig = new MapperConfiguration(mc =>
