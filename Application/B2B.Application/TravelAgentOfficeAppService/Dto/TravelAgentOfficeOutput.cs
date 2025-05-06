@@ -13,6 +13,8 @@ namespace B2B.Application.TravelAgentOffice.Dto
         public string TravelAgentNameISA { get; set; }
         public string? AgencyName { get; set; }
         public string FirstEmail { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string? SecoundEmail { get; set; }
         public string POS { get; set; }
         public string Governate { get; set; }
@@ -34,6 +36,8 @@ namespace B2B.Application.TravelAgentOffice.Dto
         public string TravelAgentNameISA { get; set; }
         public string? AgencyName { get; set; }
         public string FirstEmail { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
         public string? SecoundEmail { get; set; }
         public string POS { get; set; }
         public string Governate { get; set; }

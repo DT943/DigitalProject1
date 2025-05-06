@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\Authentication.Application\Authentication.Application.csproj" />
     <ProjectReference Include="..\..\Application\B2B.Application\B2B.Application.csproj" />
     <ProjectReference Include="..\..\Core\Infrastructure.Service\Infrastructure.Service.csproj" />
   </ItemGroup>

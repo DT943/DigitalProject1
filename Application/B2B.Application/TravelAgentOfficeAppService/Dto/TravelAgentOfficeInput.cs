@@ -19,6 +19,12 @@ namespace B2B.Application.TravelAgentOffice.Dto
         public string AgencyName { get; set; }
 
         [MaxLength(100)]
+        public string FirstName { get; set; }
+
+        [MaxLength(100)]
+        public string LastName { get; set; }
+
+        [MaxLength(100)]
         public string FirstEmail { get; set; }
 
         [MaxLength(100)]
@@ -37,7 +43,7 @@ namespace B2B.Application.TravelAgentOffice.Dto
 
         [MaxLength(100)]
         public string? ImageFileCode { get; set; }
-
+// send by email 
         public string? ImageFileUrl { get; set; }
 
         [MaxLength(100)]

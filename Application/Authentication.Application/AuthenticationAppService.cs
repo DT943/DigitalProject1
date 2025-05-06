@@ -1011,6 +1011,75 @@ namespace Authentication.Application
         }
 
 
+
+        public async Task<AuthenticationModel> AddB2BUserAsync(AddUserDto newuser)
+        {
+            string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
+
+            if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
+                return new AuthenticationModel { Message = "Email is already exist!", IsAuthenticated = false };
+
+            if (await _userManager.FindByNameAsync(userName) is not null)
+                return new AuthenticationModel { Message = "Username is already exist!", IsAuthenticated = false };
+
+            var user = new ApplicationUser
+            {
+                Code = "User-" + Guid.NewGuid().ToString("N"),
+                UserName = userName,
+                Email = newuser.Email,
+                FirstName = newuser.FirstName,
+                LastName = newuser.LastName,
+                IsLocked = false,
+                IsActive = false,
+                IsFrozed = true,
+                LastOTPChecked = DateTime.MaxValue,
+                LastLogIn = DateTime.MinValue,
+                Department = newuser.Department,
+
+            };
+            var staticPassword = GenerateSecurePassword();
+            var result = await _userManager.CreateAsync(user, staticPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new AuthenticationModel
+                {
+                    IsAuthenticated = false,
+                    Message = errors
+                };
+            }
+            /*
+            // Iterate over each service and create roles for each
+            foreach (var service in Enum.GetNames(typeof(Infrastructure.Domain.Consts.ServiceName)))
+            {
+                var roleName = $"{service}-Officer";
+                await _userManager.AddToRoleAsync(user, roleName);
+            }
+            */
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            string subject = "Your Account Has Been Created, Welcome to our website.";
+
+            await _emailService.SendEmailAsync(newuser.Email, subject, staticPassword, newuser.FirstName);
+
+
+            return new AuthenticationModel
+            {
+                Message = "User has been created successfully.",
+                Email = user.Email,
+                Roles = userRoles,
+                IsAuthenticated = true,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Token = null
+            };
+        }
+
     }
 }
 

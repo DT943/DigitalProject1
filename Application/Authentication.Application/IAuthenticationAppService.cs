@@ -21,6 +21,7 @@ namespace Authentication.Application
         Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole);
         Task<AuthenticationModel> ChangeUserStatusAsync(string userCode);
         Task<AuthenticationModel> AddUserAsync(AddUserDto newuser);
+        Task<AuthenticationModel> AddB2BUserAsync(AddUserDto newuser);
         Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment);
         Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
         Task<AuthenticationModel> LogInWithOTP(LogInOTPModel model);
