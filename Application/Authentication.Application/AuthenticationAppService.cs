@@ -886,8 +886,6 @@ namespace Authentication.Application
             if (!passwordValid)
                 return new AuthenticationModel { Message = "Incorrect old password!" , IsAuthenticated = false };
 
-            if (await _userManager.FindByEmailAsync(newUser.Email) is not null)
-                return new AuthenticationModel { Message = "Email is already exist!" , IsAuthenticated = false  };
 
             if (await _userManager.FindByNameAsync(userName) is not null)
                 return new AuthenticationModel { Message = "Username is already exist!", IsAuthenticated = false };
@@ -895,7 +893,6 @@ namespace Authentication.Application
 
             user.FirstName = newUser.FirstName;
             user.LastName = newUser.LastName;
-            user.Email = newUser.Email;
             user.UserName = userName;
 
             // Change Password if provided
@@ -1067,15 +1064,15 @@ namespace Authentication.Application
 
 
 
-        public async Task<AuthenticationModel> AddB2BUserAsync(AddUserDto newuser)
+        public async Task<AuthenticationModelWithDetails> AddB2BUserAsync(AddUserDto newuser)
         {
             string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
 
             if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
-                return new AuthenticationModel { Message = "Email is already exist!", IsAuthenticated = false };
+                return new AuthenticationModelWithDetails { Message = "Email is already exist!", IsAuthenticated = false };
 
             if (await _userManager.FindByNameAsync(userName) is not null)
-                return new AuthenticationModel { Message = "Username is already exist!", IsAuthenticated = false };
+                return new AuthenticationModelWithDetails { Message = "Username is already exist!", IsAuthenticated = false };
 
             var user = new ApplicationUser
             {
@@ -1102,7 +1099,7 @@ namespace Authentication.Application
                 foreach (var error in result.Errors)
                     errors += $"{error.Description},";
 
-                return new AuthenticationModel
+                return new AuthenticationModelWithDetails
                 {
                     IsAuthenticated = false,
                     Message = errors
@@ -1123,7 +1120,7 @@ namespace Authentication.Application
             await _emailService.SendEmailAsync(newuser.Email, subject, staticPassword, newuser.FirstName);
 
 
-            return new AuthenticationModel
+            return new AuthenticationModelWithDetails
             {
                 Message = "User has been created successfully.",
                 Email = user.Email,

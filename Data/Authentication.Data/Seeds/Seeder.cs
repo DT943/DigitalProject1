@@ -5,9 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Authentication.Domain.Models;
 
 namespace Authentication.Data.Seeds
 {
+    /*
     public static class Seeder
     {
         public static void Seed (this ModelBuilder builder)
@@ -40,7 +43,6 @@ namespace Authentication.Data.Seeds
             // Seed all roles into the database
             builder.Entity<IdentityRole>().HasData(roles);
 
-            /*
             // **Seed Users**
             var passwordHasher = new PasswordHasher<IdentityUser>();
 
@@ -80,8 +82,61 @@ namespace Authentication.Data.Seeds
                     RoleId = "CMS-Manager" // Example service role
                 }
             );
-            */
 
         }
     }
+            */
+    public static class UserRoleSeeder
+    {
+        public static async Task SeedAsync(IServiceProvider serviceProvider)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var userId = "81a0e232-3075-44d1-812b-f1bba4ad5eaa";
+            var roleId = "e2848bfc-af1b-4c98-b289-127978793ad4";
+
+            var user = await userManager.FindByIdAsync(userId);
+            var role = await roleManager.FindByIdAsync(roleId);
+
+            if (user != null && role != null)
+            {
+                var inRole = await userManager.IsInRoleAsync(user, role.Name);
+                if (!inRole)
+                {
+                    await userManager.AddToRoleAsync(user, role.Name);
+                }
+            }
+        }
+    }
+
+    public static class Seeder
+    {
+        public static async Task SeedAsync(IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            var roleTypes = new List<string> { "Admin", "Manager", "Supervisor", "Officer" };
+            var services = Enum.GetNames(typeof(Infrastructure.Domain.Consts.ServiceName));
+
+            foreach (var service in services)
+            {
+                foreach (var roleType in roleTypes)
+                {
+                    var roleName = $"{service}-{roleType}";
+                    if (!await roleManager.RoleExistsAsync(roleName))
+                    {
+                        await roleManager.CreateAsync(new IdentityRole(roleName));
+                    }
+                }
+            }
+
+            var superAdminRole = "SuperAdmin";
+            if (!await roleManager.RoleExistsAsync(superAdminRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(superAdminRole));
+            }
+        }
+    }
+
 }

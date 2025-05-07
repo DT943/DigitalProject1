@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.ConstrainedExecution;
+using Authentication.Data.Seeds;
 Console.WriteLine("Application is starting V.1.9.1");
 
 
@@ -112,6 +113,17 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 
 var app = builder.Build();
+
+//Lubna
+// After app is built
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await Authentication.Data.Seeds.Seeder.SeedAsync(services);
+    //await Authentication.Data.Seeds.UserRoleSeeder.SeedAsync(services);
+
+}
+//Lubna
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -16,7 +16,7 @@ namespace Authentication.Data.DbContext
         {
             base.OnModelCreating(builder);
 
-            builder.Seed();
+            //builder.Seed();
         }
     }
 
