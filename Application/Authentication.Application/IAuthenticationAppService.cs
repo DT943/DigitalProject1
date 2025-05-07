@@ -12,7 +12,7 @@ namespace Authentication.Application
 {
     public interface IAuthenticationAppService
     {
-        public Task<AuthenticationModel> RegisterAsync(RegisterModel model);
+        public Task<AuthenticationModelWithDetails> RegisterAsync(RegisterModel model);
         public Task<AuthenticationModel> GetTokenAsync(LogInModel model);
         public Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel);
         public Task<AuthenticationGetDto> GetUserByCodeAsync(string code);

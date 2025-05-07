@@ -29,9 +29,6 @@ namespace Authentication.Application.Dtos
         [Required, StringLength(100)]
         public string LastName { get; set; }
 
-        [Required, StringLength(128)]
-        public string Email { get; set; }
-
         [Required(ErrorMessage = "Old password is required.")]
 
         public string OldPassword { get; set; }

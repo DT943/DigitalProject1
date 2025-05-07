@@ -23,27 +23,6 @@ namespace Authentication.Host.Controllers
             _authenticationAppService = authenticationAppService;
         }
 
-        [HttpPost("register")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterModel model)
-        {
-            var user = HttpContext.User;
-            if (!user.IsInRole("SuperAdmin")) return Forbid();
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _authenticationAppService.RegisterAsync(model);
-            if (!result.IsAuthenticated)
-                return BadRequest(new ErrorModel
-                {
-                    IsAuthenticated = result.IsAuthenticated,
-                    Message = result.Message
-                });
-
-            return Ok(result);
-        }
 
         [HttpPost("login")]
 
