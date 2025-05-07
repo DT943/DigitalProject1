@@ -41,46 +41,6 @@ namespace B2B.Host.Controllers
             var entity = await _appService.Create(createDto);
             return Ok(entity);
         }
-/*
-        [HttpGet("approve/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<TravelAgentEmployeeGetDto>> Approve(int id)
-        {
-            var user = HttpContext.User;
-
-            if (!UserHasPermission("Admin"))
-            {
-                return Forbid();
-            }
-
-            EmployeeApplicationGetDto dto = await _appService.GetEmployeeById(id);
-            if (dto == null)
-                return BadRequest(new ErrorModel
-                {
-                    IsAuthenticated = false,
-                    Message = "Not Found"
-                });
-
-
-            var result = await _authenticationAppService.AddUserAsync(new Authentication.Application.Dtos.AddUserDto
-            {
-                FirstName = dto.EmployeeFirstName,
-                LastName = dto.EmployeeLastName,
-                Email = dto.EmployeeEmail
-            });
-
-            if (!result.IsAuthenticated)
-                return BadRequest(new ErrorModel
-                {
-                    IsAuthenticated = result.IsAuthenticated,
-                    Message = result.Message
-                });
-
-        
-
-            return Ok(dto);
-        }
-
-*/
+ 
     }
 }

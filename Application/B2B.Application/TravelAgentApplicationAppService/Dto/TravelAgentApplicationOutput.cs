@@ -14,6 +14,12 @@ namespace B2B.Application.TravelAgentApplicationAppService.Dto
         public string TravelAgencyName { get; set; }
 
         [MaxLength(100)]
+        public string FirstName { get; set; }
+
+        [MaxLength(100)]
+        public string LastName { get; set; }
+
+        [MaxLength(100)]
         public string Email { get; set; }
 
         [MaxLength(100)]
@@ -56,6 +62,12 @@ namespace B2B.Application.TravelAgentApplicationAppService.Dto
 
         [MaxLength(100)]
         public string TravelAgencyName { get; set; }
+
+        [MaxLength(100)]
+        public string FirstName { get; set; }
+
+        [MaxLength(100)]
+        public string LastName { get; set; }
 
         [MaxLength(100)]
         public string Email { get; set; }

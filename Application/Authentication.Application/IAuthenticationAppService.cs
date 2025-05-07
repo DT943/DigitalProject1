@@ -32,6 +32,8 @@ namespace Authentication.Application
         Task<AuthenticationModel> ForgotPassword(ForgotPasswordModel dto);
 
         Task<AuthenticationModel> SetUserManager(SetUserManagerDto dto);
+        Task<bool> CheckEmail(string email);
+
 
     }
 }

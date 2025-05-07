@@ -33,55 +33,5 @@ namespace B2B.Host.Controllers
 
         }
 
-
-
-        [HttpGet("approve/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<TravelAgentEmployeeGetDto>> Approve(int id)
-        {
-            var user = HttpContext.User;
-
-            if (!UserHasPermission("Admin"))
-            {
-                return Forbid();
-            }
-
-            EmployeeApplicationGetDto dto = await _travelAgentAppService.GetEmployeeById(id);
-            if (dto == null)
-                return BadRequest(new ErrorModel
-                {
-                    IsAuthenticated = false,
-                    Message = "Not Found"
-                });
-
-
-            var result = await _authenticationAppService.AddB2BUserAsync(new Authentication.Application.Dtos.AddUserDto
-            {
-                FirstName = dto.EmployeeFirstName,
-                LastName = dto.EmployeeLastName,
-                Email = dto.EmployeeEmail
-            });
-
-            if (!result.IsAuthenticated)
-                return BadRequest(new ErrorModel
-                {
-                    IsAuthenticated = result.IsAuthenticated,
-                    Message = result.Message
-                });
-
-            var agent = await this.Create(new TravelAgentEmployeeCreateDto
-            {
-                EmployeeEmail = dto.EmployeeEmail,
-                EmployeeFirstName = dto.EmployeeFirstName,
-                EmployeeLastName = dto.EmployeeLastName,
-                PhoneNumber = dto.PhoneNumber,
-                UserCode = result.Code,
-                TravelAgentOfficeId = 1
-            });
-
-
-            return Ok(dto);
-        }
-
     }
 }

@@ -17,20 +17,16 @@ namespace B2B.Host.Controllers
     public class TravelAgentOfficeController : BaseController<ITravelAgentOfficeAppService, Domain.Models.TravelAgentOffice, TravelAgentOfficeGetAllDto, TravelAgentOfficeGetDto, TravelAgentOfficeCreateDto, TravelAgentOfficeUpdateDto, SieveModel>
     {
         ITravelAgentOfficeAppService _appService;
-        ITravelAgentApplicationAppService _travelAgentApplicationAppServiceAppService;
-
-        IAuthenticationAppService _authenticationAppService;
-        public TravelAgentOfficeController(ITravelAgentOfficeAppService appService, ITravelAgentApplicationAppService travelAgentApplicationAppServiceAppService, IAuthenticationAppService authenticationAppService) : base(appService, Servics.B2B)
+ 
+        public TravelAgentOfficeController(ITravelAgentOfficeAppService appService) : base(appService, Servics.B2B)
         {
             _appService = appService;
-            _authenticationAppService = authenticationAppService;
-            _travelAgentApplicationAppServiceAppService = travelAgentApplicationAppServiceAppService;
         }
 
 
-        [HttpGet("approve/{id}")]
+        [HttpPost("approve")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<TravelAgentEmployeeGetDto>> Approve(int id)
+        public async Task<ActionResult<TravelAgentEmployeeGetDto>> Approve(TravelAgentProcessApproveDto travelAgentProcessApproveDto)
         {
             var user = HttpContext.User;
 
@@ -39,34 +35,7 @@ namespace B2B.Host.Controllers
                 return Forbid();
             }
 
-            var travelAgentApplicationDto = _travelAgentApplicationAppServiceAppService.Get(id);
-
-            TravelAgentOfficeGetDto dto = await _appService.Get(id);
-            if (dto == null)
-                return BadRequest(new ErrorModel
-                {
-                    IsAuthenticated = false,
-                    Message = "Not Found"
-                });
-
-
-            var result = await _authenticationAppService.AddB2BUserAsync(new Authentication.Application.Dtos.AddUserDto
-            {
-                FirstName = dto.FirstName,
-                LastName = dto.LastName,
-                Email = dto.FirstEmail
-            });
-
-            if (!result.IsAuthenticated)
-                return BadRequest(new ErrorModel
-                {
-                    IsAuthenticated = result.IsAuthenticated,
-                    Message = result.Message
-                });
-
-
-
-            return Ok(dto);
+            return Ok(await _appService.Approve(travelAgentProcessApproveDto));
         }
 
     }

@@ -1076,8 +1076,14 @@ namespace Authentication.Application
                 IsAuthenticated = true,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Token = null
+                Token = null,
+                Code = user.Code
             };
+        }
+
+        public async Task<bool> CheckEmail(string email)
+        {
+            return (await _userManager.FindByEmailAsync(email) is not null);
         }
 
     }

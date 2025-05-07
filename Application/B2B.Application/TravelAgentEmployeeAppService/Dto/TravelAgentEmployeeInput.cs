@@ -28,10 +28,10 @@ namespace B2B.Application.TravelAgentEmployeeAppService.Dto
         [MaxLength(100)]
         public string PhoneNumber { get; set; }
 
-        public string UserCode { get; set; }
+        public string? UserCode { get; set; }
 
         [MaxLength(100)]
-        public string ManagerCode { get; set; }
+        public string? ManagerCode { get; set; }
 
         public int TravelAgentOfficeId { get; set; }
     }

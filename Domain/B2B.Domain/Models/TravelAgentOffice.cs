@@ -12,15 +12,17 @@ namespace B2B.Domain.Models
     {
         [Required]
         [MaxLength(100)]
-        public  string TravelAgentNameISA{  get; set; }
+        public string TravelAgentNameISA { get; set; }
 
 
         [MaxLength(100)]
         public string AgencyName { get; set; }
 
+        [MaxLength(100)]
+        public string AccellAeroUserName { get; set; }
 
         [MaxLength(100)]
-        public string   FirstName { get; set; }
+        public string FirstName { get; set; }
 
         [MaxLength(100)]
         public string LastName { get; set; }
@@ -42,7 +44,7 @@ namespace B2B.Domain.Models
         public string? VideoFileCode { get; set; }
 
         public string? VideoFileUrl { get; set; }
-        
+
         [MaxLength(100)]
         public string? ImageFileCode { get; set; }
 
@@ -58,14 +60,19 @@ namespace B2B.Domain.Models
 
         [MaxLength(100)]
         public string? ManagerCode { get; set; }
-
-        [MaxLength(50)]
-        public string SYD { get; set; }
-
-        [MaxLength(50)]
-        public string SYP { get; set; }
         public ICollection<TravelAgentEmployee> TravelAgentEmployees { get; set; }
+        public ICollection<TravelAgentPOS> TravelAgentPOSs { get; set; }
+    }
 
+    public class TravelAgentPOS : BasicEntityWithAuditInfo
+    {
+        [MaxLength(50)]
+        public string POS { get; set; }
 
+        [MaxLength(50)]
+        public string OfficeCode { get; set; }
+        [MaxLength(100)]
+
+        public string Name { get; set; }
     }
 }
