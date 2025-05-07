@@ -15,6 +15,13 @@ namespace B2B.Domain.Models
         [MaxLength(100)]
         public string EmployeeEmail { get; set; }
 
+        [Required]
+        [MaxLength(100)]
+        public string EmployeeFirstName { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string EmployeeLastName { get; set; }
 
         [MaxLength(100)]
         public string? EmployeeRole { get; set; }

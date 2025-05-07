@@ -26,7 +26,7 @@ namespace Infrastructure.Application
         protected readonly ISieveProcessor _processor;
         protected readonly IMapper _mapper;
         protected AbstractValidator<IValidatableDto> _validations;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        protected readonly IHttpContextAccessor _httpContextAccessor;
 
         public BaseAppService(TServiceDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, AbstractValidator<IValidatableDto> validations, IHttpContextAccessor httpContextAccessor)
         {
@@ -48,6 +48,7 @@ namespace Infrastructure.Application
         {
             var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.Id.Equals(id)) ??
             throw new EntityNotFoundException(typeof(TEntity).Name, id.ToString() ?? "");
+
             return await Task.FromResult(_mapper.Map<TGetDto>(result));
         }
 

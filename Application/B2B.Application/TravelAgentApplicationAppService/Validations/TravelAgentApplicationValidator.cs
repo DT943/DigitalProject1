@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Authentication.Application;
 using B2B.Application.TravelAgentApplicationAppService.Dto;
 using B2B.Application.TravelAgentEmployeeAppService.Dto;
+using B2B.Data.DbContext;
 using CWCore.Application.POSAppService;
 using FluentValidation;
 using Infrastructure.Application.EmailValidation;
@@ -16,12 +18,10 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
 {
     public class TravelAgentApplicationValidator : AbstractValidator<IValidatableDto>
     {
-        IPOSAppService _appService;
 
-        public TravelAgentApplicationValidator(IPOSAppService appService, IConfiguration configuration)
+        public TravelAgentApplicationValidator(B2BDbContext b2bDbContext, IPOSAppService appService, IConfiguration configuration, IAuthenticationAppService authenticationAppService)
         {
-            _appService = appService;
-            string _emailValidationApiKey = configuration["EmailValidation:ApiKey"];
+             string _emailValidationApiKey = configuration["EmailValidation:ApiKey"];
             RuleSet("create", () =>
             {
                 RuleFor(dto => (dto as TravelAgentApplicationCreateDto).TravelAgencyName)
@@ -49,14 +49,27 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                     .WithMessage("Invalid email format.")
                     .MustAsync(async (email, cancellation) =>
                     {
+                        bool valid = b2bDbContext.TravelAgentApplications.Any(x => x.Email == email) ||
+                                       b2bDbContext.EmployeeApplications.Any(x => x.EmployeeEmail == email) || await authenticationAppService.CheckEmail(email); 
+                        if (valid) return !valid;
+
                         var score = await EmailValidation.GetEmailValidationScore(_emailValidationApiKey, email);
                         return score;
                     }).WithMessage("This email is not valid.");
+ 
+
+                RuleFor(dto => (dto as TravelAgentApplicationCreateDto))
+                 .MustAsync(async (dto, cancellation) =>
+                 {
+                     return !dto.Employees.Any(x => x.EmployeeEmail == dto.Email);
+                 }).WithMessage("This email is dublicated .");
+
+
 
                 RuleFor(dto => (dto as TravelAgentApplicationCreateDto).POS)
                      .MustAsync(async (pos, cancellation) =>
                      { 
-                           var result = await _appService.GetByPOSKey(pos);
+                           var result = await appService.GetByPOSKey(pos);
                            return result != null;
                      })
                     .WithMessage("POS must be in lowercase if provided.")
@@ -71,6 +84,11 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                         .NotEmpty().WithMessage("Employee email is required.")
                         .EmailAddress().WithMessage("Invalid email format.").MustAsync(async (email, cancellation) =>
                         {
+
+                            bool valid = b2bDbContext.TravelAgentApplications.Any(x => x.Email == email) ||
+                                 b2bDbContext.EmployeeApplications.Any(x => x.EmployeeEmail == email) || await authenticationAppService.CheckEmail(email);
+                            if (valid) return !valid;
+
                             var score = await EmailValidation.GetEmailValidationScore(_emailValidationApiKey, email);
                             return score;
                         }).WithMessage("This email is not valid.")
@@ -115,6 +133,10 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                     .WithMessage("The Email format is invalid.")
                     .MustAsync(async (email, cancellation) =>
                         {
+                            bool valid = b2bDbContext.TravelAgentApplications.Any(x => x.Email == email) ||
+                                         b2bDbContext.EmployeeApplications.Any(x => x.EmployeeEmail == email) || await authenticationAppService.CheckEmail(email); ;
+
+                            if (valid) return !valid;
                             var score = await EmailValidation.GetEmailValidationScore(_emailValidationApiKey, email);
                             return score;
                         }).WithMessage("This email is not valid.");
@@ -122,7 +144,7 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                 RuleFor(dto => (dto as TravelAgentApplicationUpdateDto).POS)
                      .MustAsync(async (pos, cancellation) =>
                      {
-                         var result = await _appService.GetByPOSKey(pos);
+                         var result = await appService.GetByPOSKey(pos);
                          return result != null;
                      })
                     .WithMessage("POS must be in lowercase if provided.")
@@ -138,6 +160,12 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                         .EmailAddress().WithMessage("Invalid email format.")
                         .MustAsync(async (email, cancellation) =>
                         {
+
+
+                            bool valid = b2bDbContext.TravelAgentApplications.Any(x => x.Email == email) ||
+                                            b2bDbContext.EmployeeApplications.Any(x => x.EmployeeEmail == email) || await authenticationAppService.CheckEmail(email);
+                            if (valid) return !valid;
+
                             var score = await EmailValidation.GetEmailValidationScore(_emailValidationApiKey, email);
                             return score;
                         })
