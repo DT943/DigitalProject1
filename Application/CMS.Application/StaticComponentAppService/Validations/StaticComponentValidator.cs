@@ -15,18 +15,19 @@ namespace CMS.Application.StaticComponentAppService.Validations
     public class StaticComponentValidator : AbstractValidator<IValidatableDto>
     {
         private static readonly string[] AllowedTypes = { "header", "footer" };
+        private static readonly string[] LanguageTypes = { "arabic", "english" };
 
         public StaticComponentValidator(CMSDbContext _cmsDbContext)
         {
 
             RuleSet("create", () =>
             {
-                RuleFor(dto => (dto as StaticComponentCreateDto).Type)
-                  .Must(x => !_cmsDbContext.StaticComponents.Any(y => y.Type.ToLower().Equals(x)))
+                RuleFor(dto => (dto as StaticComponentCreateDto))
+                  .Must(x => !_cmsDbContext.StaticComponents.Any(y => y.Type.ToLower().Equals(x.Type)&& y.Language.Equals(x.Language)))
                     .WithMessage("The Type of the Component is already excists")
                     .NotEmpty()
                     .WithMessage("The Type of the Component cannot be empty.")
-                    .Must(type => AllowedTypes.Contains(type))
+                    .Must(type => AllowedTypes.Contains(type.Type))
                     .WithMessage($"Type must be one of the following: {string.Join(", ", AllowedTypes)}.");
 
                 RuleFor(dto => (dto as StaticComponentCreateDto).Content)
@@ -34,6 +35,13 @@ namespace CMS.Application.StaticComponentAppService.Validations
                     .WithMessage("The Content of the Component cannot be empty.")
                     .Must(BeValidJson)
                     .WithMessage("The Content must be a valid JSON.");
+
+
+                RuleFor(dto => (dto as StaticComponentCreateDto).Language)
+                    .NotEmpty()
+                    .WithMessage("The Content of the Component cannot be empty.")
+                    .Must(ln => LanguageTypes.Contains(ln))
+                    .WithMessage($"language must be one of the following: {string.Join(", ", LanguageTypes)}.");
             });
 
             RuleSet("update", () =>
@@ -48,10 +56,15 @@ namespace CMS.Application.StaticComponentAppService.Validations
 
 
                 RuleFor(dto => (dto as StaticComponentUpdateDto))
-                  .Must(x => !_cmsDbContext.StaticComponents.Any(y => y.Type.ToLower().Equals(x.Type) && y.Id !=x.Id  ))
+                  .Must(x => !_cmsDbContext.StaticComponents.Any(y => y.Type.ToLower().Equals(x.Type) && y.Language.Equals(x.Language) && y.Id !=x.Id  ))
                   .WithMessage("The Type of the Component is already excists");
 
 
+                RuleFor(dto => (dto as StaticComponentUpdateDto).Language)
+                    .NotEmpty()
+                    .WithMessage("The Content of the Component cannot be empty.")
+                    .Must(ln => LanguageTypes.Contains(ln))
+                    .WithMessage($"language must be one of the following: {string.Join(", ", LanguageTypes)}.");
 
                 RuleFor(dto => (dto as StaticComponentUpdateDto).Content)
                 .NotEmpty()
