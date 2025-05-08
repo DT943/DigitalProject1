@@ -26,13 +26,21 @@ namespace Notification.Application
                 userName = userName,
                 password = password,
             };
-
+            //https://hooks.zapier.com/hooks/catch/17823706/2ef80xk/
             var jsonPayload = JsonSerializer.Serialize(payload);
             var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync("https://hooks.zapier.com/hooks/catch/17823706/2ef80xk/", content);
 
-            response.EnsureSuccessStatusCode();
+            try
+            {
+                response.EnsureSuccessStatusCode();
+            }
+            catch(Exception e)
+            {
+
+            }
+
         }
 
     }

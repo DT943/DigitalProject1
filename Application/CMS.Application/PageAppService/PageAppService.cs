@@ -166,7 +166,7 @@ namespace CMS.Application.PageAppService
                         _mapper.Map(segmentDto, existingSegment); // Code is preserved by config
 
                         // Now map nested Components
-                        /*foreach (var componentDto in segmentDto.Components)
+                        foreach (var componentDto in segmentDto.Components)
                         {
                             var existingComponent = existingSegment.Components.FirstOrDefault(c => c.Id == componentDto.Id);
                             if (existingComponent != null)
@@ -178,7 +178,7 @@ namespace CMS.Application.PageAppService
                                 var newComponent = _mapper.Map<Domain.Models.Component>(componentDto);
                                 existingSegment.Components.Add(newComponent);
                             }
-                        }*/
+                        }
                     }
                     else
                     {

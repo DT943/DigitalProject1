@@ -14,7 +14,9 @@ namespace B2B.Application.TravelAgentEmployeeAppService.Dto
         [MaxLength(100)]
         public string EmployeeEmail { get; set; }
 
+        public string EmployeeFirstName { get; set; }
 
+        public string EmployeeLastName { get; set; }
         [MaxLength(100)]
         public string? EmployeeRole { get; set; }
         [Required]

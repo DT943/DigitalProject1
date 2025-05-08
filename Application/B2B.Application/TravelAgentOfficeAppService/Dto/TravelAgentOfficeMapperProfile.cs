@@ -15,6 +15,10 @@ namespace B2B.Application.TravelAgentOffice.Dto
             CreateMap<Domain.Models.TravelAgentOffice, TravelAgentOfficeGetAllDto>();
             CreateMap<TravelAgentOfficeCreateDto, Domain.Models.TravelAgentOffice>();
             CreateMap<TravelAgentOfficeUpdateDto, Domain.Models.TravelAgentOffice>();
+
+            CreateMap<TravelAgentPOSCreateDto, Domain.Models.TravelAgentPOS>();
+            CreateMap<Domain.Models.TravelAgentPOS, TravelAgentPOSGetDto>();
+
         }
     }
 }

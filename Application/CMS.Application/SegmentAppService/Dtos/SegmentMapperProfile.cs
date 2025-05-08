@@ -14,7 +14,7 @@ namespace CMS.Application.SegmentAppService.Dtos
         {
             CreateMap<Domain.Models.Segment, SegmentGetDto>();
             CreateMap<SegmentCreateDto, Domain.Models.Segment>();
-            CreateMap<SegmentUpdateDto, Domain.Models.Segment>();
+            CreateMap<SegmentUpdateDto, Domain.Models.Segment>().ForMember(dest => dest.Components, opt => opt.Ignore()); ;
         }
     }
 }

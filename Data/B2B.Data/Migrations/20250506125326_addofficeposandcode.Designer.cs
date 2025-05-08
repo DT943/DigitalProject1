@@ -4,6 +4,7 @@ using B2B.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B2B.Data.Migrations
 {
     [DbContext(typeof(B2BDbContext))]
-    partial class B2BDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506125326_addofficeposandcode")]
+    partial class addofficeposandcode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,7 +189,7 @@ namespace B2B.Data.Migrations
 
                     b.HasIndex("TravelAgentOfficeId");
 
-                    b.ToTable("TravelAgentEmployees");
+                    b.ToTable("TravelAgentEmployee");
                 });
 
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentOffice", b =>
@@ -196,11 +199,6 @@ namespace B2B.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccellAeroUserName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("AgencyName")
                         .IsRequired()
@@ -323,11 +321,6 @@ namespace B2B.Data.Migrations
                     b.Property<DateTime?>("ModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("OfficeCode")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -335,8 +328,7 @@ namespace B2B.Data.Migrations
 
                     b.Property<string>("POS")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("TravelAgentOfficeId")
                         .HasColumnType("int");

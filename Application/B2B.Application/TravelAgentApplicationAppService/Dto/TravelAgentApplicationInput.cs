@@ -22,6 +22,12 @@ namespace B2B.Application.TravelAgentApplicationAppService.Dto
         public string Email { get; set; }
 
         [MaxLength(100)]
+        public string FirstName { get; set; }
+
+        [MaxLength(100)]
+        public string LastName { get; set; }
+
+        [MaxLength(100)]
         public string AccelAeroUserName { get; set; }
 
         [MaxLength(100)]
@@ -58,7 +64,12 @@ namespace B2B.Application.TravelAgentApplicationAppService.Dto
         [MaxLength(100)]
         public string EmployeeEmail { get; set; }
 
+        public string EmployeeFirstName { get; set; }
+ 
+        public string EmployeeLastName { get; set; }
         [MaxLength(100)]
+
+
         public string Role { get; set; }
 
         [MaxLength(100)]
