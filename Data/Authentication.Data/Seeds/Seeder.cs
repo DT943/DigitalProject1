@@ -93,23 +93,50 @@ namespace Authentication.Data.Seeds
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            var userId = "81a0e232-3075-44d1-812b-f1bba4ad5eaa";
-            var roleId = "e2848bfc-af1b-4c98-b289-127978793ad4";
-
-            var user = await userManager.FindByIdAsync(userId);
-            var role = await roleManager.FindByIdAsync(roleId);
-
-            if (user != null && role != null)
+            // User IDs
+            var userIds = new List<string>
             {
-                var inRole = await userManager.IsInRoleAsync(user, role.Name);
-                if (!inRole)
+                /*
+                "45c58809-6f06-490f-8f66-07f7b7605489",
+                "4bfd8d34-3c82-4687-9f7b-512588f0e89a",
+                "b5f09407-0a62-4e16-8fe1-0f81fedee023",
+                "ddd53e03-5c26-486a-86c7-8e4da00f101d"
+                */
+            };
+
+            // Role IDs
+            var roleIds = new List<string>
+            {
+                /*
+                "8df6e747-6a64-4de6-98eb-540e4e2042ce",
+                "a646ebf6-8805-4608-af95-a8e30bc07a20",
+                "aae4a697-437e-4c77-b8bd-ec303e750fa0",
+                "acb4e87d-077a-489c-8322-1b303f6ee5ae",
+                "d689c605-6690-4bd9-8787-c3ac496c8b63",
+                "eb1e71e7-f856-49ac-b9f7-de63dbe57e5b",
+                "7d8298f7-00a2-448b-9811-6c7aed4817db"
+                */
+            };
+
+            foreach (var userId in userIds)
+            {
+                var user = await userManager.FindByIdAsync(userId);
+                if (user == null) continue;
+
+                foreach (var roleId in roleIds)
                 {
-                    await userManager.AddToRoleAsync(user, role.Name);
+                    var role = await roleManager.FindByIdAsync(roleId);
+                    if (role == null) continue;
+
+                    var inRole = await userManager.IsInRoleAsync(user, role.Name);
+                    if (!inRole)
+                    {
+                        await userManager.AddToRoleAsync(user, role.Name);
+                    }
                 }
             }
         }
     }
-
     public static class Seeder
     {
         public static async Task SeedAsync(IServiceProvider serviceProvider)

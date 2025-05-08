@@ -16,18 +16,7 @@ Console.WriteLine("Application is starting V.1.9.1");
 
 
 var builder = WebApplication.CreateBuilder(args);
-/*builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.Listen(IPAddress.Any, 7189); // HTTP
 
-    serverOptions.Listen(IPAddress.Any, 7182, listenOptions =>
-    { 
-            listenOptions.UseHttps(); 
-        
-    });
-});
-*/
-// Add services to the container.
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddAuthentication(options =>
 {
@@ -49,8 +38,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization(//options =>
-//{ options.AddPolicy("SuperAdmin", policy => policy.RequireRole("SuperAdmin"));}
+builder.Services.AddAuthorization(
 );
 
 builder.Services
@@ -77,14 +65,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
-/*
-builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
-{
-    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
-           .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
-
-});
-*/
 
 
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
@@ -110,20 +90,15 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.AllowedForNewUsers = true; // Enable lockout for new users
 });
 
-
-
 var app = builder.Build();
 
-//Lubna
 // After app is built
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     await Authentication.Data.Seeds.Seeder.SeedAsync(services);
     //await Authentication.Data.Seeds.UserRoleSeeder.SeedAsync(services);
-
 }
-//Lubna
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -132,13 +107,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("AllowAll");
-
-//app.UseHttpsRedirection();
-
-// Important: Authentication must come before Authorization
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

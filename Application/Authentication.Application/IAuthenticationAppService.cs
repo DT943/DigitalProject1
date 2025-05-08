@@ -27,11 +27,11 @@ namespace Authentication.Application
         Task<AuthenticationModel> LogInWithOTP(LogInOTPModel model);
         Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto);
         Task<AuthenticationModel> FirstResetPassword(FirstResetLogInDto firestLogInDto);
-        Task<AuthenticationGetDto> UserFakeDeleteAsync(UserFakeDeleteDto dto);
+        Task<AuthenticationModel> UserFakeDeleteAsync(UserFakeDeleteDto dto);
 
         Task<AuthenticationModel> ForgotPassword(ForgotPasswordModel dto);
 
-        Task<AuthenticationModel> SetUserManager(SetUserManagerDto dto);
+        Task<AuthenticationModel> SetManagerToUser(SetManagerToUserDto dto);
         Task<bool> CheckEmail(string email);
 
 

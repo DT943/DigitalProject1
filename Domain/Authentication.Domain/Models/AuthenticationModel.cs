@@ -12,6 +12,14 @@ namespace Authentication.Domain.Models
         public string Message { get; set; }
         public bool IsAuthenticated { get; set; }
     }
+
+    public class AuthenticationModelManagreAndUsers :AuthenticationModel
+    {
+        public string ManagerName { get; set; }
+        public List<string> UserName { get; set; }
+
+    }
+
     public class AuthenticationModelWithDetailsWithToken : AuthenticationModel
     {
         public string Email { get; set; }

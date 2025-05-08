@@ -29,9 +29,6 @@ namespace Authentication.Application.Dtos
         [Required, StringLength(100)]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "Old password is required.")]
-
-        public string OldPassword { get; set; }
         [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
@@ -84,11 +81,11 @@ namespace Authentication.Application.Dtos
 
     }
 
-    public class SetUserManagerDto
+    public class SetManagerToUserDto
     {
-        public string UserCode { get; set; }
+        public string ManagerCode { get; set; }
 
-        public bool ManagerCode { get; set; }
+        public List<string> UsersCode { get; set; }
 
     }
 }

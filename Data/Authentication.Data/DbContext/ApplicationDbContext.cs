@@ -18,7 +18,9 @@ namespace Authentication.Data.DbContext
 
             //builder.Seed();
         }
+        public DbSet<Domain.Models.Department> Departments { get; set; }
+        
     }
 
-    
+
 }
