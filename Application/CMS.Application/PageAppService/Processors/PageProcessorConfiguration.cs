@@ -20,6 +20,10 @@ namespace CMS.Application.PageAppService.Processors
             mapper.Property<Domain.Models.Page>(p => p.Language).CanFilter().CanSort().HasName("language");
 
 
+            mapper.Property<Domain.Models.StaticComponent>(p => p.Language).CanFilter().CanSort().HasName("language");
+ 
+
+
         }
     }
 }
