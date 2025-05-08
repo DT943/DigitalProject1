@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,5 +23,24 @@ namespace Authentication.Domain.Models
         public string? ManagerCode { get; set; }
 
         public IEnumerable<string> Roles { get; set; }
+    }
+
+
+    public class AuthenticationModelWithClaims
+    {
+        public  bool Valid { get; set; }
+        public IEnumerable<ClaimModel> Claims { get; set; }
+    }
+
+    public class ClaimModel
+    {
+        public string Type { get; set; }
+        public string Value { get; set; }
+    }
+
+
+    public class DecryptedToken
+    {
+        public string decryptedToken { get; set; }
     }
 }

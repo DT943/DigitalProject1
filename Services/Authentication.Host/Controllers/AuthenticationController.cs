@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using Authentication.Application;
 using Authentication.Application.Dtos;
 using Authentication.Domain.Models;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Sieve.Models;
 
 namespace Authentication.Host.Controllers
@@ -367,6 +369,14 @@ namespace Authentication.Host.Controllers
             {
                 return BadRequest(new { Message = ex.Message });
             }
-         }
+        }
+
+
+
+        [HttpPost("decrypt")]
+        public async Task<IActionResult> DecryptToken([FromBody] DecryptedToken Token)
+        {
+            return Ok(await _authenticationAppService.DecryptToken(Token.decryptedToken));
+        }
     }
 }

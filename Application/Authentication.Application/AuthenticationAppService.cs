@@ -2,10 +2,13 @@
 using Authentication.Domain.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using Notification.Application;
 using Sieve.Models;
 using Sieve.Services;
@@ -32,9 +35,9 @@ namespace Authentication.Application
         private readonly IEmailAppService _emailService;
         private readonly ISieveProcessor _sieveProcessor;
         string key = "MySuperSecretKey!";
+        private readonly IConfiguration _configuration;
 
-
-        public AuthenticationAppService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, IMapper mapper, ISieveProcessor sieveProcessor, IEmailAppService emailService)
+        public AuthenticationAppService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, IMapper mapper, ISieveProcessor sieveProcessor, IEmailAppService emailService, IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -42,6 +45,7 @@ namespace Authentication.Application
             _mapper = mapper;
             _emailService = emailService;
             _sieveProcessor = sieveProcessor;
+            _configuration = configuration;
 
         }
 
@@ -1010,6 +1014,9 @@ namespace Authentication.Application
             };
         }
 
+        public async Task<AuthenticationModelWithClaims> DecryptToken([FromBody] string encryptedToken)
+        {
+            string privateKey = _configuration["JWT:Key"];
 
 
         public async Task<AuthenticationModel> AddB2BUserAsync(AddUserDto newuser)
@@ -1088,4 +1095,5 @@ namespace Authentication.Application
 
     }
 }
+
 
