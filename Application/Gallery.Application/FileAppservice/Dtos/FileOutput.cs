@@ -18,6 +18,7 @@ namespace Gallery.Application.FileAppservice.Dtos
         public string FileName { get; set; }
         public string FileType { get; set; }
         public float Size { get; set; }
+        public string SizeUnit { get; set; } = "MB";
         public string Path { get; set; }
         public string MimeType { get; set; }
         public int? ImageWidth { get; set; }
