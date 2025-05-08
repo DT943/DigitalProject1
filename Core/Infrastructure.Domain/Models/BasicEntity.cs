@@ -7,8 +7,10 @@ namespace Infrastructure.Domain.Models
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(50)]
+        [MaxLength(100)]
         public string Code { get; set; }
+
+
     }
 
     public class BasicEntityWithAuditInfo : BasicEntity
@@ -19,5 +21,15 @@ namespace Infrastructure.Domain.Models
         public DateTime? ModifiedDate { get; set; }
         [MaxLength(50)]
         public string? ModifiedBy { get; set; }
+    }
+
+    public class BasicEntityWithAuditAndFakeDelete : BasicEntityWithAuditInfo
+    {
+        public bool IsDeleted { get; set; } = false;
+    }
+
+    public class BasicEntityAndFakeDelete : BasicEntity
+    {
+        public bool IsDeleted { get; set; } = false;
     }
 }

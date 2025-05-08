@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.StaticFiles;
 using FluentValidation;
 using System.Drawing;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation.Results;
+using System.DirectoryServices.ActiveDirectory;
 
 namespace Gallery.Application.FileAppservice
 {
@@ -32,6 +34,13 @@ namespace Gallery.Application.FileAppservice
 
         public override async Task<FileGetDto> Create(FileCreateDto createDto)
         {
+
+            if (!string.IsNullOrEmpty(createDto.GalleryCode))
+            {
+                var galleryByCode = await _serviceDbContext.Galleries.Where(s => s.Code.Equals(createDto.GalleryCode)).FirstOrDefaultAsync();
+                createDto.GalleryId = galleryByCode.Id;
+            }
+
             var validationResult = await _fileValidator.ValidateAsync(createDto, options => options.IncludeRuleSets("create", "default"));
             if (!validationResult.IsValid)
             {
@@ -45,7 +54,8 @@ namespace Gallery.Application.FileAppservice
             {
                 if (createDto.File.Length > maxFileSize)
                 {
-                    throw new ValidationException($"File size exceeds the maximum allowed limit of {maxFileSize / (1024 * 1024 * 1024)}GB.");
+                    throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", $"File size exceeds the maximum allowed limit of {maxFileSize / (1024 * 1024 * 1024)}GB.") });
+
                 }
 
                 var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "images");
@@ -67,17 +77,18 @@ namespace Gallery.Application.FileAppservice
                 //return Ok(new { filePath });
             }
             else
-                 throw new ValidationException("No file uploaded.");
+                 throw new ValidationException(new List<ValidationFailure>{ new ValidationFailure("File", "No file uploaded.")});
 
 
             if (createDto == null || string.IsNullOrWhiteSpace(createDto.Path))
             {
-                throw new ValidationException("Invalid file path.");
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "Invalid file path.") });
+
             }
 
             if (!System.IO.File.Exists(createDto.Path))
             {
-                throw new ValidationException("File Path Not Found");
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "File Path Not Found") });
             }
 
             var provider = new FileExtensionContentTypeProvider();
@@ -92,13 +103,13 @@ namespace Gallery.Application.FileAppservice
             var fileName = Path.GetFileName(createDto.Path);
             var Request = _httpContextAccessor.HttpContext?.Request;
             // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var baseUrl = $"{Request.Scheme}://{Request.Host}";
             var fileUrl = $"{baseUrl}/{fileName}";
             // Update DTO directly
             createDto.FileType = fileType;
             createDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(createDto.Path).Length;
-            createDto.Size = (float)(fileSizeBytes / (1024.0 * 10240.0));
+            createDto.Size = (float)(fileSizeBytes / (1024.0 * 1024.0));
             createDto.FileUrlPath = fileUrl;
             createDto.FileName = fileName;
 
@@ -120,6 +131,48 @@ namespace Gallery.Application.FileAppservice
             return await base.Create(createDto);
         }
 
+        public async Task<List<FileGetDto>> CreateMultipleFiles(MultiFileCreateDto multiFileCreateDto)
+        {
+        
+             
+            var validationResult = await _fileValidator.ValidateAsync(multiFileCreateDto, options => options.IncludeRuleSets("multiCreate", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            if (multiFileCreateDto == null || multiFileCreateDto.Files == null || !multiFileCreateDto.Files.Any())
+            {
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "No file data provided.") });
+
+            }
+
+            if (string.IsNullOrEmpty(multiFileCreateDto.GalleryCode))
+            {
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "Gallery code is required.") });
+            }
+            var gallery = await _serviceDbContext.Galleries.FirstOrDefaultAsync(g => g.Code.Equals(multiFileCreateDto.GalleryCode));
+
+            if (gallery == null)
+            {
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", $"Gallery with code {multiFileCreateDto.GalleryCode} not found.") });
+            }
+
+            var results = new List<FileGetDto>();
+
+            foreach (var fileDto in multiFileCreateDto.Files)
+            {
+                fileDto.GalleryCode = null;
+                fileDto.GalleryId = gallery.Id; 
+                var result = await Create(fileDto);
+                results.Add(result);
+                
+
+            }
+
+            return results;
+        }
+
         public override async Task<FileGetDto> Update(FileUpdateDto updateDto)
         {
             var validationResult = await _fileValidator.ValidateAsync(updateDto, options => options.IncludeRuleSets("update", "default"));
@@ -134,12 +187,12 @@ namespace Gallery.Application.FileAppservice
 
             if (updateDto == null || string.IsNullOrWhiteSpace(updateDto.Path))
             {
-                throw new ValidationException("Invalid file path.");
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "Invalid file path.") });
             }
 
             if (!System.IO.File.Exists(updateDto.Path))
             {
-                throw new ValidationException("File Path Not Found");
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "File Path Not Found") });
             }
 
             var provider = new FileExtensionContentTypeProvider();
@@ -156,7 +209,7 @@ namespace Gallery.Application.FileAppservice
             var Request = _httpContextAccessor.HttpContext?.Request;
 
             // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}/images";
+            var baseUrl = $"{Request.Scheme}://{Request.Host}";
             var fileUrl = $"{baseUrl}/{fileName}";
             // Update DTO directly
             updateDto.FileType = fileType;
@@ -192,7 +245,7 @@ namespace Gallery.Application.FileAppservice
 
             if (!System.IO.File.Exists(filePath))
             {
-                throw new ValidationException("Invalid file path.");
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "Invalid file path.") });
             }
 
             var deletedEntity = await base.Delete(id);
@@ -205,7 +258,7 @@ namespace Gallery.Application.FileAppservice
             }
             catch (Exception ex)
             {
-                throw new ValidationException( $"Error deleting file: {ex.Message}");
+                    throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", $"Error deleting file: {ex.Message}") });
             }
            return deletedEntity;
         }
@@ -218,6 +271,14 @@ namespace Gallery.Application.FileAppservice
         public async Task<IEnumerable<FileGetDto>> GetRelatedFileGallery(int GalleryId)
         {
             return _mapper.Map<List<FileGetDto>>( _serviceDbContext.Files.Where(f => f.GalleryId == GalleryId).ToList());
+        }
+
+        public async Task<IEnumerable<FileGetDto>> GetRelatedFileGalleryByCodeAsync(string GalleryCode)
+        {
+            var gallery = _serviceDbContext.Galleries.Where(f => f.Code == GalleryCode).FirstOrDefault();
+            if (gallery == null) _mapper.Map<List<FileGetDto>>(new List<FileGetDto>());
+
+            return _mapper.Map<List<FileGetDto>>(_serviceDbContext.Files.Where(f => f.GalleryId == gallery.Id).ToList());
         }
 
         protected override IQueryable<Domain.Models.File> QueryExcuter(SieveModel input)

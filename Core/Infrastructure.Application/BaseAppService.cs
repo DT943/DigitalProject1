@@ -11,10 +11,11 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Infrastructure.Application.BasicDto;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Infrastructure.Application
 {
-    public abstract class BaseAppService<TServiceDbContext, TEntity, TGetAllDto, TGetDto, TCreateDto, TUpdateDto, TFilterDto> : IBaseAppService<TGetAllDto,TGetDto, TCreateDto, TUpdateDto, TFilterDto>
+    public abstract class BaseAppService<TServiceDbContext, TEntity, TGetAllDto, TGetDto, TCreateDto, TUpdateDto, TFilterDto> : IBaseAppService<TGetAllDto, TGetDto, TCreateDto, TUpdateDto, TFilterDto>
         where TServiceDbContext : BaseDbContext<TServiceDbContext>
         where TEntity : BasicEntity
         where TCreateDto : IValidatableDto
@@ -45,17 +46,24 @@ namespace Infrastructure.Application
         }
         public virtual async Task<TGetDto> Get(int id)
         {
-            
             var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.Id.Equals(id)) ??
             throw new EntityNotFoundException(typeof(TEntity).Name, id.ToString() ?? "");
             return await Task.FromResult(_mapper.Map<TGetDto>(result));
         }
 
-        protected virtual TEntity BeforCreate(TCreateDto create)  
+        public virtual async Task<TGetDto> GetByCode(string code)
+        {
+
+            var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.Code.Equals(code)) ??
+            throw new EntityNotFoundException(typeof(TEntity).Name, code.ToString() ?? "");
+            return await Task.FromResult(_mapper.Map<TGetDto>(result));
+        }
+
+        protected virtual TEntity BeforCreate(TCreateDto create)
         {
             TEntity createdEntity = _mapper.Map<TEntity>(create);
             createdEntity.Code = typeof(TEntity).Name + "_" + Guid.NewGuid().ToString();
-            if(createdEntity is BasicEntityWithAuditInfo)
+            if (createdEntity is BasicEntityWithAuditInfo)
             {
                 (createdEntity as BasicEntityWithAuditInfo).CreatedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
                 (createdEntity as BasicEntityWithAuditInfo).CreatedDate = DateTime.Now;
@@ -66,7 +74,7 @@ namespace Infrastructure.Application
 
         protected virtual TEntity BeforUpdate(TUpdateDto update, TEntity entity)
         {
- 
+
             if (entity is BasicEntityWithAuditInfo)
             {
                 (entity as BasicEntityWithAuditInfo).ModifiedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
@@ -75,7 +83,7 @@ namespace Infrastructure.Application
             return _mapper.Map(update, entity);
         }
 
-       // protected virtual TEntity BeforUpdate2(TUpdateDto update, TEntity entity) => _mapper.Map(update, entity);
+        // protected virtual TEntity BeforUpdate2(TUpdateDto update, TEntity entity) => _mapper.Map(update, entity);
 
 
         public virtual async Task<TGetDto> Create(TCreateDto create)
@@ -119,16 +127,62 @@ namespace Infrastructure.Application
             catch (Exception ex)
             {
             }
-            
+
             return await Get(result.Entity.Id);
         }
 
-        public virtual async Task<IEnumerable<TGetAllDto>> GetAll(TFilterDto input)
+        public virtual async Task<PaginatedResult<TGetAllDto>> GetAll(TFilterDto input)
         {
+            try
+            {
+                var result2 = await QueryExcuter(input).AsNoTracking().ToListAsync();
+
+            }
+            catch (Exception e)
+            {
+
+            }
             var result = await QueryExcuter(input).AsNoTracking().ToListAsync();
             var filterdResultForCount = _processor.Apply(input, result.AsQueryable(), applyPagination: false);
             var filterdResult = _processor.Apply(input, filterdResultForCount);
-            return await Task.FromResult(_mapper.Map<List<TGetAllDto>>(filterdResult));
+            var count = filterdResultForCount.Count();
+
+            return new PaginatedResult<TGetAllDto>
+            {
+                Items = await Task.FromResult(_mapper.Map<List<TGetAllDto>>(filterdResult)),
+                TotalCount = count,
+                Page = input.Page ?? 1,
+                PageSize = input.PageSize ?? count
+            };
+        }
+
+         
+        public virtual async Task<TGetDto> FakeDelete(bool delete, int id)
+        {
+        
+
+            var oldEntity = await FindById(id);
+            var newEntity = _mapper.Map<TEntity>(oldEntity);
+            if (newEntity is BasicEntityWithAuditAndFakeDelete)
+            {
+                (newEntity as BasicEntityWithAuditAndFakeDelete).IsDeleted = delete;
+                (newEntity as BasicEntityWithAuditInfo).ModifiedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+                (newEntity as BasicEntityWithAuditInfo).ModifiedDate = DateTime.Now;
+            }
+            else
+                throw new EntityNotFoundException(typeof(TEntity).Name, "this Entity Doesn't Include Fake Delete");
+            var result = _serviceDbContext.Set<TEntity>().Update(newEntity);
+            try
+            {
+                await _serviceDbContext.SaveChangesAsync();
+
+            }
+            catch (Exception ex)
+            {
+            }
+
+            return await Get(result.Entity.Id);
         }
     }
+    
 }

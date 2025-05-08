@@ -1,4 +1,6 @@
-﻿using Infrastructure.Application.BasicDto;
+﻿using CMS.Application.ComponentAppService.Dto;
+using CMS.Application.SegmentAppService.Dtos;
+using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Validations;
 
 namespace CMS.Application.PageAppService.Dtos
@@ -10,20 +12,25 @@ namespace CMS.Application.PageAppService.Dtos
         public string POS { get; set; }
         public string Title { get; set; }
         public bool IsDeleted { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
         public string Description { get; set; }
 
     }
 
     public class PageUpdateDto : IEntityUpdateDto
     {
-        public string PageUrlName { get; set; }
-        public string Language { get; set; }
-        public string POS { get; set; }
         public string Title { get; set; }
         public bool IsDeleted { get; set; }
         public string Status { get; set; }
         public string Description { get; set; }
+        public ICollection<SegmentUpdateDto> Segments { get; set; }
 
     }
+
+
+
+
+
+
+
 }

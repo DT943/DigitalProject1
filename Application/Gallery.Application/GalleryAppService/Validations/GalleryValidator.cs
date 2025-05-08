@@ -13,6 +13,8 @@ namespace Gallery.Application.GalleryAppService.Validations
 {
     public class GalleryValidator: AbstractValidator<IValidatableDto>
     {
+        private static readonly string[] AllowedTypes = { "hotel", "general"};
+
         GalleryDbContext _galleryRepository;
         public GalleryValidator(GalleryDbContext galleryRepository)
         {
@@ -32,6 +34,15 @@ namespace Gallery.Application.GalleryAppService.Validations
                     .WithMessage("The Description of the Gallery cannot be empty.")
                     .Must(Description => Description == null || Description == Description.ToLower())
                     .WithMessage("Description must be in lowercase if provided.");
+
+
+               RuleFor(dto => (dto as GalleryCreateDto).Type)
+                    .NotEmpty()
+                    .WithMessage("The Type of the Gallery cannot be empty.")
+                    .Must(type => AllowedTypes.Contains(type))
+                    .WithMessage($"Type must be one of the following: {string.Join(", ", AllowedTypes)}.")
+                    .Must(Type => Type == null || Type == Type.ToLower())
+                    .WithMessage("Type must be in lowercase if provided.");
             });
 
             RuleSet("update", () =>
@@ -50,6 +61,14 @@ namespace Gallery.Application.GalleryAppService.Validations
                     .WithMessage("The Description of the Gallery cannot be empty.")
                     .Must(Description => Description == null || Description == Description.ToLower())
                     .WithMessage("Description must be in lowercase if provided.");
+
+                RuleFor(dto => (dto as GalleryUpdateDto).Type)
+                     .NotEmpty()
+                     .WithMessage("The Type of the Gallery cannot be empty.")
+                     .Must(type => AllowedTypes.Contains(type))
+                     .WithMessage($"Type must be one of the following: {string.Join(", ", AllowedTypes)}.")
+                     .Must(Type => Type == null || Type == Type.ToLower())
+                     .WithMessage("Type must be in lowercase if provided.");
 
             });
         }

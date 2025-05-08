@@ -7,21 +7,21 @@ using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
  using System.Net;
 using CWCore.Data.DbContext;
+using System.Security.Cryptography.X509Certificates;
 
-Console.WriteLine("CMS Application is starting V.1.3");
 
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.WebHost.ConfigureKestrel(options =>
+/*
+builder.WebHost.ConfigureKestrel(serverOptions =>
 {
-
-    options.Listen(IPAddress.Any, 7036, listenOptions =>
-    {
-        listenOptions.UseHttps();  // HTTPS port
+ 
+    serverOptions.Listen(IPAddress.Any, 7036, listenOptions =>
+    { 
+            listenOptions.UseHttps(); 
     });
 });
-
+*/
 
 builder.Services.AddAuthentication(options =>
 {
@@ -43,6 +43,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -54,23 +55,47 @@ builder.Services.AddCors(options =>
         });
 });
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
-
+/*
 builder.Services.AddDbContext<CMSDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 
 });
-
+*/
+/*
 builder.Services.AddDbContext<CWDbContext>((sp, options) =>
 {
     options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
            .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
 
 });
+*/
+builder.Services.AddDbContext<CMSDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+builder.Services.AddDbContext<CWDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("CWCoreDefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddRazorPages();
@@ -85,11 +110,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseStaticFiles();
-app.UseHttpsRedirection();
+//app.UseStaticFiles();
+
 app.UseAuthorization();
 app.MapControllers();
 app.MapRazorPages();
-
 
 app.Run();

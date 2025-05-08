@@ -8,7 +8,7 @@ namespace Infrastructure.Data.BaseDbContext
         {
         }
 
-        protected abstract string GetSchemaName();
+       // protected abstract string GetSchemaName();
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

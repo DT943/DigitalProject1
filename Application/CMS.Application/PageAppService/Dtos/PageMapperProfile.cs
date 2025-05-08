@@ -14,7 +14,7 @@ namespace CMS.Application.PageAppService.Dtos
         {
             CreateMap<Domain.Models.Page, PageGetDto>();
             CreateMap<PageCreateDto, Domain.Models.Page>();
-            CreateMap<PageUpdateDto, Domain.Models.Page>();
+            CreateMap<PageUpdateDto, Domain.Models.Page>().ForMember(dest => dest.Segments, opt => opt.Ignore());
         }
     }
 }

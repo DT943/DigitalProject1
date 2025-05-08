@@ -16,6 +16,7 @@ namespace Gallery.Application.FileAppservice.Validations
 
         public FileValidator(GalleryDbContext galleryRepository)
         {
+            // test
             _galleryRepository = galleryRepository;
             RuleSet("create", () =>
             {
@@ -47,7 +48,16 @@ namespace Gallery.Application.FileAppservice.Validations
                    .NotEmpty()
                    .WithMessage("The GalleryId of the File cannot be empty.")
                    .Must(GalleryId => _galleryRepository.Galleries.Any(g => g.Id == GalleryId))
-                   .WithMessage("GalleryId not excists"); 
+                   .WithMessage("GalleryId not excists");
+
+                RuleFor(dto => (dto as FileCreateDto))
+                    .Must(dto =>
+                    {
+                        return !_galleryRepository.Files
+                            .Any(f => f.FileName == dto.FileName && f.GalleryId == dto.GalleryId);
+                    })
+                   .WithMessage("A file with the same name already exists in the selected gallery.");
+
             });
 
             RuleSet("update", () =>
@@ -83,6 +93,55 @@ namespace Gallery.Application.FileAppservice.Validations
                    .Must(GalleryId => _galleryRepository.Galleries.Any(g => g.Id == GalleryId))
                    .WithMessage("GalleryId not excists");
 
+                RuleFor(dto => (dto as FileUpdateDto))
+                   .Must(dto =>
+                   {
+                       return !_galleryRepository.Files
+                           .Any(f => f.FileName == dto.FileName && f.GalleryId == dto.GalleryId);
+                   })
+                  .WithMessage("A file with the same name already exists in the selected gallery.");
+
+            });
+
+            RuleSet("multiCreate", () =>
+            {
+                RuleFor(dto => (dto as MultiFileCreateDto).GalleryCode)
+                    .NotEmpty()
+                    .WithMessage("Gallery code is required.");
+
+                RuleFor(dto => (dto as MultiFileCreateDto).Files)
+                    .NotEmpty()
+                    .WithMessage("At least one file is required.")
+                    .Must(files => files.All(file => file.File != null && file.File.Length > 0))
+                    .WithMessage("All files must be valid and non-empty.");
+
+                RuleForEach(dto => (dto as MultiFileCreateDto).Files).ChildRules(file =>
+                {
+                    file.RuleFor(f => f.Title)
+                        .NotEmpty()
+                        .WithMessage("The Name of the File cannot be empty.")
+                        .Must(title => title == title.ToLower())
+                        .WithMessage("The Title must be in lowercase.");
+
+                    file.RuleFor(f => f.AlternativeText)
+                        .NotEmpty()
+                        .WithMessage("The Alternative Text cannot be empty.")
+                        .Must(text => text == null || text == text.ToLower())
+                        .WithMessage("AlternativeText must be in lowercase if provided.");
+
+                    file.RuleFor(f => f.Caption)
+                        .NotEmpty()
+                        .WithMessage("The Caption cannot be empty.")
+                        .Must(text => text == null || text == text.ToLower())
+                        .WithMessage("Caption must be in lowercase if provided.");
+
+                    file.RuleFor(f => f.Description)
+                        .NotEmpty()
+                        .WithMessage("The Description cannot be empty.")
+                        .Must(text => text == null || text == text.ToLower())
+                        .WithMessage("Description must be in lowercase if provided.");
+
+                });
             });
         }
     }

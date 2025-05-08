@@ -15,5 +15,6 @@ namespace Infrastructure.Service.Controllers
         Task<ActionResult<TGetDto>> Get(int id);
         Task<ActionResult<TGetAllDto>> GetAll([FromQuery] TFilterDto sieve);
         Task<ActionResult<TGetDto>> Update(TUpdateDto dto);
+        Task<ActionResult<TGetDto>> FakeDelete(int id,bool delete);
     }
 }

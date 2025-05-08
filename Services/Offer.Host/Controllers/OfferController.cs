@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Offer.Application.OfferAppService;
 using Offer.Application.OfferAppService.Dtos;
 using Sieve.Models;
+using static Infrastructure.Domain.Consts;
 
 namespace Offer.Host.Controllers
 {
@@ -13,7 +14,7 @@ namespace Offer.Host.Controllers
         public class OfferController : BaseController<IOfferAppService, Domain.Models.Offer, OfferGetDto, OfferGetDto, OfferCreateDto, OfferUpdateDto, SieveModel>
         {
             IOfferAppService _appService;
-            public OfferController(IOfferAppService appService) : base(appService)
+            public OfferController(IOfferAppService appService) : base(appService, Servics.OFFER)
             {
                 _appService = appService;
             }
@@ -22,9 +23,8 @@ namespace Offer.Host.Controllers
                 return base.GetAll(sieve);
             }
 
-    }
+        }
 
-    //Test for Lubna Git 2
 
     
 }

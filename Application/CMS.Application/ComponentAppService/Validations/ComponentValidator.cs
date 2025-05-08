@@ -18,16 +18,44 @@ namespace CMS.Application.ComponentAppService.Validations
                 RuleFor(dto => (dto as ComponentCreateDto).Type)
                     .NotEmpty()
                     .WithMessage("The Type of the Component cannot be empty.");
+
+                RuleFor(dto => (dto as ComponentCreateDto).Content)
+                    .NotEmpty()
+                    .WithMessage("The Content of the Component cannot be empty.")
+                    .Must(BeValidJson)
+                    .WithMessage("The Content must be a valid JSON.");
             });
 
             RuleSet("update", () =>
             {
 
-                RuleFor(dto => (dto as ComponentCreateDto).Type)
+                RuleFor(dto => (dto as ComponentUpdateDto).Type)
                 .NotEmpty()
                 .WithMessage("The Type of the Component cannot be empty.");
 
+                RuleFor(dto => (dto as ComponentUpdateDto).Content)
+                .NotEmpty()
+                .WithMessage("The Content of the Component cannot be empty.")
+                .Must(BeValidJson)
+                .WithMessage("The Content must be a valid JSON."); 
+
             });
         }
+
+        private bool BeValidJson(string content)
+        {
+            if (string.IsNullOrWhiteSpace(content)) return false;
+
+            try
+            {
+                var token = Newtonsoft.Json.Linq.JToken.Parse(content);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
     }
 }

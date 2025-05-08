@@ -12,9 +12,15 @@ namespace Authentication.Domain.Models
         public string Message { get; set; }
         public bool IsAuthenticated { get; set; }
         public string Email { get; set; }
+        public string Code { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Token { get; set; }
         public DateTime ExpiresOn { get; set; }
+        public int NumberOfLogin { get; set; }
+
+        public string? ManagerCode { get; set; }
+
+        public IEnumerable<string> Roles { get; set; }
     }
 }

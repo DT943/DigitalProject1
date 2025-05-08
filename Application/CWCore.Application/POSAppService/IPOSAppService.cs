@@ -11,5 +11,7 @@ namespace CWCore.Application.POSAppService
 {
     public interface IPOSAppService : IBaseAppService<POSGetDto, POSGetDto, POSCreateDto, POSUpdateDto, SieveModel>
     {
+        public Task<ICollection<POSGetDto>> GetByPOSKey(string code);
+
     }
 }

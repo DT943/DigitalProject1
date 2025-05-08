@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,10 +10,12 @@ using Gallery.Application.GalleryAppService.Dtos;
 using Gallery.Application.GalleryAppService.Validations;
 using Gallery.Data.DbContext;
 using Infrastructure.Application;
+using Infrastructure.Application.BasicDto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Gallery.Application.GalleryAppService
 {
@@ -26,14 +29,14 @@ namespace Gallery.Application.GalleryAppService
             _serviceDbContext = serviceDbContext;
         }
 
-        public override async Task<IEnumerable<GalleryGetDto>> GetAll(SieveModel input)
+        public override async Task<PaginatedResult<GalleryGetDto>> GetAll(SieveModel input)
         {
             // Get all galleries first
             var allGallery = await base.GetAll(input);
 
             // Get distinct file types for each gallery in a single query and map them directly
             var fileTypes = await _serviceDbContext.Files
-                .Where(file => allGallery.Select(g => g.Id).Contains(file.GalleryId))
+                .Where(file => allGallery.Items.Select(g => g.Id).Contains(file.GalleryId))
                 .GroupBy(file => file.GalleryId)
                 .Select(group => new
                 {
@@ -46,7 +49,7 @@ namespace Gallery.Application.GalleryAppService
             var fileTypesDictionary = fileTypes.ToDictionary(x => x.GalleryId, x => x.FileTypes);
 
             // Set the file types for each gallery directly from the dictionary
-            foreach (var item in allGallery)
+            foreach (var item in allGallery.Items)
             {
                 if (fileTypesDictionary.ContainsKey(item.Id))
                 {
@@ -67,7 +70,39 @@ namespace Gallery.Application.GalleryAppService
             return gallery;
         }
 
+        public async Task<GalleryGetDto> GetByName(string name)
+        {
+            var gallery = await _serviceDbContext.Galleries.Where(x => x.Name.ToLower() == name.ToLower()).ToListAsync();
+            return _mapper.Map<GalleryGetDto>(gallery);
+        }
 
+        public async Task<List<GalleryGetDto>> GetGalleriesByNames(List<string> names)
+        {
+            var galleries = await _serviceDbContext.Galleries
+                .Where(g => names.Contains(g.Name))
+                .ToListAsync();
+            return _mapper.Map<List<GalleryGetDto>>(galleries);
+        }
+        protected  override Domain.Models.Gallery BeforCreate(GalleryCreateDto create)
+        {
+            return  base.BeforCreate(create);
+        }
+        public async Task<List<GalleryGetDto>> CreateBatch(List<GalleryCreateDto> galleries)
+        {
+            var entities = new List<Domain.Models.Gallery>();
+
+            foreach (var gallery in galleries)
+            {
+                var entity = _mapper.Map<Domain.Models.Gallery>(gallery);
+                entity =  BeforCreate(gallery);
+                entities.Add(entity);
+            }
+
+            await _serviceDbContext.Galleries.AddRangeAsync(entities);
+            await _serviceDbContext.SaveChangesAsync();
+
+            return _mapper.Map<List<GalleryGetDto>>(entities);
+        }
         public override async Task<GalleryGetDto> Delete(int id)
         {
             var files = await _serviceDbContext.Files

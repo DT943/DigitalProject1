@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Sieve.Attributes;
 using System.ComponentModel.DataAnnotations;
 using static Infrastructure.Domain.Consts;
 
@@ -18,20 +19,51 @@ namespace Authentication.Domain.Models
         [MaxLength(50)]
         public string LastName { get; set; }
 
-        [MaxLength(50)]
-        public string MotherName { get; set; }
+        public bool IsActive { get; set; } = true;
+        public bool IsLocked { get; set; } = false;
+        public bool IsFrozed { get; set; } = false;
+
+        public int NumberOfLogIn { get; set; } = 0;
 
         [MaxLength(50)]
-        public string FatherName { get; set; }
+        public string? Department { get; set; }
 
         [MaxLength(50)]
-        public string IdentityNumber { get; set; }
+        public string? ManagerCode { get; set; }
 
-        [MaxLength(50)]
-        public string PhoneNumber { get; set; }
+        public DateTime? LastLogIn { get; set; }
+        public string? OTP {  get; set; }
+        public DateTime OTPExpiration {  get; set; }
 
-        [MaxLength(50)]
-        public Gender Gender { get; set; }
+        public DateTime LastOTPChecked {  get; set; } = DateTime.MinValue;
+        //info not used
+        public string? MotherName { get; set; }
+        public string? FatherName { get; set; }
+        public Gender? Gender { get; set; }
+        public string? IdentityNumber { get; set; }
+        public bool IsDeleted { get; set; } = false;
+    }
+
+
+    public class GetUser
+    {
+        public int Id { get; set; }
+
+        public string Code { get; set; }
+
+        public bool IsActive { get; set; }
+        public bool IsLocked { get; set; }
+        public string FirstName { get; set; }
+
+        public string LastName { get; set; }
+
+    }
+
+    public class UserWithRole
+    {
+        public GetUser applicationUser { get; set; }
+
+        public IEnumerable<string> Roles { get; set; }
 
     }
 }
