@@ -6,6 +6,8 @@ using Sieve.Models;
 using static Infrastructure.Domain.Consts;
 using CMS.Application.StaticComponentAppService;
 using CMS.Application.StaticComponentAppService.Dto;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CMS.Host.Controllers
 {
@@ -17,6 +19,13 @@ namespace CMS.Host.Controllers
             _appService = appService;
         }
 
-
+        [HttpGet]
+        [AllowAnonymous]
+        public override async Task<ActionResult<StaticComponentGetDto>> GetAll([FromQuery] SieveModel sieve)
+        {
+          
+            var entity = await _appService.GetAll(sieve);
+            return Ok(entity);
+        }
     }
 }
