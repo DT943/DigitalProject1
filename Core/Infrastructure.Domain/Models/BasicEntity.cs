@@ -32,4 +32,17 @@ namespace Infrastructure.Domain.Models
     {
         public bool IsDeleted { get; set; } = false;
     }
+
+
+
+
+    public class ApproveEntityWithAuditAndFakeDelete : BasicEntityWithAuditInfo
+    {
+        public string? AwaitingApprovalUserCode { get; set; }
+
+        public string? ApprovedUserCode { get; set; }
+
+        public string ApprovalStatus { get; set; }
+    }
+
 }

@@ -134,15 +134,6 @@ namespace Infrastructure.Application
 
         public virtual async Task<PaginatedResult<TGetAllDto>> GetAll(TFilterDto input)
         {
-            try
-            {
-                var result2 = await QueryExcuter(input).AsNoTracking().ToListAsync();
-
-            }
-            catch (Exception e)
-            {
-
-            }
             var result = await QueryExcuter(input).AsNoTracking().ToListAsync();
             var filterdResultForCount = _processor.Apply(input, result.AsQueryable(), applyPagination: false);
             var filterdResult = _processor.Apply(input, filterdResultForCount);
@@ -184,6 +175,43 @@ namespace Infrastructure.Application
 
             return await Get(result.Entity.Id);
         }
+
+
+        public virtual async Task<PaginatedResult<TGetAllDto>> GetApprovalNeededRecords(TFilterDto input)
+        {
+
+            if (!typeof(ApproveEntityWithAuditAndFakeDelete).IsAssignableFrom(typeof(TEntity)))
+                throw new EntityNotFoundException(typeof(TEntity).Name, "this Entity Doesn't Include Approval Process");
+
+            string userCode = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+            IQueryable<TEntity> query = _serviceDbContext.Set<TEntity>().AsQueryable();
+
+            // Check if TEntity is a type of ApproveEntityWithAuditAndFakeDelete
+            if (typeof(ApproveEntityWithAuditAndFakeDelete).IsAssignableFrom(typeof(TEntity)))
+            {
+                query = query.Where(entity => ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovalStatus == "PendingApproval" &&
+                ((ApproveEntityWithAuditAndFakeDelete)(object)entity).AwaitingApprovalUserCode == userCode);
+            }
+
+            query = query.OrderByDescending(item => item.Id).AsNoTracking();
+
+            // Apply filters using the processor
+            var filteredResultForCount = _processor.Apply(input, query, applyPagination: false);
+            var count = await filteredResultForCount.CountAsync();
+
+            var filteredResult = _processor.Apply(input, filteredResultForCount);
+            var finalResult = await filteredResult.ToListAsync();
+
+            return new PaginatedResult<TGetAllDto>
+            {
+                Items = _mapper.Map<List<TGetAllDto>>(finalResult),
+                TotalCount = count,
+                Page = input.Page ?? 1,
+                PageSize = input.PageSize ?? count
+            };
+        }
+
+
     }
-    
+
 }
