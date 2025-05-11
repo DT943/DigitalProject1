@@ -14,6 +14,7 @@ using static Infrastructure.Domain.Consts;
 
 namespace B2B.Host.Controllers
 {
+    [Authorize]
     public class TravelAgentOfficeController : BaseController<ITravelAgentOfficeAppService, Domain.Models.TravelAgentOffice, TravelAgentOfficeGetAllDto, TravelAgentOfficeGetDto, TravelAgentOfficeCreateDto, TravelAgentOfficeUpdateDto, SieveModel>
     {
         ITravelAgentOfficeAppService _appService;
@@ -39,9 +40,9 @@ namespace B2B.Host.Controllers
         }
 
 
-        [HttpGet("IsPythonAuthorized")]
+        [HttpPost("is-python-authorized")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        protected async Task<ActionResult> IsPythonAuthorized(params string[] requiredRoles)
+        public async Task<ActionResult> IsPythonAuthorized()
         {
             var user = HttpContext.User;
 
