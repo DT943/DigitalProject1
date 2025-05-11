@@ -12,5 +12,6 @@ namespace CMS.Application.StaticComponentAppService
 {
     public interface IStaticComponentAppService : IBaseAppService<StaticComponentGetDto, StaticComponentGetDto, StaticComponentCreateDto, StaticComponentUpdateDto, SieveModel>
     {
+        Task<ICollection<StaticComponentGetDto>> GetStaticComponentByLanguage(string language);
     }
 }

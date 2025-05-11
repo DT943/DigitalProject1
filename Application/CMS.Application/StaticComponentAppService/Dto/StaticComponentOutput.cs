@@ -11,6 +11,7 @@ namespace CMS.Application.StaticComponentAppService.Dto
         public int Id { get; set; }
          public string Type { get; set; }
         public string Content { get; set; }
+        public string language { get; set; } 
         public int Position { get; set; }
 
     }

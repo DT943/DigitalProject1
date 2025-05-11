@@ -14,5 +14,7 @@ namespace CMS.Domain.Models
         public string Content { get; set; }  // Stores text or JSON config
 
         public int Position { get; set; }
+
+        public string Language { get; set; }
     }
 }

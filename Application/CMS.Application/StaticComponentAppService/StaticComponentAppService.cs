@@ -14,6 +14,7 @@ using Sieve.Models;
 using Sieve.Services;
 using CMS.Application.StaticComponentAppService.Dto;
 using CMS.Application.StaticComponentAppService.Validations;
+using Microsoft.EntityFrameworkCore;
 
 namespace CMS.Application.StaticComponentAppService
 {
@@ -26,6 +27,13 @@ namespace CMS.Application.StaticComponentAppService
             _httpContextAccessor = httpContextAccessor;
             _serviceDbContext = serviceDbContext;
         }
+
+        public  async Task<ICollection<StaticComponentGetDto>> GetStaticComponentByLanguage(string language)
+        {
+            return _mapper.Map<List<StaticComponentGetDto>>( await _serviceDbContext.StaticComponents.Where(x => x.Language == language).ToListAsync());
+        }
+
+
 
         protected override IQueryable<Domain.Models.StaticComponent> QueryExcuter(SieveModel input)
         {
