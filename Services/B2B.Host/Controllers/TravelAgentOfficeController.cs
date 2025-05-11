@@ -23,19 +23,17 @@ namespace B2B.Host.Controllers
             _appService = appService;
         }
 
-
-        [HttpPost("approve")]
+        [HttpGet("IsPythonAuthorized")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<TravelAgentEmployeeGetDto>> Approve(TravelAgentProcessApproveDto travelAgentProcessApproveDto)
+        protected async Task<ActionResult> IsPythonAuthorized(params string[] requiredRoles)
         {
             var user = HttpContext.User;
 
-            if (!UserHasPermission("Admin"))
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
             {
-                return Forbid();
+                return Unauthorized();
             }
-
-            return Ok(await _appService.Approve(travelAgentProcessApproveDto));
+            return Ok();
         }
 
     }

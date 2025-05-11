@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Sieve.Models;
+using static Infrastructure.Domain.Consts;
 
 namespace Authentication.Host.Controllers
 {
@@ -371,12 +372,5 @@ namespace Authentication.Host.Controllers
             }
         }
 
-
-
-        [HttpPost("decrypt")]
-        public async Task<IActionResult> DecryptToken([FromBody] DecryptedToken Token)
-        {
-            return Ok(await _authenticationAppService.DecryptToken(Token));
-        }
     }
 }
