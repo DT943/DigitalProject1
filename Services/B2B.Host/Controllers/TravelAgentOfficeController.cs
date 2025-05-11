@@ -38,5 +38,19 @@ namespace B2B.Host.Controllers
             return Ok(await _appService.Approve(travelAgentProcessApproveDto));
         }
 
+
+        [HttpGet("IsPythonAuthorized")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        protected async Task<ActionResult> IsPythonAuthorized(params string[] requiredRoles)
+        {
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Unauthorized();
+            }
+            return Ok();
+        }
+
     }
 }
