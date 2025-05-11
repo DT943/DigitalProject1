@@ -17,33 +17,16 @@ namespace Authentication.Host.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationAppService _authenticationAppService;
+        private readonly IDepartmentAppService _departmentAppService;
 
-        public AuthenticationController(IAuthenticationAppService authenticationAppService)
+
+        public AuthenticationController(IAuthenticationAppService authenticationAppService, IDepartmentAppService departmentAppService)
         {
             _authenticationAppService = authenticationAppService;
+            _departmentAppService = departmentAppService;
+
         }
 
-        [HttpPost("register")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterModel model)
-        {
-            var user = HttpContext.User;
-            if (!user.IsInRole("SuperAdmin")) return Forbid();
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            var result = await _authenticationAppService.RegisterAsync(model);
-            if (!result.IsAuthenticated)
-                return BadRequest(new ErrorModel
-                {
-                    IsAuthenticated = result.IsAuthenticated,
-                    Message = result.Message
-                });
-
-            return Ok(result);
-        }
 
         [HttpPost("login")]
 
@@ -110,22 +93,6 @@ namespace Authentication.Host.Controllers
             return Ok(result);
         }
 
-        [HttpPost("assign-roles/{userCode}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
-        public async Task<IActionResult> AssignRolesToUser(string userCode, [FromBody] List<string> roles)
-        {
-            var user = HttpContext.User;
-            if (!user.IsInRole("SuperAdmin")) return Forbid();
-
-            if (string.IsNullOrWhiteSpace(userCode) || roles == null || !roles.Any())
-            {
-                return BadRequest("User code and at least one role are required.");
-            }
-
-            var result = await _authenticationAppService.AssignRolesToUserAsync(userCode, roles);
-            return Ok(result);
-        }
 
         [HttpPut("ChangeUserAccountStatus/{userCode}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -334,18 +301,9 @@ namespace Authentication.Host.Controllers
             }
         }
 
-        [HttpGet("Departments")]
+        [HttpPost("SetManagerToUser")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Departments()
-        {
-
-            return Ok(new List<string> { "marketing", "holiday" , "callcenter", "revenue", "digital transformation","scheduling", "interline","cargo","hr" } );
-        }
-
-
-        [HttpPost("SetRoles")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> SetRoles(SetUserManagerDto dto)
+        public async Task<IActionResult> SetManagerToUser(SetManagerToUserDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -354,7 +312,7 @@ namespace Authentication.Host.Controllers
 
             try
             {
-                var result = await _authenticationAppService.SetUserManager(dto);
+                var result = await _authenticationAppService.SetManagerToUser(dto);
                 if (!result.IsAuthenticated)
                     return BadRequest(new ErrorModel
                     {
@@ -368,5 +326,131 @@ namespace Authentication.Host.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
          }
+
+        //Department 
+        [HttpPost("CreateDepartment")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> CreateDepartment(CreateDepartmentDto department)
+        {
+
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+            try
+            {
+                var result = await _departmentAppService.Create(department);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+
+        [HttpPut("UpdateDepartment/{Code}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> UpdateDepartment(CreateDepartmentDto department)
+        {
+
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
+            try
+            {
+                var result = await _departmentAppService.Update(department);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+        [HttpGet("c")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> GetAllDepartment()
+        {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
+            var result = await _departmentAppService.GetAll();
+            return Ok(result);
+        }
+
+        [HttpDelete("FakeDelete/{id}/{delete}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> FakeDelete(int id, bool delete)
+        {
+            var user = HttpContext.User;
+
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+            try
+            {
+                var result = await _departmentAppService.FakeDelete(delete, id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+        [HttpDelete("Delete/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var user = HttpContext.User;
+
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+            try
+            {
+                var result = await _departmentAppService.Delete(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
+        [HttpGet("GetDepartmentByCode/{code}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> GetDepartmentByCode(string code)
+        {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                return BadRequest("Code is required.");
+            }
+
+            var result = await _departmentAppService.GetByCode(code);
+
+            if (result == null)
+            {
+                return NotFound("Department not found.");
+            }
+
+            return Ok(result);
+        }
+        [HttpGet("GetDepartmentById/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
+        public async Task<IActionResult> GetDepartmentId(int id)
+        {
+            var user = HttpContext.User;
+            if (!user.IsInRole("SuperAdmin")) return Forbid();
+
+            var result = await _departmentAppService.Get(id);
+
+            if (result == null)
+            {
+                return NotFound("Department not found.");
+            }
+
+            return Ok(result);
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using Authentication.Application.Processors;
 using Authentication.Data.DbContext;
 using Authentication.Domain.Models;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Notification.Application;
@@ -19,6 +20,11 @@ namespace Authentication.Host.Helper
             
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
+            services.AddScoped<IDepartmentAppService, DepartmentAppService>();
+            services.AddScoped<IValidator<CreateDepartmentDto>, Application.validator.CreateDepartmentDtoValidator>();
+
+
+
             services.AddScoped<IEmailAppService, EmailAppService>();
             services.AddScoped<ISieveProcessor, SieveProcessor>();
             services.AddScoped<ISieveProcessor, AuthenticationProcessor>();
@@ -28,7 +34,7 @@ namespace Authentication.Host.Helper
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AuthenticationMapperProfile());
-
+                mc.AddProfile(new DepartmentMapperProfile());
 
             });
             IMapper mapper = mapperConfig.CreateMapper();

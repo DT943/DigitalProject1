@@ -11,6 +11,40 @@ namespace Authentication.Domain.Models
     {
         public string Message { get; set; }
         public bool IsAuthenticated { get; set; }
+    }
+
+    public class AuthenticationModelManagreAndUsers :AuthenticationModel
+    {
+        public string ManagerName { get; set; }
+        public List<string> UserName { get; set; }
+
+    }
+
+    public class AuthenticationModelWithDetailsWithToken : AuthenticationModel
+    {
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime ExpiresOn { get; set; }
+        public string Token { get; set; }
+
+        public int NumberOfLogin { get; set; }
+        public IEnumerable<string> Roles { get; set; }
+    }
+
+
+    public class AuthenticationModelWithDetailsWithoutTokenAndCode : AuthenticationModel
+    {
+        public string Email { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime ExpiresOn { get; set; }
+        public int NumberOfLogin { get; set; }
+        public IEnumerable<string> Roles { get; set; }
+    }
+
+    public class AuthenticationModelWithDetails : AuthenticationModel
+    {
         public string Email { get; set; }
         public string Code { get; set; }
         public string FirstName { get; set; }
@@ -23,4 +57,5 @@ namespace Authentication.Domain.Models
 
         public IEnumerable<string> Roles { get; set; }
     }
+
 }

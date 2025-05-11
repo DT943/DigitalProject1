@@ -23,7 +23,7 @@ namespace Authentication.Domain.Models
         public string Token { get; set; }
 
         [Required]
-        public string Password { get; set; }
+        public string OTP { get; set; }
     }
 
     public class ForgotPasswordModel
