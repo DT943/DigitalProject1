@@ -9,6 +9,7 @@ using System.Net;
 using System.Text;
 using System.Security.Cryptography.X509Certificates;
 using CWCore.Data.DbContext;
+using Authentication.Data.DbContext;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -106,6 +107,18 @@ builder.Services.AddDbContext<CWDbContext>((sp, options) =>
            .EnableSensitiveDataLogging()
            .LogTo(Console.WriteLine, LogLevel.Information);
 });
+
+
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("AuthDefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 builder.Services.AddSwaggerGen();
 
 

@@ -35,7 +35,13 @@ namespace B2B.Application.TravelAgentApplicationAppService
 
 
 
+        public async Task<EmployeeApplicationGetDto> GetEmployeeById (int id)
+        {
+            var travelAgent = await _serviceDbContext.EmployeeApplications.FirstOrDefaultAsync(task => task.Id == id);
 
+
+            return _mapper.Map<EmployeeApplicationGetDto>(travelAgent);
+        }
 
 
         protected override IQueryable<Domain.Models.TravelAgentApplication> QueryExcuter(SieveModel input)

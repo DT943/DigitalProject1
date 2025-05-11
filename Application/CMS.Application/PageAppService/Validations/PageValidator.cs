@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CMS.Application.ComponentAppService.Validations;
 using CMS.Application.PageAppService.Dtos;
+using CMS.Application.SegmentAppService.Dtos;
 using CMS.Application.SegmentAppService.Validations;
 using CMS.Data.DbContext;
 using CWCore.Application.POSAppService;
@@ -120,7 +122,10 @@ namespace CMS.Application.PageAppService.Validations
                      .WithMessage($"Type must be one of the following: {string.Join(", ", AllowedTypes)}.")
                      .Must(type => type == type.ToLower())
                      .WithMessage("The type must be in lowercase.");
- 
+
+                RuleForEach(dto => (dto as PageUpdateDto).Segments)
+                    .SetValidator(new SegmentValidator());
+
             });
         }
     }

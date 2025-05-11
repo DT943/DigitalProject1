@@ -9,6 +9,16 @@ using CWCore.Application.POSAppService.Validations;
 using CWCore.Application.POSAppService;
 using Sieve.Services;
 using CWCore.Application.POSAppService.Dtos;
+using Microsoft.AspNetCore.Authentication;
+using Authentication.Application;
+using Notification.Application;
+using Authentication.Domain.Models;
+using Microsoft.AspNetCore.Identity;
+using Authentication.Data.DbContext;
+using Authentication.Application.Dtos;
+using B2B.Application.TravelAgentEmployeeAppService;
+using B2B.Application.TravelAgentEmployeeAppService.Validations;
+using B2B.Application.TravelAgentEmployeeAppService.Dto;
 
 namespace B2B.Host.Helper
 {
@@ -22,17 +32,28 @@ namespace B2B.Host.Helper
             services.AddTransient<ITravelAgentApplicationAppService, TravelAgentApplicationAppService>();
             services.AddTransient<TravelAgentApplicationValidator>();
 
+            services.AddTransient<ITravelAgentEmployeeAppService, TravelAgentEmployeeAppService>();
+            services.AddTransient<TravelAgentEmployeeValidator>();
+
+
             services.AddTransient<IPOSAppService, POSAppService>();
             services.AddTransient<POSValidator>();
 
             services.AddScoped<ISieveProcessor, SieveProcessor>();
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
+            services.AddScoped<IEmailAppService, EmailAppService>();
+
+            services.AddHttpClient();
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new TravelAgentOfficeMapperProfile());
                 mc.AddProfile(new TravelAgentApplicationMapperProfile());
+                mc.AddProfile(new TravelAgentEmployeeMapperProfile());
                 mc.AddProfile(new POSMapperProfile());
-
+                mc.AddProfile(new AuthenticationMapperProfile());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

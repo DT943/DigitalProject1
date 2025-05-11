@@ -4,6 +4,7 @@ using B2B.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B2B.Data.Migrations
 {
     [DbContext(typeof(B2BDbContext))]
-    partial class B2BDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250506073601_add_office-firstname-lastname")]
+    partial class add_officefirstnamelastname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -186,7 +189,7 @@ namespace B2B.Data.Migrations
 
                     b.HasIndex("TravelAgentOfficeId");
 
-                    b.ToTable("TravelAgentEmployees");
+                    b.ToTable("TravelAgentEmployee");
                 });
 
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentOffice", b =>
@@ -196,11 +199,6 @@ namespace B2B.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccellAeroUserName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("AgencyName")
                         .IsRequired()
@@ -270,6 +268,16 @@ namespace B2B.Data.Migrations
                     b.Property<string>("PdfFileUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SYD")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("SYP")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("SecoundEmail")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
@@ -295,59 +303,6 @@ namespace B2B.Data.Migrations
                     b.ToTable("TravelAgentOffices");
                 });
 
-            modelBuilder.Entity("B2B.Domain.Models.TravelAgentPOS", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime?>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("OfficeCode")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("POS")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("TravelAgentOfficeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TravelAgentOfficeId");
-
-                    b.ToTable("TravelAgentPOS");
-                });
-
             modelBuilder.Entity("B2B.Domain.Models.EmployeeApplication", b =>
                 {
                     b.HasOne("B2B.Domain.Models.TravelAgentApplication", "TravelAgentApplication")
@@ -370,13 +325,6 @@ namespace B2B.Data.Migrations
                     b.Navigation("TravelAgentOffice");
                 });
 
-            modelBuilder.Entity("B2B.Domain.Models.TravelAgentPOS", b =>
-                {
-                    b.HasOne("B2B.Domain.Models.TravelAgentOffice", null)
-                        .WithMany("TravelAgentPOSs")
-                        .HasForeignKey("TravelAgentOfficeId");
-                });
-
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentApplication", b =>
                 {
                     b.Navigation("Employees");
@@ -385,8 +333,6 @@ namespace B2B.Data.Migrations
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentOffice", b =>
                 {
                     b.Navigation("TravelAgentEmployees");
-
-                    b.Navigation("TravelAgentPOSs");
                 });
 #pragma warning restore 612, 618
         }
