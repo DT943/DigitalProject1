@@ -376,7 +376,7 @@ namespace Authentication.Host.Controllers
         [HttpPost("decrypt")]
         public async Task<IActionResult> DecryptToken([FromBody] DecryptedToken Token)
         {
-            return Ok(await _authenticationAppService.DecryptToken(Token.decryptedToken));
+            return Ok(await _authenticationAppService.DecryptToken(Token));
         }
     }
 }

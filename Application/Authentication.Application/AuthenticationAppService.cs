@@ -1014,7 +1014,7 @@ namespace Authentication.Application
             };
         }
 
-        public async Task<AuthenticationModelWithClaims> DecryptToken([FromBody] string encryptedToken)
+        public async Task<AuthenticationModelWithClaims> DecryptToken([FromBody] DecryptedToken Token)
         {
             string privateKey = _configuration["JWT:Key"];
 

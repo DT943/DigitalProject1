@@ -41,6 +41,8 @@ namespace Authentication.Domain.Models
 
     public class DecryptedToken
     {
+        public string email { get; set; }
+        public string password { get; set;}
         public string decryptedToken { get; set; }
     }
 }
