@@ -42,7 +42,7 @@ namespace Infrastructure.Domain.Models
 
         public string? ApprovedUserCode { get; set; }
 
-        public string ApprovalStatus { get; set; }
+        public string ApprovalStatus { get; set; } = "PendingApproval";
     }
 
 }
