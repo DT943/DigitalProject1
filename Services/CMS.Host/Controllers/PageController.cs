@@ -2,6 +2,7 @@
 using CMS.Application.PageAppService.Dtos;
 using Infrastructure.Application;
 using Infrastructure.Service.Controllers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
@@ -49,6 +50,20 @@ namespace CMS.Host.Controllers
 
             string status = statusValues.ToString();
             return Ok(await _appService.GetPageByStatus(status));
+        }
+
+
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public override async Task<ActionResult<PageGetDto>> Delete(int id)
+        {
+            var user = HttpContext.User;
+            if (!UserHasPermission("Admin"))
+            {
+                return Forbid();
+            }
+            var deletedEntity = await _appService.Delete(id);
+            return Ok(deletedEntity);
         }
 
     }

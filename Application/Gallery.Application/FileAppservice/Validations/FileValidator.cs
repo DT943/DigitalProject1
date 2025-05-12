@@ -93,13 +93,6 @@ namespace Gallery.Application.FileAppservice.Validations
                    .Must(GalleryId => _galleryRepository.Galleries.Any(g => g.Id == GalleryId))
                    .WithMessage("GalleryId not excists");
 
-                RuleFor(dto => (dto as FileUpdateDto))
-                   .Must(dto =>
-                   {
-                       return !_galleryRepository.Files
-                           .Any(f => f.FileName == dto.FileName && f.GalleryId == dto.GalleryId);
-                   })
-                  .WithMessage("A file with the same name already exists in the selected gallery.");
 
             });
 
