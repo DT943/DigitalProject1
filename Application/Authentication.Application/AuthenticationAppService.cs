@@ -248,7 +248,9 @@ namespace Authentication.Application
                 return authModel;
             }
 
-            if (DateTime.Now - user.LastLogIn > TimeSpan.FromDays(3))
+ 
+
+            if (DateTime.Now - user.LastLogIn > TimeSpan.FromDays(3) && !await _userManager.IsInRoleAsync(user, "SuperAdmin"))
             {
                 user.IsFrozed = true;
                 user.IsActive = false;
@@ -273,10 +275,11 @@ namespace Authentication.Application
 
                 await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
                 authModel.IsAuthenticated = true;
+                authModel.Token = Encrypt(user.Email, this.key);
                 authModel.Message = "Please reset OTP, The last login was a long time ago, Check your email!";
                 return authModel;
             }
-            if (await _userManager.IsLockedOutAsync(user) || user.IsLocked)
+            if ((await _userManager.IsLockedOutAsync(user) || user.IsLocked)&&!await _userManager.IsInRoleAsync(user, "SuperAdmin"))
             {
                 user.IsActive = !user.IsActive;
                 user.IsLocked = true;
@@ -285,7 +288,7 @@ namespace Authentication.Application
                 authModel.Message = "Your account is locked due to multiple failed login attempts.";
                 return authModel;
             }
-            if (!user.IsActive)
+            if (!user.IsActive && !await _userManager.IsInRoleAsync(user, "SuperAdmin"))
             {
                 authModel.IsAuthenticated = false;
                 authModel.Message = "Your account is deactivated. Please contact support.";
