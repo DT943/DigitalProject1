@@ -69,7 +69,11 @@ namespace Infrastructure.Application
             {
                 (createdEntity as BasicEntityWithAuditInfo).CreatedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
                 (createdEntity as BasicEntityWithAuditInfo).CreatedDate = DateTime.Now;
-                if (createdEntity is ApproveEntityWithAuditAndFakeDelete)   (createdEntity as ApproveEntityWithAuditAndFakeDelete).ApprovalStatus = "PendingApproval";
+                if (createdEntity is ApproveEntityWithAuditAndFakeDelete)
+                {
+                    (createdEntity as ApproveEntityWithAuditAndFakeDelete).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
+                    (createdEntity as ApproveEntityWithAuditAndFakeDelete).ApprovalStatus = "PendingApproval";
+                }
             }
             return createdEntity;
         }

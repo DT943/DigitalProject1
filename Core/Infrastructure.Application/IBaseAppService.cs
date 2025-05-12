@@ -22,5 +22,7 @@ namespace Infrastructure.Application
         public Task<PaginatedResult<TGetAllDto>> GetAll(TFilterDto input);
         public Task<TGetDto> FakeDelete(bool delete, int id);
 
+        public Task<PaginatedResult<TGetAllDto>> GetApprovalNeededRecords(TFilterDto input);
+
     }
 }

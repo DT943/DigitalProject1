@@ -171,7 +171,8 @@ namespace Authentication.Application
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("userCode", user.Code.ToString())
+                new Claim("userCode", user.Code.ToString()),
+                new Claim("managerCode",user.ManagerCode!=null?user.ManagerCode.ToString():"" )
             }
             .Union(userClaims)
             .Union(roleClaims);
