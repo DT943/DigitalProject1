@@ -273,6 +273,7 @@ namespace Authentication.Application
 
                 await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
                 authModel.IsAuthenticated = true;
+                authModel.Token = Encrypt(user.Email, this.key);
                 authModel.Message = "Please reset OTP, The last login was a long time ago, Check your email!";
                 return authModel;
             }
