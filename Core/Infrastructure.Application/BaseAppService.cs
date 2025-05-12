@@ -238,10 +238,15 @@ namespace Infrastructure.Application
                 }
                 else
                 {
-                    ((ApproveEntityWithAuditAndFakeDelete)(object)entity).AwaitingApprovalUserCode = null;
-                   ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovalStatus = "Approved";
-                    await _serviceDbContext.SaveChangesAsync();
 
+                     entity = await query.Where(entity =>  entity.Id == id)
+                                         .FirstOrDefaultAsync();
+                    if (entity != null)
+                    {
+                        ((ApproveEntityWithAuditAndFakeDelete)(object)entity).AwaitingApprovalUserCode = null;
+                        ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovalStatus = "Approved";
+                        await _serviceDbContext.SaveChangesAsync();
+                    }
                 }
             }
 

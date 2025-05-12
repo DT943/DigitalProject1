@@ -41,7 +41,7 @@ namespace CMS.Application.PageAppService
 
         public override async Task<PageGetDto> Create(PageCreateDto create)
         {
-            create.Status = "published";
+            create.Status = "draft";
 
             return await base.Create(create);
         }
@@ -191,5 +191,21 @@ namespace CMS.Application.PageAppService
             return entity;
         }
 
+
+
+        public override async Task<PageGetDto> Approve(int id)
+        {
+            var approvedPage = await base.Approve(id);
+
+            if (approvedPage != null && approvedPage.ApprovalStatus == "Approved")
+            {
+               var page =  await _serviceDbContext.Pages.FindAsync(id);
+                page.Status = "published";
+
+                await _serviceDbContext.SaveChangesAsync();
+            }
+
+            return await base.Get(id);
+        }
     }
 }
