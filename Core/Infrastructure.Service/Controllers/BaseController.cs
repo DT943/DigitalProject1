@@ -138,7 +138,7 @@ namespace Infrastructure.Service.Controllers
                 return Forbid();
             }
 
-            var approvedEntity = await _appService.Approve(id);
+            var approvedEntity = await _appService.Approve(id, UserHasPermission());
             return Ok(approvedEntity);
         }
 

@@ -9,10 +9,12 @@ using CMS.Application.PageAppService.Validations;
 using CMS.Application.StaticComponentAppService;
 using CMS.Data.DbContext;
 using Infrastructure.Application;
+using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Exceptions;
 using Infrastructure.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
@@ -45,6 +47,14 @@ namespace CMS.Application.PageAppService
 
             return await base.Create(create);
         }
+
+        public override async Task<PageGetDto> Update(PageUpdateDto update)
+        {
+            update.Status = "draft";
+
+            return await base.Update(update);
+        }
+
 
         public async Task<PageGetDto> GetPageBySubUrl(string pos, string language, string pageUrlName)
         {
@@ -150,6 +160,11 @@ namespace CMS.Application.PageAppService
             {
                 auditInfo.ModifiedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
                 auditInfo.ModifiedDate = DateTime.Now;
+                if (entity is ApproveEntityWithAuditAndFakeDelete)
+                {
+                    (entity as ApproveEntityWithAuditAndFakeDelete).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
+                    (entity as ApproveEntityWithAuditAndFakeDelete).ApprovalStatus = "PendingApproval";
+                }
             }
 
             // Map top-level props
@@ -193,11 +208,11 @@ namespace CMS.Application.PageAppService
 
 
 
-        public override async Task<PageGetDto> Approve(int id)
+        public override async Task<ApprovedResult<PageGetDto>> Approve(int id, bool canApprove)
         {
-            var approvedPage = await base.Approve(id);
+            var approvedPage = await base.Approve(id, canApprove);
 
-            if (approvedPage != null && approvedPage.ApprovalStatus == "Approved")
+            if (approvedPage != null && approvedPage.Item.ApprovalStatus == "Approved")
             {
                var page =  await _serviceDbContext.Pages.FindAsync(id);
                 page.Status = "published";
@@ -205,7 +220,11 @@ namespace CMS.Application.PageAppService
                 await _serviceDbContext.SaveChangesAsync();
             }
 
-            return await base.Get(id);
+            return new ApprovedResult<PageGetDto>
+            {
+                Result = approvedPage.Result,
+                Item = await this.Get(id)
+            };
         }
     }
 }
