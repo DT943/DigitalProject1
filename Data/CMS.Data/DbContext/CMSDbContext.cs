@@ -36,6 +36,5 @@ namespace CMS.Data.DbContext
         //CustomForms
         public DbSet<Domain.Models.CustomForm> CustomForms { get; set; }
 
-
     }
 }

@@ -7,7 +7,7 @@ using Infrastructure.Domain.Models;
 
 namespace CMS.Domain.Models
 {
-    public class Page : BasicEntityWithAuditAndFakeDelete
+    public class Page : ApproveEntityWithAuditAndFakeDelete
     {
 
         public string PageUrlName { get; set; }
