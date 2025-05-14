@@ -53,5 +53,19 @@ namespace B2B.Host.Controllers
             return Ok();
         }
 
+
+        [HttpGet("TravelAgentOfficeDetails")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> TravelAgentOfficeByUserCode()
+        {
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
+            return Ok(await _appService.GetTravelAgentOfficeByUserCode());
+        }
+
     }
 }

@@ -13,12 +13,15 @@ using B2B.Application.TravelAgentOffice.Validations;
 using B2B.Data.DbContext;
 using FluentValidation;
 using Infrastructure.Application;
+using Infrastructure.Application.Exceptions;
 using Infrastructure.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace B2B.Application.TravelAgentOffice
 {
@@ -158,6 +161,14 @@ namespace B2B.Application.TravelAgentOffice
                 }
             }
             return createdEntity;
+        }
+
+        protected async Task<ActionResult<TravelAgentOfficeGetDto>> GetTravelAgentOfficeByUserCode()
+        {
+            var userCode = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+            var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.UserCode.Equals(userCode)) ??
+                throw new EntityNotFoundException(typeof(Domain.Models.TravelAgentOffice).Name, userCode.ToString() ?? "");
+            return await Task.FromResult(_mapper.Map<TravelAgentOfficeGetDto>(result));
         }
     }
 }
