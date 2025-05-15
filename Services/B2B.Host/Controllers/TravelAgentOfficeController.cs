@@ -45,11 +45,12 @@ namespace B2B.Host.Controllers
         public async Task<ActionResult> IsPythonAuthorized()
         {
             var user = HttpContext.User;
-
+            /*
             if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
             {
                 return Unauthorized();
             }
+            */
             return Ok();
         }
 
@@ -59,11 +60,6 @@ namespace B2B.Host.Controllers
         public async Task<ActionResult> TravelAgentOfficeByUserCode()
         {
             var user = HttpContext.User;
-
-            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
-            {
-                return Forbid();
-            }
             return Ok(await _appService.GetTravelAgentOfficeByUserCode());
         }
 

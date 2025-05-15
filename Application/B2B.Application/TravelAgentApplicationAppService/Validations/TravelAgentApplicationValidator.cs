@@ -70,7 +70,7 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                      .MustAsync(async (pos, cancellation) =>
                      { 
                            var result = await appService.GetByPOSKey(pos);
-                           return result != null;
+                           return result != null && result.Count() != 0;
                      })
                     .WithMessage("POS must be in lowercase if provided.")
                     .Must(name => name == null || name == name.ToLower())
@@ -145,7 +145,7 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                      .MustAsync(async (pos, cancellation) =>
                      {
                          var result = await appService.GetByPOSKey(pos);
-                         return result != null;
+                         return result != null && result.Count() != 0;
                      })
                     .WithMessage("POS must be in lowercase if provided.")
                     .Must(name => name == null || name == name.ToLower())

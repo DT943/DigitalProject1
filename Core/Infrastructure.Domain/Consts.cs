@@ -15,12 +15,13 @@ namespace Infrastructure.Domain
         }
         public enum ServiceName {
             CMS,
-            Offer,
+            //Offer,
             Authentication,
             CWCore,
             Gallery,
-            Hotel,
-            Notification
+            //Hotel,
+            Notification,
+            B2B
         }
 
 
