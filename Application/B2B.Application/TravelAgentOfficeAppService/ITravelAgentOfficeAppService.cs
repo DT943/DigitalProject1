@@ -14,5 +14,8 @@ namespace B2B.Application.TravelAgentOffice
     public interface ITravelAgentOfficeAppService : IBaseAppService<TravelAgentOfficeGetAllDto, TravelAgentOfficeGetDto, TravelAgentOfficeCreateDto, TravelAgentOfficeUpdateDto, SieveModel>
     {
         Task<ActionResult<TravelAgentOfficeGetDto>> Approve(TravelAgentProcessApproveDto travelAgentProcessApproveDto);
+
+        Task<ActionResult<TravelAgentOfficeGetDto>> GetTravelAgentOfficeByUserCode();
+
     }
 }
