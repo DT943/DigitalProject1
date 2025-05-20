@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\Audit.Application\Audit.Application.csproj" />
     <ProjectReference Include="..\..\Application\Authentication.Application\Authentication.Application.csproj" />
   </ItemGroup>
 

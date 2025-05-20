@@ -57,7 +57,7 @@ namespace B2B.Host.Controllers
 
         [HttpGet("TravelAgentOfficeDetails")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> TravelAgentOfficeByUserCode()
+        public async Task<ActionResult> TravelAgentOfficeDetails()
         {
             var user = HttpContext.User;
             return Ok(await _appService.GetTravelAgentOfficeByUserCode());

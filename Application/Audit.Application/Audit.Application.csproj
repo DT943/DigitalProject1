@@ -8,12 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.4.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Application\Audit.Application\Audit.Application.csproj" />
-    <ProjectReference Include="..\Infrastructure.Application\Infrastructure.Application.csproj" />
+    <ProjectReference Include="..\..\Core\Infrastructure.Application\Infrastructure.Application.csproj" />
+    <ProjectReference Include="..\..\Data\Audit.Data\Audit.Data.csproj" />
   </ItemGroup>
 
 </Project>

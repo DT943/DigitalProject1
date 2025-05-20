@@ -10,8 +10,18 @@ namespace Authentication.Domain.Models
     public class AuthenticationModel
     {
         public string Message { get; set; }
+
         public bool IsAuthenticated { get; set; }
     }
+
+
+    public class AuthenticationModelWithEmailToken : AuthenticationModel
+    {
+ 
+        public string Token { get; set; }
+
+    }
+
 
     public class AuthenticationModelManagreAndUsers :AuthenticationModel
     {
