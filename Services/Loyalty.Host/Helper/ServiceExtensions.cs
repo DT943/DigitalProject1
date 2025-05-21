@@ -44,11 +44,6 @@ namespace Loyalty.Host.Helper
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
-            services.AddScoped<IEmailAppService, EmailAppService>();
-
-
             services.AddTransient<IMemberAddressDetailsAppService, MemberAddressDetailsAppService>();
             services.AddTransient<MemberAddressDetailsValidator>();
 
@@ -77,7 +72,14 @@ namespace Loyalty.Host.Helper
             services.AddTransient<MemberTravelAgentDetailsValidator>();
             //MemberTravelAgentDetails
 
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
+            services.AddScoped<IEmailAppService, EmailAppService>();
+
+
+
             services.AddScoped<ISieveProcessor, SieveProcessor>();
+            services.AddHttpClient();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
