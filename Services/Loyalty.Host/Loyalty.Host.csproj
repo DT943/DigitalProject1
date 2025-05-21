@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Application\Authentication.Application\Authentication.Application.csproj" />
     <ProjectReference Include="..\..\Application\Loyalty.Application\Loyalty.Application.csproj" />
     <ProjectReference Include="..\..\Core\Infrastructure.Service\Infrastructure.Service.csproj" />
   </ItemGroup>
