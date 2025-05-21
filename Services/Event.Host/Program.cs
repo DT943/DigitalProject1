@@ -10,6 +10,7 @@ using System.Net;
 using Microsoft.Extensions.FileProviders;
 using System.Security.Cryptography.X509Certificates;
 using Audit.Data.DbContext;
+using Audit.Application.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 

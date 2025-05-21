@@ -4,6 +4,7 @@ using B2B.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace B2B.Data.Migrations
 {
     [DbContext(typeof(B2BDbContext))]
-    partial class B2BDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250518112138_reservationreport")]
+    partial class reservationreport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,28 @@ namespace B2B.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("B2B.Domain.Models.AirArabia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PNR")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
+
+                    b.ToTable("AirArabia");
+                });
 
             modelBuilder.Entity("B2B.Domain.Models.ContactInfo", b =>
                 {
@@ -108,34 +133,6 @@ namespace B2B.Data.Migrations
                     b.HasIndex("TravelAgentApplicationId");
 
                     b.ToTable("EmployeeApplications");
-                });
-
-            modelBuilder.Entity("B2B.Domain.Models.PNRDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PNR")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReservationId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReservationId");
-
-                    b.ToTable("PNRDetails");
                 });
 
             modelBuilder.Entity("B2B.Domain.Models.Passengers", b =>
@@ -544,10 +541,6 @@ namespace B2B.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -580,6 +573,17 @@ namespace B2B.Data.Migrations
                     b.ToTable("TravelAgentPOS");
                 });
 
+            modelBuilder.Entity("B2B.Domain.Models.AirArabia", b =>
+                {
+                    b.HasOne("B2B.Domain.Models.Reservation", "Reservation")
+                        .WithMany("AirArabia")
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
+                });
+
             modelBuilder.Entity("B2B.Domain.Models.ContactInfo", b =>
                 {
                     b.HasOne("B2B.Domain.Models.Reservation", "Reservation")
@@ -600,17 +604,6 @@ namespace B2B.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("TravelAgentApplication");
-                });
-
-            modelBuilder.Entity("B2B.Domain.Models.PNRDetails", b =>
-                {
-                    b.HasOne("B2B.Domain.Models.Reservation", "Reservation")
-                        .WithMany("PNRDetails")
-                        .HasForeignKey("ReservationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("B2B.Domain.Models.Passengers", b =>
@@ -655,9 +648,9 @@ namespace B2B.Data.Migrations
 
             modelBuilder.Entity("B2B.Domain.Models.Reservation", b =>
                 {
-                    b.Navigation("ContactInfo");
+                    b.Navigation("AirArabia");
 
-                    b.Navigation("PNRDetails");
+                    b.Navigation("ContactInfo");
 
                     b.Navigation("Passengers");
 

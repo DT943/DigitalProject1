@@ -271,13 +271,14 @@ namespace Authentication.Application
                 user.OTP = otp;
                 user.OTPExpiration = expirationTime;
                 await _userManager.UpdateAsync(user);
+                
 
                 // Email subject and body
                 string subject = "Your One-Time Password (OTP),The last login was a long time ago.";
 
                 await _emailService.SendEmailAsync(user.Email, subject, otp, user.FirstName);
 
-                return new AuthenticationModel { Message = "Please reset OTP, Last login was a long time ago, Check your email!", IsAuthenticated = false };
+                return new AuthenticationModelWithEmailToken { Token = Encrypt(user.Email, this.key), Message = "Please reset OTP, Last login was a long time ago, Check your email!", IsAuthenticated = true};
                 /*
                 return new AuthenticationModelWithDetails
                 {

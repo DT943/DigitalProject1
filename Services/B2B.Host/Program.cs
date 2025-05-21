@@ -11,6 +11,7 @@ using System.Security.Cryptography.X509Certificates;
 using CWCore.Data.DbContext;
 using Authentication.Data.DbContext;
 using Audit.Data.DbContext;
+using Audit.Application.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -138,6 +139,7 @@ var app = builder.Build();
 app.UseCors("AllowAll");
 
 app.ConfigureExceptionHandler();
+app.UseMiddleware<AuditMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
@@ -153,7 +155,8 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseStaticFiles();
-app.UseMiddleware<AuditMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
+
+
 app.Run();

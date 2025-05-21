@@ -9,6 +9,7 @@ using Infrastructure.Service;
 using CWCore.Data.DbContext;
 using System.Security.Cryptography.X509Certificates;
 using Audit.Data.DbContext;
+using Audit.Application.Middleware;
 
 
 
@@ -116,6 +117,7 @@ builder.Services.AddRazorPages();
 var app = builder.Build();
 
 app.UseCors("AllowAll");
+app.UseMiddleware<AuditMiddleware>();
 
 app.ConfigureExceptionHandler();
 if (app.Environment.IsDevelopment())
@@ -124,7 +126,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 //app.UseStaticFiles();
-app.UseMiddleware<AuditMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 app.MapRazorPages();
