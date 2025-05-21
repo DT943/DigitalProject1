@@ -17,38 +17,18 @@ namespace Loyalty.Host.Controllers
 {
     public class MemberDemographicsAndProfileController : BaseController<IMemberDemographicsAndProfileAppService, Domain.Models.MemberDemographicsAndProfile, MemberDemographicsAndProfileGetAllDto, MemberDemographicsAndProfileGetDto, MemberDemographicsAndProfileCreateDto, MemberDemographicsAndProfileUpdateDto, SieveModel>
     {
-        private readonly IAuthenticationAppService _authenticationAppService;
-        private MemberDemographicsAndProfileValidator _memberDemographicsAndProfileValidator;
-        public MemberDemographicsAndProfileController(IMemberDemographicsAndProfileAppService appService, IAuthenticationAppService authenticationAppService, MemberDemographicsAndProfileValidator memberDemographicsAndProfileValidator) : base(appService, Servics.Loyalty)
+
+
+        public MemberDemographicsAndProfileController(IMemberDemographicsAndProfileAppService appService, MemberDemographicsAndProfileValidator memberDemographicsAndProfileValidator) : base(appService, Servics.Loyalty)
         {
-            authenticationAppService = _authenticationAppService;
-            _memberDemographicsAndProfileValidator = memberDemographicsAndProfileValidator;
+
+
         }
 
         [HttpPost]
         [AllowAnonymous]
         public override async Task<ActionResult<MemberDemographicsAndProfileGetDto>> Create(MemberDemographicsAndProfileCreateDto createDto)
         {
-
-            var validationResult = await _memberDemographicsAndProfileValidator.ValidateAsync(createDto, options => options.IncludeRuleSets("create", "default"));
-            if (!validationResult.IsValid)
-            {
-                throw new ValidationException(validationResult.Errors);
-            }
-
-            var result =  await _authenticationAppService.AddUserAsync(new Authentication.Application.Dtos.AddUserDto
-            {
-                FirstName = createDto.FirstName,
-                LastName = createDto.LastName,
-                Email = createDto.Email
-            });
-
-        if (!result.IsAuthenticated)
-            return BadRequest(new ErrorModel
-            {
-                IsAuthenticated = result.IsAuthenticated,
-                Message = result.Message
-            });
 
             var entity = await _appService.Create(createDto);
             return Ok(entity);
