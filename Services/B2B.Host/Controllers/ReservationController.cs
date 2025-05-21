@@ -30,6 +30,7 @@ namespace B2B.Host.Controllers
 
 
         [HttpGet("download-excel")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DownloadReservationsExcel([FromQuery] SieveModel sieve)
         {
             var reservations = await _appService.GetAll(sieve);
@@ -40,9 +41,24 @@ namespace B2B.Host.Controllers
 
                 // Add headers (customize as needed)
                 worksheet.Cell(1, 1).Value = "ID";
-                worksheet.Cell(1, 2).Value = "Code";
-                worksheet.Cell(1, 3).Value = "Status";
-                worksheet.Cell(1, 4).Value = "Created Date";
+                worksheet.Cell(1, 2).Value = "PNR";
+                worksheet.Cell(1, 3).Value = "Number of Adults";
+                worksheet.Cell(1, 4).Value = "Number of Childs";
+                worksheet.Cell(1, 5).Value = "Number of Infants";
+                worksheet.Cell(1, 6).Value = "POS";
+                worksheet.Cell(1, 7).Value = "Flight Class";
+                worksheet.Cell(1, 8).Value = "Origin Code";
+                worksheet.Cell(1, 9).Value = "Origin Name";
+                worksheet.Cell(1, 10).Value = "Destination Code";
+                worksheet.Cell(1, 11).Value = "Destination Name";
+                worksheet.Cell(1, 12).Value = "Departure Date";
+                worksheet.Cell(1, 13).Value = "Departure Time";
+                worksheet.Cell(1, 14).Value = "Arrival Date";
+                worksheet.Cell(1, 15).Value = "Arrival Time";
+                worksheet.Cell(1, 16).Value = "Total Fare";
+
+ 
+
                 // Add more headers for related data if needed
 
                 // Add data
@@ -52,13 +68,21 @@ namespace B2B.Host.Controllers
                 foreach (var reservation in reservations.Items)
                 {
                     worksheet.Cell(row, 1).Value = reservation.Id;
-                    worksheet.Cell(row, 2).Value = reservation.POS;
-                    worksheet.Cell(row, 3).Value = reservation.ArrivalTime.ToString();
-                    worksheet.Cell(row, 4).Value = reservation.NumAdt;
-                    worksheet.Cell(row, 4).Value = reservation.NumAdt;
-
-                    worksheet.Cell(row, 5).Value = reservation.NumChd;
-                    worksheet.Cell(row, 6).Value = reservation.NumInf;
+                    worksheet.Cell(row, 2).Value = reservation.PNR;
+                    worksheet.Cell(row, 3).Value = reservation.NumAdt;
+                    worksheet.Cell(row, 4).Value = reservation.NumChd;
+                    worksheet.Cell(row, 5).Value = reservation.NumInf;
+                    worksheet.Cell(row, 6).Value = reservation.POS;
+                    worksheet.Cell(row, 7).Value = reservation.FlightClass;
+                    worksheet.Cell(row, 8).Value = reservation.OriginCode;
+                    worksheet.Cell(row, 9).Value = reservation.OriginName;
+                    worksheet.Cell(row, 10).Value = reservation.DestinationCode;
+                    worksheet.Cell(row, 11).Value = reservation.DestinationName;
+                    worksheet.Cell(row, 12).Value = reservation.DepartureDate.ToString();
+                    worksheet.Cell(row, 13).Value = reservation.DepartureTime.ToString();
+                    worksheet.Cell(row, 14).Value = reservation.ArrivalDate.ToString();
+                    worksheet.Cell(row, 15).Value = reservation.ArrivalTime.ToString();
+                    worksheet.Cell(row, 16).Value = reservation.TotalFare;
                     // Add more fields for related data if needed
                     row++;
                 }
