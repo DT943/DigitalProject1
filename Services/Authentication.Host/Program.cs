@@ -12,6 +12,7 @@ using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.ConstrainedExecution;
 using Audit.Application.Middleware;
+using Audit.Data.DbContext;
 Console.WriteLine("Application is starting V.1.9.1");
 
 
@@ -91,6 +92,16 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
     var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
+builder.Services.AddDbContext<AuditDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("AuditDefaultConnection");
 
     options.UseSqlServer(connectionString)
            .EnableSensitiveDataLogging()
