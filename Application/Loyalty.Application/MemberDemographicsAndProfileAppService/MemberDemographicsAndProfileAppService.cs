@@ -18,6 +18,8 @@ using FluentValidation;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Authentication.Domain.Models;
 using Authentication.Application;
+using static Infrastructure.Domain.Consts;
+using Loyalty.Application.MemberAccrualTransactions;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
@@ -25,9 +27,11 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
     {
 
         IAuthenticationAppService _authenticationAppService;
-        public MemberDemographicsAndProfileAppService(LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberDemographicsAndProfileValidator validations, IHttpContextAccessor httpContextAccessor, IAuthenticationAppService authenticationAppService) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
+        IMemberAccrualTransactionsAppService _memberAccrualTransactionsAppService;
+        public MemberDemographicsAndProfileAppService(LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberDemographicsAndProfileValidator validations, IHttpContextAccessor httpContextAccessor, IAuthenticationAppService authenticationAppService, IMemberAccrualTransactionsAppService memberAccrualTransactionsAppService) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
             _authenticationAppService = authenticationAppService;
+            _memberAccrualTransactionsAppService = memberAccrualTransactionsAppService;
         }
 
 
@@ -51,5 +55,39 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 
             return await base.Create(createDto);
         }
+        public async Task<MemberDemographicsAndProfileGetDto> CreateWithBonus(MemberDemographicsAndProfileCreateDto createDto, int Bonus)
+        {
+            
+            var validationResult = await _validations.ValidateAsync(createDto, options => options.IncludeRuleSets("createwithuser", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var result = await _authenticationAppService.AddLoyaltyUserAsync(new Authentication.Application.Dtos.AddUserDto
+            {
+                FirstName = createDto.FirstName,
+                LastName = createDto.LastName,
+                Email = createDto.Email
+            });
+
+            createDto.UserCode = result.Code;
+
+            await _memberAccrualTransactionsAppService.Create(new MemberAccrualTransactions.Dtos.MemberAccrualTransactionsCreateDto
+            {
+                CIS = result.Code,
+                PartnerCode = "Cham Wings",
+                LoadDate = DateTime.Now,
+                Description = "Enrolment Bonus",
+                Base = 0,
+                Bonus = 400
+            });
+
+            return await base.Create(createDto);
+        }
+
+
+
+
     }
 }

@@ -3,6 +3,8 @@ using Authentication.Data.DbContext;
 using Authentication.Domain.Models;
 using AutoMapper;
 using AutoMapper.Execution;
+using Loyalty.Application.MemberAccrualTransactions;
+using Loyalty.Application.MemberAccrualTransactions.Validations;
 using Loyalty.Application.MemberAddressDetailsAppService;
 using Loyalty.Application.MemberAddressDetailsAppService.Dtos;
 using Loyalty.Application.MemberAddressDetailsAppService.Validations;
@@ -43,6 +45,9 @@ namespace Loyalty.Host.Helper
         {
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+            services.AddTransient<IMemberAccrualTransactionsAppService, MemberAccrualTransactionsAppService>();
+            services.AddTransient<MemberAccrualTransactionsValidator>();
 
             services.AddTransient<IMemberAddressDetailsAppService, MemberAddressDetailsAppService>();
             services.AddTransient<MemberAddressDetailsValidator>();
