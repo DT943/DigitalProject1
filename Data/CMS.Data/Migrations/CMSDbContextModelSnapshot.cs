@@ -69,7 +69,7 @@ namespace CMS.Data.Migrations
 
                     b.HasIndex("SegmentID");
 
-                    b.ToTable("Components");
+                    b.ToTable("Components", (string)null);
                 });
 
             modelBuilder.Entity("CMS.Domain.Models.ComponentMetadata", b =>
@@ -110,7 +110,7 @@ namespace CMS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ComponentMetadatas");
+                    b.ToTable("ComponentMetadatas", (string)null);
                 });
 
             modelBuilder.Entity("CMS.Domain.Models.CustomForm", b =>
@@ -150,7 +150,7 @@ namespace CMS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CustomForms");
+                    b.ToTable("CustomForms", (string)null);
                 });
 
             modelBuilder.Entity("CMS.Domain.Models.Page", b =>
@@ -210,7 +210,7 @@ namespace CMS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pages");
+                    b.ToTable("Pages", (string)null);
                 });
 
             modelBuilder.Entity("CMS.Domain.Models.Segment", b =>
@@ -260,7 +260,7 @@ namespace CMS.Data.Migrations
 
                     b.HasIndex("PageID");
 
-                    b.ToTable("Segments");
+                    b.ToTable("Segments", (string)null);
                 });
 
             modelBuilder.Entity("CMS.Domain.Models.StaticComponent", b =>
@@ -308,7 +308,7 @@ namespace CMS.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("StaticComponents");
+                    b.ToTable("StaticComponents", (string)null);
                 });
 
             modelBuilder.Entity("CMS.Domain.Models.Component", b =>
