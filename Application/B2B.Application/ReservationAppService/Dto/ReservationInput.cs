@@ -61,6 +61,13 @@ namespace B2B.Application.ReservationAppService.Dto
         public string OriginCode { get; set; }
         [MaxLength(100)]
         public string? OriginName { get; set; }
+
+        [MaxLength(100)]
+
+        public string DestinationCode { get; set; }
+        [MaxLength(100)]
+        public string? DestinationName { get; set; }
+
         public DateOnly DepartureDate { get; set; }
 
         public TimeOnly DepartureTime { get; set; }
@@ -167,6 +174,12 @@ namespace B2B.Application.ReservationAppService.Dto
         public string OriginCode { get; set; }
         [MaxLength(100)]
         public string? OriginName { get; set; }
+
+        [MaxLength(100)]
+
+        public string DestinationCode { get; set; }
+        [MaxLength(100)]
+        public string? DestinationName { get; set; }
         public DateOnly DepartureDate { get; set; }
 
         public TimeOnly DepartureTime { get; set; }
