@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure.Domain.Models;
 
-namespace Loyalty.Domain.Models
+namespace Loyalty.Application.MemberAccrualTransactions.Dtos
 {
-    public class MemberAccrualTransactions : BasicEntity
+    public class MemberAccrualTransactionsGetDto
     {
+        public int Id { get; set; }
         [MaxLength(100)]
         public string CIS { get; set; }
         [MaxLength(100)]
@@ -28,6 +28,5 @@ namespace Loyalty.Domain.Models
         public DateTime? INVDate { get; set; }
         public int? STMTNo { get; set; }
         public int? INVNo { get; set; }
-
     }
 }

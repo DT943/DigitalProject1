@@ -21,7 +21,8 @@ namespace Infrastructure.Domain
             Gallery,
             //Hotel,
             Notification,
-            B2B
+            //B2B,
+            Loyalty
         }
 
 
