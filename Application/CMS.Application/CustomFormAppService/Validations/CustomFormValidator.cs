@@ -19,7 +19,7 @@ namespace CMS.Application.CustomFormAppService.Validations
             "automotive",
             "steels_and_metals",
             "aviation",
-            "vehicle_inpection",
+            "vehicle_inspection",
             "real_estate",
             "alternative_energy",
             "food_manufacturing"
