@@ -8,6 +8,8 @@ using Infrastructure.Service;
 using System.Net;
 using Microsoft.Extensions.FileProviders;
 using System.Security.Cryptography.X509Certificates;
+using Audit.Data.DbContext;
+using Audit.Application.Middleware;
 
 
 
@@ -68,14 +70,25 @@ builder.Services.AddDbContext<GalleryDbContext>((sp, options) =>
            .LogTo(Console.WriteLine, LogLevel.Information);
 });
 
+builder.Services.AddDbContext<AuditDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("AuditDefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 builder.Services.AddSwaggerGen();
 
 
 
 var app = builder.Build();
+app.UseCors("AllowAll");
 
 app.ConfigureExceptionHandler();
-app.UseCors("AllowAll");
+app.UseMiddleware<AuditMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Security.Cryptography.X509Certificates;
 using System.Runtime.ConstrainedExecution;
+using Audit.Application.Middleware;
 Console.WriteLine("Application is starting V.1.9.1");
 
 
@@ -121,6 +122,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("AllowAll");
 
+app.UseMiddleware<AuditMiddleware>();
 //app.UseHttpsRedirection();
 
 // Important: Authentication must come before Authorization
