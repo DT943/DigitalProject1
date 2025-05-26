@@ -80,7 +80,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                 LoadDate = DateTime.Now,
                 Description = "Enrolment Bonus",
                 Base = 0,
-                Bonus = 400
+                Bonus = Bonus
             });
 
             return await base.Create(createDto);

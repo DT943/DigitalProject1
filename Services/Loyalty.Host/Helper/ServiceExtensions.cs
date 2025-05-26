@@ -4,6 +4,7 @@ using Authentication.Domain.Models;
 using AutoMapper;
 using AutoMapper.Execution;
 using Loyalty.Application.MemberAccrualTransactions;
+using Loyalty.Application.MemberAccrualTransactions.Dtos;
 using Loyalty.Application.MemberAccrualTransactions.Validations;
 using Loyalty.Application.MemberAddressDetailsAppService;
 using Loyalty.Application.MemberAddressDetailsAppService.Dtos;
@@ -97,6 +98,7 @@ namespace Loyalty.Host.Helper
                 mc.AddProfile(new MemberSecurityQuestionsMapperProfile());
                 mc.AddProfile(new MemberEducationalDetailsMapperProfile());
                 mc.AddProfile(new MemberTravelAgentDetailsMapperProfile());
+                mc.AddProfile(new MemberAccrualTransactionsMapperProfile());
 
             });
 

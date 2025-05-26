@@ -37,14 +37,14 @@ namespace Loyalty.Host.Controllers
 
 
             var user = HttpContext.User;
-
+            int bonus = 500;
             if (user.IsInRole($"{ServiceName}-Officer"))
             {
-                //add five hundrud
+                bonus = 400;
             }
  
 
-            var entity = await _appService.CreateWithBonus(createDto, 400);
+            var entity = await _appService.CreateWithBonus(createDto, bonus);
             return Ok(entity);
         }
     }

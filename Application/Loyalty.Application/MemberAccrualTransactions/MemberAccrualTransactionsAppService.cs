@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Http;
 using Sieve.Models;
 using Sieve.Services;
 using Loyalty.Application.MemberAccrualTransactions.Dtos;
+using Infrastructure.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Application.MemberAccrualTransactions
 {
@@ -20,6 +23,15 @@ namespace Loyalty.Application.MemberAccrualTransactions
     {
         public MemberAccrualTransactionsAppService(LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberAddressDetailsValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
+        }
+
+
+        public async Task<ActionResult<MemberAccrualTransactionsGetDto>> MemberAccrualTransactionsDetails()
+        {
+            var userCode = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+            var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.CIS.Equals(userCode)) ??
+                throw new EntityNotFoundException(typeof(Domain.Models.MemberAccrualTransactions).Name, "User Code", userCode.ToString() ?? "");
+            return await Task.FromResult(_mapper.Map<MemberAccrualTransactionsGetDto>(result));
         }
     }
 }

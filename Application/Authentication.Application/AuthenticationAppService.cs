@@ -1251,6 +1251,13 @@ namespace Authentication.Application
             return (await _userManager.FindByEmailAsync(email) is not null);
         }
 
+
+        public async Task<bool> CheckUserName(string FirstName, string LastName)
+        {
+            string userName = (FirstName + LastName).Replace(" ", "");
+
+            return (await _userManager.FindByNameAsync(userName) is not null);
+        }
     }
 }
 

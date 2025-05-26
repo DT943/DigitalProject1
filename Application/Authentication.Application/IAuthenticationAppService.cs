@@ -36,6 +36,6 @@ namespace Authentication.Application
         Task<AuthenticationModel> SetManagerToUser(SetManagerToUserDto dto);
         Task<bool> CheckEmail(string email);
 
-
+        Task<bool> CheckUserName(string FirstName, string LastName);
     }
 }
