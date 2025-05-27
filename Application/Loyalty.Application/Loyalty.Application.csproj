@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Core\Infrastructure.Application\Infrastructure.Application.csproj" />
     <ProjectReference Include="..\..\Data\Loyalty.Data\Loyalty.Data.csproj" />
+    <ProjectReference Include="..\Authentication.Application\Authentication.Application.csproj" />
   </ItemGroup>
 
 </Project>

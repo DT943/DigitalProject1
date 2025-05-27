@@ -22,6 +22,8 @@ namespace Authentication.Application
         Task<AuthenticationModel> ChangeUserStatusAsync(string userCode);
         Task<AuthenticationModel> AddUserAsync(AddUserDto newuser);
         Task<AuthenticationModelWithDetails> AddB2BUserAsync(AddUserDto newuser);
+        Task<AuthenticationModelWithDetails> AddLoyaltyUserAsync(AddUserDto newuser);
+
         Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment);
         Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
         Task<AuthenticationModel> LogInWithOTP(LogInOTPModel model);
@@ -34,6 +36,6 @@ namespace Authentication.Application
         Task<AuthenticationModel> SetManagerToUser(SetManagerToUserDto dto);
         Task<bool> CheckEmail(string email);
 
-
+        Task<bool> CheckUserName(string FirstName, string LastName);
     }
 }

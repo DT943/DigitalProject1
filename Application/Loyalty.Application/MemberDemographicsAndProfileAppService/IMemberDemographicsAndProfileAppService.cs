@@ -12,5 +12,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
     public interface IMemberDemographicsAndProfileAppService : IBaseAppService<MemberDemographicsAndProfileGetAllDto, MemberDemographicsAndProfileGetDto, MemberDemographicsAndProfileCreateDto, MemberDemographicsAndProfileUpdateDto, SieveModel>
     {
+        public Task<MemberDemographicsAndProfileGetDto> CreateWithBonus(MemberDemographicsAndProfileCreateDto createDto, int Bonus);
+
     }
 }

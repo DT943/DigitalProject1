@@ -33,6 +33,7 @@ namespace Loyalty.Data.DbContext
         public DbSet<Domain.Models.MemberTravelAgentDetails>     MemberTravelAgentDetails { get; set; }
         public DbSet<Domain.Models.MemberSecurityQuestions>      MemberSecurityQuestions { get; set; }
         public DbSet<Domain.Models.MemberEducationalDetails>     MemberEducationaldetails { get; set; }
+        public DbSet<Domain.Models.MemberAccrualTransactions>    MemberAccrualTransactions { get; set; }
 
     }
 }

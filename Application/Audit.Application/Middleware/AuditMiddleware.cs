@@ -70,7 +70,7 @@ namespace Audit.Application.Middleware
                 }
 
                 // 3. Capture user info
-                string userIp = context.Connection.RemoteIpAddress?.ToString();
+                string userIp = context.Connection.RemoteIpAddress?.MapToIPv4().ToString();
                 var user = context.User;
                 string userCode = user?.FindFirst("userCode")?.Value ?? "Anonymous";
                 string email = user?.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "Anonymous";

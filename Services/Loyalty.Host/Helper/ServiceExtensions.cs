@@ -3,6 +3,9 @@ using Authentication.Data.DbContext;
 using Authentication.Domain.Models;
 using AutoMapper;
 using AutoMapper.Execution;
+using Loyalty.Application.MemberAccrualTransactions;
+using Loyalty.Application.MemberAccrualTransactions.Dtos;
+using Loyalty.Application.MemberAccrualTransactions.Validations;
 using Loyalty.Application.MemberAddressDetailsAppService;
 using Loyalty.Application.MemberAddressDetailsAppService.Dtos;
 using Loyalty.Application.MemberAddressDetailsAppService.Validations;
@@ -44,10 +47,8 @@ namespace Loyalty.Host.Helper
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
-            services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
-            services.AddScoped<IEmailAppService, EmailAppService>();
-
+            services.AddTransient<IMemberAccrualTransactionsAppService, MemberAccrualTransactionsAppService>();
+            services.AddTransient<MemberAccrualTransactionsValidator>();
 
             services.AddTransient<IMemberAddressDetailsAppService, MemberAddressDetailsAppService>();
             services.AddTransient<MemberAddressDetailsValidator>();
@@ -77,7 +78,14 @@ namespace Loyalty.Host.Helper
             services.AddTransient<MemberTravelAgentDetailsValidator>();
             //MemberTravelAgentDetails
 
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
+            services.AddScoped<IEmailAppService, EmailAppService>();
+
+
+
             services.AddScoped<ISieveProcessor, SieveProcessor>();
+            services.AddHttpClient();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -90,6 +98,7 @@ namespace Loyalty.Host.Helper
                 mc.AddProfile(new MemberSecurityQuestionsMapperProfile());
                 mc.AddProfile(new MemberEducationalDetailsMapperProfile());
                 mc.AddProfile(new MemberTravelAgentDetailsMapperProfile());
+                mc.AddProfile(new MemberAccrualTransactionsMapperProfile());
 
             });
 

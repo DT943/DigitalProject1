@@ -4,6 +4,7 @@ using Loyalty.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Data.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250521115646_addusercode")]
+    partial class addusercode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,77 +24,6 @@ namespace Loyalty.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberAccrualTransactions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("ActDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ActInvNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float?>("ActValue")
-                        .HasColumnType("real");
-
-                    b.Property<int?>("Base")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Bonus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("CIS")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("INVDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("INVNo")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LoadDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LoadType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PartnerCode")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("ReversalId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("STMTDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("STMTNo")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TierId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MemberAccrualTransactions");
-                });
 
             modelBuilder.Entity("Loyalty.Domain.Models.MemberAddressDetails", b =>
                 {

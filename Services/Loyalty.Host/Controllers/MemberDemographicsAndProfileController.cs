@@ -10,47 +10,41 @@ using Microsoft.AspNetCore.Authorization;
 using Authentication.Application;
 using Authentication.Domain.Models;
 using Loyalty.Application.MemberDemographicsAndProfileAppService.Validations;
-using FluentValidation; 
+using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 namespace Loyalty.Host.Controllers
 {
+    [Authorize]
+
     public class MemberDemographicsAndProfileController : BaseController<IMemberDemographicsAndProfileAppService, Domain.Models.MemberDemographicsAndProfile, MemberDemographicsAndProfileGetAllDto, MemberDemographicsAndProfileGetDto, MemberDemographicsAndProfileCreateDto, MemberDemographicsAndProfileUpdateDto, SieveModel>
     {
-        private readonly IAuthenticationAppService _authenticationAppService;
-        private MemberDemographicsAndProfileValidator _memberDemographicsAndProfileValidator;
-        public MemberDemographicsAndProfileController(IMemberDemographicsAndProfileAppService appService, IAuthenticationAppService authenticationAppService, MemberDemographicsAndProfileValidator memberDemographicsAndProfileValidator) : base(appService, Servics.Loyalty)
+
+
+        public MemberDemographicsAndProfileController(IMemberDemographicsAndProfileAppService appService, MemberDemographicsAndProfileValidator memberDemographicsAndProfileValidator) : base(appService, Servics.Loyalty)
         {
-            authenticationAppService = _authenticationAppService;
-            _memberDemographicsAndProfileValidator = memberDemographicsAndProfileValidator;
+
+
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [AllowAnonymous]
+
         public override async Task<ActionResult<MemberDemographicsAndProfileGetDto>> Create(MemberDemographicsAndProfileCreateDto createDto)
         {
 
-            var validationResult = await _memberDemographicsAndProfileValidator.ValidateAsync(createDto, options => options.IncludeRuleSets("create", "default"));
-            if (!validationResult.IsValid)
+
+            var user = HttpContext.User;
+            int bonus = 500;
+            if (user.IsInRole($"{ServiceName}-Officer"))
             {
-                throw new ValidationException(validationResult.Errors);
+                bonus = 400;
             }
+ 
 
-            var result =  await _authenticationAppService.AddUserAsync(new Authentication.Application.Dtos.AddUserDto
-            {
-                FirstName = createDto.FirstName,
-                LastName = createDto.LastName,
-                Email = createDto.Email
-            });
-
-        if (!result.IsAuthenticated)
-            return BadRequest(new ErrorModel
-            {
-                IsAuthenticated = result.IsAuthenticated,
-                Message = result.Message
-            });
-
-            var entity = await _appService.Create(createDto);
+            var entity = await _appService.CreateWithBonus(createDto, bonus);
             return Ok(entity);
         }
     }

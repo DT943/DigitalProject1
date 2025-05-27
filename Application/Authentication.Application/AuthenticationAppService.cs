@@ -1183,11 +1183,81 @@ namespace Authentication.Application
             };
         }
 
+
+        public async Task<AuthenticationModelWithDetails> AddLoyaltyUserAsync(AddUserDto newuser)
+        {
+            string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
+
+            if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
+                return new AuthenticationModelWithDetails { Message = "Email is already exist!", IsAuthenticated = false };
+
+            if (await _userManager.FindByNameAsync(userName) is not null)
+                return new AuthenticationModelWithDetails { Message = "Username is already exist!", IsAuthenticated = false };
+
+            var user = new ApplicationUser
+            {
+                Code = "User-" + Guid.NewGuid().ToString("N"),
+                UserName = userName,
+                Email = newuser.Email,
+                FirstName = newuser.FirstName,
+                LastName = newuser.LastName,
+                IsLocked = false,
+                IsActive = false,
+                IsFrozed = true,
+                LastOTPChecked = DateTime.MaxValue,
+                LastLogIn = DateTime.MinValue,
+                Department = newuser.Department,
+
+            };
+            var staticPassword = GenerateSecurePassword();
+            var result = await _userManager.CreateAsync(user, staticPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Empty;
+
+                foreach (var error in result.Errors)
+                    errors += $"{error.Description},";
+
+                return new AuthenticationModelWithDetails
+                {
+                    IsAuthenticated = false,
+                    Message = errors
+                };
+            }
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            string subject = "Your Account Has Been Created, Welcome to our website.";
+
+            await _emailService.SendEmailAsync(newuser.Email, subject, staticPassword, newuser.FirstName);
+
+
+            return new AuthenticationModelWithDetails
+            {
+                Message = "User has been created successfully.",
+                Email = user.Email,
+                Roles = userRoles,
+                IsAuthenticated = true,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Token = null,
+                Code = user.Code
+            };
+        }
+
+
         public async Task<bool> CheckEmail(string email)
         {
             return (await _userManager.FindByEmailAsync(email) is not null);
         }
 
+
+        public async Task<bool> CheckUserName(string FirstName, string LastName)
+        {
+            string userName = (FirstName + LastName).Replace(" ", "");
+
+            return (await _userManager.FindByNameAsync(userName) is not null);
+        }
     }
 }
 
