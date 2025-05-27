@@ -4,6 +4,7 @@ using Loyalty.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Data.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250527091356_Add-Segment-Miles")]
+    partial class AddSegmentMiles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -504,16 +507,14 @@ namespace Loyalty.Data.Migrations
 
                     b.Property<string>("Destination")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Miles")
                         .HasColumnType("int");
 
                     b.Property<string>("Origin")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

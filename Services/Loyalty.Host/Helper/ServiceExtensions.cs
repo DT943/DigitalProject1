@@ -33,6 +33,9 @@ using Loyalty.Application.MemberTelephoneDetailsAppService.Validations;
 using Loyalty.Application.MemberTravelAgentDetailsAppService;
 using Loyalty.Application.MemberTravelAgentDetailsAppService.Dto;
 using Loyalty.Application.MemberTravelAgentDetailsAppService.Validations;
+using Loyalty.Application.SegmentMilesAppService;
+using Loyalty.Application.SegmentMilesAppService.Dto;
+using Loyalty.Application.SegmentMilesAppService.Validations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Notification.Application;
@@ -77,6 +80,8 @@ namespace Loyalty.Host.Helper
             services.AddTransient<IMemberTravelAgentDetailsAppService, MemberTravelAgentDetailsAppService>();
             services.AddTransient<MemberTravelAgentDetailsValidator>();
             //MemberTravelAgentDetails
+            services.AddTransient<ISegmentMilesAppService, SegmentMilesAppService>();
+            services.AddTransient<SegmentMilesValidator>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
@@ -99,6 +104,7 @@ namespace Loyalty.Host.Helper
                 mc.AddProfile(new MemberEducationalDetailsMapperProfile());
                 mc.AddProfile(new MemberTravelAgentDetailsMapperProfile());
                 mc.AddProfile(new MemberAccrualTransactionsMapperProfile());
+                mc.AddProfile(new SegmentMilesMapperProfile());
 
             });
 

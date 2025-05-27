@@ -4,6 +4,7 @@ using Loyalty.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Data.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250527072803_addPNR")]
+    partial class addPNR
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -487,37 +490,6 @@ namespace Loyalty.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MemberTravelAgentDetails");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.SegmentMiles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Destination")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("Miles")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Origin")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SegmentMiles");
                 });
 #pragma warning restore 612, 618
         }
