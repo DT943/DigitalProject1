@@ -62,8 +62,11 @@ namespace CMS.Application.PageAppService
             && x.POS.ToLower().Equals(pos.ToLower())
             && x.PageUrlName.ToLower().Equals(pageUrlName.ToLower())).Include(x => x.Segments).ThenInclude(x=>x.Components).FirstOrDefault();
             var pages = _mapper.Map<PageGetDto>(result);
-            var staticComponents =  await _staticComponentAppService.GetAll(new SieveModel());
-            pages.StaticComponents = (ICollection<StaticComponentAppService.Dto.StaticComponentGetDto>)staticComponents.Items;
+            if (pages != null)
+            {
+                var staticComponents = await _staticComponentAppService.GetAll(new SieveModel());
+                pages.StaticComponents = (ICollection<StaticComponentAppService.Dto.StaticComponentGetDto>)staticComponents.Items;
+            }
             return await Task.FromResult(pages);
             
         }
