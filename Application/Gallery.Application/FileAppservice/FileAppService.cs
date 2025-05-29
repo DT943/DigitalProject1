@@ -103,8 +103,8 @@ namespace Gallery.Application.FileAppservice
             var fileName = Path.GetFileName(createDto.Path);
             var Request = _httpContextAccessor.HttpContext?.Request;
             // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}";
-            var fileUrl = $"{baseUrl}/{fileName}";
+            //var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var fileUrl = $"{fileName}";
             // Update DTO directly
             createDto.FileType = fileType;
             createDto.MimeType = contentType;
@@ -209,13 +209,13 @@ namespace Gallery.Application.FileAppservice
             var Request = _httpContextAccessor.HttpContext?.Request;
 
             // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}";
-            var fileUrl = $"{baseUrl}/{fileName}";
+            //var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var fileUrl = $"{fileName}";
             // Update DTO directly
             updateDto.FileType = fileType;
             updateDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(updateDto.Path).Length;
-            updateDto.Size = (float)(fileSizeBytes / (1024.0 * 10240.0));
+            updateDto.Size = (float)(fileSizeBytes / (1024.0 * 1024.0));
             updateDto.FileUrlPath = fileUrl;
             updateDto.FileName = fileName;
 
