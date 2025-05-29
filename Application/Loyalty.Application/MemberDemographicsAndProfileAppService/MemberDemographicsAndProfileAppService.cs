@@ -23,6 +23,7 @@ using Loyalty.Application.MemberAccrualTransactions;
 using Loyalty.Application.MemberTierDetailsAppService;
 using Loyalty.Application.TierDetailsAppService;
 using Loyalty.Application.MemberTierDetailsAppService.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
@@ -47,7 +48,10 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             _tierDetailsAppService = tierDetailsAppService;
         }
 
-
+        protected override IQueryable<Domain.Models.MemberDemographicsAndProfile> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input).Include(x => x.MemberTierDetails).ThenInclude(x => x.TierDetails);
+        }
         public override async Task<MemberDemographicsAndProfileGetDto> Create(MemberDemographicsAndProfileCreateDto createDto)
         {
 
@@ -86,6 +90,20 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 
             createDto.UserCode = result.Code;
 
+
+            var tierDetails = await _tierDetailsAppService.GetByName("Blue");
+
+            var createdProfile =  await base.Create(createDto);
+
+
+            await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
+            {
+                TierId = tierDetails.Id,
+                MemberDemographicsAndProfileId = createdProfile.Id
+            });
+
+
+
             await _memberAccrualTransactionsAppService.Create(new MemberAccrualTransactions.Dtos.MemberAccrualTransactionsCreateDto
             {
                 CIS = result.Code,
@@ -93,20 +111,19 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                 LoadDate = DateTime.Now,
                 Description = "Enrolment Bonus",
                 Base = 0,
-                Bonus = Bonus
+                Bonus = 400
             });
-            var tierDetails = await _tierDetailsAppService.GetByName("Blue");
-
-
-            var mtd = new List<MemberTierDetailsCreateDto>();
-            mtd.Add(new MemberTierDetailsCreateDto
-            {
-                TierId = tierDetails.Id
-            });
-
-            createDto.MemberTierDetails = mtd;
-
-            return await base.Create(createDto);
+            if(Bonus ==100)
+                await _memberAccrualTransactionsAppService.Create(new MemberAccrualTransactions.Dtos.MemberAccrualTransactionsCreateDto
+                {
+                    CIS = result.Code,
+                    PartnerCode = "Cham Wings",
+                    LoadDate = DateTime.Now,
+                    Description = "Enrolment Bonus",
+                    Base = 0,
+                    Bonus = 100
+                });
+            return await Get(createdProfile.Id);
         }
     }
 }

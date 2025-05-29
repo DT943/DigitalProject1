@@ -64,7 +64,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
 
         public int NumberOfChildren { get; set; }
 
-        public ICollection<MemberTierDetailsCreateDto> MemberTierDetails { get; set; }
+        public ICollection<MemberTierDetailsCreateDto>? MemberTierDetails { get; set; }
     }
 
     public class MemberDemographicsAndProfileUpdateDto : IEntityUpdateDto
@@ -119,7 +119,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public string Designation { get; set; }
 
         public int NumberOfChildren { get; set; }
-        public ICollection<MemberTierDetailsCreateDto> MemberTierDetails { get; set; }
+        public ICollection<MemberTierDetailsCreateDto>? MemberTierDetails { get; set; }
 
 
     }
