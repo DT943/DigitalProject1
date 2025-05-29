@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure.Domain.Models;
 
-namespace Loyalty.Domain.Models
+namespace Loyalty.Application.MemberTierDetailsAppService.Dto
 {
-    public class MemberTierDetails :BasicEntity
+    public class MemberTierDetailsGetDto
     {
-
-        public int MemberDemographicsAndProfileId { get; set; }
+        [MaxLength(100)]
+        public string CIS { get; set; }
 
         public int? ReversalId { get; set; }
 
@@ -31,11 +29,5 @@ namespace Loyalty.Domain.Models
         public string? TierUpgradeType { get; set; }
 
         public string? Reason { get; set; }
-        [ForeignKey(nameof(MemberDemographicsAndProfileId))]
-        public MemberDemographicsAndProfile memberDemographicsAndProfile { get; set; }
-
-
-        [ForeignKey(nameof(TierId))]
-        public TierDetails TierDetails { get; set; }
     }
 }

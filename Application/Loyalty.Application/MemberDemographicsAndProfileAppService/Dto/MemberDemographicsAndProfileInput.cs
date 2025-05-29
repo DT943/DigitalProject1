@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Validations;
+using Loyalty.Application.MemberTierDetailsAppService.Dto;
+using Loyalty.Domain.Models;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
 {
@@ -61,6 +63,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public string Designation { get; set; }
 
         public int NumberOfChildren { get; set; }
+
+        public ICollection<MemberTierDetailsCreateDto> MemberTierDetails { get; set; }
     }
 
     public class MemberDemographicsAndProfileUpdateDto : IEntityUpdateDto
@@ -115,5 +119,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public string Designation { get; set; }
 
         public int NumberOfChildren { get; set; }
+        public ICollection<MemberTierDetailsCreateDto> MemberTierDetails { get; set; }
+
+
     }
 }

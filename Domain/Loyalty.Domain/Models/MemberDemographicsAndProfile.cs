@@ -56,5 +56,8 @@ namespace Loyalty.Domain.Models
         public string Designation {  get; set; }
 
         public int NumberOfChildren { get; set; }
+
+        public ICollection<MemberTierDetails> MemberTierDetails { get; set; } = new List<MemberTierDetails>();
+
     }
 }

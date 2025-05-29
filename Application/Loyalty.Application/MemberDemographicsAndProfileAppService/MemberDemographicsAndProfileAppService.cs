@@ -20,6 +20,9 @@ using Authentication.Domain.Models;
 using Authentication.Application;
 using static Infrastructure.Domain.Consts;
 using Loyalty.Application.MemberAccrualTransactions;
+using Loyalty.Application.MemberTierDetailsAppService;
+using Loyalty.Application.TierDetailsAppService;
+using Loyalty.Application.MemberTierDetailsAppService.Dto;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
@@ -28,10 +31,20 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 
         IAuthenticationAppService _authenticationAppService;
         IMemberAccrualTransactionsAppService _memberAccrualTransactionsAppService;
-        public MemberDemographicsAndProfileAppService(LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberDemographicsAndProfileValidator validations, IHttpContextAccessor httpContextAccessor, IAuthenticationAppService authenticationAppService, IMemberAccrualTransactionsAppService memberAccrualTransactionsAppService) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
+        IMemberTierDetailsAppService _memberTierDetailsAppService;
+        ITierDetailsAppService _tierDetailsAppService;
+
+        public MemberDemographicsAndProfileAppService(LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberDemographicsAndProfileValidator validations, 
+            IHttpContextAccessor httpContextAccessor, 
+            IAuthenticationAppService authenticationAppService, 
+            IMemberAccrualTransactionsAppService memberAccrualTransactionsAppService, 
+            IMemberTierDetailsAppService memberTierDetailsAppService,
+            ITierDetailsAppService tierDetailsAppService) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
             _authenticationAppService = authenticationAppService;
             _memberAccrualTransactionsAppService = memberAccrualTransactionsAppService;
+            _memberTierDetailsAppService = memberTierDetailsAppService;
+            _tierDetailsAppService = tierDetailsAppService;
         }
 
 
@@ -82,12 +95,18 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                 Base = 0,
                 Bonus = Bonus
             });
+            var tierDetails = await _tierDetailsAppService.GetByName("Blue");
+
+
+            var mtd = new List<MemberTierDetailsCreateDto>();
+            mtd.Add(new MemberTierDetailsCreateDto
+            {
+                TierId = tierDetails.Id
+            });
+
+            createDto.MemberTierDetails = mtd;
 
             return await base.Create(createDto);
         }
-
-
-
-
     }
 }
