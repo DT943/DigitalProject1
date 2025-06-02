@@ -59,7 +59,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Validations
                     .WithMessage("Last name is required.")
                     .MaximumLength(100);
 
-
+                /*
                 RuleFor(dto => (dto as MemberDemographicsAndProfileCreateDto))
                   .MustAsync(async (dto, cancellation) =>
                   {
@@ -68,7 +68,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Validations
                   }).WithMessage("Dublicate User Name");
                 RuleFor(dto => (dto as MemberDemographicsAndProfileCreateDto).NameOnCard)
                     .MaximumLength(100);
-
+                */
                 RuleFor(dto => (dto as MemberDemographicsAndProfileCreateDto).Gender)
                     .MaximumLength(100);
 
