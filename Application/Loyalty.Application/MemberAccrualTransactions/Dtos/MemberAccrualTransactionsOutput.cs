@@ -28,5 +28,18 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
         public DateTime? INVDate { get; set; }
         public int? STMTNo { get; set; }
         public int? INVNo { get; set; }
+
+
+        public string? Origin { get; set; }
+        public string? Destination { get; set; }
+        public string? FlightClass { get; set; }
+        public string? BookClass { get; set; }
+        public string? FlightNumber { get; set; }
+        public string? TicketNumber { get; set; }
+        public int? CouponNumber { get; set; }
+        public string? CarrierCode { get; set; }
+
+        public string? PNR { get; set; }
+
     }
 }

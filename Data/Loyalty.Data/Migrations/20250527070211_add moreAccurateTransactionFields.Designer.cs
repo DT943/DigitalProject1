@@ -4,6 +4,7 @@ using Loyalty.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Data.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250527070211_add moreAccurateTransactionFields")]
+    partial class addmoreAccurateTransactionFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,9 +93,6 @@ namespace Loyalty.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Origin")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PNR")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PartnerCode")
@@ -464,58 +464,6 @@ namespace Loyalty.Data.Migrations
                     b.ToTable("MemberTelephoneDetails");
                 });
 
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberTierDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("BeginDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("FulfillDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("MemberDemographicsAndProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ReversalId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TXTotal")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TierId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TierUpgradeType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("UnitTotal")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MemberDemographicsAndProfileId");
-
-                    b.HasIndex("TierId");
-
-                    b.ToTable("MemberTierDetails");
-                });
-
             modelBuilder.Entity("Loyalty.Domain.Models.MemberTravelAgentDetails", b =>
                 {
                     b.Property<int>("Id")
@@ -539,99 +487,6 @@ namespace Loyalty.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MemberTravelAgentDetails");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.SegmentMiles", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Destination")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("Miles")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Origin")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SegmentMiles");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.TierDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float>("BonusAddedValue")
-                        .HasColumnType("real");
-
-                    b.Property<int>("BonusLifeSpanYears")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RequiredMilesToReach")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TireLifeSpanYears")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TierDetails");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberTierDetails", b =>
-                {
-                    b.HasOne("Loyalty.Domain.Models.MemberDemographicsAndProfile", "memberDemographicsAndProfile")
-                        .WithMany("MemberTierDetails")
-                        .HasForeignKey("MemberDemographicsAndProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Loyalty.Domain.Models.TierDetails", "TierDetails")
-                        .WithMany()
-                        .HasForeignKey("TierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TierDetails");
-
-                    b.Navigation("memberDemographicsAndProfile");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberDemographicsAndProfile", b =>
-                {
-                    b.Navigation("MemberTierDetails");
                 });
 #pragma warning restore 612, 618
         }

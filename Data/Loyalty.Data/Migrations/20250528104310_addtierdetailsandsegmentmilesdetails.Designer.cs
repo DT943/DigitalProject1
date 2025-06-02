@@ -4,6 +4,7 @@ using Loyalty.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Data.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250528104310_addtierdetailsandsegmentmilesdetails")]
+    partial class addtierdetailsandsegmentmilesdetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,6 +478,11 @@ namespace Loyalty.Data.Migrations
                     b.Property<DateTime?>("BeginDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CIS")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -486,9 +494,6 @@ namespace Loyalty.Data.Migrations
                     b.Property<DateTime?>("FulfillDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("MemberDemographicsAndProfileId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Reason")
                         .HasColumnType("nvarchar(max)");
 
@@ -498,8 +503,9 @@ namespace Loyalty.Data.Migrations
                     b.Property<int?>("TXTotal")
                         .HasColumnType("int");
 
-                    b.Property<int>("TierId")
-                        .HasColumnType("int");
+                    b.Property<string>("TierId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TierUpgradeType")
                         .HasColumnType("nvarchar(max)");
@@ -508,10 +514,6 @@ namespace Loyalty.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MemberDemographicsAndProfileId");
-
-                    b.HasIndex("TierId");
 
                     b.ToTable("MemberTierDetails");
                 });
@@ -608,30 +610,6 @@ namespace Loyalty.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TierDetails");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberTierDetails", b =>
-                {
-                    b.HasOne("Loyalty.Domain.Models.MemberDemographicsAndProfile", "memberDemographicsAndProfile")
-                        .WithMany("MemberTierDetails")
-                        .HasForeignKey("MemberDemographicsAndProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Loyalty.Domain.Models.TierDetails", "TierDetails")
-                        .WithMany()
-                        .HasForeignKey("TierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TierDetails");
-
-                    b.Navigation("memberDemographicsAndProfile");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberDemographicsAndProfile", b =>
-                {
-                    b.Navigation("MemberTierDetails");
                 });
 #pragma warning restore 612, 618
         }

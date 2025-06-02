@@ -30,9 +30,18 @@ using Loyalty.Application.MemberSecurityQuestionsAppService.Validations;
 using Loyalty.Application.MemberTelephoneDetailsAppService;
 using Loyalty.Application.MemberTelephoneDetailsAppService.Dto;
 using Loyalty.Application.MemberTelephoneDetailsAppService.Validations;
+using Loyalty.Application.MemberTierDetailsAppService;
+using Loyalty.Application.MemberTierDetailsAppService.Dto;
+using Loyalty.Application.MemberTierDetailsAppService.Validations;
 using Loyalty.Application.MemberTravelAgentDetailsAppService;
 using Loyalty.Application.MemberTravelAgentDetailsAppService.Dto;
 using Loyalty.Application.MemberTravelAgentDetailsAppService.Validations;
+using Loyalty.Application.SegmentMilesAppService;
+using Loyalty.Application.SegmentMilesAppService.Dto;
+using Loyalty.Application.SegmentMilesAppService.Validations;
+using Loyalty.Application.TierDetailsAppService;
+using Loyalty.Application.TierDetailsAppService.Dto;
+using Loyalty.Application.TierDetailsAppService.Validations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Notification.Application;
@@ -76,7 +85,15 @@ namespace Loyalty.Host.Helper
 
             services.AddTransient<IMemberTravelAgentDetailsAppService, MemberTravelAgentDetailsAppService>();
             services.AddTransient<MemberTravelAgentDetailsValidator>();
+
+            services.AddTransient<IMemberTierDetailsAppService, MemberTierDetailsAppService>();
+            services.AddTransient<MemberTierDetailsValidator>();
             //MemberTravelAgentDetails
+            services.AddTransient<ISegmentMilesAppService, SegmentMilesAppService>();
+            services.AddTransient<SegmentMilesValidator>();
+
+            services.AddTransient<ITierDetailsAppService, TierDetailsAppService>();
+            services.AddTransient<TierDetailsValidator>();
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
@@ -99,6 +116,9 @@ namespace Loyalty.Host.Helper
                 mc.AddProfile(new MemberEducationalDetailsMapperProfile());
                 mc.AddProfile(new MemberTravelAgentDetailsMapperProfile());
                 mc.AddProfile(new MemberAccrualTransactionsMapperProfile());
+                mc.AddProfile(new MemberTierDetailsMapperProfile());
+                mc.AddProfile(new SegmentMilesMapperProfile());
+                mc.AddProfile(new TierDetailsMapperProfile());
 
             });
 

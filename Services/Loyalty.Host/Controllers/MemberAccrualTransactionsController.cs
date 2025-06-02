@@ -20,10 +20,10 @@ namespace Loyalty.Host.Controllers
 
         [HttpGet("Details")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> MemberAccrualTransactionsDetails()
+        public async Task<ActionResult<ICollection<MemberAccrualTransactionsGetDto>>> MemberAccrualTransactionsDetails([FromQuery] SieveModel sieveModel)
         {
             var user = HttpContext.User;
-            return Ok(await _appService.MemberAccrualTransactionsDetails());
+            return Ok(await _appService.MemberAccrualTransactionsDetails(sieveModel));
         }
     }
 }

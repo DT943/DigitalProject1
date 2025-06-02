@@ -37,10 +37,10 @@ namespace Loyalty.Host.Controllers
 
 
             var user = HttpContext.User;
-            int bonus = 500;
+            int bonus = 100;
             if (user.IsInRole($"{ServiceName}-Officer"))
             {
-                bonus = 400;
+                bonus = 0;
             }
  
 
