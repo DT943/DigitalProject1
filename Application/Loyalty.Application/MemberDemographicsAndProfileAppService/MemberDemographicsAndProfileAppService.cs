@@ -24,6 +24,9 @@ using Loyalty.Application.MemberTierDetailsAppService;
 using Loyalty.Application.TierDetailsAppService;
 using Loyalty.Application.MemberTierDetailsAppService.Dto;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Encodings;
+using QRCoder;
+using iTextSharp.text.pdf.qrcode;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
@@ -48,6 +51,15 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             _tierDetailsAppService = tierDetailsAppService;
         }
 
+        
+        static string GenerateQrCode(string text, string filePath)
+        {
+            QRCodeGenerator qrGenerator = new QRCodeGenerator();
+            QRCodeData qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
+            return  new QRCoder.Base64QRCode(qrCodeData).GetGraphic(20);
+
+        }
+        
         protected override IQueryable<Domain.Models.MemberDemographicsAndProfile> QueryExcuter(SieveModel input)
         {
             return base.QueryExcuter(input).Include(x => x.MemberTierDetails).ThenInclude(x => x.TierDetails);

@@ -24,6 +24,9 @@ using Loyalty.Application.MemberHobbiesDetailsAppService.Validations;
 using Loyalty.Application.MemberPreferenceDetailsAppService;
 using Loyalty.Application.MemberPreferenceDetailsAppService.Dto;
 using Loyalty.Application.MemberPreferenceDetailsAppService.Validations;
+using Loyalty.Application.MemberRedemptionTransactions;
+using Loyalty.Application.MemberRedemptionTransactions.Dto;
+using Loyalty.Application.MemberRedemptionTransactions.Validations;
 using Loyalty.Application.MemberSecurityQuestionsAppService;
 using Loyalty.Application.MemberSecurityQuestionsAppService.Dto;
 using Loyalty.Application.MemberSecurityQuestionsAppService.Validations;
@@ -55,6 +58,9 @@ namespace Loyalty.Host.Helper
         {
 
             services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+            services.AddTransient<IMemberRedemptionTransactionsAppService, MemberRedemptionTransactionsAppService>();
+            services.AddTransient<MemberRedemptionTransactionsValidator>();
 
             services.AddTransient<IMemberAccrualTransactionsAppService, MemberAccrualTransactionsAppService>();
             services.AddTransient<MemberAccrualTransactionsValidator>();
@@ -116,10 +122,11 @@ namespace Loyalty.Host.Helper
                 mc.AddProfile(new MemberEducationalDetailsMapperProfile());
                 mc.AddProfile(new MemberTravelAgentDetailsMapperProfile());
                 mc.AddProfile(new MemberAccrualTransactionsMapperProfile());
+                mc.AddProfile(new MemberRedemptionTransactionsMapperProfile());
                 mc.AddProfile(new MemberTierDetailsMapperProfile());
                 mc.AddProfile(new SegmentMilesMapperProfile());
                 mc.AddProfile(new TierDetailsMapperProfile());
-
+                //MemberRedemptionTransactions
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

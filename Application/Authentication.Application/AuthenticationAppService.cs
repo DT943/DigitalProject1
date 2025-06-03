@@ -341,9 +341,9 @@ namespace Authentication.Application
             if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
                 return new AuthenticationModel { Message = "Email is already exist!", IsAuthenticated = false };
 
-            if (await _userManager.FindByNameAsync(userName) is not null)
+           /* if (await _userManager.FindByNameAsync(userName) is not null)
                 return new AuthenticationModel { Message = "Username is already exist!" , IsAuthenticated = false };
-
+           */
             var user = new ApplicationUser
             {
                 Code = "User-" + Guid.NewGuid().ToString("N"),
@@ -1191,9 +1191,9 @@ namespace Authentication.Application
             if (await _userManager.FindByEmailAsync(newuser.Email) is not null)
                 return new AuthenticationModelWithDetails { Message = "Email is already exist!", IsAuthenticated = false };
 
-            if (await _userManager.FindByNameAsync(userName) is not null)
+           /* if (await _userManager.FindByNameAsync(userName) is not null)
                 return new AuthenticationModelWithDetails { Message = "Username is already exist!", IsAuthenticated = false };
-
+           */
             var user = new ApplicationUser
             {
                 Code = "User-" + Guid.NewGuid().ToString("N"),

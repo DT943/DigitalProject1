@@ -4,6 +4,7 @@ using Loyalty.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Data.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250602115034_addQrCoe")]
+    partial class addQrCoe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -395,48 +398,6 @@ namespace Loyalty.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MemberPreferenceDetails");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberRedemptionTransactions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("AwardDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CIS")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("CertificateNum")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PartnerId")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("Sequence")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UsedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UsedMiles")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MemberRedemptionTransactions");
                 });
 
             modelBuilder.Entity("Loyalty.Domain.Models.MemberSecurityQuestions", b =>

@@ -37,5 +37,8 @@ namespace Loyalty.Domain.Models
 
         [ForeignKey(nameof(TierId))]
         public TierDetails TierDetails { get; set; }
+
+        [MaxLength(4000)]
+        public string? QrCode { get; set; }
     }
 }
