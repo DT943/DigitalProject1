@@ -35,6 +35,7 @@ namespace Loyalty.Data.DbContext
         public DbSet<Domain.Models.MemberEducationalDetails>     MemberEducationaldetails { get; set; }
         public DbSet<Domain.Models.MemberAccrualTransactions>    MemberAccrualTransactions { get; set; }
         public DbSet<Domain.Models.MemberRedemptionTransactions> MemberRedemptionTransactions { get; set; }
+        public DbSet<Domain.Models.MemberTransactionRedemptionDetails> MemberTransactionRedemptionDetails { get; set; }
         public DbSet<Domain.Models.SegmentMiles> SegmentMiles { get; set; }
         public DbSet<Domain.Models.MemberTierDetails> MemberTierDetails { get; set; }
         public DbSet<Domain.Models.TierDetails> TierDetails { get; set; }

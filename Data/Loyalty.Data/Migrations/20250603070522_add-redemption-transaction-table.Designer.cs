@@ -4,6 +4,7 @@ using Loyalty.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Data.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603070522_add-redemption-transaction-table")]
+    partial class addredemptiontransactiontable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +47,6 @@ namespace Loyalty.Data.Migrations
 
                     b.Property<int?>("Bonus")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("BonusValidationDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("BookClass")
                         .HasColumnType("nvarchar(max)");
@@ -117,9 +117,6 @@ namespace Loyalty.Data.Migrations
 
                     b.Property<int?>("TierId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("TierValidationDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -568,35 +565,6 @@ namespace Loyalty.Data.Migrations
                     b.ToTable("MemberTierDetails");
                 });
 
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberTransactionRedemptionDetails", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("RedemptionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("RedemptionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RedemptionValue")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransactionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RedemptionId");
-
-                    b.HasIndex("TransactionId");
-
-                    b.ToTable("MemberTransactionRedemptionDetails");
-                });
-
             modelBuilder.Entity("Loyalty.Domain.Models.MemberTravelAgentDetails", b =>
                 {
                     b.Property<int>("Id")
@@ -710,33 +678,9 @@ namespace Loyalty.Data.Migrations
                     b.Navigation("memberDemographicsAndProfile");
                 });
 
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberTransactionRedemptionDetails", b =>
-                {
-                    b.HasOne("Loyalty.Domain.Models.MemberRedemptionTransactions", "Redemption")
-                        .WithMany("MemberTransactionRedemptionDetails")
-                        .HasForeignKey("RedemptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Loyalty.Domain.Models.MemberAccrualTransactions", "Transaction")
-                        .WithMany()
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Redemption");
-
-                    b.Navigation("Transaction");
-                });
-
             modelBuilder.Entity("Loyalty.Domain.Models.MemberDemographicsAndProfile", b =>
                 {
                     b.Navigation("MemberTierDetails");
-                });
-
-            modelBuilder.Entity("Loyalty.Domain.Models.MemberRedemptionTransactions", b =>
-                {
-                    b.Navigation("MemberTransactionRedemptionDetails");
                 });
 #pragma warning restore 612, 618
         }

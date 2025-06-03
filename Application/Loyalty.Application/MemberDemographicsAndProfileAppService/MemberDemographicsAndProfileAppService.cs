@@ -50,15 +50,6 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             _memberTierDetailsAppService = memberTierDetailsAppService;
             _tierDetailsAppService = tierDetailsAppService;
         }
-
-        
-        static string GenerateQrCode(string text, string filePath)
-        {
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
-            return  new QRCoder.Base64QRCode(qrCodeData).GetGraphic(20);
-
-        }
         
         protected override IQueryable<Domain.Models.MemberDemographicsAndProfile> QueryExcuter(SieveModel input)
         {
@@ -136,6 +127,22 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                     Bonus = 100
                 });
             return await Get(createdProfile.Id);
+        }
+
+
+        public async void  UpgradeUserTier(string cis)
+        {
+            var allTransactions = _serviceDbContext.MemberAccrualTransactions
+                .Where(x => x.TierValidationDate >= DateTime.Now && x.CIS == cis)
+                .ToList();
+
+            var transactionIds = allTransactions.Select(x => x.Id).ToList();
+            var totalAccrual = allTransactions.Sum(x => (x.Base ?? 0));
+
+            var res = await _serviceDbContext.MemberDemographicsAndProfiles.Where(x => x.UserCode == cis).FirstOrDefaultAsync();
+            var member = await this.Get(res.Id);
+            var member.MemberTierDetails.OrderByDescending(x => x.FulfillDate).FirstOrDefault();
+          
         }
     }
 }
