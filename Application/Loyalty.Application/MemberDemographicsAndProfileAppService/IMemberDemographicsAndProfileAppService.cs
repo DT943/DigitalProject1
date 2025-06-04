@@ -14,5 +14,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
     {
         public Task<MemberDemographicsAndProfileGetDto> CreateWithBonus(MemberDemographicsAndProfileCreateDto createDto, int Bonus);
 
+        public Task UpgradeUserTier(string cis);
+
     }
 }

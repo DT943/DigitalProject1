@@ -17,6 +17,24 @@ namespace Loyalty.Host.Controllers
         public SegmentMilesController(ISegmentMilesAppService appService) : base(appService, Servics.Loyalty)
         {
 
-        } 
+        }
+
+
+
+        [HttpPost("BulkCreate")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public  async Task<ActionResult<SegmentMilesGetDto>> BulkCreate(List<SegmentMilesCreateDto> dto)
+        {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
+            foreach (var item in dto)
+            {
+                var entity = await _appService.Create(item);
+            }
+            return Ok("Done");
+        }
+
     }
 }

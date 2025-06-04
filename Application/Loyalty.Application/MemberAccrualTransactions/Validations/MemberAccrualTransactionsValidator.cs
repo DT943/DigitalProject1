@@ -31,6 +31,18 @@ namespace Loyalty.Application.MemberAccrualTransactions.Validations
                      Must((cis) => loyaltyRepository.MemberDemographicsAndProfiles.Any(x => x.UserCode == cis))
                     .WithMessage("The User Not Found");
             });
+
+            RuleSet("FlightCreate", () =>
+            {
+                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).FlightClass)
+                    .NotEmpty().WithMessage("FlightClass is required.");
+                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).BookClass)
+                    .NotEmpty().WithMessage("BookClass is required.");
+                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).Origin)
+                    .NotEmpty().WithMessage("Origin is required.");
+                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).Destination)
+                    .NotEmpty().WithMessage("Destination is required.");
+            });
         }
     }
 }

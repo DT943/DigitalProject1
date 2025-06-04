@@ -27,6 +27,7 @@ using Microsoft.EntityFrameworkCore;
 using MimeKit.Encodings;
 using QRCoder;
 using iTextSharp.text.pdf.qrcode;
+using Loyalty.Domain.Models;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
@@ -130,19 +131,35 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
         }
 
 
-        public async void  UpgradeUserTier(string cis)
+        public async Task UpgradeUserTier(string cis)
         {
+            var res = await _serviceDbContext.MemberDemographicsAndProfiles.Where(x => x.UserCode == cis).FirstOrDefaultAsync();
+            if (res == null) return;
+
             var allTransactions = _serviceDbContext.MemberAccrualTransactions
                 .Where(x => x.TierValidationDate >= DateTime.Now && x.CIS == cis)
                 .ToList();
 
-            var transactionIds = allTransactions.Select(x => x.Id).ToList();
-            var totalAccrual = allTransactions.Sum(x => (x.Base ?? 0));
+            var totalTierMiles = allTransactions.Sum(x => (x.Base ?? 0));
 
-            var res = await _serviceDbContext.MemberDemographicsAndProfiles.Where(x => x.UserCode == cis).FirstOrDefaultAsync();
             var member = await this.Get(res.Id);
-            var member.MemberTierDetails.OrderByDescending(x => x.FulfillDate).FirstOrDefault();
-          
+            var lastCard =  member.MemberTierDetails.OrderByDescending(x => x.FulfillDate).FirstOrDefault();
+
+            List<TierDetails> availableTiers = _serviceDbContext.TierDetails.OrderByDescending(x => x.RequiredMilesToReach).ToList();
+            foreach (var item in availableTiers)
+            {
+                if(item.RequiredMilesToReach <= totalTierMiles)
+                {
+                    if (lastCard.TierDetails.Id != item.Id)
+                    await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
+                    {
+                        TierId = item.Id,
+                        MemberDemographicsAndProfileId = res.Id
+                    });
+
+                    break;
+                }
+            }
         }
     }
 }

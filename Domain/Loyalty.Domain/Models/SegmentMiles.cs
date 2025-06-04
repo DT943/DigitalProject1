@@ -13,9 +13,15 @@ namespace Loyalty.Domain.Models
         [MaxLength(10)]
         public string Origin { get; set; }
 
-
         [MaxLength(10)]
         public string Destination { get; set; }
+
+        [MaxLength(10)]
+        public string BookingClass { get; set; }
+
+        public string? Description { get; set; }
+        [MaxLength(10)]
+        public string COS { get; set; }
 
         public int Miles { get; set; }
     }
