@@ -26,6 +26,10 @@ namespace Loyalty.Domain.Models
 
         public DateTime? UsedDate { get; set; }
 
+        public ICollection<MemberTransactionRedemptionDetails> MemberTransactionRedemptionDetails { get; set; }
+
+
+
 
     }
 }

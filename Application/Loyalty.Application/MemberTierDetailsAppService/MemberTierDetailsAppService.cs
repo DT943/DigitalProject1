@@ -33,8 +33,6 @@ namespace Loyalty.Application.MemberTierDetailsAppService
             return createdEntity;
         }
 
-
-
         static string GenerateQrCode(string text)
         {
             QRCodeGenerator qrGenerator = new QRCodeGenerator();

@@ -29,7 +29,9 @@ namespace Loyalty.Domain.Models
         public int? STMTNo { get; set; }
         public int? INVNo { get; set; }
 
+        public DateTime? TierValidationDate { get; set; } = DateTime.MaxValue;
 
+        public DateTime? BonusValidationDate { get; set; } = DateTime.MaxValue;
         public string? Origin { get; set; }
 
         public string? Destination { get; set; }
