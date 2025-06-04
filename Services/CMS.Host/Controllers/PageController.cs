@@ -2,6 +2,7 @@
 using CMS.Application.PageAppService.Dtos;
 using Infrastructure.Application;
 using Infrastructure.Service.Controllers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
@@ -49,6 +50,17 @@ namespace CMS.Host.Controllers
 
             string status = statusValues.ToString();
             return Ok(await _appService.GetPageByStatus(status));
+        }
+
+        [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public override async Task<ActionResult<PageGetDto>> Update(PageUpdateDto dto)
+        {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
+            return Ok(await _appService.Update(dto));
         }
 
     }

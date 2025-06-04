@@ -24,7 +24,7 @@ namespace Authentication.Application.Dtos
         public DateTime? LastLogIn { get; set; }
 
         public IEnumerable<string> Roles { get; set; }
-        public string Status { get; set; }
+        public List<string> Status { get; set; }
         public string Reason { get; set; }
 
     }

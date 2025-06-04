@@ -74,5 +74,7 @@ namespace B2B.Domain.Models
         [MaxLength(100)]
 
         public string Name { get; set; }
+
+        public string Currency { get; set; } = "SYD";
     }
 }

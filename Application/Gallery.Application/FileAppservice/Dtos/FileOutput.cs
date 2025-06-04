@@ -19,6 +19,7 @@ namespace Gallery.Application.FileAppservice.Dtos
         public string FileType { get; set; }
         public float Size { get; set; }
         public string SizeUnit { get; set; } = "MB";
+        [System.Text.Json.Serialization.JsonIgnore]
         public string Path { get; set; }
         public string MimeType { get; set; }
         public int? ImageWidth { get; set; }

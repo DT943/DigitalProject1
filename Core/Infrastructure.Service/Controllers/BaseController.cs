@@ -126,6 +126,37 @@ namespace Infrastructure.Service.Controllers
             return Ok(deletedEntity);
         }
 
+
+        [HttpGet("approve/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public virtual async Task<ActionResult<TGetDto>> Approve(int id)
+        {
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
+            {
+                return Forbid();
+            }
+
+            var approvedEntity = await _appService.Approve(id, UserHasPermission());
+            return Ok(approvedEntity);
+        }
+
+
+        [HttpGet("get-all-approval")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public virtual async Task<ActionResult<TGetDto>> GetAllApproval([FromQuery] TFilterDto sieve)
+        {
+            var user = HttpContext.User;
+
+            if (!UserHasPermission("Admin", "Manager", "Supervisor"))
+            {
+                return Forbid();
+            }
+
+            var approvedEntity = await _appService.GetApprovalNeededRecords(sieve);
+            return Ok(approvedEntity);
+        }
     }
 
 

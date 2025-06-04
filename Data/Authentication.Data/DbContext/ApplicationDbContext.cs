@@ -15,10 +15,12 @@ namespace Authentication.Data.DbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Seed();
+            var user = builder.Entity<ApplicationUser>();
+            user.HasIndex(u => u.NormalizedUserName).IsUnique(false);
         }
+        public DbSet<Domain.Models.Department> Departments { get; set; }
+        
     }
 
-    
+
 }

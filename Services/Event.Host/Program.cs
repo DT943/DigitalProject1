@@ -9,26 +9,12 @@ using System.Net;
 
 using Microsoft.Extensions.FileProviders;
 using System.Security.Cryptography.X509Certificates;
+using Audit.Data.DbContext;
+using Audit.Application.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-/*builder.WebHost.ConfigureKestrel(serverOptions =>
-{
- 
-    serverOptions.Listen(IPAddress.Any, 7185, listenOptions =>
-    {
-        if (builder.Environment.IsDevelopment())
 
-            listenOptions.UseHttps();
-        else
-
-            listenOptions.UseHttps(new X509Certificate2(
-                "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
-                "HappyHappy@2025"));
-
-    });
-});
-*/
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -88,6 +74,17 @@ builder.Services.AddDbContext<EventDbContext>((sp, options) =>
            .EnableSensitiveDataLogging()
            .LogTo(Console.WriteLine, LogLevel.Information);
 });
+
+builder.Services.AddDbContext<AuditDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("AuditDefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 builder.Services.AddSwaggerGen();
 
 
@@ -111,7 +108,8 @@ if (!app.Environment.IsDevelopment())
 
 
 app.UseStaticFiles();
-app.UseHttpsRedirection();
+
+app.UseMiddleware<AuditMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

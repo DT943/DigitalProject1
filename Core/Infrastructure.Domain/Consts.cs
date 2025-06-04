@@ -15,12 +15,14 @@ namespace Infrastructure.Domain
         }
         public enum ServiceName {
             CMS,
-            Offer,
-            Authntication,
+            //Offer,
+            Authentication,
             CWCore,
             Gallery,
-            Hotel,
-            Notification
+            //Hotel,
+            Notification,
+            //B2B,
+            Loyalty
         }
 
 
@@ -33,7 +35,7 @@ namespace Infrastructure.Domain
             public static readonly string OFFER = "Offer";
             public static readonly string CWCORE = "CWCore";
             public static readonly string NOTIFICATION = "Notification";
-            public static readonly string AUTHNTICATION = "Authntication";
+            public static readonly string AUTHENTICATION = "Authentication";
             public static readonly string HR = "HR";
             public static readonly string BranchesManagement = "BranchesManagement";
             public static readonly string B2B = "B2B";

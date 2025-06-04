@@ -21,7 +21,7 @@ namespace CMS.Application.PageAppService.Dtos
     {
         public string Title { get; set; }
         public bool IsDeleted { get; set; }
-        public string Status { get; set; }
+        public string? Status { get; set; }
         public string Description { get; set; }
         public ICollection<SegmentUpdateDto> Segments { get; set; }
 

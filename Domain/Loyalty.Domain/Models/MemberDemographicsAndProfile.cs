@@ -7,6 +7,8 @@ namespace Loyalty.Domain.Models
 {
     public class MemberDemographicsAndProfile : BasicEntity
     {
+        [MaxLength(100)]
+        public string UserCode { get; set; }
         [MaxLength(500)]
         public string Title { get; set; }
 
@@ -54,5 +56,8 @@ namespace Loyalty.Domain.Models
         public string Designation {  get; set; }
 
         public int NumberOfChildren { get; set; }
+
+        public ICollection<MemberTierDetails> MemberTierDetails { get; set; } = new List<MemberTierDetails>();
+
     }
 }

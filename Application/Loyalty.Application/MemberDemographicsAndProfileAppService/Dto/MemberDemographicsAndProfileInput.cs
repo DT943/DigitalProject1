@@ -6,11 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Validations;
+using Loyalty.Application.MemberTierDetailsAppService.Dto;
+using Loyalty.Domain.Models;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
 {
     public class MemberDemographicsAndProfileCreateDto : IValidatableDto
     {
+
+        [MaxLength(100)]
+        public string? UserCode { get; set; }
+
         [MaxLength(500)]
         public string Title { get; set; }
 
@@ -45,7 +51,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         [MaxLength(50)]
         public string PassportNumber { get; set; }
 
-        [MaxLength(50)]
+
         public DateTime PassportExpiryDate { get; set; }
 
         [MaxLength(50)]
@@ -57,10 +63,15 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public string Designation { get; set; }
 
         public int NumberOfChildren { get; set; }
+
+        public ICollection<MemberTierDetailsCreateDto>? MemberTierDetails { get; set; }
     }
 
     public class MemberDemographicsAndProfileUpdateDto : IEntityUpdateDto
     {
+        [MaxLength(100)]
+        public string? UserCode { get; set; }
+
         [MaxLength(500)]
         public string Title { get; set; }
 
@@ -108,5 +119,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public string Designation { get; set; }
 
         public int NumberOfChildren { get; set; }
+        public ICollection<MemberTierDetailsCreateDto>? MemberTierDetails { get; set; }
+
+
     }
 }

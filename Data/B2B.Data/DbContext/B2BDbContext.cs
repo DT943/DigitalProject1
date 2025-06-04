@@ -30,6 +30,8 @@ namespace B2B.Data.DbContext
         public DbSet<Domain.Models.TravelAgentApplication> TravelAgentApplications { get; set; }
         public DbSet<Domain.Models.EmployeeApplication> EmployeeApplications { get; set; }
         public DbSet<Domain.Models.TravelAgentEmployee> TravelAgentEmployees { get; set; }
+        public DbSet<Domain.Models.Reservation> Reservations { get; set; }
 
-     }
+
+    }
 }

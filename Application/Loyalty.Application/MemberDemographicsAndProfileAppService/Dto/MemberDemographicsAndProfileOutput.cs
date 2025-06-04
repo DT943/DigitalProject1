@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Loyalty.Application.MemberTierDetailsAppService.Dto;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
 {
@@ -55,6 +56,9 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public string Designation { get; set; }
 
         public int NumberOfChildren { get; set; }
+
+        public ICollection<MemberTierDetailsGetDto> MemberTierDetails { get; set; }
+
     }
 
     public class MemberDemographicsAndProfileGetAllDto
@@ -104,5 +108,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public string Designation { get; set; }
 
         public int NumberOfChildren { get; set; }
+
+        public ICollection<MemberTierDetailsGetDto> MemberTierDetails { get; set; }
+
     }
 }

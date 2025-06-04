@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
 using CMS.Application;
+using CMS.Application.AirportsAppService;
+using CMS.Application.AirportsAppService.Dto;
+using CMS.Application.AirportsAppService.Validations;
 using CMS.Application.ComponentAppService;
 using CMS.Application.ComponentAppService.Dto;
 using CMS.Application.ComponentAppService.Validations;
@@ -53,6 +56,8 @@ namespace CMS.Host.Helper
             services.AddTransient<ICustomFormAppService, CustomFormAppService>();
             services.AddTransient<CustomFormValidator>();
 
+            services.AddTransient<IAirportsAppService, AirportsAppService>();
+            services.AddTransient<AirportsValidator>();
             //services.AddScoped<ISieveProcessor, SieveProcessor>();
 
 
@@ -69,6 +74,8 @@ namespace CMS.Host.Helper
                 mc.AddProfile(new StaticComponentMapperProfile());
                 mc.AddProfile(new POSMapperProfile());
                 mc.AddProfile(new CustomFormMapperProfile());
+                mc.AddProfile(new AirportsMapperProfile());
+
             });
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);

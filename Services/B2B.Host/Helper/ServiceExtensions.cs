@@ -19,6 +19,9 @@ using Authentication.Application.Dtos;
 using B2B.Application.TravelAgentEmployeeAppService;
 using B2B.Application.TravelAgentEmployeeAppService.Validations;
 using B2B.Application.TravelAgentEmployeeAppService.Dto;
+using B2B.Application.ReservationAppService;
+using B2B.Application.ReservationAppService.Validations;
+using B2B.Application.ReservationAppService.Dto;
 
 namespace B2B.Host.Helper
 {
@@ -26,6 +29,9 @@ namespace B2B.Host.Helper
     {
         public static void AddCustomService(this IServiceCollection services)
         {
+            services.AddTransient<IReservationAppService, ReservationAppService>();
+            services.AddTransient<ReservationValidator>();
+
             services.AddTransient<ITravelAgentOfficeAppService, TravelAgentOfficeAppService>();
             services.AddTransient<TravelAgentOfficeValidator>();
 
@@ -49,6 +55,7 @@ namespace B2B.Host.Helper
             services.AddHttpClient();
             var mapperConfig = new MapperConfiguration(mc =>
             {
+                mc.AddProfile(new ReservationMapperProfile());
                 mc.AddProfile(new TravelAgentOfficeMapperProfile());
                 mc.AddProfile(new TravelAgentApplicationMapperProfile());
                 mc.AddProfile(new TravelAgentEmployeeMapperProfile());

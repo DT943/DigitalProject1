@@ -7,8 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="iTextSharp" Version="5.5.13.4" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Infrastructure.Application\Infrastructure.Application.csproj" />
     <ProjectReference Include="..\..\Data\Loyalty.Data\Loyalty.Data.csproj" />
+    <ProjectReference Include="..\Authentication.Application\Authentication.Application.csproj" />
   </ItemGroup>
 
 </Project>

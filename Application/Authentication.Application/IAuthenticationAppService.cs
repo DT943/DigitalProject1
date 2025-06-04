@@ -12,7 +12,7 @@ namespace Authentication.Application
 {
     public interface IAuthenticationAppService
     {
-        public Task<AuthenticationModel> RegisterAsync(RegisterModel model);
+        public Task<AuthenticationModelWithDetails> RegisterAsync(RegisterModel model);
         public Task<AuthenticationModel> GetTokenAsync(LogInModel model);
         public Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel);
         public Task<AuthenticationGetDto> GetUserByCodeAsync(string code);
@@ -21,19 +21,21 @@ namespace Authentication.Application
         Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole);
         Task<AuthenticationModel> ChangeUserStatusAsync(string userCode);
         Task<AuthenticationModel> AddUserAsync(AddUserDto newuser);
-        Task<AuthenticationModel> AddB2BUserAsync(AddUserDto newuser);
+        Task<AuthenticationModelWithDetails> AddB2BUserAsync(AddUserDto newuser);
+        Task<AuthenticationModelWithDetails> AddLoyaltyUserAsync(AddUserDto newuser);
+
         Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment);
         Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
         Task<AuthenticationModel> LogInWithOTP(LogInOTPModel model);
         Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto);
         Task<AuthenticationModel> FirstResetPassword(FirstResetLogInDto firestLogInDto);
-        Task<AuthenticationGetDto> UserFakeDeleteAsync(UserFakeDeleteDto dto);
+        Task<AuthenticationModel> UserFakeDeleteAsync(UserFakeDeleteDto dto);
 
         Task<AuthenticationModel> ForgotPassword(ForgotPasswordModel dto);
 
-        Task<AuthenticationModel> SetUserManager(SetUserManagerDto dto);
+        Task<AuthenticationModel> SetManagerToUser(SetManagerToUserDto dto);
         Task<bool> CheckEmail(string email);
 
-
+        Task<bool> CheckUserName(string FirstName, string LastName);
     }
 }
