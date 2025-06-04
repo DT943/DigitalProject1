@@ -148,13 +148,16 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             List<TierDetails> availableTiers = _serviceDbContext.TierDetails.OrderByDescending(x => x.RequiredMilesToReach).ToList();
             foreach (var item in availableTiers)
             {
-                if(item.RequiredMilesToReach <= totalTierMiles && lastCard.TierDetails.Id != item.Id)
+                if(item.RequiredMilesToReach <= totalTierMiles)
                 {
+                    if (lastCard.TierDetails.Id != item.Id)
                     await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
                     {
                         TierId = item.Id,
                         MemberDemographicsAndProfileId = res.Id
                     });
+
+                    break;
                 }
             }
         }

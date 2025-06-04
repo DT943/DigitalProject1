@@ -25,5 +25,13 @@ namespace Loyalty.Host.Controllers
             var user = HttpContext.User;
             return Ok(await _appService.MemberAccrualTransactionsDetails(sieveModel));
         }
+
+        [HttpPost("CreateFlightTransaction")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<MemberAccrualTransactionsGetDto>> CreateFlightTransactionDetails(MemberAccrualTransactionsCreateDto create)
+        {
+            var user = HttpContext.User;
+            return Ok(await _appService.CreateFlightTransactionDetails(create));
+        }
     }
 }

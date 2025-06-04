@@ -20,6 +20,7 @@ using Infrastructure.Application.BasicDto;
 using FluentValidation;
 using Loyalty.Application.MemberDemographicsAndProfileAppService;
 using Microsoft.Extensions.DependencyInjection;
+using FluentValidation.Results;
 
 namespace Loyalty.Application.MemberAccrualTransactions
 {
@@ -53,6 +54,32 @@ namespace Loyalty.Application.MemberAccrualTransactions
             var memberAppService = _serviceProvider.GetRequiredService<IMemberDemographicsAndProfileAppService>();
             await memberAppService.UpgradeUserTier(create.CIS);
             return createdTransaction;
+        }
+
+        //FlightTransactionDetails
+
+        public async Task<MemberAccrualTransactionsGetDto> CreateFlightTransactionDetails(MemberAccrualTransactionsCreateDto create)
+        {
+            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("FlightCreate", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var segmentMiles = await _serviceDbContext.SegmentMiles.Where(x=> 
+            x.COS.ToLower().Equals(create.FlightClass.ToLower()) &&
+            x.BookingClass.ToLower().Equals(create.BookClass.ToLower()) &&
+            x.Origin.ToLower().Equals(create.Origin.ToLower()) &&
+            x.Destination.ToLower().Equals(create.Destination.ToLower()))
+             .FirstOrDefaultAsync();
+
+            if(segmentMiles == null)
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Transaction", $"WrongInformation") });
+
+            create.Base = segmentMiles.Miles;
+            create.Bonus = 0;
+        
+            return await this.Create(create);
         }
 
         public async Task<PaginatedResult<MemberAccrualTransactionsGetDto>> MemberAccrualTransactionsDetails(SieveModel input)
