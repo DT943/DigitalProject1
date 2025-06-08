@@ -3,6 +3,9 @@ using Authentication.Data.DbContext;
 using Authentication.Domain.Models;
 using AutoMapper;
 using AutoMapper.Execution;
+using Loyalty.Application.ComplaintsAppService;
+using Loyalty.Application.ComplaintsAppService.Dtos;
+using Loyalty.Application.ComplaintsAppService.Validations;
 using Loyalty.Application.MemberAccrualTransactions;
 using Loyalty.Application.MemberAccrualTransactions.Dtos;
 using Loyalty.Application.MemberAccrualTransactions.Validations;
@@ -42,6 +45,9 @@ using Loyalty.Application.MemberTravelAgentDetailsAppService.Validations;
 using Loyalty.Application.SegmentMilesAppService;
 using Loyalty.Application.SegmentMilesAppService.Dto;
 using Loyalty.Application.SegmentMilesAppService.Validations;
+using Loyalty.Application.SegmentMilesRedemption;
+using Loyalty.Application.SegmentMilesRedemption.Dto;
+using Loyalty.Application.SegmentMilesRedemption.Validations;
 using Loyalty.Application.TierDetailsAppService;
 using Loyalty.Application.TierDetailsAppService.Dto;
 using Loyalty.Application.TierDetailsAppService.Validations;
@@ -98,8 +104,15 @@ namespace Loyalty.Host.Helper
             services.AddTransient<ISegmentMilesAppService, SegmentMilesAppService>();
             services.AddTransient<SegmentMilesValidator>();
 
+            services.AddTransient<ISegmentMilesRedemptionAppService, SegmentMilesRedemptionAppService>();
+            services.AddTransient<SegmentMilesRedemptionValidator>();
+
             services.AddTransient<ITierDetailsAppService, TierDetailsAppService>();
             services.AddTransient<TierDetailsValidator>();
+
+            services.AddTransient<IComplaintsAppService, ComplaintsAppService>();
+            services.AddTransient<ComplaintsValidator>();
+
 
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
@@ -125,6 +138,8 @@ namespace Loyalty.Host.Helper
                 mc.AddProfile(new MemberRedemptionTransactionsMapperProfile());
                 mc.AddProfile(new MemberTierDetailsMapperProfile());
                 mc.AddProfile(new SegmentMilesMapperProfile());
+                mc.AddProfile(new SegmentMilesRedemptionMapperProfile());
+                mc.AddProfile(new ComplaintsMapperProfile());
                 mc.AddProfile(new TierDetailsMapperProfile());
                 //MemberRedemptionTransactions
             });

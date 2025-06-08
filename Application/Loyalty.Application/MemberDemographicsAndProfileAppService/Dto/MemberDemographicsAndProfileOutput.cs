@@ -11,6 +11,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
     public class MemberDemographicsAndProfileGetDto
     {
         public int Id { get; set; }
+        public string UserCode { get; set; }
 
         [MaxLength(500)]
         public string Title { get; set; }
@@ -65,6 +66,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
     {
         public int Id { get; set; }
         [MaxLength(500)]
+        public string UserCode { get; set; }
         public string Title { get; set; }
 
         [MaxLength(100)]

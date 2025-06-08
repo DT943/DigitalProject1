@@ -18,5 +18,7 @@ namespace Loyalty.Application.MemberAccrualTransactions
 
 
         Task<MemberAccrualTransactionsGetDto> CreateFlightTransactionDetails(MemberAccrualTransactionsCreateDto create);
+
+        Task<MemberAccrualTransactionsGetDto> CreatePaymentTransactionDetails(PaymentDetails create);
     }
 }

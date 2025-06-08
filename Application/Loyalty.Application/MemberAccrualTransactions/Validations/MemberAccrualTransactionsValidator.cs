@@ -18,9 +18,17 @@ namespace Loyalty.Application.MemberAccrualTransactions.Validations
             {
                 RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).CIS)
                     .NotEmpty()
-                    .WithMessage("The Type of the Component cannot be empty.").
+                    .WithMessage("CIS Cann't Be Null").
                      Must((cis) => loyaltyRepository.MemberDemographicsAndProfiles.Any(x => x.UserCode == cis))
                     .WithMessage("The User Not Found");
+
+                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).Description)
+                  .NotEmpty()
+                  .WithMessage("The Description Cannot Be Null");
+
+                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).PartnerCode)
+                  .NotEmpty()
+                  .WithMessage("The Partner Code Cannot Be Null");
             });
 
             RuleSet("update", () =>
@@ -42,6 +50,12 @@ namespace Loyalty.Application.MemberAccrualTransactions.Validations
                     .NotEmpty().WithMessage("Origin is required.");
                 RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).Destination)
                     .NotEmpty().WithMessage("Destination is required.");
+            });
+
+            RuleSet("PaidCreate", () =>
+            {
+                RuleFor(dto => (dto as PaymentDetails).Amount)
+                    .NotEmpty().WithMessage("Amount is required."); 
             });
         }
     }

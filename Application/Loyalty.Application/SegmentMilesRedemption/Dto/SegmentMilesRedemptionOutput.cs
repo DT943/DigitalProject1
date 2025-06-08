@@ -5,16 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Loyalty.Application.SegmentMilesAppService.Dto
+namespace Loyalty.Application.SegmentMilesRedemption.Dto
 {
-    public class SegmentMilesGetDto
+    public class SegmentMilesRedemptionGetDto
     {
         public int Id { get; set; }
+        [MaxLength(10)]
         public string Origin { get; set; }
+
+        [MaxLength(10)]
         public string Destination { get; set; }
-        public string BookingClass { get; set; }
-        public string Description { get; set; }
+
+        [MaxLength(10)]
         public string COS { get; set; }
-        public int Miles { get; set; }
+
+        public int RedemptionValue { get; set; }
     }
 }
