@@ -16,6 +16,9 @@ using Loyalty.Application.MemberRedemptionTransactions.Dto;
 using Loyalty.Application.MemberRedemptionTransactions.Validations;
 using FluentValidation;
 using Loyalty.Domain.Models;
+using Loyalty.Application.MemberAccrualTransactions.Dtos;
+using FluentValidation.Results;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Application.MemberRedemptionTransactions
 {
@@ -81,6 +84,29 @@ namespace Loyalty.Application.MemberRedemptionTransactions
             var result = await _serviceDbContext.Set<Domain.Models.MemberRedemptionTransactions>().AddAsync(entity);
             await _serviceDbContext.SaveChangesAsync();
             return await Get(result.Entity.Id);
+        }
+
+
+        public async Task<MemberRedemptionTransactionsGetDto> CreateFlightRedemptionDetails(MemberRedemptionTransactionsCreateDto create)
+        {
+            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("FlightCreate", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var segmentMiles = await _serviceDbContext.SegmentMilesRedemption.Where(x =>
+            x.COS.ToLower().Equals(create.FlightClass.ToLower()) &&
+            x.Origin.ToLower().Equals(create.Origin.ToLower()) &&
+            x.Destination.ToLower().Equals(create.Destination.ToLower())).FirstOrDefaultAsync();
+
+            if (segmentMiles == null)
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Transaction", $"WrongInformation") });
+
+            create.UsedMiles = segmentMiles.RedemptionValue;
+           
+
+            return await this.Create(create);
         }
     }
 }

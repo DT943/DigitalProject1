@@ -17,7 +17,13 @@ namespace Loyalty.Host.Controllers
         {
 
         }
+        [HttpPost("CreateFlightRedemption")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<MemberAccrualTransactionsGetDto>> CreateFlightRedemptionDetails(MemberRedemptionTransactionsCreateDto create)
+        {
+            var user = HttpContext.User;
+            return Ok(await _appService.CreateFlightRedemptionDetails(create));
+        }
 
- 
     }
 }

@@ -41,9 +41,18 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
         public string? CarrierCode { get; set; }
 
         public string? PNR { get; set; }
+        public int? PaidAmountInUsd { get; set; }
 
     }
 
+
+    public class PaymentDetails : IValidatableDto
+    {
+        [MaxLength(100)]
+        public string CIS { get; set; }
+
+        public int Amount { get; set; }
+    }
     public class MemberAccrualTransactionsUpdateDto : IEntityUpdateDto
     {
         [MaxLength(100)]
@@ -76,6 +85,7 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
         public string? CarrierCode { get; set; }
 
         public string? PNR { get; set; }
+        public int? PaidAmountInUsd { get; set; }
 
     }
 }

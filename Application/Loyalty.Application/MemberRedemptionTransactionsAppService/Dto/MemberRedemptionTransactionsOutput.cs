@@ -27,5 +27,16 @@ namespace Loyalty.Application.MemberRedemptionTransactions.Dto
         public DateTime? AwardDate { get; set; }
 
         public DateTime? UsedDate { get; set; }
+
+        [MaxLength(5)]
+        public string? FlightClass { get; set; }
+
+        [MaxLength(5)]
+        public string? Origin { get; set; }
+
+        [MaxLength(5)]
+        public string? Destination { get; set; }
+
+
     }
 }

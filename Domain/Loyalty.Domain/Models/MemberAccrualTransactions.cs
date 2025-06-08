@@ -50,5 +50,7 @@ namespace Loyalty.Domain.Models
 
 
         public string? PNR { get; set; }
+
+        public int? PaidAmountInUsd { get; set; }
     }
 }

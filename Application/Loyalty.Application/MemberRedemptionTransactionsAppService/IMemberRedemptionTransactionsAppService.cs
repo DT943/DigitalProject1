@@ -12,5 +12,6 @@ namespace Loyalty.Application.MemberRedemptionTransactions
 {
     public interface IMemberRedemptionTransactionsAppService : IBaseAppService<MemberRedemptionTransactionsGetDto, MemberRedemptionTransactionsGetDto, MemberRedemptionTransactionsCreateDto, MemberRedemptionTransactionsUpdateDto, SieveModel>
     {
+        public Task<MemberRedemptionTransactionsGetDto> CreateFlightRedemptionDetails(MemberRedemptionTransactionsCreateDto create);
     }
 }

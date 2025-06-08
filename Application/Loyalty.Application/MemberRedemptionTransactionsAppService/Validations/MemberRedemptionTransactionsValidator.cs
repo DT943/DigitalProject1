@@ -43,6 +43,15 @@ namespace Loyalty.Application.MemberRedemptionTransactions.Validations
 
             });
 
+            RuleSet("FlightCreate", () =>
+            {
+                RuleFor(dto => (dto as MemberRedemptionTransactionsCreateDto).FlightClass)
+                    .NotEmpty().WithMessage("FlightClass is required.");
+                RuleFor(dto => (dto as MemberRedemptionTransactionsCreateDto).Origin)
+                    .NotEmpty().WithMessage("Origin is required.");
+                RuleFor(dto => (dto as MemberRedemptionTransactionsCreateDto).Destination)
+                    .NotEmpty().WithMessage("Destination is required.");
+            });
 
             RuleSet("update", () =>
             {

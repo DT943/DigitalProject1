@@ -40,6 +40,7 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
         public string? CarrierCode { get; set; }
 
         public string? PNR { get; set; }
+        public int? PaidAmountInUsd { get; set; }
 
     }
 }

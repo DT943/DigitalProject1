@@ -82,6 +82,27 @@ namespace Loyalty.Application.MemberAccrualTransactions
             return await this.Create(create);
         }
 
+
+        public async Task<MemberAccrualTransactionsGetDto> CreatePaymentTransactionDetails(PaymentDetails create)
+        {
+            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("FlightCreate", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+ 
+            return await this.Create(new MemberAccrualTransactionsCreateDto
+            {
+                CIS = create.CIS,
+                Base = 0,
+                Bonus = create.Amount * 100,
+                PaidAmountInUsd = create.Amount,
+                Description = "Payment Transaction",
+                PartnerCode = "FlyCham"
+
+            });
+        }
+
         public async Task<PaginatedResult<MemberAccrualTransactionsGetDto>> MemberAccrualTransactionsDetails(SieveModel input)
         {
             var userCode = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
