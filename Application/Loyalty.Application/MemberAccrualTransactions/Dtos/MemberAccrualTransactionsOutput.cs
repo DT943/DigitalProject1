@@ -15,6 +15,7 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
         [MaxLength(100)]
         public string PartnerCode { get; set; }
         public DateTime LoadDate { get; set; }
+        public DateOnly TravelDate { get; set; }
         public string Description { get; set; }
         public int? Base { get; set; }
         public int? Bonus { get; set; }

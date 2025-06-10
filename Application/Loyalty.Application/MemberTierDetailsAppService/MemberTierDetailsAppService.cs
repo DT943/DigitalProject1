@@ -42,5 +42,11 @@ namespace Loyalty.Application.MemberTierDetailsAppService
 
         }
 
+        protected override IQueryable<Domain.Models.MemberTierDetails> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input).Include(x => x.TierDetails);
+        }
+
+
     }
 }

@@ -42,14 +42,29 @@ namespace Loyalty.Application.MemberAccrualTransactions.Validations
 
             RuleSet("FlightCreate", () =>
             {
-                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).FlightClass)
+                RuleFor(dto => (dto as MemberAccrualTransactionsFlightCreateDto).FlightClass)
                     .NotEmpty().WithMessage("FlightClass is required.");
-                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).BookClass)
+                RuleFor(dto => (dto as MemberAccrualTransactionsFlightCreateDto).BookClass)
                     .NotEmpty().WithMessage("BookClass is required.");
-                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).Origin)
+                RuleFor(dto => (dto as MemberAccrualTransactionsFlightCreateDto).Origin)
                     .NotEmpty().WithMessage("Origin is required.");
-                RuleFor(dto => (dto as MemberAccrualTransactionsCreateDto).Destination)
+                RuleFor(dto => (dto as MemberAccrualTransactionsFlightCreateDto).Destination)
                     .NotEmpty().WithMessage("Destination is required.");
+
+                RuleFor(dto => (dto as MemberAccrualTransactionsFlightCreateDto))
+                    .Must(dto =>
+                    {
+                        var res = !loyaltyRepository.MemberAccrualTransactions.Any(x =>
+                            x.CIS == dto.CIS &&
+                            x.TravelDate == dto.TravelDate && // Use .Date for equality
+                            x.Origin == dto.Origin &&
+                            x.Destination == dto.Destination
+                        );
+ 
+                        return res;
+                    })
+                    .WithMessage("Duplicate Transaction");
+
             });
 
             RuleSet("PaidCreate", () =>

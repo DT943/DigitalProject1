@@ -12,6 +12,7 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
     {
         public MemberAccrualTransactionsMapperProfile()
         {
+            CreateMap<MemberAccrualTransactionsFlightCreateDto, MemberAccrualTransactionsCreateDto>();
             CreateMap<MemberAccrualTransactionsCreateDto, Domain.Models.MemberAccrualTransactions>();
             CreateMap<MemberAccrualTransactionsUpdateDto, Domain.Models.MemberAccrualTransactions>();
             CreateMap<Domain.Models.MemberAccrualTransactions, MemberAccrualTransactionsGetDto>();

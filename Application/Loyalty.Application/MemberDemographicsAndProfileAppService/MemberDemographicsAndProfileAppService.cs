@@ -100,7 +100,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             var createdProfile =  await base.Create(createDto);
 
 
-            await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
+            var memberTier = await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
             {
                 TierId = tierDetails.Id,
                 MemberDemographicsAndProfileId = createdProfile.Id
@@ -111,9 +111,10 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             await _memberAccrualTransactionsAppService.Create(new MemberAccrualTransactions.Dtos.MemberAccrualTransactionsCreateDto
             {
                 CIS = result.Code,
-                PartnerCode = "Cham Wings",
+                PartnerCode = PartnerCode.FlyCham,
                 LoadDate = DateTime.Now,
                 Description = "Enrolment Bonus",
+                TierId = memberTier.Id,
                 Base = 0,
                 Bonus = 400
             });
@@ -121,11 +122,12 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                 await _memberAccrualTransactionsAppService.Create(new MemberAccrualTransactions.Dtos.MemberAccrualTransactionsCreateDto
                 {
                     CIS = result.Code,
-                    PartnerCode = "Cham Wings",
+                    PartnerCode = PartnerCode.FlyCham,
                     LoadDate = DateTime.Now,
-                    Description = "Enrolment Bonus",
+                    Description = "Self Enrolment Bonus",
                     Base = 0,
-                    Bonus = 100
+                    Bonus = 100,
+                    TierId = memberTier.Id
                 });
             return await Get(createdProfile.Id);
         }

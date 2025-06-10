@@ -28,7 +28,7 @@ namespace Loyalty.Host.Controllers
 
         [HttpPost("CreateFlightTransaction")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<MemberAccrualTransactionsGetDto>> CreateFlightTransactionDetails(MemberAccrualTransactionsCreateDto create)
+        public async Task<ActionResult<MemberAccrualTransactionsGetDto>> CreateFlightTransactionDetails(MemberAccrualTransactionsFlightCreateDto create)
         {
             var user = HttpContext.User;
             return Ok(await _appService.CreateFlightTransactionDetails(create));
