@@ -16,7 +16,8 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
         public string CIS { get; set; }
         [MaxLength(100)]
         public string PartnerCode { get; set; }
-        public DateTime LoadDate { get; set; }
+        public DateOnly? TravelDate { get; set; } 
+        public DateTime LoadDate { get; set; } = DateTime.Now;
         public string Description { get; set; }
         public int? Base { get; set; }
         public int? Bonus { get; set; }
@@ -42,6 +43,41 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
 
         public string? PNR { get; set; }
         public int? PaidAmountInUsd { get; set; }
+
+    }
+
+
+    //TravelDate
+
+    public class MemberAccrualTransactionsFlightCreateDto : IValidatableDto
+    {
+
+        [MaxLength(100)]
+        public string CIS { get; set; }
+
+        [MaxLength(100)]
+        public string? Origin { get; set; }
+
+        public DateOnly TravelDate { get; set; }
+        public DateTime? LoadDate { get; set; } = DateTime.Now;
+
+        [MaxLength(100)]
+        public string? Destination { get; set; }
+
+        [MaxLength(100)]
+        public string? FlightClass { get; set; }
+
+        [MaxLength(100)]
+        public string? BookClass { get; set; }
+
+        [MaxLength(100)]
+        public string? FlightNumber { get; set; }
+
+        [MaxLength(100)]
+        public string? TicketNumber { get; set; }
+
+        [MaxLength(100)]
+        public string? PNR { get; set; }
 
     }
 

@@ -17,7 +17,7 @@ namespace Loyalty.Application.MemberAccrualTransactions
         Task<PaginatedResult<MemberAccrualTransactionsGetDto>> MemberAccrualTransactionsDetails(SieveModel _sieveModel);
 
 
-        Task<MemberAccrualTransactionsGetDto> CreateFlightTransactionDetails(MemberAccrualTransactionsCreateDto create);
+        Task<MemberAccrualTransactionsGetDto> CreateFlightTransactionDetails(MemberAccrualTransactionsFlightCreateDto create);
 
         Task<MemberAccrualTransactionsGetDto> CreatePaymentTransactionDetails(PaymentDetails create);
     }

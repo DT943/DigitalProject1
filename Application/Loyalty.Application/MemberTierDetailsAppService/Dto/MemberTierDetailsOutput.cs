@@ -10,6 +10,7 @@ namespace Loyalty.Application.MemberTierDetailsAppService.Dto
 {
     public class MemberTierDetailsGetDto
     {
+        public int Id { get; set; }
         public int TierId { get; set; } 
 
         public DateTime? FulfillDate { get; set; } = DateTime.Now;

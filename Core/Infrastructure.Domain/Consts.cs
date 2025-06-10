@@ -49,5 +49,12 @@ namespace Infrastructure.Domain
             public static readonly string FINISHED = "Finished";
             public static readonly string INPROGRESS = "InProgress";
         }
+
+
+        public static class PartnerCode
+        {
+            public static readonly string FlyCham = "FlyCham";
+
+        }
     }
 }

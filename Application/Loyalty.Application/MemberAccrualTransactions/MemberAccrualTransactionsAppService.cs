@@ -21,6 +21,8 @@ using FluentValidation;
 using Loyalty.Application.MemberDemographicsAndProfileAppService;
 using Microsoft.Extensions.DependencyInjection;
 using FluentValidation.Results;
+using static Infrastructure.Domain.Consts;
+using Loyalty.Application.MemberAccrualTransactions.Validations;
 
 namespace Loyalty.Application.MemberAccrualTransactions
 {
@@ -28,7 +30,7 @@ namespace Loyalty.Application.MemberAccrualTransactions
     {
         LoyaltyDbContext _serviceDbContext;
         IServiceProvider _serviceProvider;
-        public MemberAccrualTransactionsAppService(IServiceProvider serviceProvider,LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberAddressDetailsValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
+        public MemberAccrualTransactionsAppService(IServiceProvider serviceProvider,LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberAccrualTransactionsValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
             _serviceDbContext = serviceDbContext;
             _serviceProvider = serviceProvider;
@@ -48,6 +50,7 @@ namespace Loyalty.Application.MemberAccrualTransactions
             var result =  await _serviceDbContext.MemberDemographicsAndProfiles.Where(x => x.UserCode == create.CIS).Include(x => x.MemberTierDetails).ThenInclude(x => x.TierDetails).FirstOrDefaultAsync();
 
             var tierdetails = result.MemberTierDetails.OrderByDescending(x=>x.FulfillDate).FirstOrDefault();
+            create.TierId = tierdetails.Id;
             var tierDetails = tierdetails.TierDetails;
             create.Bonus = (int) (tierDetails.BonusAddedValue * create.Base) + create.Bonus;
             var createdTransaction = await base.Create(create);
@@ -58,9 +61,9 @@ namespace Loyalty.Application.MemberAccrualTransactions
 
         //FlightTransactionDetails
 
-        public async Task<MemberAccrualTransactionsGetDto> CreateFlightTransactionDetails(MemberAccrualTransactionsCreateDto create)
+        public async Task<MemberAccrualTransactionsGetDto> CreateFlightTransactionDetails(MemberAccrualTransactionsFlightCreateDto create)
         {
-            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("FlightCreate", "default"));
+            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("FlightCreate"));
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
@@ -76,10 +79,13 @@ namespace Loyalty.Application.MemberAccrualTransactions
             if(segmentMiles == null)
                 throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("Transaction", $"WrongInformation") });
 
-            create.Base = segmentMiles.Miles;
-            create.Bonus = 0;
-        
-            return await this.Create(create);
+
+            MemberAccrualTransactionsCreateDto createFlight = _mapper.Map<MemberAccrualTransactionsCreateDto>(create);
+            createFlight.Base = segmentMiles.Miles;
+            createFlight.Bonus = 0;
+            createFlight.PartnerCode = PartnerCode.FlyCham;
+            createFlight.Description = $"Travel Transaction {create.Origin}/{create.Destination} Class:{create.BookClass} {createFlight.Base}";
+             return await this.Create(createFlight);
         }
 
 
@@ -97,8 +103,8 @@ namespace Loyalty.Application.MemberAccrualTransactions
                 Base = 0,
                 Bonus = create.Amount * 100,
                 PaidAmountInUsd = create.Amount,
-                Description = "Payment Transaction",
-                PartnerCode = "FlyCham"
+                Description = $"Payment Transaction {create.Amount} Gained {create.Amount * 100}",
+                PartnerCode = PartnerCode.FlyCham
 
             });
         }
