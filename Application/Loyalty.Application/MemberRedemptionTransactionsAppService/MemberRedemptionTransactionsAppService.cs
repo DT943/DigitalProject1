@@ -19,6 +19,8 @@ using Loyalty.Domain.Models;
 using Loyalty.Application.MemberAccrualTransactions.Dtos;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Application.BasicDto;
+
 
 namespace Loyalty.Application.MemberRedemptionTransactions
 {
@@ -27,7 +29,10 @@ namespace Loyalty.Application.MemberRedemptionTransactions
         public MemberRedemptionTransactionsAppService(LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberRedemptionTransactionsValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
         }
-
+        protected override IQueryable<Domain.Models.MemberRedemptionTransactions> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input).Include(x => x.MemberTransactionRedemptionDetails).ThenInclude(x => x.Transaction);
+        }
 
         public override async Task<MemberRedemptionTransactionsGetDto> Create(MemberRedemptionTransactionsCreateDto create)
         {
@@ -58,7 +63,7 @@ namespace Loyalty.Application.MemberRedemptionTransactions
                     .FirstOrDefault();
 
 
-                int transactionAmount = (int)((transaction.Base ?? 0) + transaction.Bonus);
+                int transactionAmount = (int)((transaction.Base ?? 0) + (transaction.Bonus ?? 0) + (transaction.Miles ?? 0));
 
                 var remainingAmount = transactionAmount - (redemptionAggregation == null? 0 : redemptionAggregation.TotalRedemptionValue);
 
@@ -107,6 +112,25 @@ namespace Loyalty.Application.MemberRedemptionTransactions
            
 
             return await this.Create(create);
+        }
+
+
+        public async Task<PaginatedResult<MemberRedemptionTransactionsGetDto>> MemberRedemptionTransactionsDetails(SieveModel input)
+        {
+            var userCode = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+            var result = await QueryExcuter(input).Where(x => x.CIS.Equals(userCode)).ToListAsync();
+
+            var filterdResultForCount = _processor.Apply(input, result.AsQueryable(), applyPagination: false);
+            var filterdResult = _processor.Apply(input, filterdResultForCount);
+            var count = filterdResultForCount.Count();
+
+            return new PaginatedResult<MemberRedemptionTransactionsGetDto>
+            {
+                Items = await Task.FromResult(_mapper.Map<List<MemberRedemptionTransactionsGetDto>>(filterdResult)),
+                TotalCount = count,
+                Page = input.Page ?? 1,
+                PageSize = input.PageSize ?? count
+            };
         }
     }
 }

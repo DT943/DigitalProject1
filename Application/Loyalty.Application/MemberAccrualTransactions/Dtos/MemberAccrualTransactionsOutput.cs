@@ -19,6 +19,7 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
         public string Description { get; set; }
         public int? Base { get; set; }
         public int? Bonus { get; set; }
+        public int? Miles { get; set; }
         public DateTime? ActDate { get; set; }
         public float? ActValue { get; set; }
         public int? ReversalId { get; set; }

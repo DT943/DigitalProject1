@@ -28,6 +28,8 @@ using MimeKit.Encodings;
 using QRCoder;
 using iTextSharp.text.pdf.qrcode;
 using Loyalty.Domain.Models;
+using Infrastructure.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
@@ -162,6 +164,14 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                     break;
                 }
             }
+        }
+
+        public async Task<ActionResult<MemberDemographicsAndProfileGetDto>> GetMemberDemographicsAndProfileGetDtoByUserCode()
+        {
+            var userCode = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+            var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.UserCode.Equals(userCode)) ??
+                throw new EntityNotFoundException(typeof(Domain.Models.MemberDemographicsAndProfile).Name, "User Code", userCode.ToString() ?? "");
+            return await Task.FromResult(_mapper.Map<MemberDemographicsAndProfileGetDto>(result));
         }
     }
 }

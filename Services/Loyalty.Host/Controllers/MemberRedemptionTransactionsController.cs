@@ -25,5 +25,16 @@ namespace Loyalty.Host.Controllers
             return Ok(await _appService.CreateFlightRedemptionDetails(create));
         }
 
+
+
+        [HttpGet("Details")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<ICollection<MemberRedemptionTransactionsGetDto>>> MemberRedemptionTransactionsDetails([FromQuery] SieveModel sieveModel)
+        {
+            var user = HttpContext.User;
+            return Ok(await _appService.MemberRedemptionTransactionsDetails(sieveModel));
+        }
+
+
     }
 }

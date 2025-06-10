@@ -47,5 +47,14 @@ namespace Loyalty.Host.Controllers
             var entity = await _appService.CreateWithBonus(createDto, bonus);
             return Ok(entity);
         }
+
+
+        [HttpGet("Details")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> GetMemberDemographicsAndProfileGetDtoByUserCode()
+        {
+            var user = HttpContext.User;
+            return Ok(await _appService.GetMemberDemographicsAndProfileGetDtoByUserCode());
+        }
     }
 }

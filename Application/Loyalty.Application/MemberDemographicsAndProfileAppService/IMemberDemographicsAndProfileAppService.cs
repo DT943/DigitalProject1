@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Infrastructure.Application;
 using Loyalty.Application.MemberAddressDetailsAppService.Dtos;
 using Loyalty.Application.MemberDemographicsAndProfileAppService.Dto;
+using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
@@ -15,6 +16,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
         public Task<MemberDemographicsAndProfileGetDto> CreateWithBonus(MemberDemographicsAndProfileCreateDto createDto, int Bonus);
 
         public Task UpgradeUserTier(string cis);
+
+        public Task<ActionResult<MemberDemographicsAndProfileGetDto>> GetMemberDemographicsAndProfileGetDtoByUserCode();
 
     }
 }
