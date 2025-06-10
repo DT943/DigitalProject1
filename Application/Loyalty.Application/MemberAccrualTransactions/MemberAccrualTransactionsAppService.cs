@@ -83,6 +83,7 @@ namespace Loyalty.Application.MemberAccrualTransactions
             MemberAccrualTransactionsCreateDto createFlight = _mapper.Map<MemberAccrualTransactionsCreateDto>(create);
             createFlight.Base = segmentMiles.Miles;
             createFlight.Bonus = 0;
+            createFlight.Miles = 0;
             createFlight.PartnerCode = PartnerCode.FlyCham;
             createFlight.Description = $"Travel Transaction {create.Origin}/{create.Destination} Class:{create.BookClass} {createFlight.Base}";
              return await this.Create(createFlight);
@@ -91,7 +92,7 @@ namespace Loyalty.Application.MemberAccrualTransactions
 
         public async Task<MemberAccrualTransactionsGetDto> CreatePaymentTransactionDetails(PaymentDetails create)
         {
-            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("FlightCreate", "default"));
+            var validationResult = await _validations.ValidateAsync(create, options => options.IncludeRuleSets("PaidCreate"));
             if (!validationResult.IsValid)
             {
                 throw new ValidationException(validationResult.Errors);
@@ -101,7 +102,8 @@ namespace Loyalty.Application.MemberAccrualTransactions
             {
                 CIS = create.CIS,
                 Base = 0,
-                Bonus = create.Amount * 100,
+                Bonus=0,
+                Miles = create.Amount * 100,
                 PaidAmountInUsd = create.Amount,
                 Description = $"Payment Transaction {create.Amount} Gained {create.Amount * 100}",
                 PartnerCode = PartnerCode.FlyCham

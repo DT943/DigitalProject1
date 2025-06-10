@@ -15,8 +15,7 @@ namespace Loyalty.Application.MemberRedemptionTransactions.Dto
             CreateMap<MemberRedemptionTransactionsCreateDto, Domain.Models.MemberRedemptionTransactions>();
             CreateMap<MemberRedemptionTransactionsUpdateDto, Domain.Models.MemberRedemptionTransactions>();
             CreateMap<Domain.Models.MemberRedemptionTransactions, MemberRedemptionTransactionsGetDto>();
-
-
+            CreateMap<Domain.Models.MemberTransactionRedemptionDetails, MemberTransactionRedemptionDetailsGetDto>();
         }
     }
 }

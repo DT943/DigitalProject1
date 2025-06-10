@@ -32,7 +32,7 @@ namespace Loyalty.Application.MemberRedemptionTransactions.Validations
                             .ToList();
 
                         var transactionIds = allTransactions.Select(x => x.Id).ToList();
-                        var totalAccrual = allTransactions.Sum(x => (x.Base ?? 0) + (x.Bonus ?? 0));
+                        var totalAccrual = allTransactions.Sum(x => (x.Base ?? 0) + (x.Bonus ?? 0) +(x.Miles ?? 0));
                         var totalRedemption = loyaltyRepository.MemberTransactionRedemptionDetails
                             .Where(x => transactionIds.Contains(x.TransactionId))
                             .Sum(x => (int?)x.RedemptionValue) ?? 0;

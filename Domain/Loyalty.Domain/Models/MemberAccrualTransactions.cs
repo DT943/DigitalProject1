@@ -19,6 +19,7 @@ namespace Loyalty.Domain.Models
         public string Description { get; set; }
         public int? Base { get; set; }
         public int? Bonus { get; set; }
+        public int? Miles { get; set; } // This handles purchased miles (used exclusively in the payment API)
         public DateTime? ActDate { get; set; }
         public float? ActValue { get; set; }
         public int? ReversalId { get; set; }
