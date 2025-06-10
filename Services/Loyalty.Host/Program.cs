@@ -9,6 +9,7 @@ using System.Net;
 
 using Microsoft.Extensions.FileProviders;
 using System.Security.Cryptography.X509Certificates;
+using Authentication.Data.DbContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +84,16 @@ builder.Services.AddDbContext<LoyaltyDbContext>((sp, options) =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
     var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
+builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("AuthDefaultConnection");
 
     options.UseSqlServer(connectionString)
            .EnableSensitiveDataLogging()

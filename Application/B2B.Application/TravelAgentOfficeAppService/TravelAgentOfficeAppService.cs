@@ -13,12 +13,15 @@ using B2B.Application.TravelAgentOffice.Validations;
 using B2B.Data.DbContext;
 using FluentValidation;
 using Infrastructure.Application;
+using Infrastructure.Application.Exceptions;
 using Infrastructure.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace B2B.Application.TravelAgentOffice
 {
@@ -85,7 +88,7 @@ namespace B2B.Application.TravelAgentOffice
                 LastName = travelAgentApplicationDto.LastName,
                 Email = travelAgentApplicationDto.Email
             });
-
+            travelAgentOfficeCreateDto.UserCode = result.Code;
             foreach (var item in travelAgentApplicationDto.Employees)
             {
                 var employeeResult = await _authenticationAppService.AddB2BUserAsync(new Authentication.Application.Dtos.AddUserDto
@@ -158,6 +161,19 @@ namespace B2B.Application.TravelAgentOffice
                 }
             }
             return createdEntity;
+        }
+
+        public async Task<ActionResult<TravelAgentOfficeGetDto>> GetTravelAgentOfficeByUserCode()
+        {
+            var userCode = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+            var result = await QueryExcuter(null).FirstOrDefaultAsync(x => x.UserCode.Equals(userCode)) ??
+                throw new EntityNotFoundException(typeof(Domain.Models.TravelAgentOffice).Name,"User Code", userCode.ToString() ?? "");
+            return await Task.FromResult(_mapper.Map<TravelAgentOfficeGetDto>(result));
+        }
+
+        protected override IQueryable<Domain.Models.TravelAgentOffice> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input).Include(x => x.TravelAgentEmployees).Include(x => x.TravelAgentPOSs);
         }
     }
 }

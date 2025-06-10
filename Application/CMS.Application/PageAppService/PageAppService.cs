@@ -9,10 +9,12 @@ using CMS.Application.PageAppService.Validations;
 using CMS.Application.StaticComponentAppService;
 using CMS.Data.DbContext;
 using Infrastructure.Application;
+using Infrastructure.Application.BasicDto;
 using Infrastructure.Application.Exceptions;
 using Infrastructure.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
@@ -41,10 +43,18 @@ namespace CMS.Application.PageAppService
 
         public override async Task<PageGetDto> Create(PageCreateDto create)
         {
-            create.Status = "published";
+            create.Status = "draft";
 
             return await base.Create(create);
         }
+
+        public override async Task<PageGetDto> Update(PageUpdateDto update)
+        {
+            update.Status = "draft";
+
+            return await base.Update(update);
+        }
+
 
         public async Task<PageGetDto> GetPageBySubUrl(string pos, string language, string pageUrlName)
         {
@@ -52,8 +62,11 @@ namespace CMS.Application.PageAppService
             && x.POS.ToLower().Equals(pos.ToLower())
             && x.PageUrlName.ToLower().Equals(pageUrlName.ToLower())).Include(x => x.Segments).ThenInclude(x=>x.Components).FirstOrDefault();
             var pages = _mapper.Map<PageGetDto>(result);
-            var staticComponents =  await _staticComponentAppService.GetAll(new SieveModel());
-            pages.StaticComponents = (ICollection<StaticComponentAppService.Dto.StaticComponentGetDto>)staticComponents.Items;
+            if (pages != null)
+            {
+                var staticComponents = await _staticComponentAppService.GetAll(new SieveModel());
+                pages.StaticComponents = (ICollection<StaticComponentAppService.Dto.StaticComponentGetDto>)staticComponents.Items;
+            }
             return await Task.FromResult(pages);
             
         }
@@ -150,6 +163,11 @@ namespace CMS.Application.PageAppService
             {
                 auditInfo.ModifiedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
                 auditInfo.ModifiedDate = DateTime.Now;
+                if (entity is ApproveEntityWithAuditAndFakeDelete)
+                {
+                    (entity as ApproveEntityWithAuditAndFakeDelete).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
+                    (entity as ApproveEntityWithAuditAndFakeDelete).ApprovalStatus = "PendingApproval";
+                }
             }
 
             // Map top-level props
@@ -191,5 +209,25 @@ namespace CMS.Application.PageAppService
             return entity;
         }
 
+
+
+        public override async Task<ApprovedResult<PageGetDto>> Approve(int id, bool canApprove)
+        {
+            var approvedPage = await base.Approve(id, canApprove);
+
+            if (approvedPage != null && approvedPage.Item.ApprovalStatus == "Approved")
+            {
+               var page =  await _serviceDbContext.Pages.FindAsync(id);
+                page.Status = "published";
+
+                await _serviceDbContext.SaveChangesAsync();
+            }
+
+            return new ApprovedResult<PageGetDto>
+            {
+                Result = approvedPage.Result,
+                Item = await this.Get(id)
+            };
+        }
     }
 }

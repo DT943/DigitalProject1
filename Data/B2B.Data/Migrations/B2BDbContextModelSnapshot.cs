@@ -22,6 +22,51 @@ namespace B2B.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("B2B.Domain.Models.ContactInfo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CityName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
+
+                    b.ToTable("ContactInfo");
+                });
+
             modelBuilder.Entity("B2B.Domain.Models.EmployeeApplication", b =>
                 {
                     b.Property<int>("Id")
@@ -63,6 +108,198 @@ namespace B2B.Data.Migrations
                     b.HasIndex("TravelAgentApplicationId");
 
                     b.ToTable("EmployeeApplications");
+                });
+
+            modelBuilder.Entity("B2B.Domain.Models.PNRDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PNR")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
+
+                    b.ToTable("PNRDetails");
+                });
+
+            modelBuilder.Entity("B2B.Domain.Models.Passengers", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("given_name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("surname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("telephone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservationId");
+
+                    b.ToTable("Passengers");
+                });
+
+            modelBuilder.Entity("B2B.Domain.Models.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("ArrivalDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("ArrivalTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateOnly>("DepartureDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("DepartureTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("DestinationCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("DestinationName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FlightClass")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("NumAdt")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NumChd")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NumInf")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OriginCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("OriginName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PNR")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("POS")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalFare")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("B2B.Domain.Models.Segments", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("ArrivalDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("ArrivalTime")
+                        .HasColumnType("time");
+
+                    b.Property<DateOnly>("DepartureDate")
+                        .HasColumnType("date");
+
+                    b.Property<TimeOnly>("DepartureTime")
+                        .HasColumnType("time");
+
+                    b.Property<string>("DestinationCode")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("DestinationName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FlightNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("OriginCode")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("OriginName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("ReservationiD")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReservationiD");
+
+                    b.ToTable("Segments");
                 });
 
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentApplication", b =>
@@ -316,6 +553,10 @@ namespace B2B.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
@@ -348,6 +589,17 @@ namespace B2B.Data.Migrations
                     b.ToTable("TravelAgentPOS");
                 });
 
+            modelBuilder.Entity("B2B.Domain.Models.ContactInfo", b =>
+                {
+                    b.HasOne("B2B.Domain.Models.Reservation", "Reservation")
+                        .WithMany("ContactInfo")
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
+                });
+
             modelBuilder.Entity("B2B.Domain.Models.EmployeeApplication", b =>
                 {
                     b.HasOne("B2B.Domain.Models.TravelAgentApplication", "TravelAgentApplication")
@@ -357,6 +609,39 @@ namespace B2B.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("TravelAgentApplication");
+                });
+
+            modelBuilder.Entity("B2B.Domain.Models.PNRDetails", b =>
+                {
+                    b.HasOne("B2B.Domain.Models.Reservation", "Reservation")
+                        .WithMany("PNRDetails")
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
+                });
+
+            modelBuilder.Entity("B2B.Domain.Models.Passengers", b =>
+                {
+                    b.HasOne("B2B.Domain.Models.Reservation", "Reservation")
+                        .WithMany("Passengers")
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
+                });
+
+            modelBuilder.Entity("B2B.Domain.Models.Segments", b =>
+                {
+                    b.HasOne("B2B.Domain.Models.Reservation", "Reservation")
+                        .WithMany("Segments")
+                        .HasForeignKey("ReservationiD")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentEmployee", b =>
@@ -375,6 +660,17 @@ namespace B2B.Data.Migrations
                     b.HasOne("B2B.Domain.Models.TravelAgentOffice", null)
                         .WithMany("TravelAgentPOSs")
                         .HasForeignKey("TravelAgentOfficeId");
+                });
+
+            modelBuilder.Entity("B2B.Domain.Models.Reservation", b =>
+                {
+                    b.Navigation("ContactInfo");
+
+                    b.Navigation("PNRDetails");
+
+                    b.Navigation("Passengers");
+
+                    b.Navigation("Segments");
                 });
 
             modelBuilder.Entity("B2B.Domain.Models.TravelAgentApplication", b =>

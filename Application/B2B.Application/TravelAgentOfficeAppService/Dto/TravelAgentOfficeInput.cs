@@ -130,7 +130,7 @@ namespace B2B.Application.TravelAgentOffice.Dto
         public string OfficeCode { get; set; }
         [MaxLength(50)]
         public string Name { get; set; }
-
+        public string Currency { get; set; }
     }
 
     public class TravelAgentPOSUpdateDto : IEntityUpdateDto

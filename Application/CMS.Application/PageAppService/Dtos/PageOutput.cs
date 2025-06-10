@@ -19,6 +19,11 @@ namespace CMS.Application.PageAppService.Dtos
         public string Status { get; set; }
         public string Description { get; set; }
 
+        public string? AwaitingApprovalUserCode { get; set; }
+
+        public string? ApprovedUserCode { get; set; }
+
+        public string ApprovalStatus { get; set; }
         public ICollection<SegmentGetDto> Segments { get; set; }
 
         public ICollection<StaticComponentGetDto> StaticComponents { get; set; }

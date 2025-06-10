@@ -30,6 +30,18 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                     .Must(name => name == null || name == name.ToLower())
                     .WithMessage("Travel Agency Name must be in lowercase.");
 
+                RuleFor(dto => (dto as TravelAgentApplicationCreateDto))
+                    .Must(list =>
+                    {
+                        if (list.Employees.Any(x => x.EmployeeEmail.Equals(list.Email)))
+                            return false;
+                        if (list.Employees.GroupBy(x=>x.EmployeeEmail).Any(g => g.Count() > 1))
+                            return false;
+                        return true;
+                    })
+                    .WithMessage("Duplicate Email Found.");
+
+
                 RuleFor(dto => (dto as TravelAgentApplicationCreateDto).AccelAeroUserName)
                     .NotEmpty()
                     .WithMessage("The Accel Aero User Name cannot be empty.")
@@ -38,8 +50,10 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
 
 
                 RuleFor(dto => (dto as TravelAgentApplicationCreateDto).PhoneNumber)
-                    .Matches(@"^\+?[0-9\s\-]{7,15}$")
-                    .WithMessage("The PhoneNumber format is invalid.");
+                    .NotEmpty()
+                    .WithMessage("Phone number cannot be empty.")
+                    .Matches(@"^\+?[1-9]\d{1,14}$")
+                    .WithMessage("Phone number must be a valid international format.");
 
                 RuleFor(dto => (dto as TravelAgentApplicationCreateDto).Email)
                     .NotEmpty()
@@ -70,7 +84,7 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                      .MustAsync(async (pos, cancellation) =>
                      { 
                            var result = await appService.GetByPOSKey(pos);
-                           return result != null;
+                           return result != null && result.Count() != 0;
                      })
                     .WithMessage("POS must be in lowercase if provided.")
                     .Must(name => name == null || name == name.ToLower())
@@ -100,9 +114,10 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                         .MaximumLength(100);
 
                     employee.RuleFor(e => e.PhoneNumber)
-                        .NotEmpty().WithMessage("Phone number is required.")
-                        .Matches(@"^\+?[0-9\s\-]{7,15}$").WithMessage("Phone number format is invalid.")
-                        .MaximumLength(100);
+                        .NotEmpty()
+                        .WithMessage("Phone number cannot be empty.")
+                        .Matches(@"^\+?[1-9]\d{1,14}$")
+                        .WithMessage("Phone number must be a valid international format.");
                 });
 
             });
@@ -145,7 +160,7 @@ namespace B2B.Application.TravelAgentApplicationAppService.Validations
                      .MustAsync(async (pos, cancellation) =>
                      {
                          var result = await appService.GetByPOSKey(pos);
-                         return result != null;
+                         return result != null && result.Count() != 0;
                      })
                     .WithMessage("POS must be in lowercase if provided.")
                     .Must(name => name == null || name == name.ToLower())

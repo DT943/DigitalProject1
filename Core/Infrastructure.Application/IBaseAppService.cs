@@ -17,10 +17,12 @@ namespace Infrastructure.Application
         public Task<TGetDto> Delete(int id);
         public Task<TGetDto> GetByCode(string code);
         public Task<TGetDto> Get(int id);
-
+        public Task<ApprovedResult<TGetDto>> Approve(int id, bool canApprove);
         public Task<TGetDto> Update(TUpdateDto update);
         public Task<PaginatedResult<TGetAllDto>> GetAll(TFilterDto input);
         public Task<TGetDto> FakeDelete(bool delete, int id);
+
+        public Task<PaginatedResult<TGetAllDto>> GetApprovalNeededRecords(TFilterDto input);
 
     }
 }

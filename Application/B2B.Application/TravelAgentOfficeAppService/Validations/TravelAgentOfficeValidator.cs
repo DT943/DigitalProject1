@@ -81,6 +81,73 @@ namespace B2B.Application.TravelAgentOffice.Validations
                     .NotEmpty()
                     .WithMessage("TheTravel Agent Name of the Office cannot be empty.");
 
+                RuleForEach(dto => (dto as TravelAgentOfficeCreateDto).TravelAgentPOSs)
+                            .ChildRules(pos =>
+                            {
+                                pos.RuleFor(p => p.POS)
+                                    .NotEmpty()
+                                    .WithMessage("The POS cannot of the Office be empty.")
+                                    .NotEmpty()
+                                    .WithMessage("The POS cannot be empty.")
+                                    .Must(type => type == type.ToLower())
+                                    .WithMessage("The POS must be in lowercase.")
+                                    .MustAsync(async (pos, cancellation) =>
+                                    {
+                                        var result = await appService.GetByPOSKey(pos);
+                                        return result != null && result.Count() != 0;
+                                    })
+                                    .WithMessage("POS is not valid");
+
+                                pos.RuleFor(p => p.OfficeCode)
+                                    .NotEmpty().WithMessage("OfficeCode is required.")
+                                    .MaximumLength(50).WithMessage("OfficeCode must not exceed 50 characters.");
+
+                                pos.RuleFor(p => p.Name)
+                                    .NotEmpty().WithMessage("Name is required.")
+                                    .MaximumLength(50).WithMessage("Name must not exceed 50 characters.");
+
+                                pos.RuleFor(p => p.Currency)
+                                .NotEmpty().WithMessage("Currency is required.")
+                                .Must(c => c == "syd" || c == "syp")
+                                .WithMessage("Currency must be either 'syd' or 'syp'.");
+
+                            });
+
+
+                   RuleFor(dto => (dto as TravelAgentOfficeCreateDto).TravelAgentPOSs)
+                            .Must(list =>
+                            {
+                                var groupedByPOS = list.GroupBy(p => p.POS).ToList();
+                                foreach (var group in groupedByPOS)
+                                {
+                                    if (group.Key == "sy")
+                                    {
+                                        var currencies = group.Select(g => g.Currency).ToList();
+                                        if (currencies.Count > 2 || !currencies.All(c => c == "syd" || c == "syp"))
+                                            return false;
+
+                                        if (currencies.Distinct().Count() != currencies.Count)
+                                            return false;
+                                    }
+                                    else
+                                    if (group.Key != "sy")
+                                    {
+                                        var currencies = group.Select(g => g.Currency).ToList();
+                                        if (currencies.Count > 1 || !currencies.All(c => c == "syd"))
+                                            return false;
+
+                                        if (currencies.Distinct().Count() != currencies.Count)
+                                            return false;
+                                    }
+                                    else if (group.Count() > 1)
+                                    {
+                                        return false;
+                                    }
+                                }
+                                return true;
+                            })
+                           .WithMessage("POS must be unique except for 'sy' where two POS with 'syd' and 'syp' are allowed.");
+
                 RuleForEach(dto => (dto as TravelAgentOfficeCreateDto).TravelAgentEmployees)
                     .SetValidator(employeeValidator);
             });
@@ -137,6 +204,26 @@ namespace B2B.Application.TravelAgentOffice.Validations
 
                 RuleForEach(dto => (dto as TravelAgentOfficeUpdateDto).TravelAgentEmployees)
                   .SetValidator(employeeValidator);
+
+
+
+                RuleForEach(dto => (dto as TravelAgentOfficeUpdateDto).TravelAgentPOSs)
+                            .ChildRules(pos =>
+                            {
+                                pos.RuleFor(p => p.POS)
+                                    .NotEmpty()
+                                    .WithMessage("The POS cannot of the Office be empty.")
+                                    .NotEmpty()
+                                    .WithMessage("The POS cannot be empty.")
+                                    .Must(type => type == type.ToLower())
+                                    .WithMessage("The POS must be in lowercase.")
+                                    .MustAsync(async (pos, cancellation) =>
+                                    {
+                                        var result = await appService.GetByPOSKey(pos);
+                                        return result != null && result.Count() != 0;
+                                    })
+                                    .WithMessage("POS is not valid"); 
+                            });
 
             });
         }

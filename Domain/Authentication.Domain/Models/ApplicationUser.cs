@@ -42,6 +42,8 @@ namespace Authentication.Domain.Models
         public Gender? Gender { get; set; }
         public string? IdentityNumber { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public int OTPUsageCount { get; set; } = 0;
+
     }
 
 

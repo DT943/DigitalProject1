@@ -14,13 +14,152 @@ using Sieve.Models;
 using Sieve.Services;
 using Loyalty.Application.MemberDemographicsAndProfileAppService.Dto;
 using Loyalty.Application.MemberDemographicsAndProfileAppService.Validations;
+using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Authentication.Domain.Models;
+using Authentication.Application;
+using static Infrastructure.Domain.Consts;
+using Loyalty.Application.MemberAccrualTransactions;
+using Loyalty.Application.MemberTierDetailsAppService;
+using Loyalty.Application.TierDetailsAppService;
+using Loyalty.Application.MemberTierDetailsAppService.Dto;
+using Microsoft.EntityFrameworkCore;
+using MimeKit.Encodings;
+using QRCoder;
+using iTextSharp.text.pdf.qrcode;
+using Loyalty.Domain.Models;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
     public class MemberDemographicsAndProfileAppService : BaseAppService<LoyaltyDbContext, Domain.Models.MemberDemographicsAndProfile, MemberDemographicsAndProfileGetAllDto, MemberDemographicsAndProfileGetDto, MemberDemographicsAndProfileCreateDto, MemberDemographicsAndProfileUpdateDto, SieveModel>, IMemberDemographicsAndProfileAppService
     {
-        public MemberDemographicsAndProfileAppService(LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberDemographicsAndProfileValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
+
+        IAuthenticationAppService _authenticationAppService;
+        IMemberAccrualTransactionsAppService _memberAccrualTransactionsAppService;
+        IMemberTierDetailsAppService _memberTierDetailsAppService;
+        ITierDetailsAppService _tierDetailsAppService;
+
+        public MemberDemographicsAndProfileAppService(LoyaltyDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, MemberDemographicsAndProfileValidator validations, 
+            IHttpContextAccessor httpContextAccessor, 
+            IAuthenticationAppService authenticationAppService, 
+            IMemberAccrualTransactionsAppService memberAccrualTransactionsAppService, 
+            IMemberTierDetailsAppService memberTierDetailsAppService,
+            ITierDetailsAppService tierDetailsAppService) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
+            _authenticationAppService = authenticationAppService;
+            _memberAccrualTransactionsAppService = memberAccrualTransactionsAppService;
+            _memberTierDetailsAppService = memberTierDetailsAppService;
+            _tierDetailsAppService = tierDetailsAppService;
+        }
+        
+        protected override IQueryable<Domain.Models.MemberDemographicsAndProfile> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input).Include(x => x.MemberTierDetails).ThenInclude(x => x.TierDetails);
+        }
+        public override async Task<MemberDemographicsAndProfileGetDto> Create(MemberDemographicsAndProfileCreateDto createDto)
+        {
+
+            var validationResult = await _validations.ValidateAsync(createDto, options => options.IncludeRuleSets("createwithuser", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var result = await _authenticationAppService.AddLoyaltyUserAsync(new Authentication.Application.Dtos.AddUserDto
+            {
+                FirstName = createDto.FirstName,
+                LastName = createDto.LastName,
+                Email = createDto.Email
+            });
+
+            createDto.UserCode = result.Code;
+
+            return await base.Create(createDto);
+        }
+        public async Task<MemberDemographicsAndProfileGetDto> CreateWithBonus(MemberDemographicsAndProfileCreateDto createDto, int Bonus)
+        {
+            
+            var validationResult = await _validations.ValidateAsync(createDto, options => options.IncludeRuleSets("createwithuser", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            var result = await _authenticationAppService.AddLoyaltyUserAsync(new Authentication.Application.Dtos.AddUserDto
+            {
+                FirstName = createDto.FirstName,
+                LastName = createDto.LastName,
+                Email = createDto.Email
+            });
+
+            createDto.UserCode = result.Code;
+
+
+            var tierDetails = await _tierDetailsAppService.GetByName("Blue");
+
+            var createdProfile =  await base.Create(createDto);
+
+
+            await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
+            {
+                TierId = tierDetails.Id,
+                MemberDemographicsAndProfileId = createdProfile.Id
+            });
+
+
+
+            await _memberAccrualTransactionsAppService.Create(new MemberAccrualTransactions.Dtos.MemberAccrualTransactionsCreateDto
+            {
+                CIS = result.Code,
+                PartnerCode = "Cham Wings",
+                LoadDate = DateTime.Now,
+                Description = "Enrolment Bonus",
+                Base = 0,
+                Bonus = 400
+            });
+            if(Bonus ==100)
+                await _memberAccrualTransactionsAppService.Create(new MemberAccrualTransactions.Dtos.MemberAccrualTransactionsCreateDto
+                {
+                    CIS = result.Code,
+                    PartnerCode = "Cham Wings",
+                    LoadDate = DateTime.Now,
+                    Description = "Enrolment Bonus",
+                    Base = 0,
+                    Bonus = 100
+                });
+            return await Get(createdProfile.Id);
+        }
+
+
+        public async Task UpgradeUserTier(string cis)
+        {
+            var res = await _serviceDbContext.MemberDemographicsAndProfiles.Where(x => x.UserCode == cis).FirstOrDefaultAsync();
+            if (res == null) return;
+
+            var allTransactions = _serviceDbContext.MemberAccrualTransactions
+                .Where(x => x.TierValidationDate >= DateTime.Now && x.CIS == cis)
+                .ToList();
+
+            var totalTierMiles = allTransactions.Sum(x => (x.Base ?? 0));
+
+            var member = await this.Get(res.Id);
+            var lastCard =  member.MemberTierDetails.OrderByDescending(x => x.FulfillDate).FirstOrDefault();
+
+            List<TierDetails> availableTiers = _serviceDbContext.TierDetails.OrderByDescending(x => x.RequiredMilesToReach).ToList();
+            foreach (var item in availableTiers)
+            {
+                if(item.RequiredMilesToReach <= totalTierMiles)
+                {
+                    if (lastCard.TierDetails.Id != item.Id)
+                    await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
+                    {
+                        TierId = item.Id,
+                        MemberDemographicsAndProfileId = res.Id
+                    });
+
+                    break;
+                }
+            }
         }
     }
 }
