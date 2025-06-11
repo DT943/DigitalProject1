@@ -22,6 +22,9 @@ using CMS.Application.SegmentAppService.Validations;
 using CMS.Application.StaticComponentAppService;
 using CMS.Application.StaticComponentAppService.Dto;
 using CMS.Application.StaticComponentAppService.Validations;
+using CMS.Application.TravelUpdatesAppService;
+using CMS.Application.TravelUpdatesAppService.Dto;
+using CMS.Application.TravelUpdatesAppService.Validations;
 using CMS.Domain.Models;
 using CWCore.Application.POSAppService;
 using CWCore.Application.POSAppService.Dtos;
@@ -59,7 +62,8 @@ namespace CMS.Host.Helper
             services.AddTransient<IAirportsAppService, AirportsAppService>();
             services.AddTransient<AirportsValidator>();
             //services.AddScoped<ISieveProcessor, SieveProcessor>();
-
+            services.AddTransient<ITravelUpdatesAppService, TravelUpdatesAppService>();
+            services.AddTransient<TravelUpdatesValidator>();
 
             services.AddScoped<ISieveProcessor, CmsProcessor>();
             //services.AddSingleton<ISieveConfiguration, FileProcessorConfiguration>();
@@ -75,6 +79,7 @@ namespace CMS.Host.Helper
                 mc.AddProfile(new POSMapperProfile());
                 mc.AddProfile(new CustomFormMapperProfile());
                 mc.AddProfile(new AirportsMapperProfile());
+                mc.AddProfile(new TravelUpdatesMapperProfile());
 
             });
             IMapper mapper = mapperConfig.CreateMapper();
