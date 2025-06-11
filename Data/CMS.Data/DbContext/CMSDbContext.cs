@@ -27,16 +27,12 @@ namespace CMS.Data.DbContext
 
         public DbSet<Domain.Models.Component> Components { get; set; }
         public DbSet<Domain.Models.StaticComponent> StaticComponents { get; set; }
-
         public DbSet<Domain.Models.ComponentMetadata> ComponentMetadatas { get; set; }
-
         public DbSet<Domain.Models.Page> Pages { get; set; }
-
         public DbSet<Domain.Models.Segment> Segments { get; set; }
-
         public DbSet<Domain.Models.CustomForm> CustomForms { get; set; } 
         public DbSet<Domain.Models.Airports> Airports { get; set; }
-
+        public DbSet<Domain.Models.TravelUpdates> TravelUpdates { get; set; }
 
     }
 }
