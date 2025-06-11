@@ -105,7 +105,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             var memberTier = await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
             {
                 TierId = tierDetails.Id,
-                MemberDemographicsAndProfileId = createdProfile.Id
+                MemberDemographicsAndProfileId = createdProfile.Id,
+                EndDate = DateTime.MaxValue
             });
 
 
@@ -144,6 +145,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                 .Where(x => x.TierValidationDate >= DateTime.Now && x.CIS == cis)
                 .ToList();
 
+            var minTierValidationDate = allTransactions.Min(x => x.TierValidationDate);
+
             var totalTierMiles = allTransactions.Sum(x => (x.Base ?? 0));
 
             var member = await this.Get(res.Id);
@@ -155,16 +158,28 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                 if(item.RequiredMilesToReach <= totalTierMiles)
                 {
                     if (lastCard.TierDetails.Id != item.Id)
-                    await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
                     {
-                        TierId = item.Id,
-                        MemberDemographicsAndProfileId = res.Id
-                    });
+
+                        if(lastCard.TierDetails.RequiredMilesToReach>item.RequiredMilesToReach && lastCard.EndDate > DateTime.Now ) 
+                            break;
+                            //if we are moving from silver card to blue card (or downgrad the card level but the silver card still have more time
+                        
+ 
+                        await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
+                        {
+                            TierId = item.Id,
+                            MemberDemographicsAndProfileId = res.Id,
+                            EndDate = item.RequiredMilesToReach==0? DateTime.MaxValue : minTierValidationDate //    if it is blue card the card validation should be unlimited
+                        });
+                    }
+
 
                     break;
                 }
             }
         }
+
+ 
 
         public async Task<ActionResult<MemberDemographicsAndProfileGetDto>> GetMemberDemographicsAndProfileGetDtoByUserCode()
         {
