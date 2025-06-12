@@ -14,7 +14,7 @@ namespace Loyalty.Domain.Models
         public string CIS {  get; set; }
 
         public int AmountInUsd { get; set; }
-
+        public int NumberOfDays { get; set; }
         public DateTime ExtendedValidationDate { get; set; }
 
 

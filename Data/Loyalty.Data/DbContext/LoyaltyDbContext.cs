@@ -42,6 +42,8 @@ namespace Loyalty.Data.DbContext
         public DbSet<Domain.Models.TierDetails> TierDetails { get; set; }
         public DbSet<Domain.Models.Complaints> Complaints { get; set; }
         public DbSet<Domain.Models.MemberTierPurchaseValidation> MemberTierPurchaseValidation { get; set; }
+        public DbSet<Domain.Models.TierPricingBundles> TierPricingBundles { get; set; }
+
 
     }
 }
