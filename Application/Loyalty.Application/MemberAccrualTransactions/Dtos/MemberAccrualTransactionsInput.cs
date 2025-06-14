@@ -33,6 +33,10 @@ namespace Loyalty.Application.MemberAccrualTransactions.Dtos
         public int? STMTNo { get; set; }
         public int? INVNo { get; set; }
 
+        [System.Text.Json.Serialization.JsonIgnore]
+        public DateTime? TierValidationDate { get; set; } = DateTime.MaxValue;
+        [System.Text.Json.Serialization.JsonIgnore]
+        public DateTime? BonusValidationDate { get; set; } = DateTime.MaxValue;
         public string? Origin { get; set; }
         public string? Destination { get; set; }
         public string? FlightClass { get; set; }

@@ -49,11 +49,14 @@ namespace Loyalty.Application.MemberAccrualTransactions
 
             var result =  await _serviceDbContext.MemberDemographicsAndProfiles.Where(x => x.UserCode == create.CIS).Include(x => x.MemberTierDetails).ThenInclude(x => x.TierDetails).FirstOrDefaultAsync();
 
-            var tierdetails = result.MemberTierDetails.OrderByDescending(x=>x.FulfillDate).FirstOrDefault();
-            create.TierId = tierdetails.Id;
-            var tierDetails = tierdetails.TierDetails;
+            var carddetails = result.MemberTierDetails.OrderByDescending(x=>x.FulfillDate).FirstOrDefault();
+            create.TierId = carddetails.Id;
+            var tierDetails = carddetails.TierDetails;
             create.Bonus = (int) (tierDetails.BonusAddedValue * create.Base) + create.Bonus;
-            var createdTransaction = await base.Create(create);
+            create.LoadDate = DateTime.Now;
+            create.TierValidationDate  = tierDetails.TireLifeSpanYears  == -1 ? DateTime.MaxValue : DateTime.Now.AddYears(carddetails.TierDetails.TireLifeSpanYears);
+            create.BonusValidationDate = tierDetails.BonusLifeSpanYears == -1 ? DateTime.MaxValue : DateTime.Now.AddYears(carddetails.TierDetails.BonusLifeSpanYears);
+            var createdTransaction     = await base.Create(create);
             var memberAppService = _serviceProvider.GetRequiredService<IMemberDemographicsAndProfileAppService>();
             await memberAppService.UpgradeUserTier(create.CIS);
             return createdTransaction;
