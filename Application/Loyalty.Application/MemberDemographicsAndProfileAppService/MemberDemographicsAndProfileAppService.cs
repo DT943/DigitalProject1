@@ -105,7 +105,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             var memberTier = await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
             {
                 TierId = tierDetails.Id,
-                MemberDemographicsAndProfileId = createdProfile.Id
+                MemberDemographicsAndProfileId = createdProfile.Id,
+                EndDate = DateTime.MaxValue
             });
 
 
@@ -144,6 +145,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                 .Where(x => x.TierValidationDate >= DateTime.Now && x.CIS == cis)
                 .ToList();
 
+            //var minTierValidationDate = allTransactions.Min(x => x.TierValidationDate);
+
             var totalTierMiles = allTransactions.Sum(x => (x.Base ?? 0));
 
             var member = await this.Get(res.Id);
@@ -154,17 +157,24 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             {
                 if(item.RequiredMilesToReach <= totalTierMiles)
                 {
-                    if (lastCard.TierDetails.Id != item.Id)
-                    await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
+                    if (lastCard.TierDetails.Id != item.Id || lastCard.EndDate > DateTime.Now)
                     {
-                        TierId = item.Id,
-                        MemberDemographicsAndProfileId = res.Id
-                    });
+ 
+                        await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
+                        {
+                            TierId = item.Id,
+                            MemberDemographicsAndProfileId = res.Id,
+                            EndDate = item.TireLifeSpanYears == -1? DateTime.MaxValue :DateTime.Now.AddYears(item.TireLifeSpanYears) //    if it is blue card the card validation should be unlimited
+                        });
+                    }
+
 
                     break;
                 }
             }
         }
+
+ 
 
         public async Task<ActionResult<MemberDemographicsAndProfileGetDto>> GetMemberDemographicsAndProfileGetDtoByUserCode()
         {

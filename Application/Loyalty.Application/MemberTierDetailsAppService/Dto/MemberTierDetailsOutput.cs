@@ -15,6 +15,8 @@ namespace Loyalty.Application.MemberTierDetailsAppService.Dto
 
         public DateTime? FulfillDate { get; set; } = DateTime.Now;
 
+        public DateTime? EndDate { get; set; }
+
         public TierDetailsGetDto TierDetails { get; set; }
     }
 }
