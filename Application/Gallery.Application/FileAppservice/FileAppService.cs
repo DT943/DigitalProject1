@@ -17,6 +17,7 @@ using System.Drawing;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation.Results;
 using System.DirectoryServices.ActiveDirectory;
+using Shell32;
 
 namespace Gallery.Application.FileAppservice
 {
@@ -103,8 +104,8 @@ namespace Gallery.Application.FileAppservice
             var fileName = Path.GetFileName(createDto.Path);
             var Request = _httpContextAccessor.HttpContext?.Request;
             // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}";
-            var fileUrl = $"{baseUrl}/{fileName}";
+            //var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var fileUrl = $"{fileName}";
             // Update DTO directly
             createDto.FileType = fileType;
             createDto.MimeType = contentType;
@@ -128,7 +129,44 @@ namespace Gallery.Application.FileAppservice
                 }
 
             }
+
+            if (contentType.StartsWith("video"))
+            {
+                try
+                {
+                    var durationStr = GetVideoDuration(createDto.Path);
+ 
+                    // Optional: Convert to TimeSpan if needed
+                    if (TimeSpan.TryParse(durationStr, out var duration))
+                    {
+                        createDto.Duration = duration;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle error
+                }
+            }
             return await base.Create(createDto);
+        }
+        public static string GetVideoDuration(string filePath)
+        {
+            try
+            {
+                Type shellAppType = Type.GetTypeFromProgID("Shell.Application");
+                dynamic shell = Activator.CreateInstance(shellAppType);
+                var folder = shell.NameSpace(System.IO.Path.GetDirectoryName(filePath));
+                var item = folder?.ParseName(System.IO.Path.GetFileName(filePath));
+
+                // Property index 27 = Duration
+                string duration = folder?.GetDetailsOf(item, 27);
+                return duration;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+                return "00:00:00";
+            }
         }
 
         public async Task<List<FileGetDto>> CreateMultipleFiles(MultiFileCreateDto multiFileCreateDto)
@@ -209,13 +247,13 @@ namespace Gallery.Application.FileAppservice
             var Request = _httpContextAccessor.HttpContext?.Request;
 
             // Base URL where static files are served
-            var baseUrl = $"{Request.Scheme}://{Request.Host}";
-            var fileUrl = $"{baseUrl}/{fileName}";
+            //var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var fileUrl = $"{fileName}";
             // Update DTO directly
             updateDto.FileType = fileType;
             updateDto.MimeType = contentType;
             long fileSizeBytes = new FileInfo(updateDto.Path).Length;
-            updateDto.Size = (float)(fileSizeBytes / (1024.0 * 10240.0));
+            updateDto.Size = (float)(fileSizeBytes / (1024.0 * 1024.0));
             updateDto.FileUrlPath = fileUrl;
             updateDto.FileName = fileName;
 
@@ -233,6 +271,24 @@ namespace Gallery.Application.FileAppservice
                 {
                 }
 
+            }
+
+            if (contentType.StartsWith("video"))
+            {
+                try
+                {
+                    var durationStr = GetVideoDuration(updateDto.Path);
+
+                    // Optional: Convert to TimeSpan if needed
+                    if (TimeSpan.TryParse(durationStr, out var duration))
+                    {
+                        updateDto.Duration = duration;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle error
+                }
             }
             return await base.Update(updateDto);
         }
