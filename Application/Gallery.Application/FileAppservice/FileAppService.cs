@@ -130,7 +130,7 @@ namespace Gallery.Application.FileAppservice
 
             }
 
-            if (contentType.StartsWith("video"))
+            if (contentType.StartsWith("video") || contentType.StartsWith("audio"))
             {
                 try
                 {
@@ -273,7 +273,7 @@ namespace Gallery.Application.FileAppservice
 
             }
 
-            if (contentType.StartsWith("video"))
+            if (contentType.StartsWith("video") || contentType.StartsWith("audio"))
             {
                 try
                 {
