@@ -33,7 +33,7 @@ namespace Gallery.Application.FileAppservice.Dtos
         public string? AlternativeText { get; set; }
         public string FileUrlPath { get; set; }
         public int GalleryId { get; set; }
-
+        public TimeSpan? Duration { get; set; }
 
     }
 
