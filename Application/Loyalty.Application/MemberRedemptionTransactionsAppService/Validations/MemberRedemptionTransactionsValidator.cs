@@ -9,6 +9,7 @@ using Loyalty.Application.MemberAccrualTransactions.Dtos;
 using Loyalty.Application.MemberRedemptionTransactions.Dto;
 using Loyalty.Data.DbContext;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Application.MemberRedemptionTransactions.Validations
 {
@@ -41,6 +42,19 @@ namespace Loyalty.Application.MemberRedemptionTransactions.Validations
                    })
                    .WithMessage("The sum of all transaction Base and Bonus must be greater than the total redemption value for all related transactions.");
 
+
+                RuleFor(dto => (dto as MemberRedemptionTransactionsCreateDto))
+                    .MustAsync(async (dto, cancellation) =>
+                    {
+                        var result = await loyaltyRepository.MemberDemographicsAndProfiles
+                            .Where(x => x.UserCode == dto.CIS)
+                            .Include(x => x.MemberTierDetails)
+                            .ThenInclude(x => x.TierDetails)
+                            .FirstOrDefaultAsync(cancellation);
+                        var carddetails = result?.MemberTierDetails?.OrderByDescending(x => x.FulfillDate).FirstOrDefault();
+                        return carddetails.EndDate>DateTime.Now;
+                    })
+                    .WithMessage("Sorry Your Card Has Been Expired");
             });
 
             RuleSet("FlightCreate", () =>
