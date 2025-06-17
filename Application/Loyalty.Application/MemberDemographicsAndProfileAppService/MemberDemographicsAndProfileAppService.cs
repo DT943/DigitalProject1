@@ -157,7 +157,7 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             {
                 if(item.RequiredMilesToReach <= totalTierMiles)
                 {
-                    if (lastCard.TierDetails.Id != item.Id || lastCard.EndDate > DateTime.Now)
+                    if (lastCard.TierDetails.Id != item.Id || lastCard.EndDate < DateTime.Now)
                     {
  
                         await _memberTierDetailsAppService.Create(new MemberTierDetailsCreateDto
