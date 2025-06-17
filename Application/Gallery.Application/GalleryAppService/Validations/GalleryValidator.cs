@@ -13,7 +13,7 @@ namespace Gallery.Application.GalleryAppService.Validations
 {
     public class GalleryValidator: AbstractValidator<IValidatableDto>
     {
-        private static readonly string[] AllowedTypes = { "hotel", "general"};
+        private static readonly string[] AllowedTypes = { "hotel", "general", "HR"};
 
         GalleryDbContext _galleryRepository;
         public GalleryValidator(GalleryDbContext galleryRepository)

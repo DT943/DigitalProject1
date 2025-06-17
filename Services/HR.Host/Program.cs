@@ -8,11 +8,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using System.Text;
 using System.Security.Cryptography.X509Certificates;
+using Audit.Application.Middleware;
+using Audit.Data.DbContext;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
-
+/*
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.Listen(IPAddress.Any, 7081, listenOptions =>
@@ -28,6 +30,7 @@ builder.WebHost.ConfigureKestrel(serverOptions =>
 
     });
 });
+*/
 
 builder.Services.AddAuthentication(options =>
 {
@@ -49,7 +52,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -63,13 +65,13 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddCustomService();
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
 });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCustomService();
 /*
 builder.Services.AddDbContext<HRDbContext>((sp, options) =>
 {
@@ -87,13 +89,26 @@ builder.Services.AddDbContext<HRDbContext>((sp, options) =>
            .LogTo(Console.WriteLine, LogLevel.Information);
 });
 
+builder.Services.AddDbContext<AuditDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("AuditDefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
+});
+
 
 builder.Services.AddSwaggerGen();
+builder.Services.AddRazorPages();
 
 
 var app = builder.Build();
 
+
 app.UseCors("AllowAll");
+app.UseMiddleware<AuditMiddleware>();
 
 app.ConfigureExceptionHandler();
 
@@ -102,16 +117,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-if (!app.Environment.IsDevelopment())
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
-        RequestPath = "/images" // This maps the '/images' URL path to the directory
-    });
 
 
-app.UseStaticFiles();
-app.UseHttpsRedirection();
+//app.UseStaticFiles();
 app.UseAuthorization();
 app.MapControllers();
+app.MapRazorPages();
 app.Run();

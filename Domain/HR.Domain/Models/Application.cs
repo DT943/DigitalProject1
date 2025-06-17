@@ -8,15 +8,17 @@ using Infrastructure.Domain.Models;
 
 namespace HR.Domain.Models
 {
-    public class Application : BasicEntity
+    public class Application : BasicEntityWithAuditAndFakeDelete
     {
-        [ForeignKey("Candidate")]
         public int CandidateId { get; set; }
+
+        [ForeignKey("CandidateId")]
         public Candidate Candidate { get; set; }
 
 
-        [ForeignKey("JobPost")]
         public int JobPostId { get; set; }
+
+        [ForeignKey("JobPostId")]
         public JobPost JobPost { get; set; }
 
         public DateTime AppliedDate { get; set; }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using HR.Domain.Models;
 
 namespace HR.Application.JobPostAppService.Dtos
 {
@@ -11,11 +12,13 @@ namespace HR.Application.JobPostAppService.Dtos
     {
         public JobPostMapperProfile()
         {
-            CreateMap<JobPostCreateDto, Domain.Models.JobPost>();
-            CreateMap<JobPostUpdateDto, Domain.Models.JobPost>();
-            CreateMap<Domain.Models.JobPost, JobPostGetDto>();
-            CreateMap<Domain.Models.JobPost, JobPostGetAllDto>();
+            CreateMap<JobPostCreateDto, JobPost>();
 
+            CreateMap<JobPostUpdateDto, JobPost>();
+
+            CreateMap<JobPost, JobPostGetDto>();
+
+            CreateMap<JobPost, JobPostGetAllDto>();
         }
     }
 }

@@ -164,6 +164,7 @@ namespace Authentication.Data.Seeds
                 await roleManager.CreateAsync(new IdentityRole(superAdminRole));
             }
         }
+
     }
 
 }

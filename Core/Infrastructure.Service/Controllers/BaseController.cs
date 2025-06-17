@@ -81,7 +81,7 @@ namespace Infrastructure.Service.Controllers
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public virtual async Task<ActionResult<TGetAllDto>> GetAll([FromQuery] TFilterDto sieve)
-        {
+        {  
             var user = HttpContext.User;
 
             if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))

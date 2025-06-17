@@ -22,7 +22,8 @@ namespace Infrastructure.Domain
             //Hotel,
             Notification,
             //B2B,
-            Loyalty
+            Loyalty,
+            HR
         }
 
 

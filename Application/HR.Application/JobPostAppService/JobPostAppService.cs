@@ -18,8 +18,18 @@ namespace HR.Application.JobPostAppService
 {
     public class JobPostAppService : BaseAppService<HRDbContext, Domain.Models.JobPost, JobPostGetAllDto, JobPostGetDto, JobPostCreateDto, JobPostUpdateDto, SieveModel>, IJobPostAppService
     {
+        IHttpContextAccessor _httpContextAccessor;
+
+        HRDbContext _serviceDbContext;
+
         public JobPostAppService(HRDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, JobPostValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
+            _httpContextAccessor = httpContextAccessor;
+            _serviceDbContext = serviceDbContext;
+        }
+        protected override IQueryable<Domain.Models.JobPost> QueryExcuter(SieveModel input)
+        {
+            return base.QueryExcuter(input);
         }
     }
 }

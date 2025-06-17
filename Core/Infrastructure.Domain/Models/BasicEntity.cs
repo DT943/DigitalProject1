@@ -28,21 +28,30 @@ namespace Infrastructure.Domain.Models
         public bool IsDeleted { get; set; } = false;
     }
 
-    public class BasicEntityAndFakeDelete : BasicEntity
+    public class BasicEntityAndFakeDelete : BasicEntity, IsDeleted
     {
         public bool IsDeleted { get; set; } = false;
     }
 
 
-
-
-    public class ApproveEntityWithAuditAndFakeDelete : BasicEntityWithAuditInfo
+    public class ApproveEntityWithAudit : BasicEntityWithAuditInfo
     {
         public string? AwaitingApprovalUserCode { get; set; }
 
         public string? ApprovedUserCode { get; set; }
 
         public string ApprovalStatus { get; set; } = "PendingApproval";
+    }
+
+    public class ApproveEntityWithAuditWithFakeDelete : ApproveEntityWithAudit, IsDeleted
+    {
+        public bool IsDeleted { get; set; } = false;
+    }
+
+    public interface IsDeleted
+    {
+        public bool IsDeleted { get; set; }
+
     }
 
 }

@@ -163,10 +163,10 @@ namespace CMS.Application.PageAppService
             {
                 auditInfo.ModifiedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
                 auditInfo.ModifiedDate = DateTime.Now;
-                if (entity is ApproveEntityWithAuditAndFakeDelete)
+                if (entity is ApproveEntityWithAudit)
                 {
-                    (entity as ApproveEntityWithAuditAndFakeDelete).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
-                    (entity as ApproveEntityWithAuditAndFakeDelete).ApprovalStatus = "PendingApproval";
+                    (entity as ApproveEntityWithAudit).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
+                    (entity as ApproveEntityWithAudit).ApprovalStatus = "PendingApproval";
                 }
             }
 

@@ -70,10 +70,10 @@ namespace Infrastructure.Application
             {
                 (createdEntity as BasicEntityWithAuditInfo).CreatedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
                 (createdEntity as BasicEntityWithAuditInfo).CreatedDate = DateTime.Now;
-                if (createdEntity is ApproveEntityWithAuditAndFakeDelete)
+                if (createdEntity is ApproveEntityWithAudit)
                 {
-                    (createdEntity as ApproveEntityWithAuditAndFakeDelete).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
-                    (createdEntity as ApproveEntityWithAuditAndFakeDelete).ApprovalStatus = "PendingApproval";
+                    (createdEntity as ApproveEntityWithAudit).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
+                    (createdEntity as ApproveEntityWithAudit).ApprovalStatus = "PendingApproval";
                 }
             }
             return createdEntity;
@@ -87,10 +87,10 @@ namespace Infrastructure.Application
             {
                 (entity as BasicEntityWithAuditInfo).ModifiedBy = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
                 (entity as BasicEntityWithAuditInfo).ModifiedDate = DateTime.Now;
-                if (entity is ApproveEntityWithAuditAndFakeDelete)
+                if (entity is ApproveEntityWithAudit)
                 {
-                    (entity as ApproveEntityWithAuditAndFakeDelete).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
-                    (entity as ApproveEntityWithAuditAndFakeDelete).ApprovalStatus = "PendingApproval";
+                    (entity as ApproveEntityWithAudit).AwaitingApprovalUserCode = _httpContextAccessor.HttpContext?.User.FindFirst("managerCode")?.Value;
+                    (entity as ApproveEntityWithAudit).ApprovalStatus = "PendingApproval";
                 }
             }
             return _mapper.Map(update, entity);
@@ -192,17 +192,17 @@ namespace Infrastructure.Application
         public virtual async Task<PaginatedResult<TGetAllDto>> GetApprovalNeededRecords(TFilterDto input)
         {
 
-            if (!typeof(ApproveEntityWithAuditAndFakeDelete).IsAssignableFrom(typeof(TEntity)))
+            if (!typeof(ApproveEntityWithAudit).IsAssignableFrom(typeof(TEntity)))
                 throw new EntityNotFoundException(typeof(TEntity).Name, "this Entity Doesn't Include Approval Process");
 
             string userCode = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
             IQueryable<TEntity> query = _serviceDbContext.Set<TEntity>().AsQueryable();
 
-            // Check if TEntity is a type of ApproveEntityWithAuditAndFakeDelete
-            if (typeof(ApproveEntityWithAuditAndFakeDelete).IsAssignableFrom(typeof(TEntity)))
+            // Check if TEntity is a type of ApproveEntityWithAudit
+            if (typeof(ApproveEntityWithAudit).IsAssignableFrom(typeof(TEntity)))
             {
-                query = query.Where(entity => ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovalStatus == "PendingApproval" &&
-                ((ApproveEntityWithAuditAndFakeDelete)(object)entity).AwaitingApprovalUserCode == userCode);
+                query = query.Where(entity => ((ApproveEntityWithAudit)(object)entity).ApprovalStatus == "PendingApproval" &&
+                ((ApproveEntityWithAudit)(object)entity).AwaitingApprovalUserCode == userCode);
             }
 
             query = query.OrderByDescending(item => item.Id).AsNoTracking();
@@ -234,21 +234,21 @@ namespace Infrastructure.Application
 
             string Result = "Not Approved";
 
-            // Check if TEntity is a type of ApproveEntityWithAuditAndFakeDelete
-            if (typeof(ApproveEntityWithAuditAndFakeDelete).IsAssignableFrom(typeof(TEntity)))
+            // Check if TEntity is a type of ApproveEntityWithAudit
+            if (typeof(ApproveEntityWithAudit).IsAssignableFrom(typeof(TEntity)))
             {
                 var entity = await query
-                    .Where(entity => ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovalStatus == "PendingApproval" &&
-                                     ((ApproveEntityWithAuditAndFakeDelete)(object)entity).AwaitingApprovalUserCode == userCode &&
+                    .Where(entity => ((ApproveEntityWithAudit)(object)entity).ApprovalStatus == "PendingApproval" &&
+                                     ((ApproveEntityWithAudit)(object)entity).AwaitingApprovalUserCode == userCode &&
                                      entity.Id == id)
                     .FirstOrDefaultAsync();
 
                 if (entity != null)
                 {
-                    ((ApproveEntityWithAuditAndFakeDelete)(object)entity).AwaitingApprovalUserCode = managerCode;
-                    ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovedUserCode = userCode;
+                    ((ApproveEntityWithAudit)(object)entity).AwaitingApprovalUserCode = managerCode;
+                    ((ApproveEntityWithAudit)(object)entity).ApprovedUserCode = userCode;
 
-                    if (String.IsNullOrEmpty(managerCode)|| canApprove) ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovalStatus = "Approved";
+                    if (String.IsNullOrEmpty(managerCode)|| canApprove) ((ApproveEntityWithAudit)(object)entity).ApprovalStatus = "Approved";
                     await _serviceDbContext.SaveChangesAsync();
                     Result = "Approved";
 
@@ -260,9 +260,9 @@ namespace Infrastructure.Application
                                          .FirstOrDefaultAsync();
                     if (entity != null && canApprove)
                     {
-                        ((ApproveEntityWithAuditAndFakeDelete)(object)entity).AwaitingApprovalUserCode = null;
-                        ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovedUserCode = userCode;
-                        if (String.IsNullOrEmpty(managerCode)) ((ApproveEntityWithAuditAndFakeDelete)(object)entity).ApprovalStatus = "Approved";
+                        ((ApproveEntityWithAudit)(object)entity).AwaitingApprovalUserCode = null;
+                        ((ApproveEntityWithAudit)(object)entity).ApprovedUserCode = userCode;
+                        if (String.IsNullOrEmpty(managerCode)) ((ApproveEntityWithAudit)(object)entity).ApprovalStatus = "Approved";
 
                         await _serviceDbContext.SaveChangesAsync();
                         Result = "Approved";
@@ -277,9 +277,6 @@ namespace Infrastructure.Application
             };
 
         }
-
-
-
 
     }
 
