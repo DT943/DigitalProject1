@@ -26,6 +26,8 @@ namespace Infrastructure.Domain
             HR
             Loyalty,
             TicketIssue
+            Loyalty,
+            HR
         }
 
 
