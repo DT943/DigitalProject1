@@ -114,4 +114,16 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService.Dto
         public ICollection<MemberTierDetailsGetDto> MemberTierDetails { get; set; }
 
     }
+
+
+    public class SummaryGetDto
+    {
+        public string currentCardName { get; set; }
+
+        public string nextCardName { get; set; }
+
+        public DateTime LastTransactionDate {  get; set; }
+
+        public int TotalAccuareMileToReach { get; set; }
+    }
 }
