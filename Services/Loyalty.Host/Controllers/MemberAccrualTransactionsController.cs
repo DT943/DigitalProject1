@@ -30,6 +30,10 @@ namespace Loyalty.Host.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<MemberAccrualTransactionsGetDto>> CreateFlightTransactionDetails(MemberAccrualTransactionsFlightCreateDto create)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
             var user = HttpContext.User;
             return Ok(await _appService.CreateFlightTransactionDetails(create));
         }
@@ -38,6 +42,10 @@ namespace Loyalty.Host.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<MemberAccrualTransactionsGetDto>> CreatePaymentTransactionDetails(PaymentDetails create)
         {
+            if (!UserHasPermission("Admin", "Manager", "Supervisor", "Officer"))
+            {
+                return Forbid();
+            }
             var user = HttpContext.User;
             return Ok(await _appService.CreatePaymentTransactionDetails(create));
         }

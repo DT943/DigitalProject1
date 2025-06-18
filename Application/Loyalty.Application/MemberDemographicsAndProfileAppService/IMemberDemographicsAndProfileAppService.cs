@@ -17,6 +17,8 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 
         public Task UpgradeUserTier(string cis);
 
+        public Task<ActionResult<SummaryGetDto>> GetUserSummary();
+ 
         public Task<ActionResult<MemberDemographicsAndProfileGetDto>> GetMemberDemographicsAndProfileGetDtoByUserCode();
 
     }

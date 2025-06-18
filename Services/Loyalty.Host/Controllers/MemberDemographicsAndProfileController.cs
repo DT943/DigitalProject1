@@ -56,5 +56,15 @@ namespace Loyalty.Host.Controllers
             var user = HttpContext.User;
             return Ok(await _appService.GetMemberDemographicsAndProfileGetDtoByUserCode());
         }
+
+
+
+        [HttpGet("Summary")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> GetUserSummary()
+        {
+            var user = HttpContext.User;
+            return Ok(await _appService.GetUserSummary());
+        }
     }
 }
