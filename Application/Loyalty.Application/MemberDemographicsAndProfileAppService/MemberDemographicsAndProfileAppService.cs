@@ -30,6 +30,7 @@ using iTextSharp.text.pdf.qrcode;
 using Loyalty.Domain.Models;
 using Infrastructure.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation.Results;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
@@ -174,6 +175,49 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
             }
         }
 
+
+        public async Task<ActionResult<SummaryGetDto>> GetUserSummary()
+        {
+            var cis = _httpContextAccessor.HttpContext?.User.FindFirst("userCode")?.Value;
+
+            var res = await _serviceDbContext.MemberDemographicsAndProfiles.Where(x => x.UserCode == cis).FirstOrDefaultAsync();
+            if (res == null) throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "Invalid file path.") });
+            
+
+            var allTransactions = _serviceDbContext.MemberAccrualTransactions
+                .Where(x => x.TierValidationDate >= DateTime.Now && x.CIS == cis)
+                .ToList();
+
+            var totalTierMiles = allTransactions.Sum(x => (x.Base ?? 0));
+
+            var member = await this.Get(res.Id);
+            var lastCard = member.MemberTierDetails.OrderByDescending(x => x.FulfillDate).FirstOrDefault();
+
+            List<TierDetails> availableTiers = _serviceDbContext.TierDetails.OrderByDescending(x => x.RequiredMilesToReach).ToList();
+
+            int totalMilesToReach = int.MaxValue;
+            TierDetails nextCard = null;
+            foreach (var item in availableTiers)
+            {
+                int dif = item.RequiredMilesToReach - totalTierMiles;
+                if (dif >= 0 && totalMilesToReach > dif )
+                {
+                    totalMilesToReach = dif;
+                    nextCard = item;
+                }
+
+            }
+
+            var lastTransaction = _serviceDbContext.MemberAccrualTransactions.OrderByDescending(x => x.LoadDate).FirstOrDefault();
+            return new SummaryGetDto
+            {
+                currentCardName = lastCard.TierDetails.Name,
+                nextCardName = nextCard.Name,
+                LastTransactionDate = lastTransaction.LoadDate,
+                TotalAccuareMileToReach = totalMilesToReach
+
+            };
+        }
  
 
         public async Task<ActionResult<MemberDemographicsAndProfileGetDto>> GetMemberDemographicsAndProfileGetDtoByUserCode()
