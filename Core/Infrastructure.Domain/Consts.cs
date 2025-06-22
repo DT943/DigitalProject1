@@ -22,7 +22,8 @@ namespace Infrastructure.Domain
             //Hotel,
             Notification,
             //B2B,
-            Loyalty
+            Loyalty,
+            TicketIssue
         }
 
 
@@ -40,6 +41,8 @@ namespace Infrastructure.Domain
             public static readonly string BranchesManagement = "BranchesManagement";
             public static readonly string B2B = "B2B";
             public static readonly string Loyalty = "Loyalty";
+            public static readonly string TicketIssue = "TicketIssue";
+
         }
 
         public static class RideRequestStatus
