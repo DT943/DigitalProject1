@@ -28,6 +28,8 @@ namespace Infrastructure.Domain
             TicketIssue
             Loyalty,
             HR
+            Loyalty,
+            TicketIssue
         }
 
 
