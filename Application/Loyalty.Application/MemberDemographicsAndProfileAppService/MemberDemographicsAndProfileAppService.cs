@@ -31,6 +31,7 @@ using Loyalty.Domain.Models;
 using Infrastructure.Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation.Results;
+using AutoMapper.Execution;
 
 namespace Loyalty.Application.MemberDemographicsAndProfileAppService
 {
@@ -174,6 +175,27 @@ namespace Loyalty.Application.MemberDemographicsAndProfileAppService
                 }
             }
         }
+
+        public async Task UpgradeAllUserTier()
+        {
+            var usersWithExpiredLastCard = await _serviceDbContext.MemberDemographicsAndProfiles
+                .Select(user => new
+                {
+                    User = user,
+                    LastCard = _serviceDbContext.MemberTierDetails
+                        .Where(c => c.MemberDemographicsAndProfileId == user.Id)
+                        .OrderByDescending(c => c.FulfillDate)
+                        .FirstOrDefault()
+                })
+                .Where(x => x.LastCard != null && DateTime.Now > x.LastCard.FulfillDate) // expired check
+                .ToListAsync();
+
+
+            foreach (var user in usersWithExpiredLastCard)
+                await this.UpgradeUserTier(user.User.UserCode);
+
+        }
+
 
 
         public async Task<ActionResult<SummaryGetDto>> GetUserSummary()
