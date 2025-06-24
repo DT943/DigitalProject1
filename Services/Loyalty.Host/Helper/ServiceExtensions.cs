@@ -57,6 +57,7 @@ using Loyalty.Application.TierDetailsAppService.Validations;
 using Loyalty.Application.TierPricingBundlesAppService;
 using Loyalty.Application.TierPricingBundlesAppService.Dtos;
 using Loyalty.Application.TierPricingBundlesAppService.Validations;
+using Loyalty.Host.BackgroundProcess;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Notification.Application;
@@ -131,6 +132,7 @@ namespace Loyalty.Host.Helper
             services.AddScoped<IAuthenticationAppService, AuthenticationAppService>();
             services.AddScoped<IEmailAppService, EmailAppService>();
 
+            services.AddHostedService<MemberTierValidationJob>();
 
 
             services.AddScoped<ISieveProcessor, SieveProcessor>();
