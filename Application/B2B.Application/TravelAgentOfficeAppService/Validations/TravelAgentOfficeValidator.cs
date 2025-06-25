@@ -208,22 +208,22 @@ namespace B2B.Application.TravelAgentOffice.Validations
 
 
                 RuleForEach(dto => (dto as TravelAgentOfficeUpdateDto).TravelAgentPOSs)
-                            .ChildRules(pos =>
+                    .ChildRules(pos =>
+                    {
+                        pos.RuleFor(p => p.POS)
+                            .NotEmpty()
+                            .WithMessage("The POS cannot of the Office be empty.")
+                            .NotEmpty()
+                            .WithMessage("The POS cannot be empty.")
+                            .Must(type => type == type.ToLower())
+                            .WithMessage("The POS must be in lowercase.")
+                            .MustAsync(async (pos, cancellation) =>
                             {
-                                pos.RuleFor(p => p.POS)
-                                    .NotEmpty()
-                                    .WithMessage("The POS cannot of the Office be empty.")
-                                    .NotEmpty()
-                                    .WithMessage("The POS cannot be empty.")
-                                    .Must(type => type == type.ToLower())
-                                    .WithMessage("The POS must be in lowercase.")
-                                    .MustAsync(async (pos, cancellation) =>
-                                    {
-                                        var result = await appService.GetByPOSKey(pos);
-                                        return result != null && result.Count() != 0;
-                                    })
-                                    .WithMessage("POS is not valid"); 
-                            });
+                                var result = await appService.GetByPOSKey(pos);
+                                return result != null && result.Count() != 0;
+                            })
+                            .WithMessage("POS is not valid"); 
+                    });
 
             });
         }

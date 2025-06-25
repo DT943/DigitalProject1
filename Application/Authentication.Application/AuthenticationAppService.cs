@@ -205,8 +205,13 @@ namespace Authentication.Application
             {
                 await _userManager.AccessFailedAsync(user); // Increase failed login attempts
 
-                if (await _userManager.IsLockedOutAsync(user))
+                if (await _userManager.IsLockedOutAsync(user) || user.IsLocked)
                 {
+                    user.IsActive = false;
+                    user.IsLocked = true;
+                    user.IsFrozed = false;
+                    var result = await _userManager.UpdateAsync(user);
+
                     return new AuthenticationModel { Message = "Your account has been locked due to multiple failed login attempts.", IsAuthenticated = false };
                 }
                 else
@@ -299,7 +304,7 @@ namespace Authentication.Application
             }
             if (await _userManager.IsLockedOutAsync(user) || user.IsLocked)
             {
-                user.IsActive = !user.IsActive;
+                user.IsActive = false;
                 user.IsLocked = true;
                 user.IsFrozed = false;
                 var result = await _userManager.UpdateAsync(user);
