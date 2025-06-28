@@ -23,7 +23,8 @@ namespace Infrastructure.Domain
             Notification,
             //B2B,
             Loyalty,
-            TicketIssue
+            TicketIssue,
+            BookingEngine
         }
 
 
@@ -42,6 +43,8 @@ namespace Infrastructure.Domain
             public static readonly string B2B = "B2B";
             public static readonly string Loyalty = "Loyalty";
             public static readonly string TicketIssue = "TicketIssue";
+            public static readonly string BookingEngine = "BookingEngine";
+
 
         }
 
@@ -57,6 +60,13 @@ namespace Infrastructure.Domain
         public static class PartnerCode
         {
             public static readonly string FlyCham = "FlyCham";
+
+        }
+
+        public enum Tenant
+        {
+            FlyCham,
+            Shammout
 
         }
     }

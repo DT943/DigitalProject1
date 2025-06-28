@@ -23,9 +23,10 @@ namespace CWCore.Data.DbContext
         {
             //modelBuilder.HasDefaultSchema(GetSchemaName());
         }
-
+        public DbSet<Domain.Models.Language> Languages { get; set; }
         public DbSet<Domain.Models.POS> POSs { get; set; }
- 
+
+
     }
 }
 

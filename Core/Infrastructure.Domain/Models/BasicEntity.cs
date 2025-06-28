@@ -34,8 +34,6 @@ namespace Infrastructure.Domain.Models
     }
 
 
-
-
     public class ApproveEntityWithAuditAndFakeDelete : BasicEntityWithAuditInfo
     {
         public string? AwaitingApprovalUserCode { get; set; }

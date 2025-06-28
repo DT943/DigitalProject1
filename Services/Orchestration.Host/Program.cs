@@ -1,24 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text;
-using Hotel.Data.DbContext;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Infrastructure.Service;
 using System.Net;
 using CWCore.Data.DbContext;
 using Orchestration.Host.Helper;
-using Gallery.Data.DbContext;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.WebHost.ConfigureKestrel(options =>
-{
-    options.Listen(IPAddress.Any, 7206, listenOptions =>
-    {
-        listenOptions.UseHttps();
-    });
-});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -39,6 +28,9 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -50,23 +42,29 @@ builder.Services.AddCors(options =>
         });
 });
 
+
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
-/*
-builder.Services.AddDbContext<HotelDbContext>((sp, options) =>
-{
-    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("HotelConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
-           .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
-});
-builder.Services.AddDbContext<GalleryDbContext>((sp, options) =>
-{
-    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("GalleryConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
-           .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
+    });
 
+
+builder.Services.AddDbContext<CWDbContext>((sp, options) =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+    var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+    options.UseSqlServer(connectionString)
+           .EnableSensitiveDataLogging()
+           .LogTo(Console.WriteLine, LogLevel.Information);
 });
-*/
 
 
 
@@ -85,16 +83,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-if (!app.Environment.IsDevelopment())
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "images")),
-        RequestPath = "/images" // This maps the '/images' URL path to the directory
-    });
-
 
 app.UseStaticFiles();
 app.UseHttpsRedirection();
+
 app.UseAuthorization();
+app.UseAuthentication();
+
 app.MapControllers();
 app.Run();

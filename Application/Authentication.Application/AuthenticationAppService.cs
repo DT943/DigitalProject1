@@ -172,7 +172,8 @@ namespace Authentication.Application
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("userCode", user.Code.ToString()),
-                new Claim("managerCode",user.ManagerCode!=null?user.ManagerCode.ToString():"" )
+                new Claim("managerCode",user.ManagerCode!=null?user.ManagerCode.ToString():"" ),
+                new Claim("tenant_id", user.TenantId.ToString())
             }
             .Union(userClaims)
             .Union(roleClaims);
@@ -195,7 +196,7 @@ namespace Authentication.Application
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user == null || user.IsDeleted)
+            if (user == null || user.IsDeleted )
             {
                 return new AuthenticationModel { Message = "User Not exist!", IsAuthenticated = false };
             }
@@ -334,7 +335,7 @@ namespace Authentication.Application
             
         }
             
-        public async Task<AuthenticationModel> AddUserAsync(AddUserDto newuser)
+        public async Task<AuthenticationModel> AddUserAsync(AddUserDto newuser,int CurrentTenantId)
         {
             string userName = (newuser.FirstName + newuser.LastName).Replace(" ", "");
 
@@ -357,6 +358,7 @@ namespace Authentication.Application
                 LastOTPChecked = DateTime.MaxValue,
                 LastLogIn = DateTime.MinValue,
                 Department = newuser.Department,
+                TenantId = CurrentTenantId
 
             };
             var staticPassword = GenerateSecurePassword();
@@ -472,11 +474,11 @@ namespace Authentication.Application
             };
 
         }
-        public async Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto)
+        public async Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto, int CurrentTenantId)
         {
             var user = await _userManager.FindByEmailAsync(firestLogInDto.Email);
 
-            if (user == null)
+            if (user == null || user.TenantId != CurrentTenantId)
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
             }
@@ -563,9 +565,11 @@ namespace Authentication.Application
                 ExpiresOn = existuser.OTPExpiration,
             };
         }
-        public async Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel)
+        public async Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel, int CurrentTenantId)
         {
-            var query = _userManager.Users.AsQueryable();
+            var query = _userManager.Users
+                .Where(u => u.TenantId == CurrentTenantId)
+                .AsQueryable();
 
             // Apply filter and sort only
             query = _sieveProcessor.Apply(sieveModel, query, applyPagination: false);
@@ -645,9 +649,9 @@ namespace Authentication.Application
         {
             return await _roleManager.Roles.Select(r => r.Name).ToListAsync();
         }
-        public async Task<AuthenticationGetDto> GetUserByCodeAsync(string code)
+        public async Task<AuthenticationGetDto> GetUserByCodeAsync(string code, int CurrentTenantId)
         {
-            var user = await _userManager.Users.Where(x => x.Code.Equals(code)).FirstOrDefaultAsync();
+            var user = await _userManager.Users.Where(x => x.Code == code && x.TenantId == CurrentTenantId).FirstOrDefaultAsync();
             var existingRoles = await _userManager.GetRolesAsync(user);
             AuthenticationGetDto auth = _mapper.Map<AuthenticationGetDto>(user);
             auth.Roles = existingRoles;
@@ -698,9 +702,10 @@ namespace Authentication.Application
 
             return auth;
         }
-        public async Task<UserWithRole> AssignRolesToUserAsync(string userCode, List<string> roles)
+        public async Task<UserWithRole> AssignRolesToUserAsync(string userCode, List<string> roles, int CurrentTenantId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode && u.TenantId == CurrentTenantId);
+
 
             var existingRoles = await _userManager.GetRolesAsync(user);
             var removeResult = await _userManager.RemoveFromRolesAsync(user, existingRoles);
@@ -734,9 +739,10 @@ namespace Authentication.Application
                 Roles = userNewRoles
             };
         }
-        public async Task<AuthenticationModel> ChangeUserStatusAsync(string userCode)
+        public async Task<AuthenticationModel> ChangeUserStatusAsync(string userCode, int CurrentTenantId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode && u.TenantId == CurrentTenantId);
+
             if (user == null)
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false};
@@ -785,9 +791,11 @@ namespace Authentication.Application
                 
             };            
         }
-        public async Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole)
+        public async Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole, int CurrentTenantId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.Code == userCode && u.TenantId == CurrentTenantId);
+
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -871,9 +879,11 @@ namespace Authentication.Application
                 Roles = userNewRoles
             };
         }
-        public async Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment)
+        public async Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment, int CurrentTenantId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.Code == userCode && u.TenantId == CurrentTenantId);
+
             if (user == null)
             {
                 throw new Exception("User not found");
@@ -896,9 +906,11 @@ namespace Authentication.Application
             };
 
         }
-        public async Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode)
+        public async Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode,int CurrentTenantId)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == userCode);
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.Code == userCode && u.TenantId == CurrentTenantId);
+
 
             if (user == null)
                 return new AuthenticationModel { Message = "User not found!",IsAuthenticated = false };
@@ -961,10 +973,10 @@ namespace Authentication.Application
             };
         }
                
-        public async Task<AuthenticationModel> UserFakeDeleteAsync(UserFakeDeleteDto dto)
+        public async Task<AuthenticationModel> UserFakeDeleteAsync(UserFakeDeleteDto dto, int CurrentTenantId)
         {
             var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Code == dto.Code);
-            if (user == null)
+            if (user == null || user.TenantId != CurrentTenantId)
             {
                 return new AuthenticationModel { Message = "User not found!", IsAuthenticated = false };
             }

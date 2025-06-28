@@ -18,8 +18,11 @@ namespace Authentication.Data.DbContext
             var user = builder.Entity<ApplicationUser>();
             user.HasIndex(u => u.NormalizedUserName).IsUnique(false);
         }
-        public DbSet<Domain.Models.Department> Departments { get; set; }
+        public DbSet<Department> Departments { get; set; }
         
+        public DbSet<Tenant> Tenants { get; set; }
+
+
     }
 
 

@@ -43,6 +43,7 @@ namespace Authentication.Domain.Models
         public string? IdentityNumber { get; set; }
         public bool IsDeleted { get; set; } = false;
         public int OTPUsageCount { get; set; } = 0;
+        public int TenantId { get; set; }
 
     }
 

@@ -9,23 +9,7 @@ using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
-/*
-builder.WebHost.ConfigureKestrel(serverOptions =>
-{
-    serverOptions.Listen(IPAddress.Any, 7130, listenOptions =>
-    {
-        if (builder.Environment.IsDevelopment())
 
-            listenOptions.UseHttps();
-        else
-
-            listenOptions.UseHttps(new X509Certificate2(
-                "/etc/letsencrypt/live/reports.chamwings.com/cert.pfx",
-                "HappyHappy@2025"));
-
-    });
-});
-*/
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -52,9 +36,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll",
         policy =>
         {
-            policy.AllowAnyOrigin() // Allows requests from any origin
-                  .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
-                  .AllowAnyHeader(); // Allows any headers
+            policy.AllowAnyOrigin() 
+                  .AllowAnyMethod()  
+                  .AllowAnyHeader(); 
         });
 });
 
@@ -66,13 +50,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
 });
-/*
-builder.Services.AddDbContext<BranchesManagementDbContext>((sp, options) =>
-{
-    options.UseOracle(string.Format(builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty, Environment.GetEnvironmentVariable("TODOLIST_DB_USER"), Environment.GetEnvironmentVariable("TODOLIST_DB_PASSWORD"))).EnableSensitiveDataLogging() // Enable sensitive data logging for detailed output
-           .LogTo(Console.WriteLine, LogLevel.Information); // Log to console;
-});
-*/
+
+
 builder.Services.AddDbContext<BranchesManagementDbContext>((sp, options) =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();

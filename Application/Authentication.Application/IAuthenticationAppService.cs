@@ -12,29 +12,60 @@ namespace Authentication.Application
 {
     public interface IAuthenticationAppService
     {
+        //done
         public Task<AuthenticationModelWithDetails> RegisterAsync(RegisterModel model);
+        //done
         public Task<AuthenticationModel> GetTokenAsync(LogInModel model);
-        public Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel);
-        public Task<AuthenticationGetDto> GetUserByCodeAsync(string code);
+        //done 
+        public Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel, int CurrentTenantId);
+        //done
+        public Task<AuthenticationGetDto> GetUserByCodeAsync(string code, int CurrentTenantId);
+        //No tenant
         public Task<IEnumerable<string>> GetAllRolesAsync();
-        public Task<UserWithRole> AssignRolesToUserAsync(string userCode, List<string> roles);
-        Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole);
-        Task<AuthenticationModel> ChangeUserStatusAsync(string userCode);
-        Task<AuthenticationModel> AddUserAsync(AddUserDto newuser);
+        //No tenant
+        public Task<UserWithRole> AssignRolesToUserAsync(string userCode, List<string> roles, int CurrentTenantId);
+
+        //done
+        Task<UserWithRole> AssignRoleToUserByServiceAsync(string userCode, string newRole, int CurrentTenantId);
+        //done
+        Task<AuthenticationModel> ChangeUserStatusAsync(string userCode, int CurrentTenantId);
+        //done
+        Task<AuthenticationModel> AddUserAsync(AddUserDto newuser , int CurrentTenantId);
+
+        //problem
         Task<AuthenticationModelWithDetails> AddB2BUserAsync(AddUserDto newuser);
+
+
+        //problem
         Task<AuthenticationModelWithDetails> AddLoyaltyUserAsync(AddUserDto newuser);
 
-        Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment);
-        Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode);
+        Task<AuthenticationModel> EditUserDepartment(string userCode, string newDepartment, int CurrentTenantId);
+        
+        Task<AuthenticationModel> UpdateUserAsync(UpdateUserDto newUser, string userCode, int CurrentTenantId);
+        
+        
+        //No Tenant
         Task<AuthenticationModel> LogInWithOTP(LogInOTPModel model);
-        Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto);
-        Task<AuthenticationModel> FirstResetPassword(FirstResetLogInDto firestLogInDto);
-        Task<AuthenticationModel> UserFakeDeleteAsync(UserFakeDeleteDto dto);
 
+        //done
+        Task<AuthenticationModel> ResetPassword(FirstLogInDto firestLogInDto, int CurrentTenantId);
+
+        //No Tenant
+        Task<AuthenticationModel> FirstResetPassword(FirstResetLogInDto firestLogInDto);
+
+        //done
+        Task<AuthenticationModel> UserFakeDeleteAsync(UserFakeDeleteDto dto, int CurrentTenantId);
+
+        //No Tenant
         Task<AuthenticationModel> ForgotPassword(ForgotPasswordModel dto);
 
+        //No Tenant 
         Task<AuthenticationModel> SetManagerToUser(SetManagerToUserDto dto);
+
+        //No Tenant 
+
         Task<bool> CheckEmail(string email);
+        //No Tenant 
 
         Task<bool> CheckUserName(string FirstName, string LastName);
     }

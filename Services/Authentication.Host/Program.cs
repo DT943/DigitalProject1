@@ -14,6 +14,7 @@ using System.Runtime.ConstrainedExecution;
 using Authentication.Data.Seeds;
 using Audit.Application.Middleware;
 using Audit.Data.DbContext;
+using Authentication.Application.Middleware;
 Console.WriteLine("Application is starting V.1.9.1");
 
 
@@ -108,7 +109,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await Authentication.Data.Seeds.Seeder.SeedAsync(services);
+    await Seeder.SeedAsync(services);
+    await Seeder.SeedTenantAsync(services);
+
     //await Authentication.Data.Seeds.UserRoleSeeder.SeedAsync(services);
 }
 
@@ -119,8 +122,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("AllowAll");
-app.UseMiddleware<AuditMiddleware>();
+
 app.UseAuthentication();
+
+app.UseMiddleware<TenantMiddleware>();
+
 app.UseAuthorization();
+
+app.UseMiddleware<AuditMiddleware>();
+
+
 app.MapControllers();
 app.Run();

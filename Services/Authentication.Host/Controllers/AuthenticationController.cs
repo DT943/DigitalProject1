@@ -53,7 +53,7 @@ namespace Authentication.Host.Controllers
         {
             var user = HttpContext.User;
             if (!user.IsInRole("SuperAdmin")) return Forbid();
-            var result = await _authenticationAppService.GetAllUsersAsync(sieveModel);
+            var result = await _authenticationAppService.GetAllUsersAsync(sieveModel, CurrentTenantId);
             return Ok(result);
         }
 
@@ -83,7 +83,7 @@ namespace Authentication.Host.Controllers
                 return BadRequest("Code is required.");
             }
 
-            var result = await _authenticationAppService.GetUserByCodeAsync(code);
+            var result = await _authenticationAppService.GetUserByCodeAsync(code, CurrentTenantId);
 
             if (result == null)
             {
@@ -102,7 +102,7 @@ namespace Authentication.Host.Controllers
             var user = HttpContext.User;
             if (!user.IsInRole("SuperAdmin")) return Forbid();
 
-            var result = await _authenticationAppService.ChangeUserStatusAsync(userCode);
+            var result = await _authenticationAppService.ChangeUserStatusAsync(userCode, CurrentTenantId);
             if (!result.IsAuthenticated)
                 return BadRequest(new ErrorModel
                 {
@@ -125,7 +125,7 @@ namespace Authentication.Host.Controllers
 
             try
             {
-                var result = await _authenticationAppService.AssignRoleToUserByServiceAsync(userCode, newRole);
+                var result = await _authenticationAppService.AssignRoleToUserByServiceAsync(userCode, newRole, CurrentTenantId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -145,7 +145,7 @@ namespace Authentication.Host.Controllers
                 return BadRequest(ModelState);
             try
             {
-                var result = await _authenticationAppService.AddUserAsync(addUserDto);
+                var result = await _authenticationAppService.AddUserAsync(addUserDto, CurrentTenantId);
                 if (!result.IsAuthenticated)
                     return BadRequest(new ErrorModel
                     {
@@ -169,7 +169,7 @@ namespace Authentication.Host.Controllers
 
             try
             {
-                var result = await _authenticationAppService.EditUserDepartment(userCode, newDepartment);
+                var result = await _authenticationAppService.EditUserDepartment(userCode, newDepartment, CurrentTenantId);
                 return Ok( result );
             }
             catch (Exception ex)
@@ -184,7 +184,7 @@ namespace Authentication.Host.Controllers
         {
             try
             {
-                var result = await _authenticationAppService.UpdateUserAsync(newUser, userCode);
+                var result = await _authenticationAppService.UpdateUserAsync(newUser, userCode,CurrentTenantId);
 
                 return Ok(result);
             }
@@ -244,7 +244,7 @@ namespace Authentication.Host.Controllers
         {
             try
             {
-                var result = await _authenticationAppService.ResetPassword(firestLogInDto);
+                var result = await _authenticationAppService.ResetPassword(firestLogInDto, CurrentTenantId);
                 if (!result.IsAuthenticated)
                     return BadRequest(new ErrorModel
                     {
@@ -268,7 +268,7 @@ namespace Authentication.Host.Controllers
             if (!user.IsInRole("SuperAdmin")) return Forbid();
             try
             {
-                var result = await _authenticationAppService.UserFakeDeleteAsync(dto);
+                var result = await _authenticationAppService.UserFakeDeleteAsync(dto, CurrentTenantId);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -451,6 +451,18 @@ namespace Authentication.Host.Controllers
 
             return Ok(result);
         }
+        protected int CurrentTenantId
+        {
+            get
+            {
+                var tenantClaim = HttpContext.User.FindFirst("tenant_id")?.Value;
+                if (string.IsNullOrEmpty(tenantClaim))
+                    throw new UnauthorizedAccessException("TenantId claim missing.");
+                if (!int.TryParse(tenantClaim, out int tenantId))
+                    throw new UnauthorizedAccessException("TenantId claim is not a valid integer.");
 
+                return int.Parse(tenantClaim);
+            }
+        }
     }
 }

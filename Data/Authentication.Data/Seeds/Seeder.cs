@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Authentication.Domain.Models;
+using Authentication.Data.DbContext;
 
 namespace Authentication.Data.Seeds
 {
@@ -164,6 +165,29 @@ namespace Authentication.Data.Seeds
                 await roleManager.CreateAsync(new IdentityRole(superAdminRole));
             }
         }
+        
+        public static async Task SeedTenantAsync(IServiceProvider serviceProvider)
+        {
+            var tenants = Enum.GetNames(typeof(Infrastructure.Domain.Consts.Tenant));
+
+            var context = serviceProvider.GetRequiredService<ApplicationDbContext>();
+            
+            foreach (var tenant in tenants)
+            {
+                var exists = await context.Tenants.AnyAsync(t => t.Name == tenant);
+                if (!exists)
+                {
+                    context.Tenants.Add(new Tenant
+                    {
+                        Name = tenant
+                    });
+                }
+            }
+            await context.SaveChangesAsync();
+
+        }
+                    
+
     }
 
 }
