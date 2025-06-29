@@ -125,7 +125,7 @@ app.UseCors("AllowAll");
 
 app.UseAuthentication();
 
-app.UseMiddleware<TenantMiddleware>();
+//app.UseMiddleware<TenantMiddleware>();
 
 app.UseAuthorization();
 

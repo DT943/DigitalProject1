@@ -74,7 +74,7 @@ var languageServiceUrl = builder.Configuration["Kestrel:Endpoints:MyHttpEndpoint
 
 builder.Services.AddHttpClient<ILanguageApiClient, LanguageApiClient>(client =>
 {
-    client.BaseAddress = new Uri(languageServiceUrl); // Replace with actual URL
+    client.BaseAddress = new Uri(languageServiceUrl);
 });
 
 

@@ -10,10 +10,23 @@
         {
             var path = context.Request.Path.Value;
 
-            // Exclude /SearchRequest (case-insensitive match)
-            if (path.Equals("/SearchRequest", StringComparison.OrdinalIgnoreCase))
+            // Define case-insensitive exclusions
+            var excludedPaths = new[]
             {
-                await _next(context); // skip tenant check
+                "/SearchRequest",
+                "/AirPort",              
+            };
+
+            // Also allow /AirPort/{id}
+            if (path.StartsWith("/AirPort/", StringComparison.OrdinalIgnoreCase))
+            {
+                await _next(context);
+                return;
+            }
+
+            if (excludedPaths.Any(p => path.Equals(p, StringComparison.OrdinalIgnoreCase)))
+            {
+                await _next(context);
                 return;
             }
 

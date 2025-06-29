@@ -60,7 +60,7 @@ namespace BookingEngine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AirPorts");
+                    b.ToTable("AirPorts", (string)null);
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.AirPortTranslation", b =>
@@ -97,7 +97,7 @@ namespace BookingEngine.Data.Migrations
 
                     b.HasIndex("AirPortId");
 
-                    b.ToTable("AirPortTranslations");
+                    b.ToTable("AirPortTranslations", (string)null);
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.SearchRequest", b =>
@@ -150,7 +150,7 @@ namespace BookingEngine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SearchRequests");
+                    b.ToTable("SearchRequests", (string)null);
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.AirPortTranslation", b =>

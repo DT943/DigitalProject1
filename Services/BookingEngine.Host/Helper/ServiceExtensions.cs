@@ -5,6 +5,7 @@ using BookingEngine.Application.AirPortAppService.Validations;
 using BookingEngine.Application.AuditAppService;
 using BookingEngine.Application.AuditAppService.Dtos;
 using BookingEngine.Application.AuditAppService.Validations;
+using BookingEngine.Application.Filters;
 using BookingEngine.Domain.Models;
 using Sieve.Services;
 
@@ -22,6 +23,9 @@ namespace BookingEngine.Host.Helper
             services.AddTransient<SearchRequestValidator>();
 
 
+            services.AddScoped<ISieveProcessor, BookingEngineFilters>();
+            services.AddSingleton<ISieveConfiguration, BookingEngineFiltersConfiguration>();
+
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -30,7 +34,7 @@ namespace BookingEngine.Host.Helper
             });
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
-            services.AddScoped<ISieveProcessor, SieveProcessor>();
+            //services.AddScoped<ISieveProcessor, SieveProcessor>();
 
         }
     }
