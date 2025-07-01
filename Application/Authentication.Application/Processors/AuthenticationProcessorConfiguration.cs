@@ -22,6 +22,7 @@ namespace Authentication.Application.Processors
             mapper.Property<Domain.Models.ApplicationUser>(p => p.IsLocked).CanFilter().CanSort().HasName("islocked");
             mapper.Property<Domain.Models.ApplicationUser>(p => p.Department).CanFilter().CanSort().HasName("department");
             mapper.Property<Domain.Models.ApplicationUser>(p => p.Code).CanFilter().CanSort().HasName("code");
+            mapper.Property<Domain.Models.ApplicationUser>(p => p.Search).CanFilter();
 
         }
     }

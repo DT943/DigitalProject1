@@ -9,6 +9,7 @@ namespace Authentication.Application.Dtos
 {
     public class DepartmentGetDto
     {
+        public int Id { get; set; }
 
         [MaxLength(100)]
         public string Code { get; set; }
@@ -21,6 +22,8 @@ namespace Authentication.Application.Dtos
     }
     public class DepartmentFakeDeleteDto
     {
+        public int Id { get; set; }
+
         public string Code { get; set; }
 
         public bool IsDeleted { get; set; }

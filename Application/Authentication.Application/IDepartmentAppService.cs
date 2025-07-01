@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Authentication.Application.Dtos;
+using Sieve.Models;
 
 namespace Authentication.Application
 {
@@ -14,8 +15,8 @@ namespace Authentication.Application
         public Task<DepartmentGetDto> GetByCode(string code);
         public Task<DepartmentGetDto> Get(int id);
 
-        public Task<DepartmentGetDto> Update(CreateDepartmentDto update);
-        public Task<List<DepartmentGetDto>> GetAll();
+        public Task<DepartmentGetDto> Update(UpdateDepartmentDto update);
+        public Task<PaginatedResult<DepartmentGetDto>> GetAll(SieveModel sieveModel);
         public Task<DepartmentGetDto> FakeDelete(bool delete, int id);
 
     }

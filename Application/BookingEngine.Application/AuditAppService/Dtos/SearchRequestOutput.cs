@@ -8,9 +8,9 @@ namespace BookingEngine.Application.AuditAppService.Dtos
 {
     public class SearchRequestGetDto
     {
-        public string Origin { get; set; }
+        public int OriginId { get; set; }
 
-        public string Destination { get; set; }
+        public int DestinationId { get; set; }
 
         public DateTime Date { get; set; }
 
@@ -26,6 +26,15 @@ namespace BookingEngine.Application.AuditAppService.Dtos
         public string FlightType { get; set; }
 
         public string Pos { get; set; }
+        public DateTime CreatedAt { get; set; }
+
+        public float ExecutionTime { get; set; }
+
+        public string IpAddress { get; set; }
+
+        public string UserAgent { get; set; }
+
+
 
 
     }

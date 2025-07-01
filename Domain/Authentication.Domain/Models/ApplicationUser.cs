@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Sieve.Attributes;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using static Infrastructure.Domain.Consts;
 
 namespace Authentication.Domain.Models
@@ -44,6 +45,9 @@ namespace Authentication.Domain.Models
         public bool IsDeleted { get; set; } = false;
         public int OTPUsageCount { get; set; } = 0;
         public int TenantId { get; set; }
+        [NotMapped]
+        public string Search { get; set; }
+
 
     }
 

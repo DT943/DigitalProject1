@@ -23,6 +23,10 @@ namespace Authentication.Application.Dtos
                 .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.DepartmentName))
                 .ForMember(dest => dest.ParentDepartmentName, opt => opt.MapFrom(src => src.ParentDepartmentName));
 
+            CreateMap<UpdateDepartmentDto, Department>()
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.DepartmentName))
+                .ForMember(dest => dest.ParentDepartmentName, opt => opt.MapFrom(src => src.ParentDepartmentName));
+
             // Additional mapping for DepartmentFakeDeleteDto
             CreateMap<DepartmentFakeDeleteDto, Department>()
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Code))

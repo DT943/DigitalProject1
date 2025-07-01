@@ -18,6 +18,5 @@ namespace BookingEngine.Domain.Models
 
         public ICollection<AirPortTranslation> AirPortTranslations { get; set; }
 
-
     }
 }

@@ -14,5 +14,14 @@ namespace Authentication.Application.Dtos
         [MaxLength(100)]
         public string? ParentDepartmentName { get; set; }
     }
+    public class UpdateDepartmentDto
+    {
+        public int Id { get; set; }
+        [MaxLength(100)]
+        public string DepartmentName { get; set; }
+        [MaxLength(100)]
+        public string? ParentDepartmentName { get; set; }
+    }
+
 
 }

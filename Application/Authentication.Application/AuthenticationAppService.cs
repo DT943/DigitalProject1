@@ -565,21 +565,60 @@ namespace Authentication.Application
                 ExpiresOn = existuser.OTPExpiration,
             };
         }
-        public async Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel, int CurrentTenantId)
+        public async Task<UserDashboardResultDto> GetAllUsersAsync(SieveModel sieveModel, int CurrentTenantId)
         {
-            var query = _userManager.Users
-                .Where(u => u.TenantId == CurrentTenantId)
-                .AsQueryable();
+
+            var allUsers = _userManager.Users.Where(u => u.TenantId == CurrentTenantId).AsQueryable();
+
+            // --- User Statistics ---
+            var totalUsers = await allUsers.CountAsync();
+            var activeUsers = await allUsers.CountAsync(u => u.IsActive);
+            var inactiveUsers = totalUsers - activeUsers;
+            var deletedUsers = await allUsers.CountAsync(u => u.IsDeleted);
+            var frozenUsers = await allUsers.CountAsync(u => u.IsFrozed);
+            var lockedUsers = await allUsers.CountAsync(u => u.IsLocked);
+
+            var statistics = new UserStatisticsDto
+            {
+                TotalUsers = totalUsers,
+                ActiveUsers = activeUsers,
+                InactiveUsers = inactiveUsers,
+                DeletedUsers = deletedUsers,
+                FrozenUsers = frozenUsers,
+                LockedUsers = lockedUsers
+            };
+            //Smart Filter 
+
+            if (!string.IsNullOrEmpty(sieveModel.Filters))
+            {
+                var filters = sieveModel.Filters.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                var searchFilter = filters.FirstOrDefault(f => f.Trim().StartsWith("search@=", StringComparison.OrdinalIgnoreCase));
+
+                if (searchFilter != null)
+                {
+                    var searchTerm = searchFilter.Split(new[] { "search@=" }, StringSplitOptions.None)[1].Trim().ToLower();
+
+                    allUsers = allUsers.Where(u =>
+                        u.FirstName.ToLower().Contains(searchTerm) ||
+                        u.LastName.ToLower().Contains(searchTerm) ||
+                        u.NormalizedEmail.ToLower().Contains(searchTerm));
+
+                    filters.Remove(searchFilter);
+                    sieveModel.Filters = string.Join(',', filters); // keep other filters
+                }
+            }
+
 
             // Apply filter and sort only
-            query = _sieveProcessor.Apply(sieveModel, query, applyPagination: false);
+            var filteredQuery = _sieveProcessor.Apply(sieveModel, allUsers, applyPagination: false);
 
-            var totalCount = await query.CountAsync();
+            var totalCount = await filteredQuery.CountAsync();
 
             // Apply pagination only
-            query = _sieveProcessor.Apply(sieveModel, query, applyFiltering: false, applySorting: false);
-
-            var users = await query.ToListAsync();
+            var pagedQuery = _sieveProcessor.Apply(sieveModel, filteredQuery, applyFiltering: false, applySorting: false);
+            
+            var users = await pagedQuery.ToListAsync();
 
             var userDtos = new List<AuthenticationGetDto>();
 
@@ -637,14 +676,22 @@ namespace Authentication.Application
 
                 userDtos.Add(authDto);
             }
-            return new PaginatedResult<AuthenticationGetDto>
+            var paginatedResult = new PaginatedResult<AuthenticationGetDto>
             {
                 Items = userDtos,
                 TotalCount = totalCount,
                 Page = sieveModel.Page ?? 1,
                 PageSize = sieveModel.PageSize ?? totalCount
             };
-         }
+
+            return new UserDashboardResultDto
+            {
+                PaginatedUsers = paginatedResult,
+                Statistics = statistics
+            };
+        }
+      
+        
         public async Task<IEnumerable<string>> GetAllRolesAsync()
         {
             return await _roleManager.Roles.Select(r => r.Name).ToListAsync();
@@ -1194,7 +1241,6 @@ namespace Authentication.Application
                 Code = user.Code
             };
         }
-
 
         public async Task<AuthenticationModelWithDetails> AddLoyaltyUserAsync(AddUserDto newuser)
         {
