@@ -36,5 +36,20 @@ namespace Authentication.Application.Dtos
         public int Page { get; set; }
         public int PageSize { get; set; }
     }
+    public class UserStatisticsDto
+    {
+        public int TotalUsers { get; set; }
+        public int ActiveUsers { get; set; }
+        public int InactiveUsers { get; set; }
+        public int DeletedUsers { get; set; }
+        public int FrozenUsers { get; set; }
+        public int LockedUsers { get; set; }
+    }
+    public class UserDashboardResultDto
+    {
+        public PaginatedResult<AuthenticationGetDto> PaginatedUsers { get; set; }
+        public UserStatisticsDto Statistics { get; set; }
+    }
+
 
 }

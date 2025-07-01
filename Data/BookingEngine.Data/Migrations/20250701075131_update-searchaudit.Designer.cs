@@ -4,6 +4,7 @@ using BookingEngine.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingEngine.Data.Migrations
 {
     [DbContext(typeof(BookingEngineDbContext))]
-    partial class BookingEngineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250701075131_update-searchaudit")]
+    partial class updatesearchaudit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +63,7 @@ namespace BookingEngine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AirPorts", (string)null);
+                    b.ToTable("AirPorts");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.AirPortTranslation", b =>
@@ -97,7 +100,7 @@ namespace BookingEngine.Data.Migrations
 
                     b.HasIndex("AirPortId");
 
-                    b.ToTable("AirPortTranslations", (string)null);
+                    b.ToTable("AirPortTranslations");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.SearchRequest", b =>
@@ -162,7 +165,7 @@ namespace BookingEngine.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SearchRequests", (string)null);
+                    b.ToTable("SearchRequests");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.AirPortTranslation", b =>

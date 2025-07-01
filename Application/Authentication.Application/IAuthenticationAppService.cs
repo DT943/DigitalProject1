@@ -17,7 +17,7 @@ namespace Authentication.Application
         //done
         public Task<AuthenticationModel> GetTokenAsync(LogInModel model);
         //done 
-        public Task<PaginatedResult<AuthenticationGetDto>> GetAllUsersAsync(SieveModel sieveModel, int CurrentTenantId);
+        public Task<UserDashboardResultDto> GetAllUsersAsync(SieveModel sieveModel, int CurrentTenantId);
         //done
         public Task<AuthenticationGetDto> GetUserByCodeAsync(string code, int CurrentTenantId);
         //No tenant

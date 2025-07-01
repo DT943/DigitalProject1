@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Infrastructure.Domain.Models;
 
 namespace BookingEngine.Domain.Models
@@ -6,10 +7,11 @@ namespace BookingEngine.Domain.Models
     public class SearchRequest : BasicEntity
     {
         [Required]
-        public string Origin { get; set; }
+        public int OriginId { get; set; }
 
         [Required]
-        public string Destination { get; set; }
+        public int DestinationId { get; set; }
+
 
         [Required]
         public DateTime Date { get; set; }
@@ -30,6 +32,18 @@ namespace BookingEngine.Domain.Models
 
         [Required]
         public string Pos { get; set; }
+        [Required]
+
+        public DateTime CreatedAt { get; set; }
+        [Required]
+
+        public float ExecutionTime { get; set; }
+        [Required]
+
+        public string IpAddress { get; set; }
+
+        public string UserAgent { get; set; }
+
     }
 
 }

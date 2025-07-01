@@ -347,10 +347,10 @@ namespace Authentication.Host.Controllers
             }
         }
 
-        [HttpPut("UpdateDepartment/{Code}")]
+        [HttpPut("UpdateDepartment")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-        public async Task<IActionResult> UpdateDepartment(CreateDepartmentDto department)
+        public async Task<IActionResult> UpdateDepartment(UpdateDepartmentDto department)
         {
 
             var user = HttpContext.User;
@@ -366,15 +366,15 @@ namespace Authentication.Host.Controllers
                 return BadRequest(new { Message = ex.Message });
             }
         }
-        [HttpGet("c")]
+        [HttpGet("GetAllDepartment")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
-        public async Task<IActionResult> GetAllDepartment()
+        public async Task<IActionResult> GetAllDepartment([FromQuery] SieveModel sieveModel)
         {
             var user = HttpContext.User;
             if (!user.IsInRole("SuperAdmin")) return Forbid();
 
-            var result = await _departmentAppService.GetAll();
+            var result = await _departmentAppService.GetAll(sieveModel);
             return Ok(result);
         }
 

@@ -14,6 +14,8 @@ using CWCore.Application.LanguageAppService;
 using Infrastructure.Application;
 using Infrastructure.Application.Exceptions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
@@ -25,7 +27,7 @@ namespace BookingEngine.Application.AirPortAppService
     {
         //private readonly ILanguageAppService _languageAppService;
         private readonly ILanguageApiClient _languageApiClient;
-
+        BookingEngineDbContext _serviceDbContext;
         public AirPortAppService(
             BookingEngineDbContext serviceDbContext,
             IMapper mapper,
@@ -36,11 +38,34 @@ namespace BookingEngine.Application.AirPortAppService
             : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
             {
                 _languageApiClient = languageApiClient;
+                _serviceDbContext = serviceDbContext;
+
             }
 
         
         public override async Task<AirPortGetDto> Create(AirPortCreateDto create)
         {
+            var existing = await _serviceDbContext.AirPorts
+                    .IgnoreQueryFilters()
+                    .FirstOrDefaultAsync(x => x.IATACode.ToUpper() == create.IATACode.Trim().ToUpper() && !x.IsDeleted);
+
+            if (existing != null)
+            {
+                var modelState = new ModelStateDictionary();
+                modelState.AddModelError("iataCode", "An airport with this IATA code already exists.");
+
+                var problemDetails = new ValidationProblemDetails(modelState)
+                {
+                    Status = 400,
+                    Title = "One or more validation errors occurred.",
+                    Type = "https://tools.ietf.org/html/rfc9110#section-15.5.1"
+                };
+
+                throw new CustomValidationException(problemDetails);
+            }
+
+
+            return await base.Create(create);
             // Get active language codes from Language Service
             //var activeLanguageCodes = await _languageApiClient.GetActiveLanguageCodesAsync();
 
@@ -49,10 +74,9 @@ namespace BookingEngine.Application.AirPortAppService
 
             //if (missingLangs.Any())
             //{
-             //   throw new ValidationException($"Missing translations for languages: {string.Join(", ", missingLangs)}");
+            //   throw new ValidationException($"Missing translations for languages: {string.Join(", ", missingLangs)}");
             //}
 
-            return await base.Create(create);
         }
 
         public override async Task<AirPortGetDto> Update(AirPortUpdateDto update)

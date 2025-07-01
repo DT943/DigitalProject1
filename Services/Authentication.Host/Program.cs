@@ -51,6 +51,7 @@ builder.Services
         options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
     });
 
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -61,7 +62,33 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader(); // Allows any headers
         });
 });
+/*
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowCustom", policy =>
+    {
+        var env = builder.Environment;
 
+        if (env.IsDevelopment())
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        }
+        else
+        {
+            policy.WithOrigins(
+                    "https://admin.flycham.com", // e.g. "https://www.myfrontend.com"
+                    "http://admin.flycham.com"   // for non-HTTPS if needed
+                )
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials(); // Only if using cookies or auth headers
+        }
+    });
+});
+
+*/
 
 builder.Logging.AddConsole();
 builder.Services.AddControllers();
@@ -122,10 +149,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseCors("AllowAll");
+//app.UseCors("AllowCustom");
 
 app.UseAuthentication();
 
-//app.UseMiddleware<TenantMiddleware>();
+app.UseMiddleware<TenantMiddleware>();
 
 app.UseAuthorization();
 
