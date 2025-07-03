@@ -20,6 +20,8 @@ namespace BookingEngine.Application.Filters
             mapper.Property<AirPort>(p => p.IATACode)
                 .CanFilter().CanSort().HasName("iata");
 
+
+
         }
 
     }
