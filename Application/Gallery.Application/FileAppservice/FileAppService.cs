@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using FluentValidation.Results;
 using System.DirectoryServices.ActiveDirectory;
 using Shell32;
+using Gallery.Application.OCRExternalAppService;
 
 namespace Gallery.Application.FileAppservice
 {
@@ -26,11 +27,14 @@ namespace Gallery.Application.FileAppservice
         IHttpContextAccessor _httpContextAccessor;
         GalleryDbContext _serviceDbContext;
         FileValidator _fileValidator;
-        public FileAppService(GalleryDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, FileValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
+        IOCRExternalAppService _ocrExternalAppService;
+
+        public FileAppService(GalleryDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, FileValidator validations, IHttpContextAccessor httpContextAccessor, IOCRExternalAppService ocrExternalAppService) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             _serviceDbContext = serviceDbContext;
             _fileValidator = validations;
+            _ocrExternalAppService = ocrExternalAppService;
         }
 
         public override async Task<FileGetDto> Create(FileCreateDto createDto)
@@ -171,8 +175,6 @@ namespace Gallery.Application.FileAppservice
 
         public async Task<List<FileGetDto>> CreateMultipleFiles(MultiFileCreateDto multiFileCreateDto)
         {
-        
-             
             var validationResult = await _fileValidator.ValidateAsync(multiFileCreateDto, options => options.IncludeRuleSets("multiCreate", "default"));
             if (!validationResult.IsValid)
             {
@@ -197,15 +199,72 @@ namespace Gallery.Application.FileAppservice
             }
 
             var results = new List<FileGetDto>();
-
-            foreach (var fileDto in multiFileCreateDto.Files)
+            try
             {
-                fileDto.GalleryCode = null;
-                fileDto.GalleryId = gallery.Id; 
-                var result = await Create(fileDto);
-                results.Add(result);
-                
+                foreach (var fileDto in multiFileCreateDto.Files)
+                {
+                    fileDto.GalleryCode = null;
+                    fileDto.GalleryId = gallery.Id;
+                    var result = await Create(fileDto);
+                    results.Add(result);
+                }
+            }
+            catch (Exception ex) {
+                // Log the exception if needed
+                throw new ValidationException(new List<ValidationFailure> {
+                           new ValidationFailure("File", $"An error occurred during file creation or notification")
+                    });
+            }
 
+            return results;
+        }
+
+        public async Task<List<FileWithOCRGetDto>> CreateMultipleImages(MultiFileCreateDto multiFileCreateDto)
+        {
+            var validationResult = await _fileValidator.ValidateAsync(multiFileCreateDto, options => options.IncludeRuleSets("multiCreate", "default"));
+            if (!validationResult.IsValid)
+            {
+                throw new ValidationException(validationResult.Errors);
+            }
+
+            if (multiFileCreateDto == null || multiFileCreateDto.Files == null || !multiFileCreateDto.Files.Any())
+            {
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "No file data provided.") });
+
+            }
+
+            if (string.IsNullOrEmpty(multiFileCreateDto.GalleryCode))
+            {
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", "Gallery code is required.") });
+            }
+            var gallery = await _serviceDbContext.Galleries.FirstOrDefaultAsync(g => g.Code.Equals(multiFileCreateDto.GalleryCode));
+
+            if (gallery == null)
+            {
+                throw new ValidationException(new List<ValidationFailure> { new ValidationFailure("File", $"Gallery with code {multiFileCreateDto.GalleryCode} not found.") });
+            }
+
+            var results = new List<FileWithOCRGetDto>();
+            try
+            {
+                foreach (var fileDto in multiFileCreateDto.Files)
+                {
+                    fileDto.GalleryCode = null;
+                    fileDto.GalleryId = gallery.Id;
+                    var result = await Create(fileDto);
+
+                    var result_ocr = _mapper.Map<FileWithOCRGetDto>(result);
+
+                    result_ocr.OcrString = await _ocrExternalAppService.ExtractTextFromUrlAsync(result.FileUrlPath);
+                    results.Add(result_ocr);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception if needed
+                throw new ValidationException(new List<ValidationFailure> {
+                           new ValidationFailure("File", $"An error occurred during file creation or notification")
+                    });
             }
 
             return results;

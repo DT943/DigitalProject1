@@ -12,6 +12,7 @@ using Gallery.Application.FileAppservice.Dtos;
 using Gallery.Application;
 
 using Gallery.Application.GalleryAppService.Processors;
+using Gallery.Application.OCRExternalAppService;
 
 
 namespace Gallery.Host.Helper
@@ -22,6 +23,8 @@ namespace Gallery.Host.Helper
         {
             services.AddTransient<IGalleryAppService, GalleryAppService>();
             services.AddTransient<IFileAppService, FileAppService>();
+
+            services.AddHttpClient<IOCRExternalAppService, OCRExternalAppService>();
 
             services.AddTransient<GalleryValidator>();
             services.AddTransient<FileValidator>();

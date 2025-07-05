@@ -13,6 +13,11 @@ namespace Gallery.Application.FileAppservice.Dtos
         public FileMapperProfile()
         {
             CreateMap<Domain.Models.File, FileGetDto>();
+
+
+            CreateMap<FileGetDto, FileWithOCRGetDto>();
+               // .ForMember(dest => dest.OcrString, opt => opt.MapFrom(src => ""));
+
             CreateMap<FileCreateDto, Domain.Models.File>();
             CreateMap<FileUpdateDto, Domain.Models.File>();
         }

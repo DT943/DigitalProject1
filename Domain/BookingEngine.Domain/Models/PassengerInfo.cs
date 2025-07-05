@@ -39,6 +39,9 @@ namespace BookingEngine.Domain.Models
         public Telephone Telephone { get; set; }
 
         public Passport Passport { get; set; }
+
+        public List<string> FileUrlPath { get; set; }
+
     }
 
     public class Telephone

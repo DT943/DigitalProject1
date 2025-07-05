@@ -24,6 +24,8 @@ namespace BookingEngine.Application.PassengerInfo.Dtos
         public TelephoneCreateDto Telephone { get; set; }
 
         public PassportCreateDto Passport { get; set; }
+        public List<string> FileUrlPath { get; set; }
+
     }
 
     public class TelephoneCreateDto : IValidatableDto

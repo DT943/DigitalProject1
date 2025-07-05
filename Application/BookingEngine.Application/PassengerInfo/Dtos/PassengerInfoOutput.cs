@@ -24,6 +24,8 @@ namespace BookingEngine.Application.PassengerInfo.Dtos
 
         public TelephoneGetDto Telephone { get; set; }
 
+        public List<string> FileUrlPath { get; set; }
+
         public PassportGetDto Passport { get; set; }
     }
 
