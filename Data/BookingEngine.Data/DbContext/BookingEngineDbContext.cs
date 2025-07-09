@@ -28,7 +28,27 @@ namespace BookingEngine.Data.DbContext
         public DbSet<Domain.Models.AirPort> AirPorts { get; set; }
 
         public DbSet<AirPortTranslation> AirPortTranslations { get; set; }
+
+
+        public DbSet<POS> POSs { get; set; }
+
+        public DbSet<POSTranslation> POSTranslations { get; set; }
+
+
+        public DbSet<PassengerInfo> PassengerInfos { get; set; }
+        public DbSet<Telephone> Telephones { get; set; }
+        public DbSet<Passport> Passports { get; set; }
+        public DbSet<Domain.Models.Reservation> Reservations { get; set; }
+        public DbSet<Domain.Models.Contact> Contacts { get; set; }
+
+
         public DbSet<Domain.Models.SearchRequest> SearchRequests { get; set; }
+        public DbSet<Domain.Models.OTAUser> OTAUsers { get; set; }
+        public DbSet<Domain.Models.StripeResult> StripeResults { get; set; }
+
+
+        
+
 
     }
 }

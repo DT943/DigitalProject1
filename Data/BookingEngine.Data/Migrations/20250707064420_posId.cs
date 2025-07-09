@@ -5,7 +5,7 @@
 namespace BookingEngine.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class production : Migration
+    public partial class posId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

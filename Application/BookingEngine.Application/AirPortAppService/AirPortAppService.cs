@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Infrastructure.Application.BasicDto;
 
 namespace BookingEngine.Application.AirPortAppService
 {
@@ -41,8 +42,97 @@ namespace BookingEngine.Application.AirPortAppService
                 _serviceDbContext = serviceDbContext;
 
             }
+        public override async Task<PaginatedResult<AirPortGetDto>> GetAll(SieveModel input)
+        {
+            // Step 1: Extract custom filters
+            var filters = input?.Filters?
+                .Split(';', StringSplitOptions.RemoveEmptyEntries)
+                .ToList() ?? new List<string>();
 
-        
+            string languageCode = null;
+            string searchTerm = null;
+
+            // Extract language filter
+            var languageFilter = filters.FirstOrDefault(f => f.StartsWith("language==", StringComparison.OrdinalIgnoreCase));
+            if (languageFilter != null)
+            {
+                languageCode = languageFilter.Split("==")[1].Trim();
+                filters.Remove(languageFilter);
+            }
+
+            // Extract smart search filter
+            var searchFilter = filters.FirstOrDefault(f => f.StartsWith("search@=", StringComparison.OrdinalIgnoreCase));
+            if (searchFilter != null)
+            {
+                searchTerm = searchFilter.Split(new[] { "search@=" }, StringSplitOptions.None)[1].Trim().ToLower();
+                filters.Remove(searchFilter);
+            }
+
+            // Put remaining filters back for Sieve to process
+            input.Filters = string.Join(";", filters);
+
+            // Step 2: Start query with includes
+            IQueryable<Domain.Models.AirPort> query = base.QueryExcuter(input)
+                .Include(x => x.AirPortTranslations);
+
+            // Step 3: Apply language and smart search filters
+            if (!string.IsNullOrEmpty(languageCode))
+            {
+                query = query.Where(a => a.AirPortTranslations.Any(t => t.LanguageCode == languageCode));
+
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    query = query.Where(a =>
+                        a.AirPortTranslations.Any(t =>
+                            t.LanguageCode == languageCode &&
+                            (
+                                t.City.ToLower().Contains(searchTerm) ||
+                                t.Country.ToLower().Contains(searchTerm) ||
+                                t.AirPortName.ToLower().Contains(searchTerm)
+                            )));
+                }
+
+                // Project translations to only the matched language
+                query = query.Select(a => new Domain.Models.AirPort
+                {
+                    Id = a.Id,
+                    IATACode = a.IATACode,
+                    Code = a.Code,
+                    CreatedBy = a.CreatedBy,
+                    CreatedDate = a.CreatedDate,
+                    ModifiedBy = a.ModifiedBy,
+                    ModifiedDate = a.ModifiedDate,
+                    IsDeleted = a.IsDeleted,
+                    AirPortTranslations = a.AirPortTranslations
+                        .Where(t => t.LanguageCode == languageCode)
+                        .ToList()
+                });
+            }
+            else if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(a =>
+                    a.AirPortTranslations.Any(t =>
+                        t.City.ToLower().Contains(searchTerm) ||
+                        t.Country.ToLower().Contains(searchTerm) ||
+                        t.AirPortName.ToLower().Contains(searchTerm)));
+            }
+
+            // Step 4: Execute and apply pagination via Sieve
+            var resultList = await query.AsNoTracking().ToListAsync();
+            var filteredForCount = _processor.Apply(input, resultList.AsQueryable(), applyPagination: false);
+            var filtered = _processor.Apply(input, filteredForCount);
+            var count = filteredForCount.Count();
+
+            return new PaginatedResult<AirPortGetDto>
+            {
+                Items = _mapper.Map<List<AirPortGetDto>>(filtered),
+                TotalCount = count,
+                Page = input.Page ?? 1,
+                PageSize = input.PageSize ?? count
+            };
+        }
+
+
         public override async Task<AirPortGetDto> Create(AirPortCreateDto create)
         {
             var existing = await _serviceDbContext.AirPorts
@@ -111,48 +201,9 @@ namespace BookingEngine.Application.AirPortAppService
         */
         protected override IQueryable<Domain.Models.AirPort> QueryExcuter(SieveModel input)
         {
-            var languageFilter = input?.Filters?
-                .Split(';', StringSplitOptions.RemoveEmptyEntries)
-                .FirstOrDefault(f => f.StartsWith("language=="));
-
-            string languageCode = null;
-            if (languageFilter != null)
-            {
-                languageCode = languageFilter.Split("==")[1];
-
-                input.Filters = string.Join(";", input.Filters
-                    .Split(';', StringSplitOptions.RemoveEmptyEntries)
-                    .Where(f => !f.StartsWith("language==")));
-            }
-
-            IQueryable<Domain.Models.AirPort> query = base.QueryExcuter(input)
-                .Include(x => x.AirPortTranslations);
-
-            if (!string.IsNullOrEmpty(languageCode))
-            {
-                // First filter by translation existence
-                query = query.Where(a => a.AirPortTranslations.Any(t => t.LanguageCode == languageCode));
-
-                // Then use Select to trim the AirPortTranslations list to only the matching one
-                query = query.Select(a => new Domain.Models.AirPort
-                {
-                    Id = a.Id,
-                    IATACode = a.IATACode,
-                    Code = a.Code,
-                    CreatedBy = a.CreatedBy,
-                    CreatedDate = a.CreatedDate,
-                    ModifiedBy = a.ModifiedBy,
-                    ModifiedDate = a.ModifiedDate,
-                    IsDeleted = a.IsDeleted,
-                    AirPortTranslations = a.AirPortTranslations
-                        .Where(t => t.LanguageCode == languageCode)
-                        .ToList()
-                });
-            }
-
-            return query;
-            //return base.QueryExcuter(input)
-            //  .Include(x => x.AirPortTranslations);
+            
+            return base.QueryExcuter(input)
+              .Include(x => x.AirPortTranslations);
         }
     }
 

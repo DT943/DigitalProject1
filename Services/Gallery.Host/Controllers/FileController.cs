@@ -50,6 +50,16 @@ namespace Gallery.Host.Controllers
             }
             return await _appService.CreateMultipleFiles(createDto);
         }
+        [AllowAnonymous]
+        [RequestSizeLimit(1_000_000_000)] // 1GB
+        [RequestFormLimits(MultipartBodyLengthLimit = 1_000_000_000)]
+        [HttpPost("MultiImagesOcr")]
+        public async Task<ActionResult<List<FileWithOCRGetDto>>> CreateMultipleImages([FromForm] MultiFileCreateDto createDto)
+        {
+            //dev "Gallery_7d139144-efd4-4c5f-96ab-a3aa4a7e3a12";//
+            createDto.GalleryCode = "Gallery_bbe8a568-2b1d-4499-a2fe-02f218871365"; //production Passport GalleryCode
+            return await _appService.CreateMultipleImages(createDto);
+        }
 
         [HttpGet("getby-galleryid/{galleryId}")]
         public virtual async Task<ActionResult<List<FileGetDto>>> GetFilesByGalleryId(int galleryId)

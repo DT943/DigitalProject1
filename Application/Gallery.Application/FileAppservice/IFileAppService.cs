@@ -19,6 +19,7 @@ namespace Gallery.Application.FileAppservice
         public Task<IEnumerable<FileGetDto>> GetRelatedFileGalleryByCodeAsync(string Code);
 
         public Task<List<FileGetDto>> CreateMultipleFiles(MultiFileCreateDto multiFileCreateDto);
+        public Task<List<FileWithOCRGetDto>> CreateMultipleImages(MultiFileCreateDto multiFileCreateDto);
 
     }
 }

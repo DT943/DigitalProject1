@@ -14,7 +14,12 @@
             var excludedPaths = new[]
             {
                 "/SearchRequest",
-                "/AirPort",              
+                "/AirPort",
+                "/Contact/CreateListPassenger",
+                "/Payment/Webhook",
+                "/Payment/Checkout",
+                "/OnHoldBooking",
+                "/InquirePNR"
             };
 
             // Also allow /AirPort/{id}

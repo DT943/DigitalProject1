@@ -25,5 +25,8 @@ namespace BookingEngine.Application.AirPortAppService.Dtos
         public string Country { get; set; }
 
         public string AirPortName { get; set; }
+
+        public bool IsDeleted { get; set; }
+
     }
 }

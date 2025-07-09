@@ -19,6 +19,10 @@ namespace BookingEngine.Application.Filters
             // Filter on parent AirPort using a computed shadow property
             mapper.Property<AirPort>(p => p.IATACode)
                 .CanFilter().CanSort().HasName("iata");
+            mapper.Property<OTAUser>(p => p.POS)
+                .CanFilter().CanSort().HasName("pos");
+
+
 
         }
 
