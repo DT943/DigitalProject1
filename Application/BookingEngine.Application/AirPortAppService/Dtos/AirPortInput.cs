@@ -25,7 +25,7 @@ namespace BookingEngine.Application.AirPortAppService.Dtos
         [Required]
         [StringLength(10, MinimumLength = 3)]
         public string IATACode { get; set; }
-        public ICollection<AirPortTranslationCreateDto> AirPortTranslations { get; set; }
+        public ICollection<AirPortTranslationUpdateDto> AirPortTranslations { get; set; }
 
     }
 

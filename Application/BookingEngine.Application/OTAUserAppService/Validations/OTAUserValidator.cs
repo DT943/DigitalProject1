@@ -18,32 +18,55 @@ namespace BookingEngine.Application.OTAUserAppService.Validations
             {
                 When(x => x is OTAUserCreateDto, () =>
                 {
-                    RuleFor(x => ((OTAUserCreateDto)x).POS)
+                    RuleFor(x => ((OTAUserCreateDto)x).POSId)
                         .NotEmpty().WithMessage("POS is required.");
 
                     RuleFor(x => ((OTAUserCreateDto)x).UserName)
                         .NotEmpty().WithMessage("UserName is required.")
-                        .MaximumLength(100);
+                        .MaximumLength(100)
+                        .Must(userName => userName == userName.ToUpper())
+                        .WithMessage("UserName must be in uppercase.");
 
                     RuleFor(x => ((OTAUserCreateDto)x).Password)
                         .NotEmpty().WithMessage("Password is required.")
                         .MaximumLength(100);
+
+                    RuleFor(x => ((OTAUserCreateDto)x).CompanyName)
+                        .NotEmpty().WithMessage("CompanyName is required.")
+                        .MaximumLength(100)
+                        .Must(companyName => companyName == companyName.ToUpper())
+                        .WithMessage("CompanyName must be in uppercase.");
+
 
                 });
             });
 
             RuleSet("update", () =>
             {
-                RuleFor(x => ((OTAUserUpdateDto)x).POS)
+                RuleFor(x => ((OTAUserUpdateDto)x).POSId)
                     .NotEmpty().WithMessage("POS is required.");
 
                 RuleFor(x => ((OTAUserUpdateDto)x).UserName)
                     .NotEmpty().WithMessage("UserName is required.")
-                    .MaximumLength(100);
+                    .MaximumLength(100)
+                    .Must(userName => userName == userName.ToUpper())
+                    .WithMessage("UserName must be in uppercase.");
+
+
 
                 RuleFor(x => ((OTAUserUpdateDto)x).Password)
                     .NotEmpty().WithMessage("Password is required.")
                     .MaximumLength(100);
+
+                RuleFor(x => ((OTAUserUpdateDto)x).CompanyName)
+                    .NotEmpty().WithMessage("CompanyName is required.")
+                    .MaximumLength(100)
+                    .Must(companyName => companyName == companyName.ToUpper())
+                    .WithMessage("CompanyName must be in uppercase.");
+
+
+
+
             });
         }
 

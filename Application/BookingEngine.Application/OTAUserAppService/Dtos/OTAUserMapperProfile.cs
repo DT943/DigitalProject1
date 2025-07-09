@@ -13,6 +13,9 @@ namespace BookingEngine.Application.OTAUserAppService.Dtos
         public OTAUserMapperProfile()
         {
 
+            // Mapping POS to POSGetDto
+            CreateMap<POS, POSGetDto>();
+
             // For Update
             CreateMap<OTAUserUpdateDto, OTAUser>();
 

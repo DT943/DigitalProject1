@@ -13,25 +13,31 @@ namespace BookingEngine.Application.OTAUserAppService.Dtos
     public class OTAUserCreateDto : IValidatableDto
     {
         [Required]
-        public string POS { get; set; }
+        public int POSId { get; set; }
 
         [Required]
         public string UserName { get; set; }
 
         [Required]
         public string Password { get; set; }
+        [Required]
+        public string CompanyName { get; set; }
+
     }
 
     public class OTAUserUpdateDto: IEntityUpdateDto
     {
         [Required]
-        public string POS { get; set; }
+        public int POSId { get; set; }
 
         [Required]
         public string UserName { get; set; }
 
         [Required]
         public string Password { get; set; }
+        [Required]
+        public string CompanyName { get; set; }
+
     }
 
 }

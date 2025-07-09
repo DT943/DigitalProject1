@@ -10,11 +10,14 @@ using Infrastructure.Domain.Models;
 
 namespace BookingEngine.Domain.Models
 {
-    public class PassengerInfo: BasicEntityAndFakeDelete
+    public class PassengerInfo 
     {
+        [Key]
+        public int Id { get; set; }
+
         [Required]
-        [StringLength(10)]
-        public string Type { get; set; }
+        [StringLength(3)]
+        public string PassengerTypeCode { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -25,22 +28,33 @@ namespace BookingEngine.Domain.Models
         public string Surname { get; set; }
 
         [Required]
-        public DateTime BirthDate { get; set; }
+        public DateOnly BirthDate { get; set; }
 
         [Required]
 
         public string CountryCode { get; set; }
+        public List<string>? FileUrlPath { get; set; }
 
 
         [Required]
         [StringLength(10)]
         public string NameTitle { get; set; }
 
-        public Telephone Telephone { get; set; }
 
-        public Passport Passport { get; set; }
+        public int? TelephoneId { get; set; }
+        [ForeignKey("TelephoneId")]
+        public Telephone? Telephone { get; set; }
 
-        public List<string> FileUrlPath { get; set; }
+        public int? PassportId { get; set; }
+        [ForeignKey("PassportId")]
+
+        public Passport? Passport { get; set; }
+
+        public int ContactId { get; set; }
+        [ForeignKey("ContactId")]
+
+        public Contact Contact { get; set; }
+
 
     }
 
@@ -58,9 +72,6 @@ namespace BookingEngine.Domain.Models
         [StringLength(15)]
         public string PhoneNumber { get; set; }
 
-        public int PassengerInfoId { get; set; }
-        [ForeignKey("PassengerInfoId")]
-        public PassengerInfo Passenger { get; set; }
     }
 
     public class Passport
@@ -73,11 +84,11 @@ namespace BookingEngine.Domain.Models
         public string DocID { get; set; }
 
         [Required]
-        public DateTime ExpireDate { get; set; }
+        public DateOnly ExpireDate { get; set; }
 
-        public int PassengerInfoId { get; set; }
-        [ForeignKey("PassengerInfoId")]
-        public PassengerInfo Passenger { get; set; }
     }
 
+
 }
+
+

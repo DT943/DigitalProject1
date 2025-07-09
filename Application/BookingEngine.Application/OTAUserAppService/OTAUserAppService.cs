@@ -12,6 +12,7 @@ using BookingEngine.Data.Migrations;
 using Infrastructure.Application;
 using Infrastructure.Domain.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Sieve.Models;
 using Sieve.Services;
 
@@ -75,6 +76,14 @@ namespace BookingEngine.Application.OTAUserService
             entity = _mapper.Map(update, entity);
 
             return entity;
+        }
+
+
+        protected override IQueryable<Domain.Models.OTAUser> QueryExcuter(SieveModel input)
+        {
+
+            return base.QueryExcuter(input)
+              .Include(x => x.POS);
         }
 
     }

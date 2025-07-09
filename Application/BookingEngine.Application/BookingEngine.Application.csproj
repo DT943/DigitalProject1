@@ -7,9 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="WrappingAppService\EmailAppService\IEmailAppService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Core\Infrastructure.Application\Infrastructure.Application.csproj" />
     <ProjectReference Include="..\..\Data\BookingEngine.Data\BookingEngine.Data.csproj" />
     <ProjectReference Include="..\CWCore.Application\CWCore.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Stripe.net" Version="48.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="WrappingAppService\WrappingAirAvailAppService\Dtos\" />
+    <Folder Include="WrappingAppService\WrappingAirAvailAppService\Validations\" />
+    <Folder Include="WrappingAppService\WrappingAirPriceAppService.cs\Dtos\" />
+    <Folder Include="WrappingAppService\WrappingAirPriceAppService.cs\Validations\" />
+    <Folder Include="WrappingAppService\WrappingBookingAppService\Validations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="WrappingAppService\EmailAppService\IEmailAppService.cs" />
   </ItemGroup>
 
 </Project>
