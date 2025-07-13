@@ -8,7 +8,7 @@ namespace BookingEngine.Application.PaymantAppService.Dtos
 {
     public class StripeInfoDto
     {
-        public int Amount { get; set; }
+        public long Amount { get; set; }
         public string Currency { get; set; }
         public string Description { get; set; }
 

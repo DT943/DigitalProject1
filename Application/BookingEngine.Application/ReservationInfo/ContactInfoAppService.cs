@@ -12,6 +12,8 @@ using Sieve.Services;
 using Microsoft.EntityFrameworkCore;
 using BookingEngine.Application.ReservationInfo.Dtos;
 using BookingEngine.Application.ReservationInfo.Validations;
+using Infrastructure.Application.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookingEngine.Application.ReservationInfo
 {
@@ -22,10 +24,10 @@ namespace BookingEngine.Application.ReservationInfo
         {
         }
 
-
         protected override IQueryable<Domain.Models.Contact> QueryExcuter(SieveModel input)
         {
             return base.QueryExcuter(input)
+                .Include(x=> x.Passengers)
                 .Include(x => x.Passengers).ThenInclude(x => x.Passport)
                 .Include(x => x.Passengers).ThenInclude(x => x.Telephone);
         }

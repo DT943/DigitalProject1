@@ -19,13 +19,13 @@ namespace BookingEngine.Application.PassengerInfo.Dtos
 
         public DateOnly BirthDate { get; set; }
 
-        public string CountryCode { get; set; }
+        public string? CountryCode { get; set; }
 
-        public string NameTitle { get; set; }
+        public string? NameTitle { get; set; }
 
-        public TelephoneCreateDto Telephone { get; set; }
+        public TelephoneCreateDto? Telephone { get; set; }
 
-        public PassportCreateDto Passport { get; set; }
+        public PassportCreateDto? Passport { get; set; }
        // public List<string> FileUrlPath { get; set; }
 
         //public ContactInfoCreateDto ContactInfo { get; set; }
@@ -34,18 +34,18 @@ namespace BookingEngine.Application.PassengerInfo.Dtos
 
     public class TelephoneCreateDto : IValidatableDto
     {
-        public string AreaCityCode { get; set; }
+        public string? AreaCityCode { get; set; }
 
-        public string CountryAccessCode { get; set; }
+        public string? CountryAccessCode { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
     }
 
     public class PassportCreateDto : IValidatableDto
     {
-        public string DocID { get; set; }
-        public DateOnly ExpireDate { get; set; }
+        public string? DocID { get; set; }
+        public DateOnly? ExpireDate { get; set; }
     }
 
 

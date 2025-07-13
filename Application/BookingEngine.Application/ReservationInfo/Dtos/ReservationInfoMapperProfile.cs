@@ -24,7 +24,7 @@ namespace BookingEngine.Application.ReservationInfo.Dtos
 
 
             // For Get (Optional for now)
-            CreateMap<ReservationUpdateDto, Domain.Models.Reservation>();
+            CreateMap<Domain.Models.Reservation,ReservationGetDto>();
             CreateMap<Domain.Models.PassengerInfo, PassengerInfoGetDto>();
             CreateMap<Domain.Models.Telephone, TelephoneGetDto>();
             CreateMap<Domain.Models.Passport, PassportGetDto>();

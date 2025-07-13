@@ -10,6 +10,7 @@ using BookingEngine.Application.OTAUserAppService.Validations;
 using BookingEngine.Data.DbContext;
 using BookingEngine.Data.Migrations;
 using Infrastructure.Application;
+using Infrastructure.Application.Exceptions;
 using Infrastructure.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,24 @@ namespace BookingEngine.Application.OTAUserService
             entity = _mapper.Map(update, entity);
 
             return entity;
+        }
+
+
+        public async Task<OTAUserGetDto> GetByPOS(string pos)
+        {
+            var entity = await _serviceDbContext.OTAUsers
+                .Include(x => x.POS)
+                .FirstOrDefaultAsync(x => x.POS.POSCode == pos);
+
+            return _mapper.Map<OTAUserGetDto>(entity);
+        }
+        public async Task<OTAUserGetDto> GetByPOSId(int posId)
+        {
+            var entity = await _serviceDbContext.OTAUsers
+                .Include(x => x.POS)
+                .FirstOrDefaultAsync(x => x.POSId == posId);
+
+            return _mapper.Map<OTAUserGetDto>(entity);
         }
 
 

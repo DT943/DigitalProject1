@@ -16,7 +16,7 @@ namespace BookingEngine.Application.AuditAppService
 {
     public class SearchRequestAppService : BaseAppService<BookingEngineDbContext, Domain.Models.SearchRequest, SearchRequestGetDto, SearchRequestGetDto, SearchRequestCreateDto, SearchRequestUpdateDto, SieveModel>, ISearchRequestAppService
     {
-        public SearchRequestAppService(BookingEngineDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, SearchRequestValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
+        public SearchRequestAppService(BookingEngineDbContext serviceDbContext, IMapper mapper, ISieveProcessor processor, AuditValidator validations, IHttpContextAccessor httpContextAccessor) : base(serviceDbContext, mapper, processor, validations, httpContextAccessor)
         {
         }
         protected override IQueryable<Domain.Models.SearchRequest> QueryExcuter(SieveModel input)

@@ -22,7 +22,18 @@ namespace BookingEngine.Application.Filters
             mapper.Property<OTAUser>(p => p.POS)
                 .CanFilter().CanSort().HasName("pos");
 
+            mapper.Property<StripeResult>(p => p.Pnr)
+                .CanFilter().CanSort().HasName("pnr"); 
 
+            mapper.Property<StripeResult>(p => p.SessionId)
+                .CanFilter().CanSort().HasName("sessionid");
+
+
+
+            mapper.Property<ExchangeRate>(p => p.FromCurrency)
+                .CanFilter().CanSort().HasName("fromcurrency");
+            mapper.Property<ExchangeRate>(p => p.ToCurrency)
+                .CanFilter().CanSort().HasName("tocurrency");
 
         }
 

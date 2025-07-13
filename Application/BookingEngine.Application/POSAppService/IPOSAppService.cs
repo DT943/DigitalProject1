@@ -12,5 +12,6 @@ namespace BookingEngine.Application.POSAppService
 {
     public interface IPOSAppService : IBaseAppService<POSGetDto, POSGetDto, POSCreateDto, POSUpdateDto, SieveModel>
     {
+        Task<string> GetPosCode(int id);
     }
 }

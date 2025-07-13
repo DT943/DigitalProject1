@@ -23,7 +23,7 @@ namespace BookingEngine.Application.PaymantAppService.Dtos
 
         public long AmountTotal { get; set; }
         public string? Currency { get; set; }
-
+        public string SystemPaymentState { get; set; }
         public string? Mode { get; set; }
         public string? Status { get; set; }
         public DateTime? ExpiresAt { get; set; }
@@ -41,6 +41,8 @@ namespace BookingEngine.Application.PaymantAppService.Dtos
         public string? CustomerEmail { get; set; }
 
         public string? PaymentIntentId { get; set; }
+        public string SystemPaymentState { get; set; }
+
         public string? PaymentMethodId { get; set; }
 
         public long AmountTotal { get; set; }

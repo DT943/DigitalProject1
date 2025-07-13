@@ -47,7 +47,26 @@ namespace BookingEngine.Data.DbContext
         public DbSet<Domain.Models.StripeResult> StripeResults { get; set; }
 
 
+
+        public DbSet<InquirePNR> InquirePNRs { get; set; }
+        public DbSet<BookFlightSegment> BookFlightSegments { get; set; }
+        public DbSet<BookFare> BookFares { get; set; }
+        public DbSet<BookPassenger> BookPassengers { get; set; }
+        public DbSet<BookETicket> BookETickets { get; set; }
+        public DbSet<BookContactInfo> BookContactInfos { get; set; }
+
+        public DbSet<InquirePNRResponse> InquirePNRResponses { get; set; }
+
+        public DbSet<BookFee> BookFees { get; set; }
+        public DbSet<BookPassengerCount> BookPassengerCounts { get; set; }
+        public DbSet<BookTax> BookTaxs { get; set; }
+
+
+        public DbSet<ExchangeRate> ExchangeRates { get; set; }
         
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<Amenity> Amenities { get; set; }
+        public DbSet<Location> Locations { get; set; }
 
 
     }

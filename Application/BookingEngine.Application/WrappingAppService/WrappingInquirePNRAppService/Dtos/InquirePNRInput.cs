@@ -14,12 +14,8 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
 
         public string PNR {  get; set; }
 
-        public DateOnly DepartureDate { get; set; }
-
 
     }
-
-
 
 
 }

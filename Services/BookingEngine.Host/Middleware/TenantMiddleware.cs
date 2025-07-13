@@ -15,11 +15,19 @@
             {
                 "/SearchRequest",
                 "/AirPort",
+                "/Amenity",
+                "/Location",
                 "/Contact/CreateListPassenger",
                 "/Payment/Webhook",
                 "/Payment/Checkout",
                 "/OnHoldBooking",
-                "/InquirePNR"
+                "/InquirePNR/Create",
+                "/StripeResult",
+                "/AbstractApi/ValidateEmail",
+                "/AbstractApi/ValidatePhone",
+                "/Reservation",
+                "/POS"
+
             };
 
             // Also allow /AirPort/{id}
@@ -28,6 +36,13 @@
                 await _next(context);
                 return;
             }
+            // Also allow /POS/{id}
+            if (path.StartsWith("/POS/", StringComparison.OrdinalIgnoreCase))
+            {
+                await _next(context);
+                return;
+            }
+
 
             if (excludedPaths.Any(p => path.Equals(p, StringComparison.OrdinalIgnoreCase)))
             {

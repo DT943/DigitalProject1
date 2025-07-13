@@ -83,6 +83,8 @@ namespace BookingEngine.Application.AirPortAppService
                 if (!string.IsNullOrEmpty(searchTerm))
                 {
                     query = query.Where(a =>
+                        
+                        a.IATACode.ToLower().Contains(searchTerm) ||
                         a.AirPortTranslations.Any(t =>
                             t.LanguageCode == languageCode &&
                             (
@@ -111,6 +113,8 @@ namespace BookingEngine.Application.AirPortAppService
             else if (!string.IsNullOrEmpty(searchTerm))
             {
                 query = query.Where(a =>
+                    
+                    a.IATACode.ToLower().Contains(searchTerm) ||
                     a.AirPortTranslations.Any(t =>
                         t.City.ToLower().Contains(searchTerm) ||
                         t.Country.ToLower().Contains(searchTerm) ||

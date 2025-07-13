@@ -11,7 +11,8 @@ namespace BookingEngine.Application.OTAUserAppService
 {
     public interface IOTAUserAppService: IBaseAppService<OTAUserGetDto, OTAUserGetDto, OTAUserCreateDto, OTAUserUpdateDto, SieveModel>
     {
-
+        Task<OTAUserGetDto> GetByPOSId(int posId);
+        Task<OTAUserGetDto> GetByPOS(string pos);
     }
     
 }

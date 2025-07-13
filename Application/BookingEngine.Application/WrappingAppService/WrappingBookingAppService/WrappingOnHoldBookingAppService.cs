@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using BookingEngine.Application.OTAUserAppService.Dtos;
 using BookingEngine.Application.WrappingAppService.WrappingBookingAppService;
 using BookingEngine.Application.WrappingAppService.WrappingBookingAppService.Dtos;
 using Microsoft.Extensions.Options;
@@ -16,8 +17,6 @@ namespace BookingEngine.Application.Services
     public class WrappingOnHoldBookingAppService: IWrappingOnHoldBookingAppService
     {
         private readonly string _endpoint = "https://reservations.flycham.com/webservices/services/AAResWebServices";
-        private readonly string _username = "TESTOTADAM";
-        private readonly string _password = "Pass@D542";
 
         public WrappingOnHoldBookingAppService()
         {
@@ -34,7 +33,7 @@ namespace BookingEngine.Application.Services
             return await resp.Content.ReadAsStringAsync();
         }
 
-        private string BuildSoapRequest(BookCreateDto request)
+        private string BuildSoapRequest(BookCreateDto request, string  userName, string encryptedPassword,string code)
         {
             var segXmlBuilder = new StringBuilder();
             foreach (var seg in request.Segments)
@@ -59,9 +58,9 @@ namespace BookingEngine.Application.Services
                 var trav = request.Travelers[i];
 
                 string formattedBOD = ti.BirthDate.ToString("yyyy-MM-dd");
-                string formattedExpireDate = ti.Passport.ExpireDate.ToString("yyyy-MM-dd");
+                string? formattedExpireDate = ti.Passport?.ExpireDate?.ToString("yyyy-MM-dd");
 
-                
+
                 string rph = trav["traveler_ref"];
                 travXmlBuilder.Append($@"
                 <ns2:AirTraveler BirthDate=""{formattedBOD}"" PassengerTypeCode=""{ti.PassengerTypeCode}"">
@@ -70,9 +69,8 @@ namespace BookingEngine.Application.Services
                     <ns2:Surname>{ti.Surname}</ns2:Surname>
                     <ns2:NameTitle>{ti.NameTitle}</ns2:NameTitle>
                   </ns2:PersonName>
-                  <ns2:Telephone AreaCityCode=""{ti.Telephone.AreaCityCode}"" CountryAccessCode=""{ti.Telephone.CountryAccessCode}"" PhoneNumber=""{ti.Telephone.PhoneNumber}""/>
-                  <ns2:Address><ns2:CountryName Code=""{ti.CountryCode}""/></ns2:Address>
-                  <ns2:Document DocHolderNationality=""SY"" DocID="""" DocType=""PSPT"" ExpireDate="""" DocIssueCountry=""""/>
+                  <ns2:Telephone AreaCityCode=""{request.ContactInfo.CountryCode}"" CountryAccessCode=""{request.ContactInfo.CountryCode}"" PhoneNumber=""{request.ContactInfo.PhoneNumber}""/>
+                  <ns2:Document DocHolderNationality=""SY""/>
                   <ns2:TravelerRefNumber RPH=""{rph}""/>
                 </ns2:AirTraveler>");
             }
@@ -85,8 +83,8 @@ namespace BookingEngine.Application.Services
                   <soap:Header>
                     <wsse:Security>
                       <wsse:UsernameToken>
-                        <wsse:Username>{_username}</wsse:Username>
-                        <wsse:Password>{_password}</wsse:Password>
+                        <wsse:Username>{userName}</wsse:Username>
+                        <wsse:Password>{encryptedPassword}</wsse:Password>
                       </wsse:UsernameToken>
                     </wsse:Security>
                   </soap:Header>
@@ -95,7 +93,7 @@ namespace BookingEngine.Application.Services
                     <ns2:OTA_AirBookRQ SequenceNmbr=""1"" TransactionIdentifier=""{request.TransactionId}"" Version=""2006.01"">
                       <ns2:POS>
                         <ns2:Source>
-                          <ns2:RequestorID ID=""{_username}"" Type=""4""/>
+                          <ns2:RequestorID ID=""{userName}"" Type=""4""/>
                           <ns2:BookingChannel Type=""12""/>
                         </ns2:Source>
                       </ns2:POS>
@@ -129,9 +127,9 @@ namespace BookingEngine.Application.Services
                         <ns1:Address>
                         <ns1:CountryName>
                             <ns1:CountryName>{request.ContactInfo.CountryName}</ns1:CountryName>
-                            <ns1:CountryCode>{request.ContactInfo.CountryCode}</ns1:CountryCode>
+                            <ns1:CountryCode>{code}</ns1:CountryCode>
                         </ns1:CountryName>
-                          <ns1:CityName>{request.ContactInfo.CityName}</ns1:CityName>
+                          <ns1:CityName>city</ns1:CityName>
                         </ns1:Address>
                       </ns1:ContactInfo>
                     </ns1:AAAirBookRQExt>
@@ -183,22 +181,16 @@ namespace BookingEngine.Application.Services
             return res;
         }
 
-        public async Task<BookGetDto> OnHoldBookingFlightAsync(BookCreateDto onholdRequest)
+
+        public async Task<BookGetDto> OnHoldBookingFlightAsync(BookCreateDto onholdRequest, OTAUserGetDto oTAUser, string code)
         {
 
             try
             {
-                var soapRequest = BuildSoapRequest(onholdRequest);
+                var soapRequest = BuildSoapRequest(onholdRequest, oTAUser.UserName, oTAUser.EncryptedPassword, code);
                 var responseXml = await CallAirBookApiAsync(soapRequest);
                 var parsedDoc = ParseResponse(responseXml);
                 var result = WrappingOnHoldBookingAppService.ToBookingResult(parsedDoc);
-                /*
-                if (result.Status == "error")
-                {
-                    // Optional: async notification (email, logging, etc.)
-                    _ = Task.Run(() => SendErrorNotificationAsync("Fly Cham error in reservation (on hold)"));
-                }
-                */
 
                 return result;
             }

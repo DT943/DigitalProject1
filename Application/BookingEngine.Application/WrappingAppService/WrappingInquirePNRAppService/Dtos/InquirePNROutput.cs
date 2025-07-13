@@ -10,6 +10,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
 
     public class InquirePNRGetDto
     {
+        public string TransactionIdentifier { get; set; }
         public string Status { get; set; } = "success";
         public List<string> Errors { get; set; }
         public string BookingReference { get; set; }
@@ -24,6 +25,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
 
     public class BookFlightSegmentDto
     {
+        public string Status { get; set; }
         public string FlightNumber { get; set; }
         public string DepartureAirport { get; set; }
         public string ArrivalAirport { get; set; }
@@ -37,12 +39,17 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
     public class BookFareDto
     {
         public decimal BaseFare { get; set; }
-        public decimal Tax { get; set; }
-        public decimal Fee { get; set; }
-        public decimal TotalFareUSD { get; set; }
-        public decimal TotalFareSYP { get; set; }
-        public decimal TotalFareWithCCFeeUSD { get; set; }
-        public decimal TotalFareWithCCFeeSYP { get; set; }
+        public List<BookTaxDto> Taxes { get; set; }
+        public List<BookFeeDto> Fees { get; set; }
+        public decimal TotalFare { get; set; }
+
+        public string TotalFareCurrency { get; set; }
+
+        public decimal TotalEquivFare { get; set; }
+        public string TotalEquivFareCurrency { get; set; }
+
+
+
     }
 
     public class BookPassengerDto
@@ -58,6 +65,17 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
         public DateTime DocumentExpiry { get; set; }
         public string PhoneNumber { get; set; }
         public string Rph { get; set; }
+        public List<BookETicketDto> ETicketInfo { get; set; }  
+
+    }
+    public class BookETicketDto
+    {
+        public string CouponNumber { get; set; }
+        public string ETicketNumber { get; set; }
+        public string FlightSegmentCode { get; set; }
+        public string FlightSegmentRPH { get; set; }
+        public string Status { get; set; }
+        public string UsedStatus { get; set; }
     }
 
     public class BookContactInfoDto
@@ -81,4 +99,24 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
         public int Infants { get; set; }
     }
 
+    public class BookTaxDto 
+    {
+        public decimal Amount { get; set; }
+        public decimal EquivAmount { get; set; }
+
+        public string CurrencyCode { get; set; }
+        public int DecimalPlaces { get; set; }
+        public string TaxCode { get; set; }
+
+    }
+    public class BookFeeDto 
+    {
+        public decimal Amount { get; set; }
+
+        public decimal EquivAmount { get; set; }
+        public string CurrencyCode { get; set; }
+        public int DecimalPlaces { get; set; }
+        public string FeeCode { get; set; }
+
+    }
 }

@@ -37,7 +37,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingBookingAppService
         public ContactInfoCreateDto ContactInfo { get; set; }
         public string PaymentAmount { get; set; }
         public string FlightType { get; set; }        
-        public string Pos { get; set; }
+        public int PosId { get; set; }
     }
     public class BookUpdateDto : IEntityUpdateDto
     {
