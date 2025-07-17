@@ -4,6 +4,7 @@ using BookingEngine.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingEngine.Data.Migrations
 {
     [DbContext(typeof(BookingEngineDbContext))]
-    partial class BookingEngineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250714121109_pnrpaymentTables")]
+    partial class pnrpaymentTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -723,10 +726,6 @@ namespace BookingEngine.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CurrencyCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -918,18 +917,18 @@ namespace BookingEngine.Data.Migrations
                     b.Property<string>("FlightSegmentRPH")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PaymentPNRResultId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TicketStatus")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UsedStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("paymentPNRResultId");
+                    b.HasIndex("PaymentPNRResultId");
 
                     b.ToTable("PaymentPNRETicketInfos");
                 });
@@ -951,12 +950,12 @@ namespace BookingEngine.Data.Migrations
                     b.Property<string>("FeeCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("paymentPNRResultId")
+                    b.Property<int?>("PaymentPNRResultId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("paymentPNRResultId");
+                    b.HasIndex("PaymentPNRResultId");
 
                     b.ToTable("PaymentPNRFees");
                 });
@@ -990,6 +989,9 @@ namespace BookingEngine.Data.Migrations
                     b.Property<string>("FlightNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PaymentPNRResultId")
+                        .HasColumnType("int");
+
                     b.Property<string>("RPH")
                         .HasColumnType("nvarchar(max)");
 
@@ -999,12 +1001,9 @@ namespace BookingEngine.Data.Migrations
                     b.Property<string>("Terminal")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("paymentPNRResultId");
+                    b.HasIndex("PaymentPNRResultId");
 
                     b.ToTable("PaymentPNRFlightSegments");
                 });
@@ -1026,6 +1025,9 @@ namespace BookingEngine.Data.Migrations
                     b.Property<string>("Nationality")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PaymentPNRResultId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -1035,12 +1037,9 @@ namespace BookingEngine.Data.Migrations
                     b.Property<string>("TypeCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("paymentPNRResultId");
+                    b.HasIndex("PaymentPNRResultId");
 
                     b.ToTable("PaymentPNRPassengers");
                 });
@@ -1140,15 +1139,15 @@ namespace BookingEngine.Data.Migrations
                     b.Property<string>("Currency")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PaymentPNRResultId")
+                        .HasColumnType("int");
+
                     b.Property<string>("TaxCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("paymentPNRResultId");
+                    b.HasIndex("PaymentPNRResultId");
 
                     b.ToTable("PaymentPNRTaxs");
                 });
@@ -1495,46 +1494,30 @@ namespace BookingEngine.Data.Migrations
 
             modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRETicketInfo", b =>
                 {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
+                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", null)
                         .WithMany("ETickets")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
+                        .HasForeignKey("PaymentPNRResultId");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRFee", b =>
                 {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
+                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", null)
                         .WithMany("Fees")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
+                        .HasForeignKey("PaymentPNRResultId");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRFlightSegment", b =>
                 {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
+                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", null)
                         .WithMany("Segments")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
+                        .HasForeignKey("PaymentPNRResultId");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRPassenger", b =>
                 {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
+                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", null)
                         .WithMany("Passengers")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
+                        .HasForeignKey("PaymentPNRResultId");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRResult", b =>
@@ -1548,13 +1531,9 @@ namespace BookingEngine.Data.Migrations
 
             modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRTax", b =>
                 {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
+                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", null)
                         .WithMany("Taxes")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
+                        .HasForeignKey("PaymentPNRResultId");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.Reservation", b =>

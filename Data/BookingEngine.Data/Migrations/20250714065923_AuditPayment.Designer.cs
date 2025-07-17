@@ -4,6 +4,7 @@ using BookingEngine.Data.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookingEngine.Data.Migrations
 {
     [DbContext(typeof(BookingEngineDbContext))]
-    partial class BookingEngineDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250714065923_AuditPayment")]
+    partial class AuditPayment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -723,10 +726,6 @@ namespace BookingEngine.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CurrencyCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -850,307 +849,6 @@ namespace BookingEngine.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Passports");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRContact", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AreaCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CityName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryIsoCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CountryName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MobileNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredLanguage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PaymentPNRContacts");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRETicketInfo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CouponNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ETicketNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FlightSegmentRPH")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TicketStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UsedStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("paymentPNRResultId");
-
-                    b.ToTable("PaymentPNRETicketInfos");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRFee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float?>("Amount")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Currency")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FeeCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("paymentPNRResultId");
-
-                    b.ToTable("PaymentPNRFees");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRFlightSegment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ArrivalAirportCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ArrivalDateTime")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CabinClass")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DepartureAirportCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DepartureDateTime")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FlightNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RPH")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Terminal")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("paymentPNRResultId");
-
-                    b.ToTable("PaymentPNRFlightSegments");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRPassenger", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nationality")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TypeCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("paymentPNRResultId");
-
-                    b.ToTable("PaymentPNRPassengers");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRResult", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float?>("BaseFareAmount")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("BaseFareCurrency")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ContactId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NumberOfADT")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NumberOfCHD")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NumberOfINF")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PNR")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float?>("PaymentAmount")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("PaymentAmountInPayCurAmount")
-                        .HasColumnType("real");
-
-                    b.Property<string>("PaymentAmountInPayCurCurrency")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentCurrency")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SessionId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TicketAdvisory")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TicketType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TicketingStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float?>("TotalEquivFareAmount")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("TotalEquivFareCurrency")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("TotalFareAmount")
-                        .HasColumnType("real");
-
-                    b.Property<float?>("TotalFareCurrency")
-                        .HasColumnType("real");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ContactId");
-
-                    b.ToTable("PaymentPNRResults");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRTax", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<float?>("Amount")
-                        .HasColumnType("real");
-
-                    b.Property<string>("Currency")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TaxCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("paymentPNRResultId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("paymentPNRResultId");
-
-                    b.ToTable("PaymentPNRTaxs");
                 });
 
             modelBuilder.Entity("BookingEngine.Domain.Models.Reservation", b =>
@@ -1493,70 +1191,6 @@ namespace BookingEngine.Data.Migrations
                     b.Navigation("Telephone");
                 });
 
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRETicketInfo", b =>
-                {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
-                        .WithMany("ETickets")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRFee", b =>
-                {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
-                        .WithMany("Fees")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRFlightSegment", b =>
-                {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
-                        .WithMany("Segments")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRPassenger", b =>
-                {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
-                        .WithMany("Passengers")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRResult", b =>
-                {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRContact", "Contact")
-                        .WithMany()
-                        .HasForeignKey("ContactId");
-
-                    b.Navigation("Contact");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRTax", b =>
-                {
-                    b.HasOne("BookingEngine.Domain.Models.PaymentPNRResult", "paymentPNRResult")
-                        .WithMany("Taxes")
-                        .HasForeignKey("paymentPNRResultId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("paymentPNRResult");
-                });
-
             modelBuilder.Entity("BookingEngine.Domain.Models.Reservation", b =>
                 {
                     b.HasOne("BookingEngine.Domain.Models.Contact", "ContactInfo")
@@ -1602,19 +1236,6 @@ namespace BookingEngine.Data.Migrations
                     b.Navigation("OTAUsers");
 
                     b.Navigation("POSTranslations");
-                });
-
-            modelBuilder.Entity("BookingEngine.Domain.Models.PaymentPNRResult", b =>
-                {
-                    b.Navigation("ETickets");
-
-                    b.Navigation("Fees");
-
-                    b.Navigation("Passengers");
-
-                    b.Navigation("Segments");
-
-                    b.Navigation("Taxes");
                 });
 #pragma warning restore 612, 618
         }

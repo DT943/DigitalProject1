@@ -68,6 +68,14 @@ namespace BookingEngine.Data.DbContext
         public DbSet<Amenity> Amenities { get; set; }
         public DbSet<Location> Locations { get; set; }
 
+        public DbSet<PaymentPNRContact> PaymentPNRContacts { get; set; }
+        public DbSet<PaymentPNRETicketInfo> PaymentPNRETicketInfos { get; set; }
+        public DbSet<PaymentPNRFee> PaymentPNRFees { get; set; }
+        public DbSet<PaymentPNRTax> PaymentPNRTaxs { get; set; }
+        public DbSet<PaymentPNRPassenger> PaymentPNRPassengers { get; set; }
+        public DbSet<PaymentPNRFlightSegment> PaymentPNRFlightSegments { get; set; }
+        public DbSet<PaymentPNRResult> PaymentPNRResults { get; set; }
+
 
     }
 }

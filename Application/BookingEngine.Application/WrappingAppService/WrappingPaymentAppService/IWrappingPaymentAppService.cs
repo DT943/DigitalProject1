@@ -9,6 +9,6 @@ namespace BookingEngine.Application.WrappingAppService.WrappingPaymentAppService
 {
     public interface IWrappingPaymentAppService
     {
-        Task<PaymentSystemGetDto> PaymentAsync(PaymentSystemCreateDto inquirePNRRequest);
+        Task<PaymentSystemGetDto> PaymentAsync(PaymentSystemCreateDto inquirePNRRequest, string sessionId);
     }
 }

@@ -21,6 +21,7 @@ using Sieve.Models;
 using Sieve.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Infrastructure.Application.BasicDto;
+using System.Linq.Dynamic.Core;
 
 namespace BookingEngine.Application.AirPortAppService
 {
@@ -135,6 +136,40 @@ namespace BookingEngine.Application.AirPortAppService
                 PageSize = input.PageSize ?? count
             };
         }
+
+        public async Task<PaginatedResult<AirPortGetDto>> GetSpecific(SieveModel input, string from)
+        {
+            IQueryable<Domain.Models.AirPort> query;
+
+            if (from == "DAM" || from == "ALP")
+            {
+                query = base.QueryExcuter(input)
+                     .Include(x => x.AirPortTranslations).Where(x=> x.IATACode != "DAM" &&  x.IATACode != "ALP");
+
+            }
+            else
+            {
+               query = base.QueryExcuter(input)
+             .Include(x => x.AirPortTranslations).Where(x => x.IATACode == "DAM" || x.IATACode == "ALP");
+
+            }
+
+
+            // Step 4: Execute and apply pagination via Sieve
+            var resultList = await query.AsNoTracking().ToListAsync();
+            var filteredForCount = _processor.Apply(input, resultList.AsQueryable(), applyPagination: false);
+            var filtered = _processor.Apply(input, filteredForCount);
+            var count = filteredForCount.Count();
+
+            return new PaginatedResult<AirPortGetDto>
+            {
+                Items = _mapper.Map<List<AirPortGetDto>>(filtered),
+                TotalCount = count,
+                Page = input.Page ?? 1,
+                PageSize = input.PageSize ?? count
+            };
+        }
+
 
 
         public override async Task<AirPortGetDto> Create(AirPortCreateDto create)

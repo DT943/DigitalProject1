@@ -24,7 +24,7 @@ namespace BookingEngine.Domain.Models
 
         public string? Mode { get; set; } 
         public string? Status { get; set; }
-        public string SystemPaymentState { get; set; }
+        public string? SystemPaymentState { get; set; }
 
         public DateTime? ExpiresAt { get; set; } 
         public string? MetadataJson { get; set; }

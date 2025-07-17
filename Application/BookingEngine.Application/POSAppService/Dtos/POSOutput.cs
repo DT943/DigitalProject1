@@ -12,6 +12,8 @@ namespace BookingEngine.Application.POSAppService.Dtos
         public int Id { get; set; }
 
         public string POSCode { get; set; }
+        public string CurrencyCode { get; set; }
+
 
         public ICollection<POSTranslationGetDto> POSTranslations { get; set; }
         public bool IsDeleted { get; set; }

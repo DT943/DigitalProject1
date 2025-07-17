@@ -25,8 +25,11 @@ namespace BookingEngine.Application.Filters
             mapper.Property<StripeResult>(p => p.Pnr)
                 .CanFilter().CanSort().HasName("pnr"); 
 
-            mapper.Property<StripeResult>(p => p.SessionId)
+            mapper.Property<PaymentPNRResult>(p => p.SessionId)
                 .CanFilter().CanSort().HasName("sessionid");
+            
+            mapper.Property<POS>(p => p.POSCode)
+                .CanFilter().CanSort().HasName("pos");
 
 
 
@@ -39,4 +42,3 @@ namespace BookingEngine.Application.Filters
 
     }
 }
-

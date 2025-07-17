@@ -14,7 +14,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingPaymentAppService
 
         public string PNR { get; set; }
 
-        public long Balance { get; set; }
+        public float Balance { get; set; }
 
         public string UserName { get; set; }
 

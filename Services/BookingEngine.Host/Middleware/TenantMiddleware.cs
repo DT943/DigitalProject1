@@ -14,6 +14,7 @@
             var excludedPaths = new[]
             {
                 "/SearchRequest",
+                "/AirPort/GetSpecific",
                 "/AirPort",
                 "/Amenity",
                 "/Location",
@@ -25,8 +26,8 @@
                 "/StripeResult",
                 "/AbstractApi/ValidateEmail",
                 "/AbstractApi/ValidatePhone",
-                "/Reservation",
-                "/POS"
+                "/POS",
+                "/PaymentPNRResult/GetBySessionId"
 
             };
 

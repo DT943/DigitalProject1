@@ -16,23 +16,5 @@ namespace BookingEngine.Host.Controllers
 
         }
 
-        [HttpGet("{id}")]
-        [AllowAnonymous] 
-        public override async Task<ActionResult<ReservationGetDto>> Get(int id)
-        {
-            var entity = await _appService.Get(id);
-            return Ok(entity);
-
-        }
-        [HttpGet]
-        [AllowAnonymous] 
-        public override async Task<ActionResult<ReservationGetDto>> GetAll([FromQuery] SieveModel sieve)
-        {
-            var entity = await _appService.GetAll(sieve);
-            return Ok(entity);
-
-        }
-
-
     }
 }

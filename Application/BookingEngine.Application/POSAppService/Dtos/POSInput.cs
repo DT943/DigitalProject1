@@ -14,6 +14,8 @@ namespace BookingEngine.Application.POSAppService.Dtos
         [Required]
         [StringLength(10, MinimumLength = 1)]
         public string POSCode { get; set; }
+        public string CurrencyCode { get; set; }
+
 
         public ICollection<POSTranslationCreateDto> POSTranslations { get; set; }
 
@@ -25,6 +27,8 @@ namespace BookingEngine.Application.POSAppService.Dtos
         [Required]
         [StringLength(10, MinimumLength = 1)]
         public string POSCode { get; set; }
+        public string CurrencyCode { get; set; }
+
         public ICollection<POSTranslationCreateDto> POSTranslations { get; set; }
 
     }

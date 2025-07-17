@@ -13,6 +13,9 @@ using BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppService.
 using BookingEngine.Application.ExchangeCurrencyAppService;
 using Stripe.V2;
 using static Sieve.Extensions.MethodInfoExtended;
+using BookingEngine.Data.Migrations;
+using Microsoft.Extensions.Logging;
+
 
 namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppService
 {
@@ -22,10 +25,13 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
         
         private readonly IExchangeCurrencyAppService _exchangeCurrencyAppService;
 
-        public WrappingInquirePNRAppService(IExchangeCurrencyAppService exchangeCurrencyAppService)
+        private readonly ILogger<WrappingInquirePNRAppService> _logger;
+
+        public WrappingInquirePNRAppService(IExchangeCurrencyAppService exchangeCurrencyAppService, ILogger<WrappingInquirePNRAppService> logger)
         {
             _exchangeCurrencyAppService = exchangeCurrencyAppService;
 
+            _logger = logger;
         }
 
         private async Task<string> CallInquirePNRApiAsync(string soapXml)
@@ -331,8 +337,14 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
             try
             {
                 var soapRequest = BuildSoapRequest(request, username , password);
+                _logger.LogInformation("Inquire PNR request : {soapRequest}", soapRequest);
+
                 var responseXml = await CallInquirePNRApiAsync(soapRequest);
+
+                _logger.LogInformation("Inquire PNR response : {responseXml}", responseXml);
+
                 var parsedDoc = ParseResponse(responseXml);
+
                 var result = WrappingInquirePNRAppService.ToInquirePNRResult(parsedDoc, "" ,false);
 
                 return result;

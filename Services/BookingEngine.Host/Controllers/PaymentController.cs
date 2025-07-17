@@ -67,10 +67,50 @@ namespace BookingEngine.Host.Controllers
         {
             try
             {
+                _logger.LogWarning("Start Stripe {paymentCreateDto}:",paymentCreateDto);
+
 
                 var location = await _locationAppService.GetByCountryCode(paymentCreateDto.BookingInfo.ContactInfo.CountryCode);
 
-                var pos = await _posAppService.Get(paymentCreateDto.BookingInfo.PosId);
+                _logger.LogWarning("location {location}:", location);
+
+                var posCode = "";
+                BookingEngine.Application.POSAppService.Dtos.POSGetDto pos = null;
+
+                if (paymentCreateDto.BookingInfo.PosId != 0)
+                {
+                    pos = await _posAppService.Get(paymentCreateDto.BookingInfo.PosId);
+                    paymentCreateDto.BookingInfo.PosId = pos.Id;
+                }
+                else
+                {
+                    var originCode = paymentCreateDto.BookingInfo.Segments[0].OriginCode;
+                    if (originCode == "EBL" || originCode == "BGW" || originCode == "BSR")
+                    {
+                        posCode = "BGW";
+                    }
+                    else if (originCode == "DAM" || originCode == "ALP")
+                    {
+                        posCode = "SYD";
+                    }
+
+                    else if (originCode == "SHJ"||
+                            originCode == "AUH" ||
+                            originCode == "DWC" ||
+                            originCode == "DXB")
+                    {
+                        posCode = "UAE";
+                    }
+                    else
+                    {
+                        posCode = originCode;
+                    }
+
+                    pos = await _posAppService.GetPOSByCode(posCode);
+                    
+                    paymentCreateDto.BookingInfo.PosId = pos.Id;
+                
+                }
 
                 var oTAUser = await _oTAUserAppService.GetByPOSId(paymentCreateDto.BookingInfo.PosId);
              
@@ -80,13 +120,20 @@ namespace BookingEngine.Host.Controllers
                 var code = location.LocationCode;
                 paymentCreateDto.BookingInfo.ContactInfo.CountryName = location.CountryName;
                 paymentCreateDto.BookingInfo.ContactInfo.CountryCode = location.CountryCode;
-                
+
+                _logger.LogWarning("before on hold onholdbooking:");
 
                 //Call OnHole Booking
                 var onholdbooking = await _onHoldBookingAppService.OnHoldBookingFlightAsync(paymentCreateDto.BookingInfo, oTAUser, code );
+
+                _logger.LogWarning("After on hold {onholdbooking}:", onholdbooking);
+
+
                 // Check for error in the response
                 if (onholdbooking?.Status?.ToLower() == "error")
                 {
+                    _logger.LogWarning("Error onholdbooking:");
+
                     var errorMessage = string.Join("; ", onholdbooking.Errors ?? new List<string> { "Unknown error occurred." });
                     return BadRequest(new
                     {
@@ -94,7 +141,10 @@ namespace BookingEngine.Host.Controllers
                         errors = onholdbooking.Errors,
                     });
                 }
-                var result = await _paymentAppService.CreateCheckoutSessionAsync(_stripeSettings, paymentCreateDto.StripeInfo, onholdbooking.PNR, paymentCreateDto.BookingInfo.PosId);
+                var result = await _paymentAppService.CreateCheckoutSessionAsync(_stripeSettings, paymentCreateDto.StripeInfo, onholdbooking.PNR, pos.Id, paymentCreateDto.BookingInfo.PaymentAmount);
+
+                _logger.LogWarning("Result onholdbooking {result}:", result);
+
                 var reservationCreateDto = new ReservationCreateDto
                 {
                     Pos = pos.POSCode,

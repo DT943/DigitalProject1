@@ -29,7 +29,7 @@ namespace BookingEngine.Application.ReservationInfo.Validations
             {
                 When(x => x is ContactInfoCreateDto, () =>
                 {
-
+/*
                    RuleFor(x => ((ContactInfoCreateDto)x).PhoneNumber)
                        .NotEmpty().WithMessage("PhoneNumber is required.")
                        .MaximumLength(15)
@@ -53,7 +53,7 @@ namespace BookingEngine.Application.ReservationInfo.Validations
 
                         }).WithMessage("This email is not valid.");
 
-                   
+*/
                    // RuleFor(x => ((ContactInfoCreateDto)x).Passengers)
                      //   .NotEmpty().WithMessage("Passengers list cannot be empty.")
                        // .ForEach(passenger =>

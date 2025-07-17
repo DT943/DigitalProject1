@@ -101,6 +101,11 @@ namespace BookingEngine.Host.Helper
             
             services.AddScoped<IWrappingPaymentAppService, WrappingPaymentAppService>();
 
+
+            services.AddScoped<IPaymentPNRResultAppService, PaymentPNRResultAppService>();
+            services.AddTransient<PaymentPNRResultValidator>();
+
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AirPortMapperProfile());
@@ -113,6 +118,7 @@ namespace BookingEngine.Host.Helper
                 mc.AddProfile(new ExchangeCurrencyInputMapperProfile());
                 mc.AddProfile(new AmenitiesMapperProfile());
                 mc.AddProfile(new LocationMapperProfile());
+                mc.AddProfile(new PaymentPNRResultMapperProfile());
 
 
             });

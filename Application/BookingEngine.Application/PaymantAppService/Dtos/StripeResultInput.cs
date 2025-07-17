@@ -41,7 +41,7 @@ namespace BookingEngine.Application.PaymantAppService.Dtos
         public string? CustomerEmail { get; set; }
 
         public string? PaymentIntentId { get; set; }
-        public string SystemPaymentState { get; set; }
+        public string? SystemPaymentState { get; set; }
 
         public string? PaymentMethodId { get; set; }
 

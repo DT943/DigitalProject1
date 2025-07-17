@@ -35,6 +35,7 @@ namespace BookingEngine.Application.Services
 
         private string BuildSoapRequest(BookCreateDto request, string  userName, string encryptedPassword,string code)
         {
+            
             var segXmlBuilder = new StringBuilder();
             foreach (var seg in request.Segments)
             {
