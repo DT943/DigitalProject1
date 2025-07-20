@@ -2,3 +2,5 @@
 2025-07-17 15:18:36.438 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
 2025-07-17 16:31:10.429 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
 2025-07-17 16:31:10.618 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-17 16:53:44.859 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-17 16:53:44.999 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
