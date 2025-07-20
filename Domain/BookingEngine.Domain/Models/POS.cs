@@ -15,6 +15,8 @@ namespace BookingEngine.Domain.Models
         [StringLength(10, MinimumLength = 1)]
         public string POSCode { get; set; }
 
+        public string CurrencyCode {  get; set; }
+
         public ICollection<POSTranslation> POSTranslations { get; set; }
         public ICollection<OTAUser> OTAUsers { get; set; }
       

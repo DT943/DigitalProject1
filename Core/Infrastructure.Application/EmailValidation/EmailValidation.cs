@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json.Linq;
 
 namespace Infrastructure.Application.EmailValidation
@@ -24,14 +26,18 @@ namespace Infrastructure.Application.EmailValidation
 
                     // Parse the JSON response to extract the validation score
                     JObject jsonResponse = JObject.Parse(responseBody);
-                    double validationScore = jsonResponse["quality_score"].Value<double>(); // Assuming 'quality_score' contains the validation score
+
+                    //double validationScore = jsonResponse["quality_score"].Value<double>(); // Assuming 'quality_score' contains the validation score
                     string deliverability = jsonResponse["deliverability"].Value<string>();
 
-
-                    if (validationScore >= 0.8 && deliverability.Equals("DELIVERABLE")) return true;
-                    if (validationScore >= 0.9 && deliverability.Equals("UNKNOWN")) return true;
-                    //deliverability
+                    //bool isvalid = jsonResponse["is_valid_format"].Value<bool>();
+                    if (deliverability.Equals("DELIVERABLE")) 
+                        return true;
                     return false;
+
+                    // if (validationScore >= 0.9 && deliverability.Equals("UNKNOWN")) return true;
+                    // deliverability
+                    //return false;
                 }
                 catch (HttpRequestException e)
                 {

@@ -23,11 +23,6 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
                     .NotEmpty().WithMessage("PNR is required.")
                     .Length(6).WithMessage("PNR must be exactly 6 characters.");
 
-                RuleFor(x => ((InquirePNRCreateDto)x).DepartureDate)
-                    .NotEmpty().WithMessage("DepartureDate is required.")
-                    .Must(date => date >= DateOnly.FromDateTime(DateTime.Today))
-                    .WithMessage("DepartureDate must not be in the past.");
-
             });
 
             RuleSet("update", () =>

@@ -31,7 +31,14 @@ namespace BookingEngine.Host.Controllers
             return Ok(entity);
         }
 
-
+        [HttpPost("GetSpecific")]
+        [AllowAnonymous] 
+        
+        public async Task<ActionResult<AirPortGetDto>> GetSpecific([FromQuery] SieveModel sieve, [FromHeader] string from)
+        {
+            var entity = await _appService.GetSpecific(sieve,from);
+            return Ok(entity);
+        }
     }
 
 }

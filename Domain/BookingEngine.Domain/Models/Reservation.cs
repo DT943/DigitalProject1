@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Infrastructure.Domain.Models;
 
 namespace BookingEngine.Domain.Models
 {
-    public class Reservation: BasicEntityWithAuditAndFakeDelete
+    public class Reservation: BasicEntity
     {
 
         public string Pos { get; set; }
@@ -17,7 +19,13 @@ namespace BookingEngine.Domain.Models
         public string PaymentAmount { get; set; } 
         public string FlightType { get; set; }
         public string FlightClass { get; set; }
-        public ICollection<Contact> ContactInfo { get; set; }
+
+        public int ContactInfoId { get; set; }
+        [ForeignKey("ContactInfoId")]
+
+        public Contact ContactInfo { get; set; }
+        public string PaymentStatus { get; set; } = "unpaid";
+
         public string CheckOutUrl { get; set; }
 
 

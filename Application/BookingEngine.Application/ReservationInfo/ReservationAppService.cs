@@ -17,6 +17,8 @@ using BookingEngine.Application.PassengerInfo.Validations;
 using BookingEngine.Application.ReservationInfo.Dtos;
 using Microsoft.EntityFrameworkCore;
 using BookingEngine.Application.ReservationInfo.Validations;
+using System.Collections.Immutable;
+using Infrastructure.Domain.Models;
 
 namespace BookingEngine.Application.Reservation
 {
@@ -26,9 +28,26 @@ namespace BookingEngine.Application.Reservation
         {
 
         }
+        protected override Domain.Models.Reservation BeforCreate(ReservationCreateDto create)
+        {
+            var entity = base.BeforCreate(create); // This will set Reservation.Code and audit fields
+
+            // Ensure ContactInfo has a Code
+            if (entity.ContactInfo != null && string.IsNullOrWhiteSpace(entity.ContactInfo.Code))
+            {
+                entity.ContactInfo.Code = "ContactInfo_" + Guid.NewGuid().ToString();
+            }
+
+            return entity;
+        }
+
+
         protected override IQueryable<Domain.Models.Reservation> QueryExcuter(SieveModel input)
         {
             return base.QueryExcuter(input)
+                .Include( p => p.ContactInfo)
+                .Include(p => p.ContactInfo)
+                    .ThenInclude (p => p.Passengers)
                 .Include(p => p.ContactInfo)
                     .ThenInclude(p => p.Passengers)
                     .ThenInclude(p => p.Telephone)

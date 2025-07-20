@@ -19,15 +19,12 @@ namespace BookingEngine.Domain.Models
         [MaxLength(100)]
         public string? LastName { get; set; }
 
-        [Required]
         [MaxLength(15)] // adjust based on your expected phone number length
         public string PhoneNumber { get; set; }
 
-        [Required]
         [MaxLength(10)] // country codes are usually short (e.g. "US", "DE", etc.)
-        public string CountryCode { get; set; }
+        public string? CountryCode { get; set; }
 
-        [Required]
         [MaxLength(255)]
         [EmailAddress]
         public string Email { get; set; }

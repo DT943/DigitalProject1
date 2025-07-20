@@ -47,7 +47,34 @@ namespace BookingEngine.Data.DbContext
         public DbSet<Domain.Models.StripeResult> StripeResults { get; set; }
 
 
+
+        public DbSet<InquirePNR> InquirePNRs { get; set; }
+        public DbSet<BookFlightSegment> BookFlightSegments { get; set; }
+        public DbSet<BookFare> BookFares { get; set; }
+        public DbSet<BookPassenger> BookPassengers { get; set; }
+        public DbSet<BookETicket> BookETickets { get; set; }
+        public DbSet<BookContactInfo> BookContactInfos { get; set; }
+
+        public DbSet<InquirePNRResponse> InquirePNRResponses { get; set; }
+
+        public DbSet<BookFee> BookFees { get; set; }
+        public DbSet<BookPassengerCount> BookPassengerCounts { get; set; }
+        public DbSet<BookTax> BookTaxs { get; set; }
+
+
+        public DbSet<ExchangeRate> ExchangeRates { get; set; }
         
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<Amenity> Amenities { get; set; }
+        public DbSet<Location> Locations { get; set; }
+
+        public DbSet<PaymentPNRContact> PaymentPNRContacts { get; set; }
+        public DbSet<PaymentPNRETicketInfo> PaymentPNRETicketInfos { get; set; }
+        public DbSet<PaymentPNRFee> PaymentPNRFees { get; set; }
+        public DbSet<PaymentPNRTax> PaymentPNRTaxs { get; set; }
+        public DbSet<PaymentPNRPassenger> PaymentPNRPassengers { get; set; }
+        public DbSet<PaymentPNRFlightSegment> PaymentPNRFlightSegments { get; set; }
+        public DbSet<PaymentPNRResult> PaymentPNRResults { get; set; }
 
 
     }

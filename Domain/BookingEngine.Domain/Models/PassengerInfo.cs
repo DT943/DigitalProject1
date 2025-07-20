@@ -30,9 +30,8 @@ namespace BookingEngine.Domain.Models
         [Required]
         public DateOnly BirthDate { get; set; }
 
-        [Required]
 
-        public string CountryCode { get; set; }
+        public string? CountryCode { get; set; }
         public List<string>? FileUrlPath { get; set; }
 
 
@@ -64,13 +63,13 @@ namespace BookingEngine.Domain.Models
         public int Id { get; set; }
 
         [StringLength(10)]
-        public string AreaCityCode { get; set; }
+        public string? AreaCityCode { get; set; }
 
         [StringLength(5)]
-        public string CountryAccessCode { get; set; }
+        public string? CountryAccessCode { get; set; }
 
         [StringLength(15)]
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
     }
 
@@ -81,10 +80,10 @@ namespace BookingEngine.Domain.Models
 
         [Required]
         [StringLength(20)]
-        public string DocID { get; set; }
+        public string? DocID { get; set; }
 
         [Required]
-        public DateOnly ExpireDate { get; set; }
+        public DateOnly? ExpireDate { get; set; }
 
     }
 

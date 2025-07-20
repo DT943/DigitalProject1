@@ -137,6 +137,28 @@ namespace BookingEngine.Application.POSAppService
             //}
 
         }
+        public  async Task<string> GetPosCode(int id)
+        {
+            var result = await _serviceDbContext.POSs
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (result == null)
+                throw new EntityNotFoundException("", id.ToString());
+
+            return result.POSCode;
+        }
+
+        public async Task<POSGetDto> GetPOSByCode(string code)
+        {
+            var result = await _serviceDbContext.POSs
+              .FirstOrDefaultAsync(a => a.POSCode == code);
+
+            if (result == null)
+                throw new EntityNotFoundException("", code);
+
+            return _mapper.Map<POSGetDto>(result);
+
+        }
 
         public override async Task<POSGetDto> Update(POSUpdateDto update)
         {

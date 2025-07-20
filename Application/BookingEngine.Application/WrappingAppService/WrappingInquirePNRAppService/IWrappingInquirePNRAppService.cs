@@ -10,6 +10,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
     public interface IWrappingInquirePNRAppService
     {
         Task<InquirePNRGetDto> InquirePNRAsync(InquirePNRCreateDto inquirePNRRequest);
+        Task<InquirePNRGetDto> InquirePNRwithoutCheckAsync(string pnr, string username, string password);
     }
 
 }

@@ -1,0 +1,124 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace BookingEngine.Data.Migrations
+{
+    /// <inheritdoc />
+    public partial class nullablevalue : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "PhoneNumber",
+                table: "Telephones",
+                type: "nvarchar(15)",
+                maxLength: 15,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(15)",
+                oldMaxLength: 15);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CountryAccessCode",
+                table: "Telephones",
+                type: "nvarchar(5)",
+                maxLength: 5,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(5)",
+                oldMaxLength: 5);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "AreaCityCode",
+                table: "Telephones",
+                type: "nvarchar(10)",
+                maxLength: 10,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(10)",
+                oldMaxLength: 10);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CountryCode",
+                table: "PassengerInfos",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CountryCode",
+                table: "Contacts",
+                type: "nvarchar(10)",
+                maxLength: 10,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(10)",
+                oldMaxLength: 10);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.AlterColumn<string>(
+                name: "PhoneNumber",
+                table: "Telephones",
+                type: "nvarchar(15)",
+                maxLength: 15,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(15)",
+                oldMaxLength: 15,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CountryAccessCode",
+                table: "Telephones",
+                type: "nvarchar(5)",
+                maxLength: 5,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(5)",
+                oldMaxLength: 5,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "AreaCityCode",
+                table: "Telephones",
+                type: "nvarchar(10)",
+                maxLength: 10,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(10)",
+                oldMaxLength: 10,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CountryCode",
+                table: "PassengerInfos",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "CountryCode",
+                table: "Contacts",
+                type: "nvarchar(10)",
+                maxLength: 10,
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "nvarchar(10)",
+                oldMaxLength: 10,
+                oldNullable: true);
+        }
+    }
+}

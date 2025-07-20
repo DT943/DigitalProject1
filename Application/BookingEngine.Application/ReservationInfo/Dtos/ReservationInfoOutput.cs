@@ -18,7 +18,10 @@ namespace BookingEngine.Application.ReservationInfo.Dtos
         public string FlightType { get; set; }
         public string FlightClass { get; set; }
         public string CheckOutUrl { get; set; }
-        public ICollection<ContactInfoGetDto> ContactInfo { get; set; }
+
+        public string PaymentStatus { get; set; }
+
+        public ContactInfoGetDto ContactInfo { get; set; }
 
     }
 }

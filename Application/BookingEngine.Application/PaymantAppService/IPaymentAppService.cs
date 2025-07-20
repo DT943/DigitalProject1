@@ -9,7 +9,7 @@ namespace BookingEngine.Application.PaymantAppService
 {
     public interface IPaymentAppService
     {
-        Task<string> CreateCheckoutSessionAsync(StripeSettingsDto settings, StripeInfoDto stripeInfo,string pnr);
+        Task<string> CreateCheckoutSessionAsync(StripeSettingsDto settings, StripeInfoDto stripeInfo,string pnr,int  pos, string paymentAmount);
         Task HandleStripeWebhookAsync(string json, string stripeSignatureHeader, StripeSettingsDto settings);
 
     }

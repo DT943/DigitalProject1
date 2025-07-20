@@ -21,13 +21,20 @@ namespace BookingEngine.Host.Controllers
         }
 
         [HttpPost("CreateListPassenger")]
-        [AllowAnonymous] // Allow access without authentication
+        [AllowAnonymous] 
         public async Task<ActionResult<ContactInfoGetDto> >CreateListPassenger (ContactInfoCreateDto contactInfoCreateDto)
         {
-            var results = new List <PassengerInfoGetDto>();
+            try
+            {
+                var results = new List<PassengerInfoGetDto>();
 
-            var contact = await _appService.Create(contactInfoCreateDto);
-            return Ok(contact);
+                var contact = await _appService.Create(contactInfoCreateDto);
+                return Ok(contact);
+
+            }
+            catch (Exception ex) { 
+                return BadRequest(ex.Message);
+            }
         }
 
     }

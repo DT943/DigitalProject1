@@ -23,12 +23,12 @@ namespace BookingEngine.Application.PassengerInfo.Dtos
 
         public string NameTitle { get; set; }
 
-        public TelephoneGetDto Telephone { get; set; }
-        public string CountryCode { get; set; }
+        public TelephoneGetDto? Telephone { get; set; }
+        public string? CountryCode { get; set; }
 
-        public List<string> FileUrlPath { get; set; }
+        public List<string>? FileUrlPath { get; set; }
 
-        public PassportGetDto Passport { get; set; }
+        public PassportGetDto? Passport { get; set; }
 
     }
 
@@ -36,18 +36,18 @@ namespace BookingEngine.Application.PassengerInfo.Dtos
     {
         public int Id { get; set; }
 
-        public string AreaCityCode { get; set; }
+        public string? AreaCityCode { get; set; }
 
-        public string CountryAccessCode { get; set; }
+        public string? CountryAccessCode { get; set; }
 
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
     }
     public class PassportGetDto
     {
         public int Id { get; set; }
-        public string DocID { get; set; }
-        public DateOnly ExpireDate { get; set; }
+        public string? DocID { get; set; }
+        public DateOnly? ExpireDate { get; set; }
     }
 
 }

@@ -14,7 +14,7 @@ namespace BookingEngine.Host.Controllers
     {
         public OTAUserController(IOTAUserAppService appService) : base(appService, Servics.BookingEngine)
         {
-
+            
         }
     }
 }

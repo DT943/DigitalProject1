@@ -10,17 +10,28 @@ using BookingEngine.Domain.Models;
 using FluentValidation;
 using Stripe;
 using BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppService.Dtos;
+using BookingEngine.Application.ExchangeCurrencyAppService;
+using Stripe.V2;
+using static Sieve.Extensions.MethodInfoExtended;
+using BookingEngine.Data.Migrations;
+using Microsoft.Extensions.Logging;
+
 
 namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppService
 {
     public class WrappingInquirePNRAppService: IWrappingInquirePNRAppService
     {
         private readonly string _endpoint = "https://reservations.flycham.com/webservices/services/AAResWebServices";
-        private readonly string _username = "TESTOTADAM";
-        private readonly string _password = "Pass@D542";
+        
+        private readonly IExchangeCurrencyAppService _exchangeCurrencyAppService;
 
-        public WrappingInquirePNRAppService()
+        private readonly ILogger<WrappingInquirePNRAppService> _logger;
+
+        public WrappingInquirePNRAppService(IExchangeCurrencyAppService exchangeCurrencyAppService, ILogger<WrappingInquirePNRAppService> logger)
         {
+            _exchangeCurrencyAppService = exchangeCurrencyAppService;
+
+            _logger = logger;
         }
 
         private async Task<string> CallInquirePNRApiAsync(string soapXml)
@@ -34,18 +45,17 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
             return await resp.Content.ReadAsStringAsync();
         }
 
-        private string BuildSoapRequest(InquirePNRCreateDto request)
+        private string BuildSoapRequest(InquirePNRCreateDto request,string username , string password)
         {
 
-            string formattedDep = request.DepartureDate.ToString("yyyy-MM-dd");
 
             return $@"
                 <soap:Envelope xmlns:soap=""http://schemas.xmlsoap.org/soap/envelope/"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"">
                     <soap:Header>
                         <wsse:Security soap:mustUnderstand=""1"" xmlns:wsse=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"">
                             <wsse:UsernameToken wsu:Id=""UsernameToken-17099451"" xmlns:wsu=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"">
-                                <wsse:Username>{_username}</wsse:Username>
-                                <wsse:Password Type=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"">{_password}</wsse:Password>
+                                <wsse:Username>{username}</wsse:Username>
+                                <wsse:Password Type=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText"">{password}</wsse:Password>
                             </wsse:UsernameToken>
                         </wsse:Security>
                     </soap:Header>
@@ -53,7 +63,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
                         <ns2:OTA_ReadRQ EchoToken=""11839640750780-171674061"" PrimaryLangID=""en-us"" SequenceNmbr=""1"" TimeStamp=""2023-02-28T20:00:00"" Version=""20061.00"">
                             <ns2:POS>
                                 <ns2:Source TerminalID=""TestUser/Test Runner"">
-                                    <ns2:RequestorID ID=""{_username}"" Type=""4""/>
+                                    <ns2:RequestorID ID=""{username}"" Type=""4""/>
                                     <ns2:BookingChannel Type=""12""/>
                                 </ns2:Source>
                             </ns2:POS>
@@ -62,7 +72,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
                                     <ns2:UniqueID ID=""{request.PNR}"" Type=""14""/>
                                 </ns2:ReadRequest>
                                 <ns2:AirReadRequest>
-                                    <ns2:DepartureDate>{formattedDep}</ns2:DepartureDate>
+                                    <ns2:DepartureDate></ns2:DepartureDate>
                                 </ns2:AirReadRequest>
                             </ns2:ReadRequests>
                         </ns2:OTA_ReadRQ>
@@ -83,7 +93,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
             return XDocument.Parse(xmlResponse);
         }
 
-        private static InquirePNRGetDto ToInquirePNRResult(XDocument doc, string lastname)
+        private static InquirePNRGetDto ToInquirePNRResult(XDocument doc, string lastname, bool checklastname)
         {
             XNamespace ns = "http://www.opentravel.org/OTA/2003/05";
             XNamespace ns2 = "http://www.isaaviation.com/thinair/webservices/OTA/Extensions/2003/05";
@@ -116,7 +126,22 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
                 result.Errors.Add("Missing AirReservation node");
                 return result;
             }
-            var matchedPassenger = 0;
+            var matchedPassenger  = 0; 
+            if (checklastname)
+            {
+                matchedPassenger = 0;
+            }
+            else
+            {
+                matchedPassenger = 1;
+            }
+
+
+            var otaAirBookRS = doc.Descendants(ns + "OTA_AirBookRS").FirstOrDefault();
+            if (otaAirBookRS != null)
+            {
+                result.TransactionIdentifier = otaAirBookRS.Attribute("TransactionIdentifier")?.Value;
+            }
 
             // Passengers
             result.Passengers = airRes.Descendants(ns + "AirTraveler")
@@ -140,7 +165,19 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
                         DocumentIssueCountry = p.Element(ns + "Document")?.Attribute("DocIssueCountry")?.Value,
                         Nationality = p.Element(ns + "Document")?.Attribute("DocHolderNationality")?.Value,
                         DocumentExpiry = exp,
-                        Rph = p.Element(ns + "TravelerRefNumber")?.Attribute("RPH")?.Value
+                        Rph = p.Element(ns + "TravelerRefNumber")?.Attribute("RPH")?.Value,
+                        ETicketInfo = p.Element(ns + "ETicketInfo")?
+                                .Elements(ns + "ETicketInfomation")
+                                .Select(et => new BookETicketDto
+                                {
+                                    CouponNumber = et.Attribute("couponNo")?.Value,
+                                    ETicketNumber = et.Attribute("eTicketNo")?.Value,
+                                    FlightSegmentCode = et.Attribute("flightSegmentCode")?.Value,
+                                    FlightSegmentRPH = et.Attribute("flightSegmentRPH")?.Value,
+                                    Status = et.Attribute("status")?.Value,
+                                    UsedStatus = et.Attribute("usedStatus")?.Value
+                                }).ToList()
+
                     };
                 }).ToList();
 
@@ -213,7 +250,8 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
                         DepartureDateTime = dep,
                         ArrivalDateTime = arr,
                         CabinClass = seg.Attribute("ResCabinClass")?.Value,
-                        Rph = seg.Attribute("RPH")?.Value
+                        Rph = seg.Attribute("RPH")?.Value,
+                        Status = seg.Attribute("Status")?.Value
                     };
                 }).ToList();
 
@@ -221,21 +259,49 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
             var itinFare = airRes.Descendants(ns + "ItinTotalFare").FirstOrDefault();
             if (itinFare != null)
             {
+                var FromCurrency = decimal.Parse(itinFare.Element(ns + "TotalFare")?.Attribute("Amount")?.Value ?? "0");
+
+                var ToCurrency = decimal.Parse(itinFare.Element(ns + "TotalEquivFare")?.Attribute("Amount")?.Value ?? "0");
+
+                var rate = ToCurrency / FromCurrency;
+
+
+                var taxes = itinFare.Descendants(ns + "Tax")
+                    .Select(t => new BookTaxDto
+                    {
+                        Amount = decimal.Parse(t.Attribute("Amount")?.Value ?? "0"),
+                        EquivAmount = rate * decimal.Parse(t.Attribute("Amount")?.Value ?? "0"),
+                        CurrencyCode = t.Attribute("CurrencyCode")?.Value,
+                        DecimalPlaces = int.Parse(t.Attribute("DecimalPlaces")?.Value ?? "2"),
+                        TaxCode = t.Attribute("TaxCode")?.Value
+                    }).ToList();
+
+                var fees = itinFare.Descendants(ns + "Fee")
+                    .Select(f => new BookFeeDto
+                    {
+                        Amount = decimal.Parse(f.Attribute("Amount")?.Value ?? "0"),
+  
+                        EquivAmount = rate * decimal.Parse(f.Attribute("Amount")?.Value ?? "0"),
+
+                        CurrencyCode = f.Attribute("CurrencyCode")?.Value,
+                        DecimalPlaces = int.Parse(f.Attribute("DecimalPlaces")?.Value ?? "2"),
+                        FeeCode = f.Attribute("FeeCode")?.Value
+                    }).ToList();
+
                 result.Fare = new BookFareDto
                 {
                     BaseFare = decimal.Parse(itinFare.Element(ns + "BaseFare")?.Attribute("Amount")?.Value ?? "0"),
-                    Tax = decimal.Parse(itinFare.Descendants(ns + "Tax").FirstOrDefault()?.Attribute("Amount")?.Value ?? "0"),
-                    Fee = decimal.Parse(itinFare.Descendants(ns + "Fee").FirstOrDefault()?.Attribute("Amount")?.Value ?? "0"),
-                    TotalFareUSD = decimal.Parse(itinFare.Element(ns + "TotalFare")?.Attribute("Amount")?.Value ?? "0"),
-                    TotalFareSYP = decimal.Parse(itinFare.Element(ns + "TotalEquivFare")?.Attribute("Amount")?.Value ?? "0"),
-                    TotalFareWithCCFeeUSD = decimal.Parse(itinFare.Element(ns + "TotalFareWithCCFee")?.Attribute("Amount")?.Value ?? "0"),
-                    TotalFareWithCCFeeSYP = decimal.Parse(itinFare.Element(ns + "TotalEquivFareWithCCFee")?.Attribute("Amount")?.Value ?? "0")
+                    Taxes = taxes,
+                    Fees = fees,
+
+                    TotalFare = decimal.Parse(itinFare.Element(ns + "TotalFare")?.Attribute("Amount")?.Value ?? "0"),
+                    TotalFareCurrency = itinFare.Element(ns + "TotalFare")?.Attribute("CurrencyCode")?.Value ?? "",
+
+                    TotalEquivFare = decimal.Parse(itinFare.Element(ns + "TotalEquivFare")?.Attribute("Amount")?.Value ?? "0"),
+                    TotalEquivFareCurrency = itinFare.Element(ns + "TotalEquivFare")?.Attribute("CurrencyCode")?.Value ?? ""
+
                 };
             }
-
-            
-
-
             return result;
         }
 
@@ -244,10 +310,42 @@ namespace BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppServ
 
             try
             {
-                var soapRequest = BuildSoapRequest(inquirePNRRequest);
+                var soapRequest = BuildSoapRequest(inquirePNRRequest, "TESTOTADAM", "Pass@D542");
                 var responseXml = await CallInquirePNRApiAsync(soapRequest);
                 var parsedDoc = ParseResponse(responseXml);
-                var result = WrappingInquirePNRAppService.ToInquirePNRResult(parsedDoc, inquirePNRRequest.LastName);
+                var result = WrappingInquirePNRAppService.ToInquirePNRResult(parsedDoc, inquirePNRRequest.LastName, true);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new InquirePNRGetDto
+                {
+                    Status = "error",
+                    Errors = new List<string> { "Exception: " + ex.Message }
+                };
+            }
+        }
+        public async Task<InquirePNRGetDto> InquirePNRwithoutCheckAsync(string pnr,string username, string password )
+        {
+            var request = new InquirePNRCreateDto
+            {
+                PNR = pnr,
+                LastName = ""
+            };
+
+            try
+            {
+                var soapRequest = BuildSoapRequest(request, username , password);
+                _logger.LogInformation("Inquire PNR request : {soapRequest}", soapRequest);
+
+                var responseXml = await CallInquirePNRApiAsync(soapRequest);
+
+                _logger.LogInformation("Inquire PNR response : {responseXml}", responseXml);
+
+                var parsedDoc = ParseResponse(responseXml);
+
+                var result = WrappingInquirePNRAppService.ToInquirePNRResult(parsedDoc, "" ,false);
 
                 return result;
             }

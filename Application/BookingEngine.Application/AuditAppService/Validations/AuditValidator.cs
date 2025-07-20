@@ -8,10 +8,10 @@ using Infrastructure.Application.Validations;
 
 namespace BookingEngine.Application.AuditAppService.Validations
 {
-    public class SearchRequestValidator: AbstractValidator<IValidatableDto>
+    public class AuditValidator: AbstractValidator<IValidatableDto>
     {
 
-        public SearchRequestValidator()
+        public AuditValidator()
         {
             RuleSet("create", () =>
             {
