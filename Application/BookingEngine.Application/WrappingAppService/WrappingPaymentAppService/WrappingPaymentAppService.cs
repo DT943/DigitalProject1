@@ -1,10 +1,13 @@
-﻿using System.Net.Http;
+﻿using System.Globalization;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using BookingEngine.Application.AirPortAppService;
 using BookingEngine.Application.OTAUserAppService;
 using BookingEngine.Application.PaymantAppService;
 using BookingEngine.Application.PaymantAppService.Dtos;
+using BookingEngine.Application.PDFTicketAppService.Dtos;
 using BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppService;
 using BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppService.Dtos;
 using BookingEngine.Application.WrappingAppService.WrappingPaymentAppService.Dtos;
@@ -17,13 +20,18 @@ namespace BookingEngine.Application.WrappingAppService.WrappingPaymentAppService
     {
         private readonly string _endpoint = "https://reservations.flycham.com/webservices/services/AAResWebServicesForPay";
         private readonly ILogger<PaymentAppService> _logger;
+        private readonly IAirPortAppService _airPortAppService;
+
 
         private readonly IPaymentPNRResultAppService _paymentPNRResultAppService;
         public WrappingPaymentAppService(
-          ILogger<PaymentAppService> logger, IPaymentPNRResultAppService paymentPNRResultAppService)
+          ILogger<PaymentAppService> logger,
+          IAirPortAppService airPortAppService,
+          IPaymentPNRResultAppService paymentPNRResultAppService)
         {
             _logger = logger;
             _paymentPNRResultAppService = paymentPNRResultAppService;
+            _airPortAppService = airPortAppService;
         }
 
         public async Task<PaymentSystemGetDto> PaymentAsync(PaymentSystemCreateDto request, string sessionId)
@@ -122,6 +130,14 @@ namespace BookingEngine.Application.WrappingAppService.WrappingPaymentAppService
             return float.TryParse(input, out var result) ? result : (float?)null;
         }
 
+        private string TryParseFloatToString(string input, string fallback)
+        {
+            if (float.TryParse(input, out float result))
+                return result.ToString("F2");
+            return fallback;
+        }
+
+
         private int? GetPTCCount(XNamespace extNs, XDocument doc, string type)
         {
             return int.TryParse(
@@ -133,6 +149,34 @@ namespace BookingEngine.Application.WrappingAppService.WrappingPaymentAppService
             ) ? count : (int?)null;
         }
 
+        string ParseDateOnly(string dateTime)
+        {
+            if (DateTime.TryParse(dateTime, out var dt))
+                return dt.ToString("yyyy-MM-dd");
+            return string.Empty;
+        }
+
+        string ParseTimeOnly(string dateTime)
+        {
+            if (DateTime.TryParse(dateTime, out var dt))
+                return dt.ToString("HH:mm");
+            return string.Empty;
+        }
+
+        private string CalculateDuration(string? departure, string? arrival)
+        {
+            if (DateTime.TryParse(departure, out var dep) && DateTime.TryParse(arrival, out var arr))
+            {
+                var duration = arr - dep;
+                if (duration.TotalMinutes < 0)
+                {
+                    // If arrival is before departure (crossing midnight?), add one day
+                    duration = duration.Add(TimeSpan.FromDays(1));
+                }
+                return $"{(int)duration.TotalHours}h {duration.Minutes}m";
+            }
+            return string.Empty; // fallback if parsing fails
+        }
 
         private async Task<PaymentSystemGetDto> ParsePaymentResponse(XDocument doc,string sessionId)
         {
@@ -158,6 +202,7 @@ namespace BookingEngine.Application.WrappingAppService.WrappingPaymentAppService
 
             try
             {
+
                 var paymentPNRResult = new PaymentPNRResultCreateDto
                 {
                     SessionId = sessionId,
@@ -165,11 +210,11 @@ namespace BookingEngine.Application.WrappingAppService.WrappingPaymentAppService
                     TicketAdvisory = doc.Descendants(ns + "TicketAdvisory").FirstOrDefault()?.Value,
 
                     BaseFareAmount = TryParseFloat(doc.Descendants(ns + "BaseFare").FirstOrDefault()?.Attribute("Amount")?.Value),
-                    BaseFareCurrency = null, // Not required unless numeric
+                    BaseFareCurrency = TryParseFloat(doc.Descendants(ns + "BaseFare").FirstOrDefault()?.Attribute("CurrencyCode")?.Value),
                     TotalFareAmount = TryParseFloat(doc.Descendants(ns + "TotalFare").FirstOrDefault()?.Attribute("Amount")?.Value),
-                    TotalFareCurrency = null,
+                    TotalFareCurrency = TryParseFloat(doc.Descendants(ns + "TotalFare").FirstOrDefault()?.Attribute("CurrencyCode")?.Value),
                     TotalEquivFareAmount = TryParseFloat(doc.Descendants(ns + "TotalEquivFare").FirstOrDefault()?.Attribute("Amount")?.Value),
-                    TotalEquivFareCurrency = null,
+                    TotalEquivFareCurrency = TryParseFloat(doc.Descendants(ns + "TotalEquivFare").FirstOrDefault()?.Attribute("CurrencyCode")?.Value),
 
                     PaymentAmount = TryParseFloat(doc.Descendants(ns + "PaymentAmount").FirstOrDefault()?.Attribute("Amount")?.Value),
                     PaymentCurrency = doc.Descendants(ns + "PaymentAmount").FirstOrDefault()?.Attribute("CurrencyCode")?.Value,
@@ -253,21 +298,102 @@ namespace BookingEngine.Application.WrappingAppService.WrappingPaymentAppService
                 _logger.LogWarning("PaymentPNR Create input {Payment}.", paymentPNRResult);
 
                 var result = await _paymentPNRResultAppService.Create(paymentPNRResult);
-                
-                _logger.LogWarning("PaymentPNR Result {Payment}.", result);
 
+
+                //  Sum all amounts as decimals (for precision)
+                decimal totalAmount = doc.Descendants(ns + "Tax")
+                    .Concat(doc.Descendants(ns + "Fee"))
+                    .Select(x =>
+                    {
+                        var amountStr = x.Attribute("Amount")?.Value;
+                        // Use decimal.TryParse with InvariantCulture for decimal point parsing
+                        return decimal.TryParse(amountStr, NumberStyles.Any, CultureInfo.InvariantCulture, out var val) ? val : 0m;
+                    })
+                    .Sum();
+
+                
+
+                var ticket = new PDFTicketCreateDto
+                {
+                    SessionId = sessionId,
+                    PNR = doc.Descendants(ns + "BookingReferenceID").FirstOrDefault()?.Attribute("ID")?.Value,
+                    DateOfBooking = DateTime.Now.ToString("yyyy-MM-dd"), 
+
+                    PaidAmountUSD = TryParseFloatToString(doc.Descendants(ns + "TotalFare").FirstOrDefault()?.Attribute("Amount")?.Value,"0.00"),
+                    ChargesUSD = TryParseFloatToString(totalAmount.ToString(CultureInfo.InvariantCulture), "0.00"),
+                    FareUSD = TryParseFloatToString(doc.Descendants(ns + "BaseFare").FirstOrDefault()?.Attribute("Amount")?.Value,"0.00"),
+                    BalanceUSD = "0.00", //TryParseFloatToString(doc.Descendants(ns + "PaymentAmount").FirstOrDefault()?.Attribute("Amount")?.Value, "0.00"),
+
+                    ContactFirstName = doc.Descendants(extNs + "FirstName").FirstOrDefault()?.Value ?? string.Empty,
+                    ContactLastName = doc.Descendants(extNs + "LastName").FirstOrDefault()?.Value ?? string.Empty,
+                    ContactEmail = doc.Descendants(extNs + "Email").FirstOrDefault()?.Value ?? string.Empty,
+                    ContactPhone = doc.Descendants(extNs + "Telephone").FirstOrDefault()?.Element(extNs + "PhoneNumber")?.Value ?? string.Empty,
+                    ContactAreaCode = doc.Descendants(extNs + "Telephone").FirstOrDefault()?.Element(extNs + "AreaCode")?.Value ?? string.Empty ?? string.Empty,
+                    ContactCountryCode = doc.Descendants(extNs + "Telephone").FirstOrDefault()?.Element(extNs + "CountryCode")?.Value ?? string.Empty,
+
+                    FlightSegments = doc.Descendants(ns + "FlightSegment").Select(seg => new FlightSegmentCreateDto
+                    {
+                        FlightNumber =  seg.Attribute("FlightNumber")?.Value ?? string.Empty,
+                        OriginAirPort =  _airPortAppService.GetByIataCode(seg.Element(ns + "DepartureAirport").Attribute("LocationCode").Value.ToString()),
+
+                        //OriginAirPort =seg.Element(ns + "DepartureAirport").Attribute("LocationCode").ToString(),
+
+
+                        DestinationAirPort = _airPortAppService.GetByIataCode(seg.Element(ns + "ArrivalAirport").Attribute("LocationCode").Value.ToString()),
+                        //DestinationAirPort = seg.Element(ns + "ArrivalAirport").Attribute("LocationCode").Value.ToString(),
+
+
+                        Duration = CalculateDuration(seg.Attribute("DepartureDateTime")?.Value, seg.Attribute("ArrivalDateTime")?.Value),
+       
+                        Terminal = seg.Element(ns + "ArrivalAirport")?.Attribute("Terminal")?.Value ?? seg.Element(ns + "DepartureAirport")?.Attribute("Terminal")?.Value ?? string.Empty, 
+                       
+                        Aircraft = "", 
+
+                        DepartureDate = ParseDateOnly(seg.Attribute("DepartureDateTime")?.Value),      
+                        ArrivalDate = ParseDateOnly(seg.Attribute("ArrivalDateTime")?.Value),
+                        DepartureTime = ParseTimeOnly(seg.Attribute("DepartureDateTime")?.Value),
+                        ArrivalTime = ParseTimeOnly(seg.Attribute("ArrivalDateTime")?.Value),
+
+
+                        FlightClass = seg.Attribute("ResCabinClass")?.Value == "Y" ? "Economy Class" : "Business Class",
+
+
+                        Status = seg.Attribute("Status")?.Value == "35" ? "OK" : seg.Attribute("Status")?.Value ?? string.Empty,
+
+                        // Assign values
+                        CheckInFromDate = DateTime.Parse(seg.Attribute("DepartureDateTime").Value).AddHours(-3).ToString("yyyy-MM-dd"),
+                        CheckInFromTime = DateTime.Parse(seg.Attribute("DepartureDateTime").Value).AddHours(-3).ToString("HH:mm"),
+
+                    }).ToList(),
+
+                    PassengerTicketInfos = new List<PassengerTicketInfo>(),
+                    FareRules = new List<FareRuleCreateDto>() 
+                };
+
+                _logger.LogWarning("Tiket Result {ticket}.", ticket);
+
+                _logger.LogWarning("PaymentPNR Result {Payment}.", result);
+                
+                return new PaymentSystemGetDto
+                {
+                    Status = "success",
+                    Error = new List<string>(),
+                    TicketAdvisory = ticketAdvisory,
+                    results = ticket
+                };
             }
             catch (Exception ex) { 
-            
+             
             }
 
 
             return new PaymentSystemGetDto
             {
-                Status = "success",
+                Status = "error",
                 Error = new List<string>(),
-                TicketAdvisory = ticketAdvisory 
+                TicketAdvisory = ticketAdvisory,
             };
+
         }
 
     }

@@ -68,4 +68,21 @@ namespace Authentication.Domain.Models
         public IEnumerable<string> Roles { get; set; }
     }
 
+    public class AuthenticationModelWithDetailsAndDepartment : AuthenticationModel
+    {
+        public string Email { get; set; }
+        public string Code { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Token { get; set; }
+        public DateTime ExpiresOn { get; set; }
+        public int NumberOfLogin { get; set; }
+
+        public string? ManagerCode { get; set; }
+
+        public string? Department {  get; set; }
+
+        public IEnumerable<string> Roles { get; set; }
+    }
+
 }

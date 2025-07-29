@@ -141,7 +141,7 @@ namespace BookingEngine.Host.Controllers
                         errors = onholdbooking.Errors,
                     });
                 }
-                var result = await _paymentAppService.CreateCheckoutSessionAsync(_stripeSettings, paymentCreateDto.StripeInfo, onholdbooking.PNR, pos.Id, paymentCreateDto.BookingInfo.PaymentAmount);
+                var result = await _paymentAppService.CreateCheckoutSessionAsync(paymentCreateDto.BookingInfo.ContactInfo.Passengers , paymentCreateDto.BookingInfo.Travelers ,paymentCreateDto.PassengerInfo, _stripeSettings, paymentCreateDto.StripeInfo, onholdbooking.PNR, pos.Id, paymentCreateDto.BookingInfo.PaymentAmount);
 
                 _logger.LogWarning("Result onholdbooking {result}:", result);
 

@@ -61,14 +61,26 @@ namespace BookingEngine.Application.Services
                 string formattedBOD = ti.BirthDate.ToString("yyyy-MM-dd");
                 string? formattedExpireDate = ti.Passport?.ExpireDate?.ToString("yyyy-MM-dd");
 
+                if (ti.PassengerTypeCode == "CHD")
 
+                {
+                    if (ti.NameTitle == "Mr" || ti.NameTitle == "MR")
+                    {
+                        ti.NameTitle = "MSTR";
+
+                    }
+                    else
+                    {
+                        ti.NameTitle = "MISS";
+                    }
+                }
                 string rph = trav["traveler_ref"];
                 travXmlBuilder.Append($@"
                 <ns2:AirTraveler BirthDate=""{formattedBOD}"" PassengerTypeCode=""{ti.PassengerTypeCode}"">
                   <ns2:PersonName>
                     <ns2:GivenName>{ti.GivenName}</ns2:GivenName>
                     <ns2:Surname>{ti.Surname}</ns2:Surname>
-                    <ns2:NameTitle>{ti.NameTitle}</ns2:NameTitle>
+                    <ns2:NameTitle>{ti.NameTitle.ToUpper()}</ns2:NameTitle>
                   </ns2:PersonName>
                   <ns2:Telephone AreaCityCode=""{request.ContactInfo.CountryCode}"" CountryAccessCode=""{request.ContactInfo.CountryCode}"" PhoneNumber=""{request.ContactInfo.PhoneNumber}""/>
                   <ns2:Document DocHolderNationality=""SY""/>
@@ -110,7 +122,7 @@ namespace BookingEngine.Application.Services
                     <ns1:AAAirBookRQExt>
                       <ns1:ContactInfo>
                         <ns1:PersonName>
-                          <ns1:Title>{request.ContactInfo.Title}</ns1:Title>
+                          <ns1:Title>{request.ContactInfo.Title.ToUpper()}</ns1:Title>
                           <ns1:FirstName>{request.ContactInfo.FirstName}</ns1:FirstName>
                           <ns1:LastName>{request.ContactInfo.LastName}</ns1:LastName>
                         </ns1:PersonName>

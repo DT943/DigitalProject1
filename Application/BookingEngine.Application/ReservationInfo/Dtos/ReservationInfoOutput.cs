@@ -20,6 +20,7 @@ namespace BookingEngine.Application.ReservationInfo.Dtos
         public string CheckOutUrl { get; set; }
 
         public string PaymentStatus { get; set; }
+        public DateTime CreatedAt { get; set; } 
 
         public ContactInfoGetDto ContactInfo { get; set; }
 

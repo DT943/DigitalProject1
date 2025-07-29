@@ -22,6 +22,7 @@ using Sieve.Services;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Infrastructure.Application.BasicDto;
 using System.Linq.Dynamic.Core;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BookingEngine.Application.AirPortAppService
 {
@@ -238,6 +239,18 @@ namespace BookingEngine.Application.AirPortAppService
             return _mapper.Map<AirPortGetDto>(result);
         }
         */
+        public string GetByIataCode(string iataCode)
+        {
+            var airport = _serviceDbContext.AirPorts
+                .Include(x => x.AirPortTranslations)
+                .FirstOrDefault(x => x.IATACode == iataCode);
+
+            var englishTranslation = airport?.AirPortTranslations
+                .FirstOrDefault(t => t.LanguageCode == "en");
+
+            return englishTranslation?.AirPortName ?? string.Empty;
+        }
+
         protected override IQueryable<Domain.Models.AirPort> QueryExcuter(SieveModel input)
         {
             

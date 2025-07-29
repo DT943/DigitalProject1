@@ -28,6 +28,9 @@ namespace BookingEngine.Domain.Models
 
         public string CheckOutUrl { get; set; }
 
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+
 
     }
 }

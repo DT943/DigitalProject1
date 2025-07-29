@@ -39,6 +39,9 @@ namespace BookingEngine.Host.Controllers
             var entity = await _appService.GetSpecific(sieve,from);
             return Ok(entity);
         }
+
+
+
     }
 
 }

@@ -11,5 +11,8 @@ namespace BookingEngine.Application.PaymantAppService.Dtos
     {
         public StripeInfoDto StripeInfo { get; set; }
         public BookCreateDto BookingInfo { get; set; }
+
+        public List<PricingInfoDto> PassengerInfo { get; set; }
     }
+
 }

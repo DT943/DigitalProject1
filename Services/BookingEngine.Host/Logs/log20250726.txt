@@ -1,0 +1,125 @@
+2025-07-26 01:38:35.623 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 10:21:58.913 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 12:06:53.112 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 12:07:37.948 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 13:23:55.061 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 13:59:35.495 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 22:15:43.713 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 22:20:00.638 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 22:20:10.819 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Mailmodo API error: {"success":false,"status":"error","campaignName":"Campaign - Jul 23, 2025, 01:07 PM","message":"This is not a triggered campaign. Please try again with a proper trigger campaign id."}
+   at BookingEngine.Application.MailModoAppService.MailModoAppService.SendMailmodoEmail(String recipientEmail, Dictionary`2 dataVariables, Dictionary`2 campaignDataVariables, String subject, String replyTo, String fromName, String addToList) in C:\Users\lalhalabi\Desktop\ASP.net\Application\BookingEngine.Application\MailModoAppService\MailModoAppService.cs:line 60
+   at BookingEngine.Host.Controllers.MailModoController.SendEmail(MailModoEmailDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\MailModoController.cs:line 38
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 58
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-26 22:27:26.298 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Net.Http.HttpRequestException: An error occurred while sending the request.
+ ---> System.Net.Http.HttpIOException: The response ended prematurely. (ResponseEnded)
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnection.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at BookingEngine.Application.MailModoAppService.MailModoAppService.SendMailmodoEmail(String recipientEmail, Dictionary`2 dataVariables, Dictionary`2 campaignDataVariables, String subject, String replyTo, String fromName, String addToList) in C:\Users\lalhalabi\Desktop\ASP.net\Application\BookingEngine.Application\MailModoAppService\MailModoAppService.cs:line 54
+   at BookingEngine.Host.Controllers.MailModoController.SendEmail(MailModoEmailDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\MailModoController.cs:line 38
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 58
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-26 22:27:55.784 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Mailmodo API error: {"success":false,"status":"error","campaignName":"Campaign - Jul 23, 2025, 01:07 PM","message":"This is not a triggered campaign. Please try again with a proper trigger campaign id."}
+   at BookingEngine.Application.MailModoAppService.MailModoAppService.SendMailmodoEmail(String recipientEmail, Dictionary`2 dataVariables, Dictionary`2 campaignDataVariables, String subject, String replyTo, String fromName, String addToList) in C:\Users\lalhalabi\Desktop\ASP.net\Application\BookingEngine.Application\MailModoAppService\MailModoAppService.cs:line 60
+   at BookingEngine.Host.Controllers.MailModoController.SendEmail(MailModoEmailDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\MailModoController.cs:line 38
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 58
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-26 22:29:56.148 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Mailmodo API error: {"success":false,"status":"error","campaignName":"Campaign - Jul 23, 2025, 01:07 PM","message":"This is not a triggered campaign. Please try again with a proper trigger campaign id."}
+   at BookingEngine.Application.MailModoAppService.MailModoAppService.SendMailmodoEmail(String recipientEmail, Dictionary`2 dataVariables, Dictionary`2 campaignDataVariables, String subject, String replyTo, String fromName, String addToList) in C:\Users\lalhalabi\Desktop\ASP.net\Application\BookingEngine.Application\MailModoAppService\MailModoAppService.cs:line 60
+   at BookingEngine.Host.Controllers.MailModoController.SendEmail(MailModoEmailDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\MailModoController.cs:line 38
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 58
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-26 22:31:30.068 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 23:04:02.119 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: Mailmodo API error: {"success":false,"status":"error","campaignName":"Campaign - Jul 23, 2025, 01:07 PM","message":"This is not a triggered campaign. Please try again with a proper trigger campaign id."}
+   at BookingEngine.Application.MailModoAppService.MailModoAppService.SendMailmodoEmail(String recipientEmail, Dictionary`2 dataVariables, Dictionary`2 campaignDataVariables, String subject, String replyTo, String fromName, String addToList) in C:\Users\lalhalabi\Desktop\ASP.net\Application\BookingEngine.Application\MailModoAppService\MailModoAppService.cs:line 60
+   at BookingEngine.Host.Controllers.MailModoController.SendEmail(MailModoEmailDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\MailModoController.cs:line 38
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 58
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-26 23:23:36.409 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-26 23:24:12.416 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.AspNetCore.Routing.Matching.AmbiguousMatchException: The request matched multiple endpoints. Matches: 
+
+BookingEngine.Host.Controllers.MailModoController.SendEmail (BookingEngine.Host)
+BookingEngine.Host.Controllers.MailModoController.SendEmail (BookingEngine.Host)
+   at Microsoft.AspNetCore.Routing.Matching.DefaultEndpointSelector.ReportAmbiguity(Span`1 candidateState)
+   at Microsoft.AspNetCore.Routing.Matching.DefaultEndpointSelector.ProcessFinalCandidates(HttpContext httpContext, Span`1 candidateState)
+   at Microsoft.AspNetCore.Routing.Matching.DefaultEndpointSelector.Select(HttpContext httpContext, Span`1 candidateState)
+   at Microsoft.AspNetCore.Routing.Matching.DfaMatcher.MatchAsync(HttpContext httpContext)
+   at Microsoft.AspNetCore.Routing.EndpointRoutingMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
+2025-07-26 23:24:44.381 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.

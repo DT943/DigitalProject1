@@ -16,6 +16,7 @@ namespace Authentication.Application.Middleware
         public async Task Invoke(HttpContext context)
         {
 
+
             var path = context.Request.Path.Value;
 
             // Exclude /SearchRequest (case-insensitive match)
@@ -24,6 +25,19 @@ namespace Authentication.Application.Middleware
                 await _next(context); // skip tenant check
                 return;
             }
+            var excludedPaths = new[]
+                {
+                     "/Authentication/LogInWithOTP",
+                     "/Authentication/FirstResetPassword"
+
+                 };
+
+            if (excludedPaths.Any(p => path.Equals(p, StringComparison.OrdinalIgnoreCase)))
+            {
+                await _next(context);
+                return;
+            }
+
 
 
             var user = context.User;
@@ -39,5 +53,4 @@ namespace Authentication.Application.Middleware
             await _next(context);
         }
     }
-
 }

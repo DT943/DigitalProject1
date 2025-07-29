@@ -1,4 +1,4 @@
-using Authentication.Data.DbContext;
+﻿using Authentication.Data.DbContext;
 using Authentication.Domain.Models;
 using Authentication.Host.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -15,10 +15,14 @@ using Authentication.Data.Seeds;
 using Audit.Application.Middleware;
 using Audit.Data.DbContext;
 using Authentication.Application.Middleware;
+using Microsoft.Extensions.Options;
 Console.WriteLine("Application is starting V.1.9.1");
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
 
 builder.Services.Configure<JWT>(builder.Configuration.GetSection("JWT"));
 builder.Services.AddAuthentication(options =>
@@ -39,18 +43,10 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"])),
         ClockSkew = TimeSpan.Zero
     };
+
 });
 
-builder.Services.AddAuthorization(
-);
-
-builder.Services
-    .AddControllers()
-    .AddNewtonsoftJson(options =>
-    {
-        options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
-    });
-
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -89,13 +85,20 @@ builder.Services.AddCors(options =>
 });
 
 */
+builder.Services.AddHttpContextAccessor();
 
-builder.Logging.AddConsole();
+//builder.Logging.AddConsole();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCustomService();
 
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.MissingMemberHandling = Newtonsoft.Json.MissingMemberHandling.Error;
+    });
 
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
@@ -118,7 +121,7 @@ builder.Services.AddDbContext<AuditDbContext>((sp, options) =>
 });
 
 builder.Services.AddSwaggerGen();
-builder.Logging.ClearProviders();
+//builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.SetMinimumLevel(LogLevel.Debug); // Make sure the level is low enough to show "Information" logs
 
@@ -143,19 +146,26 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
+
+app.UseCors("AllowAll");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseCors("AllowAll");
+
 //app.UseCors("AllowCustom");
+
+app.UseRouting();
+
 
 app.UseAuthentication();
 
+app.UseAuthorization();
+
 app.UseMiddleware<TenantMiddleware>();
 
-app.UseAuthorization();
 
 app.UseMiddleware<AuditMiddleware>();
 
