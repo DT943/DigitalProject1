@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="WrappingAppService\WrappingAirAvailAppService\Dtos\**" />
+    <Compile Remove="WrappingAppService\WrappingAirAvailAppService\Validations\**" />
+    <Compile Remove="WrappingAppService\WrappingAirPriceAppService.cs\Dtos\**" />
+    <Compile Remove="WrappingAppService\WrappingAirPriceAppService.cs\Validations\**" />
+    <EmbeddedResource Remove="WrappingAppService\WrappingAirAvailAppService\Dtos\**" />
+    <EmbeddedResource Remove="WrappingAppService\WrappingAirAvailAppService\Validations\**" />
+    <EmbeddedResource Remove="WrappingAppService\WrappingAirPriceAppService.cs\Dtos\**" />
+    <EmbeddedResource Remove="WrappingAppService\WrappingAirPriceAppService.cs\Validations\**" />
+    <None Remove="WrappingAppService\WrappingAirAvailAppService\Dtos\**" />
+    <None Remove="WrappingAppService\WrappingAirAvailAppService\Validations\**" />
+    <None Remove="WrappingAppService\WrappingAirPriceAppService.cs\Dtos\**" />
+    <None Remove="WrappingAppService\WrappingAirPriceAppService.cs\Validations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\Infrastructure.Application\Infrastructure.Application.csproj" />
+    <ProjectReference Include="..\..\Data\SearchFlight.Data\SearchFlight.Data.csproj" />
+  </ItemGroup>
+
+</Project>

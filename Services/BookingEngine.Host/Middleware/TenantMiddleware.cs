@@ -8,6 +8,7 @@
 
         public async Task Invoke(HttpContext context)
         {
+
             var path = context.Request.Path.Value;
 
             // Define case-insensitive exclusions
@@ -15,6 +16,7 @@
             {
                 "/SearchRequest",
                 "/AirPort/GetSpecific",
+               
                 "/AirPort",
                 "/Amenity",
                 "/Location",
@@ -27,7 +29,11 @@
                 "/AbstractApi/ValidateEmail",
                 "/AbstractApi/ValidatePhone",
                 "/POS",
-                "/PaymentPNRResult/GetBySessionId"
+                "/PaymentPNRResult/GetBySessionId",
+                "/PDFTicket/GenerateTicketPDF",
+                "/PDFTicket/DownloadTicketPDF"
+                
+            
 
             };
 

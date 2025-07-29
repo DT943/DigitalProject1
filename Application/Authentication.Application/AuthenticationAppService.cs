@@ -216,8 +216,8 @@ namespace Authentication.Application
 
                 }
             }
-            if (user.NumberOfLogIn == 0 && user.IsFrozed)
-            {
+            if (user.NumberOfLogIn == 0 && user.IsFrozed && !userRoles.Contains("SuperAdmin"))
+                {
                 if (!await _userManager.CheckPasswordAsync(user, model.Password))
                 {
                     return new AuthenticationModel { Message = "Invalid password!", IsAuthenticated = false };
@@ -253,7 +253,7 @@ namespace Authentication.Application
             }
             var jwtSecurityToken = await CreateJwtToken(user);
 
-            if (DateTime.Now - user.LastLogIn > TimeSpan.FromDays(3))
+            if (DateTime.Now - user.LastLogIn > TimeSpan.FromDays(3)  && !userRoles.Contains("SuperAdmin"))
             {
                 user.IsFrozed = true;
                 user.IsActive = false;
@@ -298,7 +298,7 @@ namespace Authentication.Application
 
                 };*/
             }
-            if (await _userManager.IsLockedOutAsync(user) || user.IsLocked)
+            if ((await _userManager.IsLockedOutAsync(user) || user.IsLocked ) && !userRoles.Contains("SuperAdmin"))
             {
                 user.IsActive = !user.IsActive;
                 user.IsLocked = true;
@@ -307,7 +307,7 @@ namespace Authentication.Application
                 return new AuthenticationModel { Message = "Your account is locked due to multiple failed login attempts.", IsAuthenticated = false };
 
             }
-            if (!user.IsActive)
+            if (!user.IsActive && !userRoles.Contains("SuperAdmin"))
             {
                 return new AuthenticationModel { Message = "Your account is deactivated. Please contact support.", IsAuthenticated = false };
             }
@@ -319,7 +319,8 @@ namespace Authentication.Application
             user.NumberOfLogIn += 1;
 
             var updateResult = await _userManager.UpdateAsync(user);
-            return new AuthenticationModelWithDetails { 
+            return new AuthenticationModelWithDetailsAndDepartment
+            { 
                 Message = "User information has been retrieved successfully.",
                 IsAuthenticated = true,
                 Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken),
@@ -331,6 +332,7 @@ namespace Authentication.Application
                 ManagerCode = user.ManagerCode,
                 NumberOfLogin = user.NumberOfLogIn,
                 LastName = user.LastName,
+                Department = user.Department
             };
             
         }

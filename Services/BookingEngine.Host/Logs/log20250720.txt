@@ -1,0 +1,263 @@
+2025-07-20 09:50:43.816 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-20 09:50:44.116 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 12:02:05.792 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-20 12:02:05.968 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 14:31:46.564 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-20 14:31:46.700 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 14:33:14.529 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-20 14:33:14.703 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 14:34:04.458 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-20 14:34:04.645 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 14:34:08.264 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.Exception: 
+
+
+
+Welcome to QuestPDF! 👋 
+
+QuestPDF is an open-source library committed to long-term sustainability and continuous improvement. 
+
+To maintain high-quality development and support while keeping the library free for most users, we use a fair pricing model where only larger organizations help by providing necessary funding for the project. 
+
+If your organization’s annual gross revenue exceeds $1M USD, a Commercial License is required for production use (you can freely evaluate and test QuestPDF in non-production environments at no cost). In that case, please share this information with your team or management. By purchasing a license, you directly contribute to the ongoing development and reliability of QuestPDF. 
+
+For details on the license types and determining which applies to you, please visit: https://www.questpdf.com/license/ 
+
+We trust our users. To continue, no license key is needed. Instead, simply select and configure the appropriate license in your code. For example, if you qualify for the Community license, add: 
+
+> QuestPDF.Settings.License = LicenseType.Community; 
+
+Thank you for supporting QuestPDF! ❤️ By choosing the right license, you help ensure that our project remains transparent, sustainable, and continuously improving for everyone. 🚀 
+
+
+
+
+   at QuestPDF.Drawing.DocumentGenerator.ValidateLicense()
+   at QuestPDF.Drawing.DocumentGenerator.GeneratePdf(SkWriteStream stream, IDocument document)
+   at QuestPDF.Fluent.GenerateExtensions.GeneratePdf(IDocument document, Stream stream)
+   at QuestPDF.Fluent.GenerateExtensions.GeneratePdf(IDocument document)
+   at BookingEngine.Host.Controllers.PDFTicketController.GenerateTicketPdf(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\PDFTicketController.cs:line 19
+   at lambda_method4(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 51
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-20 14:36:09.068 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-20 14:36:09.183 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 14:47:28.276 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-20 14:47:28.431 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 14:53:15.129 +03:00 [WRN] The WebRootPath was not found: C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot. Static files may be unavailable.
+2025-07-20 14:53:15.251 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 14:53:30.571 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.IO.DirectoryNotFoundException: Could not find a part of the path 'C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\wwwroot\templates\Ticket Template (1).pdf'.
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.CreateFile(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options)
+   at Microsoft.Win32.SafeHandles.SafeFileHandle.Open(String fullPath, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.OSFileStreamStrategy..ctor(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.Strategies.FileStreamHelpers.ChooseStrategyCore(String path, FileMode mode, FileAccess access, FileShare share, FileOptions options, Int64 preallocationSize, Nullable`1 unixCreateMode)
+   at System.IO.File.OpenRead(String path)
+   at PDFTicketAppService.FillTemplatePdf() in C:\Users\lalhalabi\Desktop\ASP.net\Application\BookingEngine.Application\PDFTicketAppService\PDFTicketAppService.cs:line 18
+   at BookingEngine.Host.Controllers.PDFTicketController.GenerateFromTemplate(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\PDFTicketController.cs:line 27
+   at lambda_method4(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 52
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-20 15:15:51.259 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 15:18:31.839 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 15:19:23.706 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 15:51:31.807 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 15:56:05.325 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 15:58:13.704 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:01:06.759 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:01:54.974 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:02:39.196 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:03:39.944 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:04:48.466 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:05:42.777 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:22:36.859 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:22:51.601 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: No file exists at: TicketTemplate.pdf
+   at UglyToad.PdfPig.Parser.PdfDocumentFactory.Open(String filename, ParsingOptions options)
+   at UglyToad.PdfPig.PdfDocument.Open(String filePath, ParsingOptions options)
+   at BookingEngine.Host.Controllers.PDFTicketController.GenerateFromTemplate(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\PDFTicketController.cs:line 33
+   at lambda_method4(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 52
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-20 16:23:50.110 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: No file exists at: TicketTemplate.pdf
+   at UglyToad.PdfPig.Parser.PdfDocumentFactory.Open(String filename, ParsingOptions options)
+   at UglyToad.PdfPig.PdfDocument.Open(String filePath, ParsingOptions options)
+   at BookingEngine.Host.Controllers.PDFTicketController.GenerateFromTemplate(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\PDFTicketController.cs:line 33
+   at lambda_method4(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 52
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-20 16:24:30.984 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:24:34.778 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: No file exists at: TicketTemplate.pdf
+   at UglyToad.PdfPig.Parser.PdfDocumentFactory.Open(String filename, ParsingOptions options)
+   at UglyToad.PdfPig.PdfDocument.Open(String filePath, ParsingOptions options)
+   at BookingEngine.Host.Controllers.PDFTicketController.GenerateFromTemplate(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\PDFTicketController.cs:line 33
+   at lambda_method4(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 52
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-20 16:28:30.572 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 16:51:10.246 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 18:45:57.889 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 18:51:14.417 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 18:51:48.095 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 19:33:41.129 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 19:38:03.048 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 19:39:46.356 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 19:44:03.504 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 19:45:05.294 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 19:46:02.731 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 19:46:38.213 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:20:49.203 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:20:55.397 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Nullable object must have a value.
+   at System.Nullable`1.get_Value()
+   at PDFTicketAppService.GenerateFromTemplate(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Application\BookingEngine.Application\PDFTicketAppService\PDFTicketAppService.cs:line 62
+   at BookingEngine.Host.Controllers.PDFTicketController.GenerateFromTemplate(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\PDFTicketController.cs:line 27
+   at lambda_method4(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 52
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-20 20:23:09.192 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:24:42.492 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:24:50.186 +03:00 [ERR] An unhandled exception has occurred while executing the request.
+System.InvalidOperationException: Nullable object must have a value.
+   at System.Nullable`1.get_Value()
+   at PDFTicketAppService.GenerateFromTemplate(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Application\BookingEngine.Application\PDFTicketAppService\PDFTicketAppService.cs:line 62
+   at BookingEngine.Host.Controllers.PDFTicketController.GenerateFromTemplate(PDFTicketCreateDto dto) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Controllers\PDFTicketController.cs:line 27
+   at lambda_method4(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeNextActionFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeFilterPipelineAsync>g__Awaited|20_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at BookingEngine.Host.Middleware.TenantMiddleware.Invoke(HttpContext context) in C:\Users\lalhalabi\Desktop\ASP.net\Services\BookingEngine.Host\Middleware\TenantMiddleware.cs:line 52
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddlewareImpl.<Invoke>g__Awaited|10_0(ExceptionHandlerMiddlewareImpl middleware, HttpContext context, Task task)
+2025-07-20 20:25:43.711 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:32:19.822 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:52:50.112 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:57:17.153 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:58:03.992 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 20:58:58.880 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 21:00:02.400 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 21:27:54.274 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 21:34:44.247 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 21:53:44.390 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 21:55:42.205 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 22:34:08.761 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 22:38:56.016 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 22:43:53.429 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 22:45:38.034 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 22:46:25.288 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 22:51:45.908 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 23:00:34.746 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 23:08:27.554 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 23:25:48.395 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 23:27:38.285 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+2025-07-20 23:41:13.509 +03:00 [WRN] Overriding address(es) 'http://devsrv01:7219'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.

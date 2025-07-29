@@ -18,6 +18,7 @@ namespace BookingEngine.Host.Controllers
 
 
         }
+        /*
         [HttpGet]
         [AllowAnonymous] // Allow access without authentication
         public override async Task<ActionResult<StripeResultGetDto>> GetAll([FromQuery] SieveModel sieve)
@@ -25,6 +26,7 @@ namespace BookingEngine.Host.Controllers
             var entity = await _appService.GetAll(sieve);
             return Ok(entity);
         }
+        */
 
 
     }

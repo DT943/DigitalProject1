@@ -17,19 +17,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="PdfPig" Version="0.1.10" />
+    <PackageReference Include="PdfSharpCore" Version="1.3.67" />
     <PackageReference Include="Stripe.net" Version="48.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="WrappingAppService\WrappingAirAvailAppService\Dtos\" />
-    <Folder Include="WrappingAppService\WrappingAirAvailAppService\Validations\" />
-    <Folder Include="WrappingAppService\WrappingAirPriceAppService.cs\Dtos\" />
-    <Folder Include="WrappingAppService\WrappingAirPriceAppService.cs\Validations\" />
+    <Folder Include="ExternalServicesAppService\TicketGallary\Dtos\" />
     <Folder Include="WrappingAppService\WrappingBookingAppService\Validations\" />
     <Folder Include="WrappingAppService\WrappingPaymentAppService\Validations\" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="MailModoAppService\Dtos\MailModoInput.cs" />
     <None Include="WrappingAppService\EmailAppService\IEmailAppService.cs" />
   </ItemGroup>
 

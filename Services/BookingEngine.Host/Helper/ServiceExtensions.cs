@@ -11,10 +11,15 @@ using BookingEngine.Application.AuditAppService.Validations;
 using BookingEngine.Application.ExchangeCurrencyAppService;
 using BookingEngine.Application.ExchangeCurrencyAppService.Dtos;
 using BookingEngine.Application.ExchangeCurrencyAppService.Validations;
+using BookingEngine.Application.ExternalServicesAppService.TicketGallary;
 using BookingEngine.Application.Filters;
 using BookingEngine.Application.LocationAppService;
 using BookingEngine.Application.LocationAppService.Dtos;
 using BookingEngine.Application.LocationAppService.Validations;
+using BookingEngine.Application.MailModoAppService;
+using BookingEngine.Application.MailModoAppService.Dtos;
+using BookingEngine.Application.MailModoAppService.Validation;
+using BookingEngine.Application.MailModoResultAppService;
 using BookingEngine.Application.OTAUserAppService;
 using BookingEngine.Application.OTAUserAppService.Dtos;
 using BookingEngine.Application.OTAUserAppService.Validations;
@@ -22,6 +27,7 @@ using BookingEngine.Application.OTAUserService;
 using BookingEngine.Application.PaymantAppService;
 using BookingEngine.Application.PaymantAppService.Dtos;
 using BookingEngine.Application.PaymantAppService.Validations;
+using BookingEngine.Application.PDFTicketAppService;
 using BookingEngine.Application.POSAppService;
 using BookingEngine.Application.POSAppService.Dtos;
 using BookingEngine.Application.POSAppService.Validations;
@@ -30,6 +36,9 @@ using BookingEngine.Application.ReservationInfo;
 using BookingEngine.Application.ReservationInfo.Dtos;
 using BookingEngine.Application.ReservationInfo.Validations;
 using BookingEngine.Application.Services;
+using BookingEngine.Application.StripeSessionDataAppService;
+using BookingEngine.Application.StripeSessionDataAppService.Dtos;
+using BookingEngine.Application.StripeSessionDataAppService.validation;
 using BookingEngine.Application.WrappingAppService.WrappingBookingAppService;
 using BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppService;
 using BookingEngine.Application.WrappingAppService.WrappingInquirePNRAppService.Validations;
@@ -106,6 +115,23 @@ namespace BookingEngine.Host.Helper
             services.AddTransient<PaymentPNRResultValidator>();
 
 
+            services.AddScoped<ICreateTicketPdfFileAppService, CreateTicketPdfFileAppService>();
+           
+            services.AddScoped<IStripeSessionDataAppService, StripeSessionDataAppService>();
+            services.AddTransient<StripeSessionValidator>();
+
+
+            services.AddScoped<IMailModoAppService, MailModoAppService>();
+
+
+            services.AddScoped<IMailModoResultAppService, MailModoResultAppService>();
+
+            services.AddTransient<MailModoValidator>();
+
+
+            services.AddScoped<IPDFTicketAppService, PDFTicketAppService>();
+
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new AirPortMapperProfile());
@@ -119,6 +145,9 @@ namespace BookingEngine.Host.Helper
                 mc.AddProfile(new AmenitiesMapperProfile());
                 mc.AddProfile(new LocationMapperProfile());
                 mc.AddProfile(new PaymentPNRResultMapperProfile());
+                mc.AddProfile(new StripeSessionDataMapperProfile());
+                mc.AddProfile(new MailModoResultMapperProfile());
+
 
 
             });

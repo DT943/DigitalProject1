@@ -25,6 +25,7 @@ namespace B2B.Application.ReservationAppService
         }
 
 
+
         protected override IQueryable<Domain.Models.Reservation> QueryExcuter(SieveModel input)
         {
             return base.QueryExcuter(input)

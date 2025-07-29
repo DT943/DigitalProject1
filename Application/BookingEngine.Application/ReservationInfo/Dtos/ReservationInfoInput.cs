@@ -20,6 +20,8 @@ namespace BookingEngine.Application.ReservationInfo.Dtos
         public string CheckOutUrl { get; set; }
         public string PaymentStatus { get; set; } = "unpaid";
         public ContactInfoCreateDto ContactInfo { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
     }
 
     public class ReservationUpdateDto : IEntityUpdateDto
@@ -31,6 +33,9 @@ namespace BookingEngine.Application.ReservationInfo.Dtos
         public string FlightType { get; set; }
         public string FlightClass { get; set; }
         public string CheckOutUrl { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+
 
         public ContactInfoCreateDto ContactInfo { get; set; }
     }

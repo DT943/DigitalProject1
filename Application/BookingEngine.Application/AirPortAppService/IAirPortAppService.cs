@@ -15,5 +15,7 @@ namespace BookingEngine.Application.AirPortAppService
     {
         Task<PaginatedResult<AirPortGetDto>> GetSpecific(SieveModel input, string from);
 
+        string GetByIataCode(string iataCode);
+
     }
 }

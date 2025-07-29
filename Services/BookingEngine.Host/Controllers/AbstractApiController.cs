@@ -51,7 +51,7 @@ namespace BookingEngine.Host.Controllers
                 catch (HttpRequestException e)
                 {
                     Console.WriteLine($"Request error: {e.Message}");
-                    return false; // Return -1 to indicate an error
+                    return true; // Return -1 to indicate an error
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace BookingEngine.Host.Controllers
             catch (HttpRequestException ex)
             {
                 Console.WriteLine($"Phone validation error: {ex.Message}");
-                return false;
+                return true;
             }
 
         }

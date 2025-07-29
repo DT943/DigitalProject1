@@ -15,6 +15,7 @@ namespace B2B.Application.ReservationAppService.Dto
 
         public string Token { get; set; }
 
+
         public string PNR { get; set; }
         public int? NumAdt { get; set; }
 
@@ -48,6 +49,7 @@ namespace B2B.Application.ReservationAppService.Dto
         public TimeOnly ArrivalTime { get; set; }
 
         public decimal TotalFare { get; set; }
+
 
         public ICollection<SegmentsCreateDto> Segments { get; set; }
         public ICollection<PassengersCreateDto> Passengers { get; set; }

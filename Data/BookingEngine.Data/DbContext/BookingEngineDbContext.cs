@@ -76,6 +76,11 @@ namespace BookingEngine.Data.DbContext
         public DbSet<PaymentPNRFlightSegment> PaymentPNRFlightSegments { get; set; }
         public DbSet<PaymentPNRResult> PaymentPNRResults { get; set; }
 
+        public DbSet<StripeSessionData> StripeSessions { get; set; }
+
+        public DbSet<MailModoResult> MailModoResults { get; set; }
+
+
 
     }
 }

@@ -37,6 +37,7 @@ namespace BookingEngine.Application.Reservation
             {
                 entity.ContactInfo.Code = "ContactInfo_" + Guid.NewGuid().ToString();
             }
+            entity.CreatedAt = DateTime.Now;
 
             return entity;
         }
